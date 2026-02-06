@@ -14,6 +14,11 @@ const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // State hooks must be unconditional (at the top)
+  const [data, setData] = useState();
+  const localCart = JSON.parse(localStorage.getItem('cart'));
+  const [cart, setCart] = useState(localCart);
+
   // Redirect if no state (e.g., user refreshed the page)
   useEffect(() => {
     if (!location.state) {
@@ -21,16 +26,10 @@ const Result = () => {
     }
   }, [location.state, navigate]);
 
-  if (!location.state) {
-    return null;
-  }
-
-  const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
-
-  const [data, setData] = useState();
-  const localCart = JSON.parse(localStorage.getItem('cart'));
-  const [cart, setCart] = useState(localCart);
+  // Data fetching hook
   useEffect(() => {
+    if (!location.state) return; // Guard clause inside the hook
+
     fetch("/api/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
       .then(response => {
         if (!response.ok) {
@@ -84,11 +83,19 @@ const Result = () => {
           product_uses: []
         }]);
       });
-  }, []);
+  }, [location.state]); // Added location.state as dependency
 
+  // Cart persistence hook
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  // Early return MUST happen after all hooks
+  if (!location.state) {
+    return null;
+  }
+
+  const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
   return (
     <div>
 
