@@ -1,0 +1,322 @@
+*{
+    font-family: 'Ubuntu', 'sans-serif';
+}
+.lab{
+    width: 100%;
+    background:  linear-gradient(90deg, rgba(250,204,207,1) 0%, rgba(243,237,215,1) 23%, rgba(209,233,243,1) 100%);;
+}
+
+.school{
+    opacity: 0.03;
+    height: 700px;
+    position: absolute;
+    z-index: 0;
+}
+.note{
+    position: relative;
+    z-index: 1;
+    background-color: #f97d8a;
+    padding: 6px 28px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.note_text{
+    font-size: 20px;
+}
+
+.logo{
+    text-align: center;
+}
+
+.logo > img{
+    height: 82px;
+}
+.space{
+    display: flex;
+}
+
+.chem_item{
+    display: flex;
+}
+
+.chem_logo{
+    background: radial-gradient(circle, rgb(245 243 243) -7%, rgb(1 1 1) 60%);
+    padding: 23px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    position: relative;
+}
+
+.a_border{
+    border: 3px solid rgb(113, 246, 69);
+}
+.b_border{
+    border: 3px solid rgb(241, 237, 16);
+}
+.c_border{
+    border: 3px solid rgb(62, 222, 251);
+}
+.d_border{
+    border: 3px solid rgb(78, 42, 4);
+}
+
+.chem_logo > img{
+    top: 11%;
+    left: 32%;
+    position: absolute;
+    height: 50px;
+}
+
+.rack{
+    margin-left: 18px;
+    width: 380px;
+}
+
+.chem_name{
+    text-align: center;
+    font-weight: 600;
+    margin-top: -12px;
+}
+
+.rack_text{
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.inputs{
+    margin-left: 20px;
+    display: flex;
+}
+
+.inputs > p{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.test_tube{
+    z-index: 1;
+    margin-top: 51px;
+    margin-left: 90px;
+}
+
+.video-game-button, .t-video-game-button{
+    transform: translate(83px, 116px);
+
+	text-shadow: 1px 1px pink, -1px -1px maroon;
+
+	line-height: 1.5em;
+	text-align: center;
+	display: inline-block;
+    width: 140px;
+    height: 140px;
+    font-size: 135px;
+	-webkit-border-radius: .75em;
+	-moz-border-radius: .75em;
+	-o-border-radius: .75em;
+		border-radius: .75em;
+	background-color: red;
+	-webkit-box-shadow:  0 .2em maroon;
+	-moz-box-shadow:  0 .2em maroon;
+	-o-box-shadow:  0 .2em maroon;
+	box-shadow:  0 .2em maroon;
+	color: rgb(252, 251, 251);
+	margin: 5px;
+	background-color: red;
+	background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -moz-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -webkit-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	cursor: pointer;
+  padding-left: 5px;
+}
+
+.disabled_button > i{
+    transform: translateY(-48px);
+    font-size: 90px;
+}
+
+.video-game-button > i{
+    transform: translateY(-48px);
+    font-size: 90px;
+}
+
+.disabled_button, .t-disabled_button{
+    transform: translate(83px, 116px);
+
+    text-shadow: 1px 1px pink, -1px -1px rgb(19, 19, 19);
+
+	line-height: 1.5em;
+	text-align: center;
+	display: inline-block;
+    width: 140px;
+    height: 140px;
+    font-size: 135px;
+	-webkit-border-radius: .75em;
+	-moz-border-radius: .75em;
+	-o-border-radius: .75em;
+		border-radius: .75em;
+	background-color: rgb(59, 58, 58);
+	-webkit-box-shadow:  0 .2em maroon;
+	-moz-box-shadow:  0 .2em maroon;
+	-o-box-shadow:  0 .2em maroon;
+	box-shadow:  0 .2em rgb(14, 14, 14);
+	color: rgb(252, 251, 251);
+	margin: 5px;
+	background-color: rgb(62, 62, 62);
+	background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -moz-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -webkit-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	cursor: pointer;
+  padding-left: 5px;
+}
+.video-game-button:active{
+	box-shadow: none;
+	position: relative;
+	top: 0.2em;
+}
+
+.t-video-game-button:active{
+	box-shadow: none;
+	position: relative;
+	top: 0.2em;
+}
+
+.cclick{
+    box-shadow: none;
+	position: relative;
+	top: 0.2em;
+} 
+
+.disabled_text{
+    color: #555;
+    font-weight: 600;
+    font-size: 50px;
+}
+
+.enabled_text{
+    color: #1ef806;
+    font-weight: 600;
+    font-size: 50px;
+}
+
+.play{
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    width: 210px;
+    height: 201px;
+    border-radius: 50%;
+    top: 34%;
+    left: 73.4%;
+    opacity: 0;
+}
+
+.golmaal{
+    border-radius: 2px;
+    transform: translate(1.2px,30.24px);
+    position: absolute;
+    width: 200px;
+    height: 5px;
+    background-color: rgb(144 142 142 / 60%);
+}
+
+.golmaal_again{
+    border-radius: 2px;
+    z-index: 5;
+    transform: translateY(30px);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    margin-right: 15px;
+    transform: translateY(20px);
+    width: 200px;
+    height: 5px;
+    background: rgb(144 142 142 / 60%);
+    border-radius: 5px;
+    background-image: linear-gradient(#0c0c0c, #0b0b0b);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: #141414;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track  {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+
+  .all > div{
+    height: 0px;
+    width: 63px;
+  }
+
+  .h{
+    z-index: 2;
+    bottom: 642px;
+    width: 60px;
+    position: absolute;
+    transform: translate(708px, 486px);
+
+    background-color: #05B9C4;
+  }
+
+  .n{
+    z-index: 2;
+    bottom: 642px;
+    width: 60px;
+    position: absolute;
+    transform: translate(708px, 486px);
+
+    background-color: #04CE7E;
+  }
+
+  .c{
+    z-index: 2;
+    bottom: 642px;
+    width: 60px;
+    position: absolute;
+    transform: translate(708px, 486px);
+
+    background-color: #FBC2E3;
+  }
+  .f{
+    z-index: 2;
+    bottom: 642px;
+    width: 60px;
+    position: absolute;
+    transform: translate(708px, 486px);
+
+    background-color: goldenrod;
+  }
+
+  .parda{
+    transform: translate(145px, -90px);
+  }
+
+  .parda_text{
+    font-family: 'Fredericka the Great', cursive;
+    color: aliceblue;
+    z-index: 2;
+    font-weight: 800;
+  }
+
+  .parda_text > p{
+    margin: 0px;
+    font-family: 'Fredericka the Great', cursive;
+    font-size: 40px;
+  }

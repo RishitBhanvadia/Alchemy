@@ -1,0 +1,15 @@
+.comp_img2 > img{
+    height: 310px;
+}
+
+.exp_buttons > button{
+    margin-bottom: 10px;
+}
+
+.input_ans{
+    padding: 20px 10px;
+}
+
+.in_exp_button{
+    padding-top: 0px;
+}

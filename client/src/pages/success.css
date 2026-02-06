@@ -1,0 +1,34 @@
+.succes_page{
+    display: flex;
+}
+
+.correct_gif, .success_text{
+    text-align: center;
+}
+
+.success_text{
+    font-size: 30px;
+    font-weight: 600;
+    padding-top: 50px;
+}
+
+.success_space{
+    text-align: center;
+}
+
+.success_space > button{
+    border: none;
+    background-color: gold;
+    padding: 10px 21px;
+    font-weight: 600;
+    font-size: 22px;
+    margin-top: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+}
+
+.correct_gif > img{
+    height: 320px;
+}
