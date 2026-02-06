@@ -47,7 +47,7 @@ app.use('/result', resultRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Connected to server on port ${PORT}`);
     console.log("Environment Check:");
     console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
