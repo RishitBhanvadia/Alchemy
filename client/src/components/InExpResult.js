@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ResultCustomTestTube from "./result_testtube";
 import labgif from '../assets/labgigbl.gif'
 
