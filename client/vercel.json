@@ -1,3 +1,4 @@
+{
     "rewrites": [
         {
             "source": "/api/result/:match*",
@@ -8,3 +9,4 @@
             "destination": "/index.html"
         }
     ]
+}
