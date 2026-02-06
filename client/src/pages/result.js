@@ -34,7 +34,7 @@ const Result = () => {
     fetch("https://alchemy-86hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
       .then(response => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error(`Server Error: ${response.status} ${response.statusText}`);
         }
         return response.json();
       })
@@ -51,7 +51,7 @@ const Result = () => {
         const year = d.getFullYear();
         const hr = d.getHours();
         const min = d.getMinutes();
-        let rdx = {
+        const rdx = {
           "date": date + " " + month + " " + year,
           "time": hr + ":" + min,
           "conc_a": location.state.chemA,
@@ -60,7 +60,7 @@ const Result = () => {
           "conc_d": location.state.chemD,
           "color": (data && data[0]) ? data[0].color : "#ffffff", // Default color if data missing
           "main": (data && data[0]) ? data[0].product_name : "Unknown"
-        }
+        };
         if (cart === null) {
           setCart([rdx]);
         }
@@ -72,14 +72,14 @@ const Result = () => {
         console.error("Fetch error:", error);
         // Set dummy data or error state to stop loading spinner
         setData([{
-          color: "#000",
-          result: "Error loading result. Please try again.",
+          color: "#ff0000",
+          result: `Error: ${error.message}`,
           solid_color: "#000",
           gas_color: "#000",
           gas: "None",
           solid: "None",
           product_name: "Error",
-          product_info: "Could not connect to server.",
+          product_info: `Debug Info: ${error.message}`,
           product_properties: [],
           product_uses: []
         }]);
