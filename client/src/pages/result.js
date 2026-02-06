@@ -31,7 +31,7 @@ const Result = () => {
     if (!location.state) return; // Guard clause inside the hook
 
     // Direct fetch to Render backend (Bypassing Vercel Proxy)
-    fetch("https://alchemy-86hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
+    fetch("https://alchemy-85hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Server Error: ${response.status} ${response.statusText}`);
@@ -108,7 +108,6 @@ const Result = () => {
             </div>
           ) :
           <div className='result_lab'>
-            <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 9999, background: 'yellow', padding: '5px' }}>Ver 2.1</div>
             <Sidebar />
             <img className="school" src={back} alt="" />
             <div className="bubbles"><Bubble /></div>
