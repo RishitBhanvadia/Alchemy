@@ -55,10 +55,7 @@ const InExpResult = ({ num, on }) => {
             "characterstics": ["No specific smell", "Yellow solids formed", "No smoke", "Soluble in HCl"]
         }
     ]
-    const [data, setData] = useState(undefined);
-    setTimeout(() => {
-        setData(all_details[0])
-    }, 1000);
+
 
     return (
         <div>

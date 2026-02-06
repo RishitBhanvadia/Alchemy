@@ -128,7 +128,7 @@
 	background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
 	background-image: -moz-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
 	background-image: -webkit-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
-	background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
 	cursor: pointer;
   padding-left: 5px;
 }
@@ -169,7 +169,7 @@
 	background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
 	background-image: -moz-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
 	background-image: -webkit-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
-	background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
 	cursor: pointer;
   padding-left: 5px;
 }
