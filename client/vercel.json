@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/result/:match*",
+            "destination": "https://alchemy-86hv.onrender.com/result/:match*"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
