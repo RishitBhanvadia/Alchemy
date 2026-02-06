@@ -23,10 +23,23 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
 
-// Request Logger
+// Request Logger with Response Status
 app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] Incoming Request: ${req.method} ${req.url}`);
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+    });
     next();
+});
+
+// Health Check & Root Route
+app.get('/', (req, res) => {
+    res.status(200).send("Alchemy Backend is Active 🧪");
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date() });
 });
 
 // Routes
