@@ -30,7 +30,8 @@ const Result = () => {
   useEffect(() => {
     if (!location.state) return; // Guard clause inside the hook
 
-    fetch("/api/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
+    // Direct fetch to Render backend (Bypassing Vercel Proxy)
+    fetch("https://alchemy-86hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
