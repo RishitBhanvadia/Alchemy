@@ -5,7 +5,7 @@
             "destination": "https://alchemy-86hv.onrender.com/result/:match*"
         },
         {
-            "source": "/(.*)",
+            "source": "/:path*",
             "destination": "/index.html"
         }
     ]

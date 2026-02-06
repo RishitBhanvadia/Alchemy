@@ -13,6 +13,18 @@ import './result.css'
 const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Redirect if no state (e.g., user refreshed the page)
+  useEffect(() => {
+    if (!location.state) {
+      navigate('/lab');
+    }
+  }, [location.state, navigate]);
+
+  if (!location.state) {
+    return null;
+  }
+
   const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
 
   const [data, setData] = useState();
