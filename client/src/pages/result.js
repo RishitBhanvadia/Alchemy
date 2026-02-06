@@ -108,6 +108,7 @@ const Result = () => {
             </div>
           ) :
           <div className='result_lab'>
+            <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 9999, background: 'yellow', padding: '5px' }}>Ver 2.1</div>
             <Sidebar />
             <img className="school" src={back} alt="" />
             <div className="bubbles"><Bubble /></div>
