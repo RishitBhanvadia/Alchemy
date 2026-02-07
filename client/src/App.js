@@ -3,7 +3,12 @@ import Lab from "./pages/lab";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Result from "./pages/result"; // Assuming this is needed for existing logic
+import Result from "./pages/result";
+import Organic from "./pages/organic";
+import Titration from "./pages/titration";
+import Inorganic from "./pages/inorganic";
+import History from "./pages/history";
+import Success from "./pages/success";
 import "./app.css";
 
 function App() {
@@ -15,11 +20,11 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/lab" element={<Lab />} />
         <Route path="/result" element={<Result />} />
-        {/* Add other placeholders if they don't exist yet but are in sidebar */}
-        <Route path="/titration" element={<div style={{ padding: 50 }}>Titration Page (Coming Soon)</div>} />
-        <Route path="/organic" element={<div style={{ padding: 50 }}>Organic Page (Coming Soon)</div>} />
-        <Route path="/inorganic" element={<div style={{ padding: 50 }}>Inorganic Page (Coming Soon)</div>} />
-        <Route path="/history" element={<div style={{ padding: 50 }}>History Page (Coming Soon)</div>} />
+        <Route path="/titration" element={<Titration />} />
+        <Route path="/organic" element={<Organic />} />
+        <Route path="/inorganic" element={<Inorganic />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/success" element={<Success />} />
       </Routes>
     </div>
   );
