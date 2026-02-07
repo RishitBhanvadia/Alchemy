@@ -46,7 +46,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <h2 style={{ fontFamily: 'Ubuntu', marginBottom: '20px', color: '#444' }}>Available Experiments</h2>
+                <h2 style={{ fontFamily: 'Montserrat', marginBottom: '20px', color: 'var(--text-white)' }}>Available Experiments</h2>
 
                 <div className="experiments-grid">
                     {experiments.map((exp, index) => (

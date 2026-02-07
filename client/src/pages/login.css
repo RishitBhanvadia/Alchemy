@@ -1,91 +1,90 @@
 .login-page {
     width: 100%;
     height: 100vh;
-    background: linear-gradient(90deg, rgba(250, 204, 207, 1) 0%, rgba(243, 237, 215, 1) 23%, rgba(209, 233, 243, 1) 100%);
     display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
+    align-items: center;
+    /* Background handled generically by body, but we can add overlay if needed */
 }
 
+/* The tilt-card class from HolographicLogin wraps this */
 .login-card {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
     padding: 40px;
-    width: 400px;
-    text-align: center;
-    z-index: 10;
+    border-radius: 20px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Glass styles defined in component, but refined here */
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
 }
 
 .login-title {
-    font-family: 'Fredericka the Great', cursive;
-    font-size: 40px;
-    color: #333;
+    color: var(--text-white);
+    font-size: 1.8rem;
     margin-bottom: 30px;
+    font-weight: 600;
 }
 
 .input-group {
+    width: 100%;
     margin-bottom: 20px;
     text-align: left;
 }
 
 .input-label {
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
     display: block;
-    font-weight: 600;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .login-input {
     width: 100%;
-    padding: 12px;
-    border: none;
+    padding: 12px 15px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.6);
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 16px;
-    outline: none;
-    transition: background 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
     box-sizing: border-box;
-    /* Fix w-100 padding issue */
+    /* Fix padding issue */
 }
 
 .login-input:focus {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+    border-color: var(--primary-blue);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.login-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .login-button {
     width: 100%;
-    margin-top: 10px;
     padding: 12px;
+    margin-top: 10px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
+    background: var(--primary-blue);
     color: white;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.1s;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .login-button:hover {
+    background: var(--secondary-purple);
     transform: translateY(-2px);
-}
-
-.login-button:active {
-    transform: translateY(0);
-}
-
-/* For Parallax Tilt Effect */
-.tilt-card {
-    transform-style: preserve-3d;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
