@@ -1,0 +1,66 @@
+.landing-page {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(90deg, rgba(250, 204, 207, 1) 0%, rgba(243, 237, 215, 1) 23%, rgba(209, 233, 243, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-content {
+    z-index: 2;
+    text-align: center;
+}
+
+.landing-title {
+    font-family: 'Fredericka the Great', cursive;
+    font-size: 80px;
+    color: #333;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.landing-subtitle {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 50px;
+}
+
+.start-button {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rotate-molecule {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    opacity: 0.6;
+    /* Placeholder for when 3D is added */
+}

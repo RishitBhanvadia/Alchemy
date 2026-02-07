@@ -10,6 +10,8 @@ import nacl from '../assets/nacl.png'
 import logo from '../assets/logo.png'
 import back from '../assets/back.jpg'
 import "./lab.css"
+import CanvasContainer from '../components/3d-animations/CanvasContainer';
+import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 const Lab = () => {
   const app = useRef();
@@ -185,9 +187,18 @@ const Lab = () => {
 
   const isPlayDisabled = !(onOrNot());
   const whatClass = (!(onOrNot())) ? 'disabled_button' : 'video-game-button';
+
+  // Determine status for 3D Beaker
+  let experimentStatus = 'neutral';
+  if (animate) experimentStatus = 'loading';
+  else if (!isPlayDisabled) experimentStatus = 'success'; // Ready to play
+
   return (
     <div ref={app} style={{ display: "flex" }}>
       <Sidebar />
+      <CanvasContainer style={{ zIndex: 5 }}>
+        <ReactiveBeaker status={experimentStatus} />
+      </CanvasContainer>
       <div className="lab">
         <img className="school" src={back} alt="" />
         <div className="w h" style={{ height: `${3.23 * chemA}px`, bottom: `${642}px` }}></div>
