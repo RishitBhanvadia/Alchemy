@@ -1,198 +1,289 @@
-.input_ans{
+.organic-page {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 100px;
     display: flex;
+    justify-content: center;
+    background: transparent;
+    overflow-y: auto;
 }
 
-.hha{
+.organic-container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: 4px;
+}
+
+.experiment-panel {
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
     position: relative;
+    overflow: hidden;
+}
+
+.experiment-visuals {
+    min-height: 500px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Controls & Inputs */
+.controls-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 900px;
     z-index: 10;
 }
 
-.result_div{
-    margin-top: -35px;
+.test-btn {
+    min-width: 150px;
+}
+
+.answer-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    z-index: 10;
+}
+
+.glass-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-label {
+    color: var(--primary-neon);
+    font-weight: 700;
+    margin: 0 15px;
+}
+
+.glass-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    width: 150px;
+    outline: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    padding: 5px;
+}
+
+.glass-input:focus {
+    border-color: var(--primary-neon);
+}
+
+.shake-error {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    border-color: #ff4d4d;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* --- ANIMATION & VISUALS --- */
+
+.result_div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.65);
+    /* Slightly bigger */
+    width: 600px;
+    height: 400px;
+}
+
+/* Info Boxes */
+.info_1,
+.info_2,
+.info_3,
+.info_4 {
+    font-size: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    background-color: rgba(10, 10, 30, 0.9);
+    color: #fff;
+    position: absolute;
+    width: 220px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    z-index: 5;
     text-align: center;
 }
 
-.info_1, .info_2, .info_3, .info_4{
-    font-size: 20px;
-    box-shadow: 2px 3px 2px 1px rosybrown;
-    border: 2px solid black;
-    padding: 18px;
-    background-color: #fff0aa;
-    position: absolute;
-    transform: translate(857px, -353px) scale(0);
-}
+/* 
+   Positioning Strategy:
+   The test tube is at (0,0) in the flex container.
+   We radiate the info boxes out.
+*/
 
-.info_1{
+.info_1 {
     animation: boom_1 500ms ease-in-out forwards 100ms;
 }
 
+/* Top Right (Was No smoke) */
 @keyframes boom_1 {
-    100%{
-        transform: translate(857px, -353px) scale(1);
+    100% {
+        transform: translate(280px, -180px) scale(1);
     }
 }
 
-.info_2{
-    transform: translate(813px, -150px) scale(0);
+.info_2 {
     animation: boom_2 500ms ease-in-out forwards 200ms;
 }
 
+/* Right (Was Burnt Smell) */
 @keyframes boom_2 {
-    100%{
-        transform: translate(813px, -150px) scale(1);
+    100% {
+        transform: translate(320px, -20px) scale(1);
     }
 }
 
-.info_3{
-    right: 1234px;
-    transform: translate(355px, -171px) scale(0);
+.info_3 {
     animation: boom_3 500ms ease-in-out forwards 300ms;
 }
 
+/* Bottom Right (Was No precipitates) */
 @keyframes boom_3 {
-    100%{
-        transform: translate(355px, -171px) scale(1);
+    100% {
+        transform: translate(280px, 140px) scale(1);
     }
 }
 
-.info_4{
-    right: 1317px;
-    max-width: 210px;
-    transform: translate(424px, -345px) scale(0);
+.info_4 {
     animation: boom_4 500ms ease-in-out forwards 400ms;
 }
 
+/* Left (Was No precipitates with HCl) */
 @keyframes boom_4 {
-    100%{
-        transform: translate(424px, -345px) scale(1);
+    100% {
+        transform: translate(-320px, -80px) scale(1);
     }
 }
 
-.arrow_1{
+
+/* Arrows */
+/* 
+   We need to position these to connect the center to the info boxes.
+   Because they are SVGs with specific shapes, we have to align them carefully. 
+   Assuming standard shapes from the provided SVG paths.
+*/
+
+/* Arrow 1: Points Top-Right. */
+.arrow_1 {
     position: absolute;
-    height: 25px;
-    transform: translate(-426px, 90px);
+    height: 35px;
+    /* Scaled down slightly */
+    /* Position it starting from somewhat center-right and going up-right */
+    transform: translate(140px, -110px);
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
 
-.arrow_2{
-    width: 127px;
-    transform: translate(-392px, 266px);
+/* Arrow 2: Points Right. */
+.arrow_2 {
     position: absolute;
-    height: 2px;
+    height: 3px;
+    width: 120px;
+    transform: translate(180px, -10px);
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
 
-.arrow_3{
-    transform: translate(-277px, 285px);
-    height: 1.5px;
+/* Arrow 3: Points Bottom-Right. */
+.arrow_3 {
     position: absolute;
+    height: 3px;
+    width: 120px;
+    /* Needs rotation to point down-right? The original SVG might just be a line. */
+    transform: translate(160px, 100px) rotate(25deg);
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
 
-.arrow_4{
+/* Arrow 4: Points Left. */
+.arrow_4 {
     position: absolute;
-    transform: translate(-560px, 101px);
-    height: 23px;
-    position: absolute;
+    height: 35px;
+    /* Points Left/Up-Left */
+    transform: translate(-180px, -50px) scaleX(-1);
+    /* Flip horizontally to point left */
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
+
 
 @keyframes point {
-    100%{
+    0% {
+        opacity: 0;
+    }
+
+    100% {
         opacity: 1;
     }
 }
 
-.comp_img{
-    padding: 60px 0px 56px 0px;
-    text-align: center;
+.arrow_1 line,
+.arrow_2 line,
+.arrow_3 line,
+.arrow_4 line {
+    stroke: var(--primary-neon) !important;
+    stroke-width: 4 !important;
 }
 
-.comp_img > img{
-    height: 201px;
-}
-
-.comp_img_main{
-    text-align: center;
-}
-
-.comp_img_main > p{
-    font-weight: 700;
-    font-size: 22px;
-    margin-bottom: 0px;
-    text-transform: uppercase;
-}
-
-.exp_buttons > button{
-    border-radius: 9px;
-    margin: 0px 5px;
-    border: none;
-    background-color: pink;
-    font-size: 22px;
-    font-weight: 700;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-
-.exp_buttons{
-    padding-top: 40px;
-    text-align: center;
-}
-
-.input_ans{
-    padding: 62px 0px;
-}
-
-.input_ans > input{
-    border-radius: 6px;
-    padding: 10px;
-    padding-left: 35px;
-    font-size: 20px;
-    border: 3px solid black;
-    width: 100%;
-    position: relative;
-    z-index: 5;
-}
-
-.input_ans > p{  
-    padding: 10px;  
-    padding-right: 15px;
-    margin: 0px;
-    font-size: 22px;
-    font-weight: 600;
-}
-
-.input_ans > button{
-    border-radius: 15px;
-    font-weight: 700;
-    border-radius: -3px;
-    background-color: #74D031;
-    border: none;
-    font-size: 22px;
-    padding: 0px 26px;
-    margin-right: 30px;
-    margin-left: 12px;
-    cursor: pointer;
-    position: relative;
-    z-index: 5;
-    color: snow;
-}
-
-.input_ans > button:hover{
-    background-color: #9cfe57;
-}
-
-.load_div{
-    height: 370px;
-    text-align: center;
-}
-
-.wrong{
-    border: red solid 3px !important;
+.load_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }

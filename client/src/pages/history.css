@@ -1,155 +1,104 @@
-.main_history{
+.history-page {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 100px;
     display: flex;
+    justify-content: center;
+    background: transparent;
+    /* Handled by global body */
 }
 
-.exp_history{
-    padding: 10px 0px;
+.history-container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
     text-align: center;
-    font-size: 32px;
-    font-weight: 600;
+    letter-spacing: 4px;
 }
 
-.history_table{
-    overflow-y: scroll;
-    position: relative;
-    max-height: 471px !important;
+.history-panel {
+    width: 100%;
+    padding: 30px;
+    min-height: 500px;
 }
 
-.del_history > i{
-    margin-right: -250px;
-    font-size: 25px;
+.loading-text,
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin-top: 50px;
 }
 
-.del_history{
-    transform: translate(231px, -6px);
-    z-index: 5;
-    position: relative;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
+.table-wrapper {
+    overflow-x: auto;
 }
 
-.open_button{
-    border: none;
-    background-color: darkblue;
-    padding: 3px 12px;
-    font-size: 16px;
-    font-weight: 700;
-    color: whitesmoke;
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.history-table th {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--primary-neon);
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
     letter-spacing: 1px;
-    cursor: pointer;
-    border-radius: 8%;
-    position: relative;
-    z-index: 0;
 }
 
-.empty > img{
-    padding: 20px 0px;
-    height: 300px;
-    position: relative;
-    z-index: 6;
+.history-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.empty{
-    text-align: center;
+.history-table tr:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.empty > div{
+.type-cell {
     font-weight: 600;
-    font-size: 35px;
+    color: #b3c7ff;
 }
 
+.score-badge {
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
 
-.table {
-    margin: 30px 0 48px 134px;
-    width: 1200px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    display: table;
-    }
-    @media screen and (max-width: 580px) {
-    .table {
-        display: block;
-    }
-    }
-    
-    .row {
-    text-align: center;
-    display: table-row;
-    background: #f6f6f6;
-    }
-    .row:nth-of-type(odd) {
-    background: #e9e9e9;
-    }
-    .row.header {
-    font-weight: 900;
-    color: #ffffff;
-    background: #ea6153;
-    }
-    .row.green {
-        font-weight: 900;
-        color: #ffffff;
-        background: #27ae60;
-        position: sticky;
-        z-index: 1;
-        top: 0;
-    }
-    .row.red {
-        font-weight: 900;
-        color: #ffffff;
-        background: red;
-    }
-    .row.newBlue {
-        font-weight: 900;
-        color: #ffffff;
-        background: #273eae;
-    } 
-    .row.black {
-        font-weight: 900;
-        color: #ffffff;
-        background: black;
-    }
-    .row.niceblue{
-        font-weight: 900;
-        color: #ffffff;
-        background: #0080ff;
-    }
-    @media screen and (max-width: 580px) {
-    .row {
-        padding: 14px 0 7px;
-        display: block;
-    }
-    .row.header {
-        padding: 0;
-        height: 6px;
-    }
-    .row.header .cell {
-        display: none;
-    }
-    .row .cell {
-        margin-bottom: 10px;
-    }
-    .row .cell:before {
-        margin-bottom: 3px;
-        content: attr(data-title);
-        min-width: 98px;
-        font-size: 10px;
-        line-height: 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #969696;
-        display: block;
-    }
-    }
-    
-    .cell {
-    vertical-align: middle;
-    text-transform: capitalize;
-    padding: 6px 12px;
-    display: table-cell;
-    }
-    @media screen and (max-width: 580px) {
-    .cell {
-        padding: 2px 16px;
-        display: block;
-    }
-    }
+.score-badge.high {
+    background: rgba(0, 255, 0, 0.2);
+    color: #00ff00;
+    border: 1px solid #00ff00;
+}
+
+.score-badge.med {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    border: 1px solid #ffa500;
+}
+
+.score-badge.low {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+}
+
+.details-cell {
+    font-size: 0.9rem;
+    color: #ddd;
+}

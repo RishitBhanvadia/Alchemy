@@ -1,14 +1,11 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/sidebar";
 import CustomTestTube from "../components/testtube";
 import hcl from '../assets/hcl.png'
 import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
-import logo from '../assets/logo.png'
-import back from '../assets/back.jpg'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
 import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
@@ -18,7 +15,6 @@ const Lab = () => {
 
   const [animate, setAnimate] = useState(false);
   const [arr, setArr] = useState([]);
-  const [sum, setSum] = useState(0);
   const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
@@ -28,11 +24,9 @@ const Lab = () => {
 
   function change_tip() {
     if (chemA > 0) {
-      console.log("Hey");
       SetTColor('#05B9C4');
     }
     else {
-      console.log("Yes A Zero");
       if (chemB > 0) {
         SetTColor('#04CE7E');
       }
@@ -52,7 +46,6 @@ const Lab = () => {
     }
   }
 
-
   useLayoutEffect(() => {
     if (animate) {
       let ctx = gsap.context(() => {
@@ -68,45 +61,34 @@ const Lab = () => {
     }
   }, [animate]);
 
-
-
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('A') == -1) {
+      if (arr.indexOf('A') === -1) {
         setArr(prev => [...prev, '#848584c8']);
       }
     }
     else {
       if (arr.indexOf('A') !== -1) {
-        console.log("Hey");
         setArr(arr.filter(item => item !== '#848584c8'));
       }
     }
-    console.log(arr);
-
     setChemA(value);
-
-    console.log(chemA);
     change_tip();
-
   };
 
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('B') == -1) {
+      if (arr.indexOf('B') === -1) {
         setArr(prev => [...prev, '#F2F0F0']);
       }
     }
     else {
       if (arr.indexOf('B') !== -1) {
-        console.log("Hey");
         setArr(arr.filter(item => item !== '#F2F0F0'));
       }
     }
-    console.log(arr);
-
     setChemB(value);
     change_tip();
   };
@@ -114,28 +96,23 @@ const Lab = () => {
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('C') == -1) {
+      if (arr.indexOf('C') === -1) {
         setArr(prev => [...prev, '#2987f3bb']);
       }
     }
     else {
       if (arr.indexOf('C') !== -1) {
-        console.log("Hey");
         setArr(arr.filter(item => item !== '#2987f3bb'));
       }
     }
-    console.log(arr);
-
     setChemC(value);
-
     change_tip();
   };
 
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('D') == -1) {
-        console.log("Hey");
+      if (arr.indexOf('D') === -1) {
         setArr(prev => [...prev, '#6f4e37c1']);
       }
     }
@@ -144,202 +121,160 @@ const Lab = () => {
         setArr(arr.filter(item => item !== '#6f4e37c1'));
       }
     }
-    console.log(arr);
-
     setChemD(value);
-
     change_tip();
   };
 
   const useHandlePlayClick = () => {
     SetTColor("");
-    document.getElementsByClassName('video-game-button')[0].classList.add('cclick');
+    // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
       navigate("/result", {
         replace: true,
         state: { chemA, chemB, chemC, chemD },
       });
-    }, 500);
+    }, 1500); // Increased delay to show animation
   };
+
   function onOrNot() {
     var sum = 0;
-    if (chemA > 0) {
-      sum += 1;
-    }
-    if (chemB > 0) {
-      sum += 1;
-    }
-    if (chemC > 0) {
-      sum += 1;
-    }
-    if (chemD > 0) {
-      sum += 1;
-    }
-
-    if (sum >= 2) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    if (chemA > 0) sum += 1;
+    if (chemB > 0) sum += 1;
+    if (chemC > 0) sum += 1;
+    if (chemD > 0) sum += 1;
+    return sum >= 2;
   }
 
   const isPlayDisabled = !(onOrNot());
-  const whatClass = (!(onOrNot())) ? 'disabled_button' : 'video-game-button';
 
   // Determine status for 3D Beaker
   let experimentStatus = 'neutral';
   if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success'; // Ready to play
+  else if (!isPlayDisabled) experimentStatus = 'success';
 
   return (
-    <div ref={app} style={{ display: "flex" }}>
-      <Sidebar />
-      <CanvasContainer style={{ zIndex: 5 }}>
-        <ReactiveBeaker status={experimentStatus} />
-      </CanvasContainer>
-      <div className="lab">
-        <img className="school" src={back} alt="" />
-        <div className="w h" style={{ height: `${3.23 * chemA}px`, bottom: `${642}px` }}></div>
-        <div className="x n" style={{ height: `${3.23 * chemB}px`, bottom: `${642 + 3.23 * chemA}px` }}></div>
-        <div className="y c" style={{ height: `${3.23 * chemC}px`, bottom: `${642 + 3.23 * chemB + 3.23 * chemA}px` }}></div>
-        <div className="z f" style={{ height: `${3.23 * chemD}px`, bottom: `${642 + 3.23 * chemA + 3.23 * chemB + 3.23 * chemC}px` }}></div>
-        <div className="note"><span className="note_text">NOTE: </span>All aqeuous solutions are of 1 M</div>
-        <div className="logo"><img src={logo} alt="" /></div>
-        <div className="space">
-          <div className="rack">
-            <p className="rack_text">CHEMICAL RACK :</p>
-            {/*HCl Starts*/}
-            <div className="chem_item">
-              <div className="chemical">
-                <div className="chem_logo a_border">
-                  <img src={hcl} alt="" />
-                </div>
-                <div className="chem_name">
-                  <p>Conc. HCl</p>
-                </div>
-              </div>
-              <div className="inputs">
-                <div className='golmaal'></div>
-                <div className="golmaal_again" style={{ width: `${2 * chemA}px`, position: "absolute", height: "5px", backgroundColor: "black" }}></div>
-                <div className="input_ban" style={{ width: "220px" }}>
-                  <input
-                    type="range"
-                    name="a"
-                    className="range2"
-                    id=""
-                    min="0"
-                    max={100 - chemB - chemC - chemD}
-                    style={{ width: `${200 - 2 * (chemB + chemC + chemD)}px` }}
-                    value={chemA}
-                    onChange={handleChemAChange}
-                  />
-                </div>
-                <p>{chemA} %</p>
-              </div>
-            </div>
-            {/*HCl Ends*/}
-            {/*NaCl Starts*/}
-            <div className="chem_item">
-              <div className="chemical">
-                <div className="chem_logo b_border">
-                  <img src={nacl} alt="" />
-                </div>
-                <div className="chem_name">
-                  <p>NaCl</p>
-                </div>
-              </div>
-              <div className="inputs">
-                <div className='golmaal'></div>
-                <div className="golmaal_again" style={{ width: `${2 * chemB}px`, position: "absolute", height: "5px", backgroundColor: "black" }}></div>
-                <div className="input_ban" style={{ width: "220px" }}>
-                  <input
-                    type="range"
-                    className="range2"
-                    name="b"
-                    id=""
-                    min="0"
-                    max={100 - chemA - chemC - chemD}
-                    style={{ width: `${200 - 2 * (chemA + chemC + chemD)}px` }}
-                    value={chemB}
-                    onChange={handleChemBChange}
-                  />
-                </div>
-                <p>{chemB} %</p>
-              </div>
-            </div>
-            {/*NaCl Ends*/}
-            {/*CuSO4 Starts*/}
-            <div className="chem_item">
-              <div className="chemical">
-                <div className="chem_logo c_border">
-                  <img src={cuso4} alt="" />
-                </div>
-                <div className="chem_name">
-                  <p>CuSO4</p>
-                </div>
-              </div>
-              <div className="inputs">
-                <div className='golmaal'></div>
-                <div className="golmaal_again" style={{ width: `${2 * chemC}px`, position: "absolute", height: "5px", backgroundColor: "black" }}></div>
-                <div className="input_ban" style={{ width: "220px" }}>
-                  <input
-                    type="range"
-                    className="range2"
-                    name="c"
-                    id=""
-                    min="0"
-                    max={100 - chemA - chemB - chemD}
-                    style={{ width: `${200 - 2 * (chemA + chemB + chemD)}px` }}
-                    value={chemC}
-                    onChange={handleChemCChange}
-                  />
-                </div>
-                <p>{chemC} %</p>
-              </div>
-            </div>
-            {/*CuSO4 Ends*/}
-            {/*FeSO4 Starts*/}
-            <div className="chem_item">
-              <div className="chemical">
-                <div className="chem_logo d_border">
-                  <img src={feso4} alt="" />
-                </div>
-                <div className="chem_name">
-                  <p>FeSO4</p>
-                </div>
-              </div>
-              <div className="inputs">
-                <div className='golmaal'></div>
-                <div className="golmaal_again" style={{ width: `${2 * chemD}px`, position: "absolute", height: "5px", backgroundColor: "black" }}></div>
-                <div className="input_ban" style={{ width: "220px" }}>
-                  <input
-                    type="range"
-                    className="range2"
-                    name="d"
-                    id=""
-                    min="0"
-                    max={100 - chemA - chemB - chemC}
-                    style={{ width: `${200 - 2 * (chemA + chemC + chemB)}px` }}
-                    value={chemD}
-                    onChange={handleChemDChange}
-                  />
-                </div>
-                <p>{chemD} %</p>
-              </div>
-            </div>
-            {/*FeSO4 Ends*/}
-          </div>
+    <div className="lab-page" ref={app}>
+      {/* Background 3D Layer */}
+      <div className="lab-3d-background">
+        <CanvasContainer>
+          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+        </CanvasContainer>
+      </div>
 
+      {/* Left Panel: Chemical Rack */}
+      <div className="glass-panel chemical-rack">
+        <h2 className="panel-title neon-glow">CHEMICAL RACK</h2>
+
+        <div className="chem-control-group">
+          <div className="chem-icon-wrapper" style={{ borderColor: '#05B9C4' }}>
+            <img src={hcl} alt="HCl" className="chem-icon" />
+          </div>
+          <div className="range-wrapper">
+            <label>Conc. HCl</label>
+            <input
+              type="range"
+              min="0"
+              max={100 - chemB - chemC - chemD}
+              value={chemA}
+              onChange={handleChemAChange}
+              className="sci-fi-range"
+            />
+            <span className="chem-value">{chemA}%</span>
+          </div>
+        </div>
+
+        <div className="chem-control-group">
+          <div className="chem-icon-wrapper" style={{ borderColor: '#04CE7E' }}>
+            <img src={nacl} alt="NaCl" className="chem-icon" />
+          </div>
+          <div className="range-wrapper">
+            <label>NaCl</label>
+            <input
+              type="range"
+              min="0"
+              max={100 - chemA - chemC - chemD}
+              value={chemB}
+              onChange={handleChemBChange}
+              className="sci-fi-range"
+            />
+            <span className="chem-value">{chemB}%</span>
+          </div>
+        </div>
+
+        <div className="chem-control-group">
+          <div className="chem-icon-wrapper" style={{ borderColor: '#FBC2E3' }}>
+            <img src={cuso4} alt="CuSO4" className="chem-icon" />
+          </div>
+          <div className="range-wrapper">
+            <label>CuSO4</label>
+            <input
+              type="range"
+              min="0"
+              max={100 - chemA - chemB - chemD}
+              value={chemC}
+              onChange={handleChemCChange}
+              className="sci-fi-range"
+            />
+            <span className="chem-value">{chemC}%</span>
+          </div>
+        </div>
+
+        <div className="chem-control-group">
+          <div className="chem-icon-wrapper" style={{ borderColor: '#DAA520' }}>
+            <img src={feso4} alt="FeSO4" className="chem-icon" />
+          </div>
+          <div className="range-wrapper">
+            <label>FeSO4</label>
+            <input
+              type="range"
+              min="0"
+              max={100 - chemA - chemB - chemC}
+              value={chemD}
+              onChange={handleChemDChange}
+              className="sci-fi-range"
+            />
+            <span className="chem-value">{chemD}%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Center Area: Test Tube Visualization */}
+      <div className="center-stage">
+        <div className="test_tube-wrapper">
           <div className="test_tube">
-            <CustomTestTube color={tcolor} />
+            <CustomTestTube color={tcolor} hasLiquid={chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0} />
           </div>
+          {/* Reaction indicators (visuals) */}
+          <div className="reaction-indicators">
+            <div className="indicator h" style={{ height: `${3.23 * chemA}px`, background: '#05B9C4' }}></div>
+            <div className="indicator n" style={{ height: `${3.23 * chemB}px`, background: '#04CE7E' }}></div>
+            <div className="indicator c" style={{ height: `${3.23 * chemC}px`, background: '#FBC2E3' }}></div>
+            <div className="indicator f" style={{ height: `${3.23 * chemD}px`, background: '#DAA520' }}></div>
+          </div>
+        </div>
 
-          <div className="play_button">
-            <span class={whatClass}><i class="fa-solid fa-vial"></i></span>
-            <button disabled={isPlayDisabled} className="play" onClick={useHandlePlayClick}>PLAY</button>
-          </div>
+        <button
+          className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
+          disabled={isPlayDisabled}
+          onClick={useHandlePlayClick}
+        >
+          {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
+        </button>
+      </div>
+
+      {/* Right Panel: Status/Info (Optional, kept minimal for now) */}
+      <div className="glass-panel status-panel">
+        <h3 className="status-title">STATUS</h3>
+        <div className="status-item">
+          <span className="label">System:</span>
+          <span className="value neon-text">ONLINE</span>
+        </div>
+        {/* Simplified for students as requested (removed Temp/Pressure) */}
+        <div className="note-box">
+          <span className="note-warn">NOTE:</span> All solutions are 1 M
         </div>
       </div>
     </div>

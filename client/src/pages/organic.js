@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/sidebar";
+import Navbar from "../components/Navbar";
 import logo from '../assets/logo.png'
 import back from '../assets/back.jpg'
 import CompoundImg from "../components/compoundImg";
@@ -15,6 +15,8 @@ const Organic = () => {
   const [datanum, setDatanum] = useState(0);
   const [wrong, setWrong] = useState(false);
   const [uans, setUAns] = useState('');
+
+  // Animation logic for result
   function send_info(i) {
     setOn(true);
     setTimeout(() => {
@@ -39,35 +41,58 @@ const Organic = () => {
   }
 
   const handleChange = (event) => {
-    // 👇 Get input value from "event"
     setUAns(event.target.value);
   };
+
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar />
-      <div className="working_space lab">
-        <img className="school" src={back} alt="" />
-        <div className="note"><span className="note_text">NOTE: </span>Refer Your Chemistry Lab Mannual Page - 70</div>
-        <div className="logo"><img src={logo} alt="" /></div>
-        <div className="experiment_area">
-          <div className="visible_exp">
-            {
-              (first) ? <CompoundImg /> : <ExpResult num={datanum} on={on} />
-            }
+    <div className="organic-page">
+      <Navbar />
+
+      <div className="organic-container">
+        <h1 className="neon-glow page-title">ORGANIC ANALYISIS</h1>
+
+        <div className="glass-panel experiment-panel">
+          <div className="note-display">
+            <span className="note-label">NOTE:</span> Refer Your Chemistry Lab Manual Page - 70
           </div>
-          <div className="exp_buttons">
-            <button onClick={() => send_info(0)} className="hha">Group 0 Test</button>
-            <button onClick={() => send_info(1)} className="hha">Group 1 Test</button>
-            <button onClick={() => send_info(2)} className="hha">Group 2 Test</button>
-            <button onClick={() => send_info(3)} className="hha">Group 3 Test</button>
-            <button onClick={() => send_info(4)} className="hha">Group 4 Test</button>
-            <button onClick={() => send_info(5)} className="hha">Group 5 Test</button>
-            <button onClick={() => send_info(6)} className="hha">Group 6 Test</button>
+
+          <div className="experiment-visuals">
+            {first ? (
+              <div className="fade-in">
+                <CompoundImg />
+              </div>
+            ) : (
+              <div className="fade-in">
+                <ExpResult num={datanum} on={on} />
+              </div>
+            )}
           </div>
-          <div className="input_ans">
-            <p>GROUP</p>
-            <input type="text" className={(wrong) ? 'wrong' : ''} onChange={handleChange} placeholder="ENTER GROUP NUMBER 0,1,2,3,..." />
-            <button onClick={() => { checkAns() }}>SUBMIT</button>
+
+          <div className="controls-grid">
+            {[0, 1, 2, 3, 4, 5, 6].map((groupNum) => (
+              <button
+                key={groupNum}
+                onClick={() => send_info(groupNum)}
+                className="neon-button test-btn"
+              >
+                Group {groupNum} Test
+              </button>
+            ))}
+          </div>
+
+          <div className="answer-section">
+            <div className="glass-input-group">
+              <span className="input-label">GROUP</span>
+              <input
+                type="text"
+                className={`glass-input ${wrong ? 'shake-error' : ''}`}
+                onChange={handleChange}
+                placeholder="0, 1, 2, 3..."
+              />
+              <button onClick={() => checkAns()} className="neon-button submit-btn">
+                SUBMIT
+              </button>
+            </div>
           </div>
         </div>
       </div>

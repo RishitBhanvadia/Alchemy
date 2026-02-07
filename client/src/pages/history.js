@@ -1,105 +1,103 @@
-import React, { useState } from "react";
-import Sidebar from "../components/sidebar";
-import { useNavigate } from "react-router-dom";
-import logo from '../assets/logo.png'
-import back from '../assets/back.jpg'
-import Nothing from '../assets/money.png'
-import './lab.css'
-import './history.css'
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import { supabase } from '../supabaseClient';
+import logo from '../assets/logo.png';
+import "./history.css";
 
 const History = () => {
-    const navigate = useNavigate();
-    const localCart = JSON.parse(localStorage.getItem('cart'));
-    console.log(localCart);
-    const [empty, setEmpty] = useState(false);
-    function performAgain(chemA, chemB, chemC, chemD) {
-        navigate("/result", {
-            replace: true,
-            state: { chemA, chemB, chemC, chemD },
-        });
-    }
-    return (
-        <div className="main_history">
-            <Sidebar />
-            <div className="history_space lab">
-                <img className="school" src={back} alt="" />
-                <div className="logo"><img src={logo} alt="" /></div>
-                <div className="exp_history">YOUR EXPERIMENT HISTORY
-                    <button onClick={() => { localStorage.removeItem('cart'); setEmpty(true) }} className="del_history"><i class="fa-solid fa-trash"></i></button></div>
-                {
-                    (empty || localCart === null) ? <div className="empty">
-                        <img src={Nothing} alt="" />
-                        <div className="empty_text">NO HISTORY FOUND</div>
-                    </div> :
-                        <div className="history_table">
-                            <div class="table">
-                                <div class="row green">
-                                    <div class="cell">
-                                        Date
-                                    </div>
-                                    <div class="cell">
-                                        Time
-                                    </div>
-                                    <div class="cell">
-                                        HCl
-                                    </div>
-                                    <div class="cell">
-                                        NaCl
-                                    </div>
-                                    <div class="cell">
-                                        CuSO4
-                                    </div>
-                                    <div class="cell">
-                                        FeSO4
-                                    </div>
-                                    <div class="cell">
-                                        Color
-                                    </div>
-                                    <div class="cell">
-                                        Main Product
-                                    </div>
-                                    <div class="cell">
-                                        Actions
-                                    </div>
-                                </div>
-                                {
-                                    localCart.reverse().map((item, index) => (
-                                        <div class="row" key={index}>
-                                            <div class="cell" data-title="Date">
-                                                {item.date}
-                                            </div>
-                                            <div class="cell" data-title="Time">
-                                                {item.time}
-                                            </div>
-                                            <div class="cell" data-title="HCl">
-                                                {item.conc_a}
-                                            </div>
-                                            <div class="cell" data-title="NaCl">
-                                                {item.conc_b}
-                                            </div>
-                                            <div class="cell" data-title="CuSO4">
-                                                {item.conc_c}
-                                            </div>
-                                            <div class="cell" data-title="FeSO4">
-                                                {item.conc_d}
-                                            </div>
-                                            <div class="cell" data-title="Color" style={{ backgroundColor: `${item.color}` }}>
-                                            </div>
-                                            <div class="cell" data-title="Main Product">
-                                                {item.main}
-                                            </div>
-                                            <div class="cell" data-title="Action">
-                                                <button class="open_button" onClick={() => { performAgain(item.conc_a, item.conc_b, item.conc_c, item.conc_d) }}>PERFORM</button>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
+    const [experiments, setExperiments] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch data from Supabase "experiment_results"
+    useEffect(() => {
+        const fetchHistory = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data, error } = await supabase
+                        .from('experiment_results')
+                        .select('*')
+                        .eq('user_id', user.id)
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+                    setExperiments(data || []);
                 }
+            } catch (error) {
+                console.error("Error fetching history:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHistory();
+    }, []);
+
+    // Function to format date
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+    };
+
+    return (
+        <div className="history-page">
+            <Navbar />
+
+            <div className="history-container">
+                <h1 className="neon-glow page-title">EXPERIMENT LOGS</h1>
+
+                <div className="glass-panel history-panel">
+                    {loading ? (
+                        <div className="loading-container">
+                            <div className="logo-spinner">
+                                <img src={logo} alt="Loading..." className="loading-logo-img" />
+                            </div>
+                            <p className="neon-text blink">LOADING ARCHIVES...</p>
+                        </div>
+                    ) : experiments.length === 0 ? (
+                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                    ) : (
+                        <div className="table-wrapper">
+                            <table className="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>Type</th>
+                                        <th>Score</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {experiments.map((exp) => (
+                                        <tr key={exp.id}>
+                                            <td>{formatDate(exp.created_at)}</td>
+                                            <td className="type-cell">{exp.experiment_type}</td>
+                                            <td>
+                                                <span className={`score-badge ${exp.score >= 90 ? 'high' : exp.score >= 70 ? 'med' : 'low'}`}>
+                                                    {exp.score}/100
+                                                </span>
+                                            </td>
+                                            <td className="details-cell">
+                                                {exp.details ? (
+                                                    Object.entries(exp.details).map(([key, value]) => (
+                                                        <span key={key} style={{ marginRight: '10px', display: 'inline-block' }}>
+                                                            <strong style={{ color: '#aaa', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
+                                                        </span>
+                                                    ))
+                                                ) : "N/A"}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default History;

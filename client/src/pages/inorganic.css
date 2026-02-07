@@ -1,15 +1,241 @@
-.comp_img2 > img{
-    height: 310px;
+.inorganic-page {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    overflow-y: auto;
 }
 
-.exp_buttons > button{
-    margin-bottom: 10px;
+.inorganic-container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
 }
 
-.input_ans{
-    padding: 20px 10px;
+.page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: 4px;
 }
 
-.in_exp_button{
-    padding-top: 0px;
+.experiment-panel {
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.experiment-stage {
+    min-height: 500px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.note-display {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background: rgba(255, 255, 0, 0.1);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 0, 0.2);
+}
+
+.controls-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 900px;
+    z-index: 10;
+}
+
+.test-btn {
+    min-width: 140px;
+    font-size: 0.9rem;
+}
+
+.answer-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.glass-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-label {
+    color: var(--primary-neon);
+    font-weight: 700;
+    margin: 0 15px;
+}
+
+.glass-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    width: 200px;
+    outline: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    padding: 5px;
+}
+
+.glass-input:focus {
+    border-color: var(--primary-neon);
+}
+
+/* --- ANIMATION & RESULT STYLES (Adapted) --- */
+
+.result_div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.65);
+    width: 600px;
+    height: 400px;
+}
+
+.info_1,
+.info_2,
+.info_3,
+.info_4 {
+    font-size: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    background-color: rgba(10, 10, 30, 0.9);
+    color: #fff;
+    position: absolute;
+    width: 220px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    text-align: center;
+    z-index: 5;
+}
+
+.info_1 {
+    animation: boom_1 500ms ease-in-out forwards 100ms;
+}
+
+@keyframes boom_1 {
+    100% {
+        transform: translate(280px, -180px) scale(1);
+    }
+}
+
+.info_2 {
+    animation: boom_2 500ms ease-in-out forwards 200ms;
+}
+
+@keyframes boom_2 {
+    100% {
+        transform: translate(320px, -20px) scale(1);
+    }
+}
+
+.info_3 {
+    animation: boom_3 500ms ease-in-out forwards 300ms;
+}
+
+@keyframes boom_3 {
+    100% {
+        transform: translate(280px, 140px) scale(1);
+    }
+}
+
+.info_4 {
+    animation: boom_4 500ms ease-in-out forwards 400ms;
+}
+
+@keyframes boom_4 {
+    100% {
+        transform: translate(-320px, -80px) scale(1);
+    }
+}
+
+
+/* Arrows */
+.arrow_1 {
+    position: absolute;
+    height: 35px;
+    transform: translate(140px, -110px);
+    opacity: 0;
+    animation: point 1s linear forwards 200ms;
+}
+
+.arrow_2 {
+    position: absolute;
+    height: 3px;
+    width: 120px;
+    transform: translate(180px, -10px);
+    opacity: 0;
+    animation: point 1s linear forwards 200ms;
+}
+
+.arrow_3 {
+    position: absolute;
+    height: 3px;
+    width: 120px;
+    transform: translate(160px, 100px) rotate(25deg);
+    opacity: 0;
+    animation: point 1s linear forwards 200ms;
+}
+
+.arrow_4 {
+    position: absolute;
+    height: 35px;
+    transform: translate(-180px, -50px) scaleX(-1);
+    opacity: 0;
+    animation: point 1s linear forwards 200ms;
+}
+
+
+@keyframes point {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.arrow_1 line,
+.arrow_2 line,
+.arrow_3 line,
+.arrow_4 line {
+    stroke: var(--primary-neon) !important;
+    stroke-width: 4 !important;
+}
+
+.load_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }

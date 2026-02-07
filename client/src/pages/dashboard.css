@@ -3,141 +3,151 @@
     min-height: 100vh;
     display: flex;
     background: transparent;
-    /* Handled by body */
     position: relative;
+    padding-top: 120px;
+    /* Added to clear the fixed Navbar */
+    box-sizing: border-box;
+    overflow-y: auto;
+    /* Ensure scrolling works if needed */
 }
 
-/* Sidebar Overrides if necessary, otherwise assuming Sidebar component styles might need checking */
-/* For now, we focus on dashboard content area */
-
+/* Sidebar Overrides */
 .dashboard-content {
     flex: 1;
-    padding: 40px;
-    margin-left: 250px;
-    /* Assuming sidebar width */
+    padding: 20px;
+    /* Reduced padding */
+    margin-left: 0;
+    /* Removed sidebar margin as sidebar is gone */
     z-index: 2;
-    /* Above particles */
     color: var(--text-white);
 }
 
-.welcome-header {
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.user-greeting h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    background: linear-gradient(to right, #fff, #b3c7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.user-greeting p {
-    color: var(--text-gray);
-    margin-top: 10px;
-    font-size: 1.1rem;
-}
-
-.stats-container {
-    display: flex;
-    gap: 20px;
-}
-
-.stat-box {
-    background: var(--glass-bg);
-    border: var(--glass-border);
-    padding: 20px 30px;
-    border-radius: 15px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: var(--text-gray);
-}
-
-.experiments-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.experiment-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 30px;
+.dashboard-container {
+    width: 95%;
+    /* Increased width usage */
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Center container */
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding-bottom: 50px;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    /* Reduced margin */
+    z-index: 2;
     position: relative;
+    /* Ensure it sticks out if needed */
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    /* Slightly smaller */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+}
+
+.subtitle {
+    color: var(--text-muted, #aaa);
+    font-size: 1rem;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.module-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    /* Reduced gap */
+    width: 100%;
+    z-index: 2;
+    padding: 0 10px;
+}
+
+.module-card {
+    position: relative;
+    padding: 25px 15px;
+    /* Significantly reduced padding */
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    /* Slightly smaller radius */
+    backdrop-filter: blur(10px);
+    width: 220px;
+    /* Reduced width */
+    flex-grow: 0;
+    /* Prevent over-growing */
+    min-height: 200px;
+    /* Ensure consistent height */
 }
 
-.experiment-card:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    border-color: var(--primary-blue);
+.module-card:hover {
+    transform: translateY(-5px);
+    /* Reduced movement */
+    background: rgba(30, 30, 50, 0.6);
+    border-color: var(--primary-neon, #00f3ff);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
 }
 
-.card-icon {
-    font-size: 3rem;
-    color: var(--primary-blue);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
+.icon-container {
+    font-size: 2.5rem;
+    /* Reduced icon size */
+    margin-bottom: 15px;
+    /* Reduced margin */
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
 }
 
-.experiment-card:hover .card-icon {
-    transform: scale(1.1) rotate(5deg);
-    color: var(--secondary-purple);
+.module-card:hover .icon-container {
+    color: var(--primary-neon, #00f3ff);
+    text-shadow: 0 0 10px var(--primary-neon, #00f3ff);
 }
 
-.card-title {
+.module-card h3 {
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
     font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
+    /* Reduced font size */
+    margin: 5px 0;
+    letter-spacing: 1px;
 }
 
-.card-status {
-    font-size: 0.8rem;
-    padding: 5px 15px;
-    border-radius: 50px;
-    background: rgba(59, 130, 246, 0.1);
-    color: var(--primary-blue);
-    border: 1px solid rgba(59, 130, 246, 0.2);
+.module-card p {
+    color: var(--text-muted, #aaa);
+    font-size: 0.9rem;
+    /* Reduced font size */
+    max-width: 90%;
+    line-height: 1.4;
 }
 
-/* Override Sidebar styles globally if needed */
-.sidebar {
-    background: rgba(15, 12, 41, 0.95) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+.card-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
 }
 
-.sidebar i,
-.sidebar span {
-    color: var(--text-gray) !important;
-}
-
-.sidebar li:hover {
-    background: var(--primary-blue) !important;
-    color: white !important;
-}
-
-.sidebar li:hover i,
-.sidebar li:hover span {
-    color: white !important;
+.module-card:hover .card-glow {
+    width: 300px;
+    height: 300px;
 }

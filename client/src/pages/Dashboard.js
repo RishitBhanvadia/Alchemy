@@ -1,67 +1,67 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/sidebar';
-import './dashboard.css';
-import back from '../assets/back.jpg';
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ParticleBackground from '../components/3d-animations/ParticleBackground';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./dashboard.css";
+// import ParticlesBg from "../components/ParticlesBg"; // Global theme handles bg now
 
 const Dashboard = () => {
-    const navigate = useNavigate();
-
-    const experiments = [
-        { title: "Acid-Base Titration", icon: "fa-flask", status: "Completed", path: "/titration" },
-        { title: "Organic Synthesis", icon: "fa-atom", status: "In Progress", path: "/organic" },
-        { title: "Inorganic Analysis", icon: "fa-vial", status: "Not Started", path: "/inorganic" },
-        { title: "General Lab", icon: "fa-flask-vial", status: "Available", path: "/lab" },
-    ];
-
     return (
-        <div className="dashboard-page">
-            <Sidebar />
-
-            {/* Background text image effect like in lab.js */}
-            <img className="school" src={back} alt="" style={{ opacity: 0.05 }} />
-
-            {/* 3D Particle Background Wrapper */}
-            <CanvasContainer style={{ zIndex: 1 }}>
-                <ParticleBackground />
-            </CanvasContainer>
-
-            <div className="dashboard-content">
-                <div className="welcome-header">
-                    <div className="user-greeting">
-                        <h1>WELCOME BACK, SCIENTIST</h1>
-                        <p>Your laboratory assumes you are ready to experiment.</p>
-                    </div>
-                    <div className="stats-container">
-                        <div className="stat-box">
-                            <div className="stat-number">4</div>
-                            <div className="stat-label">Modules</div>
-                        </div>
-                        <div className="stat-box">
-                            <div className="stat-number">12</div>
-                            <div className="stat-label">Hours</div>
-                        </div>
-                    </div>
+        <div className="dashboard-page scene_element scene_element--fadein">
+            <div className="dashboard-container">
+                <div className="dashboard-header">
+                    <h1 className="neon-glow">WELCOME, ADMIN</h1>
+                    <p className="subtitle">Select a module to begin experimentation</p>
                 </div>
 
-                <h2 style={{ fontFamily: 'Montserrat', marginBottom: '20px', color: 'var(--text-white)' }}>Available Experiments</h2>
-
-                <div className="experiments-grid">
-                    {experiments.map((exp, index) => (
-                        <div
-                            key={index}
-                            className="experiment-card"
-                            onClick={() => navigate(exp.path)}
-                        >
-                            <div className="card-icon">
-                                <i className={`fa-solid ${exp.icon}`}></i>
-                            </div>
-                            <div className="card-title">{exp.title}</div>
-                            <div className="card-status">{exp.status}</div>
+                <div className="module-grid">
+                    {/* Experiment Module */}
+                    <Link to="/lab" className="module-card glass-panel">
+                        <div className="icon-container">
+                            <i className="fa-solid fa-flask"></i>
                         </div>
-                    ))}
+                        <h3>LABORATORY</h3>
+                        <p>Conduct virtual chemical reactions.</p>
+                        <div className="card-glow"></div>
+                    </Link>
+
+                    {/* Titration Module */}
+                    <Link to="/titration" className="module-card glass-panel">
+                        <div className="icon-container">
+                            <i className="fa-solid fa-flask-vial"></i>
+                        </div>
+                        <h3>TITRATION</h3>
+                        <p>Precise volumetric analysis.</p>
+                        <div className="card-glow"></div>
+                    </Link>
+
+                    {/* Organic Module */}
+                    <Link to="/organic" className="module-card glass-panel">
+                        <div className="icon-container">
+                            <i className="fa-solid fa-dna"></i>
+                        </div>
+                        <h3>ORGANIC</h3>
+                        <p>Explore carbon-based chemistry.</p>
+                        <div className="card-glow"></div>
+                    </Link>
+
+                    {/* Inorganic Module */}
+                    <Link to="/inorganic" className="module-card glass-panel">
+                        <div className="icon-container">
+                            <i className="fa-solid fa-atom"></i>
+                        </div>
+                        <h3>INORGANIC</h3>
+                        <p>Study elements and compounds.</p>
+                        <div className="card-glow"></div>
+                    </Link>
+
+                    {/* History/Logs */}
+                    <Link to="/history" className="module-card glass-panel">
+                        <div className="icon-container">
+                            <i className="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3>HISTORY</h3>
+                        <p>Review past experiment logs.</p>
+                        <div className="card-glow"></div>
+                    </Link>
                 </div>
             </div>
         </div>

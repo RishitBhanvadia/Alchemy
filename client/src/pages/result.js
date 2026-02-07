@@ -1,7 +1,6 @@
 import React, { useState, useEffect, } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ResultCustomTestTube from '../components/result_testtube'
-import Sidebar from '../components/sidebar'
 import labgif from '../assets/labgif.gif'
 import cloud from '../assets/cloud.png'
 import boom from '../assets/boom.gif'
@@ -28,9 +27,8 @@ const Result = () => {
 
   // Data fetching hook
   useEffect(() => {
-    if (!location.state) return; // Guard clause inside the hook
+    if (!location.state) return;
 
-    // Direct fetch to Render backend (Bypassing Vercel Proxy)
     fetch("https://alchemy-85hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
       .then(response => {
         if (!response.ok) {
@@ -40,7 +38,6 @@ const Result = () => {
       })
       .then(data => {
         if (!data || data.length === 0) {
-          // Handle empty data case if necessary
           console.warn("No data received from backend");
         }
         setData(data);
@@ -58,7 +55,7 @@ const Result = () => {
           "conc_b": location.state.chemB,
           "conc_c": location.state.chemC,
           "conc_d": location.state.chemD,
-          "color": (data && data[0]) ? data[0].color : "#ffffff", // Default color if data missing
+          "color": (data && data[0]) ? data[0].color : "#ffffff",
           "main": (data && data[0]) ? data[0].product_name : "Unknown"
         };
         if (cart === null) {
@@ -70,7 +67,6 @@ const Result = () => {
       })
       .catch(error => {
         console.error("Fetch error:", error);
-        // Set dummy data or error state to stop loading spinner
         setData([{
           color: "#ff0000",
           result: `Error: ${error.message}`,
@@ -84,7 +80,7 @@ const Result = () => {
           product_uses: []
         }]);
       });
-  }, [location.state]); // Added location.state as dependency
+  }, [location.state]);
 
   // Cart persistence hook
   useEffect(() => {
@@ -97,99 +93,120 @@ const Result = () => {
   }
 
   const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
-  return (
-    <div>
 
+  return (
+    <div className="result-page">
       {
-        (typeof data === "undefined") ?
+        (typeof data === "undefined" || !data) ?
           (
-            <div className="loading">
-              <img src={labgif} alt="" />
+            <div className="loading-container glass-panel">
+              <div className="logo-spinner">
+                <img src={logo} alt="Loading..." className="loading-logo-img" />
+              </div>
+              <p className="neon-text blink">ANALYZING REACTION...</p>
             </div>
           ) :
-          <div className='result_lab'>
-            <Sidebar />
-            <img className="school" src={back} alt="" />
+          <div className='result-container'>
+            {/* Background Elements */}
             <div className="bubbles"><Bubble /></div>
+
             {
               data.map((item, index) => (
-                <div className="result_section">
-                  <div className="boom">
-                    <img src={boom} alt="" />
+                <div className="result-content-wrapper" key={index}>
+
+                  <div className="result-header glass-panel">
+                    <div className="boom-container">
+                      <img src={boom} alt="Reaction" />
+                    </div>
+                    <h2 className="neon-glow">REACTION COMPLETE</h2>
+                    <div className="note-badge">NOTE: Standard Temperature & Pressure</div>
                   </div>
-                  <div className="note">NOTE: All the results are revelent for normal temperature.</div>
-                  <div className='result' key={index}>
-                    <div className="concentration_info">
-                      <div className="result_logo"><img src={logo} alt="" /></div>
-                      <div className="chemical_input">
-                        <div className="box_color box_hcl"></div>
-                        <div className="box_name">Conc. HCl</div>
-                        <div className="box_progress">
-                          <progress id="file" value={location.state.chemA} max="100"> 32% </progress>
-                          <span>{location.state.chemA}%</span>
+
+                  <div className="result-grid">
+                    {/* Left: Input Analysis */}
+                    <div className="glass-panel input-analysis">
+                      <h3 className="section-title">INPUT ANALYSIS</h3>
+                      <div className="chemical-list">
+                        <div className="chem-row">
+                          <div className="color-dot box_hcl"></div>
+                          <span className="chem-label">Conc. HCl</span>
+                          <div className="progress-bar-wrapper">
+                            <div className="progress-fill" style={{ width: `${location.state.chemA}%`, background: '#05B9C4' }}></div>
+                          </div>
+                          <span className="chem-percent">{location.state.chemA}%</span>
                         </div>
-                      </div>
-                      <div className="chemical_input">
-                        <div className="box_color box_nacl"></div>
-                        <div className="box_name">NaCl</div>
-                        <div className="box_progress">
-                          <progress id="file" value={location.state.chemB} max="100"> 32% </progress>
-                          <span>{location.state.chemB}%</span>
+                        <div className="chem-row">
+                          <div className="color-dot box_nacl"></div>
+                          <span className="chem-label">NaCl</span>
+                          <div className="progress-bar-wrapper">
+                            <div className="progress-fill" style={{ width: `${location.state.chemB}%`, background: '#04CE7E' }}></div>
+                          </div>
+                          <span className="chem-percent">{location.state.chemB}%</span>
                         </div>
-                      </div>
-                      <div className="chemical_input">
-                        <div className="box_color box_cuso4"></div>
-                        <div className="box_name">CuSO4</div>
-                        <div className="box_progress">
-                          <progress id="file" value={location.state.chemC} max="100"> 32% </progress>
-                          <span>{location.state.chemC}%</span>
+                        <div className="chem-row">
+                          <div className="color-dot box_cuso4"></div>
+                          <span className="chem-label">CuSO4</span>
+                          <div className="progress-bar-wrapper">
+                            <div className="progress-fill" style={{ width: `${location.state.chemC}%`, background: '#FBC2E3' }}></div>
+                          </div>
+                          <span className="chem-percent">{location.state.chemC}%</span>
                         </div>
-                      </div>
-                      <div className="chemical_input">
-                        <div className="box_color box_feso4"></div>
-                        <div className="box_name">FeSO4</div>
-                        <div className="box_progress">
-                          <progress id="file" value={location.state.chemD} max="100"> 32% </progress>
-                          <span>{location.state.chemD}%</span>
+                        <div className="chem-row">
+                          <div className="color-dot box_feso4"></div>
+                          <span className="chem-label">FeSO4</span>
+                          <div className="progress-bar-wrapper">
+                            <div className="progress-fill" style={{ width: `${location.state.chemD}%`, background: '#DAA520' }}></div>
+                          </div>
+                          <span className="chem-percent">{location.state.chemD}%</span>
                         </div>
                       </div>
                     </div>
-                    <div className="testube_info">
-                      <div className="result_smell">
-                        <img src={cloud} alt="" />
-                        <div className="result_smell_text" id={(location.state.chemA > 0) ? "" : "bio"}>{(location.state.chemA > 0) ? "Pungent Smell Due to HCl" : "No Specific Smell"}</div>
-                      </div>
-                      <div className="result_equation">{item.result}</div>
-                      <div className="resultant_testtube">
+
+                    {/* Center: Test Tube Result */}
+                    <div className="glass-panel visual-result">
+                      <h3 className="section-title">OBSERVATION</h3>
+                      <div className="result-equation neon-text">{item.result}</div>
+
+                      <div className="result-testtube-container">
                         <ResultCustomTestTube color={item.color} solid_color={item.solid_color} gas_color={item.gas_color} gas={item.gas} solid={item.solid} str={chemh} />
                       </div>
-                      <div className="next_experiment">
-                        <button className='next' onClick={() => { navigate("/lab") }}>NEXT EXPERIMENT</button>
+
+                      <div className="smell-indicator">
+                        <img src={cloud} alt="" />
+                        <span className={(location.state.chemA > 0) ? "smell-warn" : "smell-safe"}>
+                          {(location.state.chemA > 0) ? "PUNGENT ODOR DETECTED (HCl)" : "NO DISTINCT ODOR"}
+                        </span>
                       </div>
                     </div>
-                    {
-                      (item.product_name === "") ? <div>No Products Formed</div> : <div className="product_info">
-                        <div className="product_text">Product Info.</div>
-                        <div className="p_heading">{item.product_name}</div>
-                        <div className="information">{item.product_info}</div>
-                        <div className="properties_text"><i class="fa-solid fa-dna" style={{ color: "#0d0d0d" }}></i> Properties</div>
-                        <div className="product_properties">
-                          {
-                            item.product_properties.map((type, index) => {
-                              return <p key={index} className='list'>- {type}</p>
-                            })
-                          }
-                        </div>
-                        <div className="uses_text"><i class="fa-solid fa-mortar-pestle" style={{ color: "#0d0d0d" }}></i> Uses</div>
-                        <div className="product_uses">
-                          {
-                            item.product_uses.map((type, index) => {
-                              return <p key={index} className='list'>- {type}</p>
-                            })
-                          }
-                        </div>
-                      </div>
-                    }
+
+                    {/* Right: Product Info */}
+                    <div className="glass-panel product-details">
+                      <h3 className="section-title">PRODUCT DATA</h3>
+                      {
+                        (item.product_name === "") ? <div className="no-product">No Reaction / No Products</div> :
+                          <>
+                            <h1 className="product-name neon-glow">{item.product_name}</h1>
+                            <p className="product-desc">{item.product_info}</p>
+
+                            <div className="info-group">
+                              <h4><i className="fa-solid fa-dna"></i> PROPERTIES</h4>
+                              <ul>
+                                {item.product_properties.map((p, i) => <li key={i}>{p}</li>)}
+                              </ul>
+                            </div>
+
+                            <div className="info-group">
+                              <h4><i className="fa-solid fa-mortar-pestle"></i> APPLICATIONS</h4>
+                              <ul>
+                                {item.product_uses.map((u, i) => <li key={i}>{u}</li>)}
+                              </ul>
+                            </div>
+                          </>
+                      }
+                      <button className='next-button action-button' onClick={() => { navigate("/lab") }}>
+                        NEW EXPERIMENT
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))

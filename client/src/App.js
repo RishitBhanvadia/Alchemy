@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Lab from "./pages/lab";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -9,11 +9,20 @@ import Titration from "./pages/titration";
 import Inorganic from "./pages/inorganic";
 import History from "./pages/history";
 import Success from "./pages/success";
+import Navbar from "./components/Navbar";
+import CursorFollower from "./components/CursorFollower";
 import "./app.css";
 
 function App() {
+  const location = useLocation();
+  // Don't show Navbar on Landing or Login page
+  const showNavbar = location.pathname !== '/' && location.pathname !== '/login';
+
   return (
     <div className="App">
+      <CursorFollower />
+      {showNavbar && <Navbar />}
+
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />

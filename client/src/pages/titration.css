@@ -1,318 +1,199 @@
-.left_choose, .right_choose{
-    height: 60px;
-    z-index: 3;
-    cursor: pointer;
-    position: relative;
-}
+/* Titration Page Styles - Deep Blue Theme */
 
-.swipe_left, .swipe_right{
-    border: none;
-    background: transparent;
-    height: 77px;
-}
-
-.choose_acid{
+.titration-page {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 80px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-.t_confirm:hover{
-    background-color: yellowgreen;
-}
-
-
-
-.a_border{
-    border-color: black !important;
-}
-
-.choose_acid_base{
+.titration-container {
     display: flex;
+    width: 95%;
+    max-width: 1400px;
+    height: 85vh;
+    gap: 30px;
 }
 
-.experiment_space{
+/* Left Control Panel */
+.titration-controls {
+    flex: 1;
+    max-width: 400px;
     display: flex;
+    flex-direction: column;
+    padding: 30px;
+    justify-content: space-between;
 }
 
-.live_titration{
-    display: flex;
-}
-
-.t-video-game-button{
-    width: 60px;
-    height: 60px;
-    font-size: 73px;
-}
-
-.t-video-game-button > i{
-    font-size: 20px;
-}
-
-.t-disabled_button{
-    width: 60px;
-    height: 60px;
-    font-size: 73px;
-}
-
-.t-disabled_button > i{
-    font-size: 20px !important;
-}
-
-.acid_stack > p, .choose_base > p{
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.selection{
-    padding-left: 45px;
-}
-
-.chem_logo{
-    height: 16px;
-    width: 16px;
-}
-
-.chem_logo > img{
-    height: 45px;
-}
-
-.t_confirm, .add_acid_button, .add_indicator_button{
-    letter-spacing: 2px;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #000;
-    cursor: pointer;
-    border: 3px solid;
-    padding: 0.25em 0.5em;
-    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
-    border-radius: 14px;
-    font-weight: 600;
-    background-color: rgb(253, 154, 171);
-    border: none;
-    padding: 4px 14px;
-    font-size: 24px;
-    margin-bottom: 30px;
-    z-index: 5;
-    position: relative;
-    cursor: pointer;
-}
-
-.start_button{
-    opacity: 0;
-    cursor: pointer;
-    height: 60px;
-    border-radius: 50%;
-    position: absolute;
-    z-index: 10;
-    transform: translate(93px, 141px);
-}
-
-.stop_button{
-    opacity: 0;
-    cursor: pointer;
-    height: 62px;
-    border-radius: 50%;
-    position: absolute;
-    z-index: 10;
-    transform: translate(97px, 208px);
-}
-
-.shake_button{
-    opacity: 0;
-    cursor: pointer;
-    height: 60px;
-    border-radius: 50%;
-    position: absolute;
-    z-index: 10;
-    transform: translate(93px, 302px);
-}
-
-.confirm_acid_base{
-    padding-top: 90px;
-    padding-left: 50px;
-}
-
-.choose_base{
-    padding-left: 35px;
-}
-
-.scale{
+.panel-title {
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
     text-align: center;
+    letter-spacing: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.scale > img{
-    height: 45px;
+.control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.execution{
-    width: 60%;
+.chem-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
 }
 
-.live_titration{
-    padding-left: 210px;
+.selection-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.chem_name > p{
-    transition: 1s linear;
-}
-
-svg{
-    position: relative;
-    z-index: 1;
-}
-
-.base_box{
-    opacity: 0.7;
-    transform: translate(928px, 118px);
-    position: absolute;
-    background-color: #3accff;
-    height: 210px;
-    bottom: 440px;
-    width: 21px;
-    z-index: 0;
-}
-
-.drop_box{
-    transform: translate(1034px, 492px);
-    position: absolute;
-    height: 129px;
-    width: 4px;
-    background-color: #3accff;
-}
-
-.dabba{
-    animation: shake 500ms linear forwards;
-}
-
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateX(-10px);
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateX(10px);
-    }
-}
-
-#disabled_confirm{
-    background-color: rgb(51, 50, 50);
-    color: snow;
-}
-
-#disabled_left{
-    fill: rgb(39, 39, 39);
-}
-
-#disabled_right{
-    fill: rgb(39, 39, 39);
-}
-
-.ab{
-    left: 16% !important;
-}
-
-.add_acid_button, .add_indicator_button{
-    width: 100%;
-    margin-top: 30px;
-    padding: 9px 0px;
-}
-
-#disabled_acid{
-    background-color: rgb(52, 52, 52);
-    color: snow;
-}
-
-#disabled_indicator{
-    background-color: rgb(52, 52, 52);
-    color: snow;
-}
-
-
-.drop_i{
-    font-size: 18px;
-    bottom: 45px;
-    position: relative;
-    right: 3px;
-}
-
-.stop_i{
-    right: 3px;
-    bottom: 44px;
-    font-size: 18px;
-    position: relative;
-}
-
-.shake_i{
-    right: 3px;
-    bottom: 44px;
-    font-size: 14px !important;
-    position: relative;
-}
-
-.t_chem_logo{
-    background: radial-gradient(circle, rgb(245 243 243) -7%, rgb(72 71 71) 60%);
-}
-
-.tube_chem{
-    fill: #3accff;
-}
-
-.add_acid_button:hover{
-    background-color: yellowgreen;
-}
-
-.add_indicator_button:hover{
-    background-color: yellowgreen;
-}
-
-/* CSS */
-.rrepeat{
-    border-radius: 10px;
-    font-family: "Open Sans", sans-serif;
-    font-size: 16px;
-    letter-spacing: 2px;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #000;
-    cursor: pointer;
-    border: 3px solid;
-    padding: 0.25em 0.5em;
-    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
-    position: relative;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  .rrepeat:active {
-    box-shadow: 0px 0px 0px 0px;
-    top: 5px;
-    left: 5px;
-  }
-  
-  @media (min-width: 768px) {
-    .rrepeat {
-      padding: 0.25em 0.75em;
-    }
-  }
-
-
-  .rrepeat{
-    border: none;
-    font-size: 25px;
+.selection-label {
+    color: var(--secondary-neon);
     font-weight: 600;
-    padding: 7px 12px;
-    color: #0f1010;
-    background-color: #EB576F;
-  }
+}
 
-  .repeat_titration{
-    margin-top: 38px;
-    text-align: center;
-  }
+.chem-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  .rrepeat:hover{
-    background-color: #F8748C;
-  }
+.arrow-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
 
+.arrow-btn:hover {
+    color: var(--primary-neon);
+}
+
+.chem-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 80px;
+    justify-content: center;
+}
+
+.chem-display img {
+    height: 30px;
+}
+
+.chem-display span {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Action Buttons */
+.sci-fi-btn {
+    background: linear-gradient(90deg, transparent, rgba(5, 155, 242, 0.2), transparent);
+    border: 1px solid var(--primary-neon);
+    color: var(--primary-neon);
+    padding: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sci-fi-btn:hover:not(:disabled) {
+    background: var(--primary-neon);
+    color: #000;
+    box-shadow: 0 0 15px var(--primary-neon);
+}
+
+.sci-fi-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #555;
+    color: #777;
+}
+
+/* Right Experiment Area */
+.titration-experiment-area {
+    flex: 2;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* SVG Container positioning */
+.setup-container {
+    transform: scale(0.9);
+}
+
+/* Operating Buttons (Drop, Stop, Shake) */
+.operating-buttons {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.op-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.op-btn:hover:not(:disabled) {
+    border-color: var(--secondary-neon);
+    color: var(--secondary-neon);
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.op-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.note-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 3px solid #ff4d4d;
+    font-size: 0.9rem;
+    color: #ddd;
+}

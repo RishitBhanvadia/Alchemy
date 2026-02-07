@@ -1,327 +1,263 @@
-* {
-    font-family: 'Ubuntu', 'sans-serif';
+/* Laboratory Redesign */
+.lab-page {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 80px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.lab {
+/* 3D Background Layer */
+.lab-3d-background {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    background: linear-gradient(90deg, rgba(250, 204, 207, 1) 0%, rgba(243, 237, 215, 1) 23%, rgba(209, 233, 243, 1) 100%);
-    ;
-}
-
-.school {
-    opacity: 0.03;
-    height: 700px;
-    position: absolute;
-    z-index: 0;
-}
-
-.note {
-    position: relative;
+    height: 100%;
     z-index: 1;
-    background-color: #f97d8a;
-    padding: 6px 28px;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
 }
 
-.note_text {
-    font-size: 20px;
-}
-
-.logo {
-    text-align: center;
-}
-
-.logo>img {
-    height: 82px;
-}
-
-.space {
+/* Chemical Rack (Left Panel) */
+.chemical-rack {
+    width: 350px;
+    height: 80%;
+    margin-left: 50px;
+    z-index: 10;
+    padding: 30px;
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
-.chem_item {
+.panel-title {
+    font-family: 'Outfit', sans-serif;
+    color: var(--primary-neon);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.chem-control-group {
     display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
 }
 
-.chem_logo {
-    background: radial-gradient(circle, rgb(245 243 243) -7%, rgb(1 1 1) 60%);
-    padding: 23px;
+.chem-icon-wrapper {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    position: relative;
-}
-
-.a_border {
-    border: 3px solid rgb(113, 246, 69);
-}
-
-.b_border {
-    border: 3px solid rgb(241, 237, 16);
-}
-
-.c_border {
-    border: 3px solid rgb(62, 222, 251);
-}
-
-.d_border {
-    border: 3px solid rgb(78, 42, 4);
-}
-
-.chem_logo>img {
-    top: 11%;
-    left: 32%;
-    position: absolute;
-    height: 50px;
-}
-
-.rack {
-    margin-left: 18px;
-    width: 380px;
-}
-
-.chem_name {
-    text-align: center;
-    font-weight: 600;
-    margin-top: -12px;
-}
-
-.rack_text {
-    font-weight: 600;
-    font-size: 22px;
-}
-
-.inputs {
-    margin-left: 20px;
+    border: 2px solid;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.3);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
 }
 
-.inputs>p {
-    font-size: 22px;
-    font-weight: 600;
+.chem-icon-wrapper:hover {
+    transform: scale(1.1);
 }
 
-.test_tube {
-    z-index: 1;
-    margin-top: 51px;
-    margin-left: 90px;
+.chem-icon {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
 }
 
-.video-game-button,
-.t-video-game-button {
-    transform: translate(83px, 116px);
-
-    text-shadow: 1px 1px pink, -1px -1px maroon;
-
-    line-height: 1.5em;
-    text-align: center;
-    display: inline-block;
-    width: 140px;
-    height: 140px;
-    font-size: 135px;
-    -webkit-border-radius: .75em;
-    -moz-border-radius: .75em;
-    -o-border-radius: .75em;
-    border-radius: .75em;
-    background-color: red;
-    -webkit-box-shadow: 0 .2em maroon;
-    -moz-box-shadow: 0 .2em maroon;
-    -o-box-shadow: 0 .2em maroon;
-    box-shadow: 0 .2em maroon;
-    color: rgb(252, 251, 251);
-    margin: 5px;
-    background-color: red;
-    background-image: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
-    cursor: pointer;
-    padding-left: 5px;
+.range-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.disabled_button>i {
-    transform: translateY(-48px);
-    font-size: 90px;
+.range-wrapper label {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 5px;
 }
 
-.video-game-button>i {
-    transform: translateY(-48px);
-    font-size: 90px;
+.chem-value {
+    color: var(--primary-neon);
+    font-weight: 700;
+    text-align: right;
+    margin-top: 2px;
 }
 
-.disabled_button,
-.t-disabled_button {
-    transform: translate(83px, 116px);
-
-    text-shadow: 1px 1px pink, -1px -1px rgb(19, 19, 19);
-
-    line-height: 1.5em;
-    text-align: center;
-    display: inline-block;
-    width: 140px;
-    height: 140px;
-    font-size: 135px;
-    -webkit-border-radius: .75em;
-    -moz-border-radius: .75em;
-    -o-border-radius: .75em;
-    border-radius: .75em;
-    background-color: rgb(59, 58, 58);
-    -webkit-box-shadow: 0 .2em maroon;
-    -moz-box-shadow: 0 .2em maroon;
-    -o-box-shadow: 0 .2em maroon;
-    box-shadow: 0 .2em rgb(14, 14, 14);
-    color: rgb(252, 251, 251);
-    margin: 5px;
-    background-color: rgb(62, 62, 62);
-    background-image: linear-gradient(to bottom right, pink 3%, red 22%, maroon 99%);
-    cursor: pointer;
-    padding-left: 5px;
+/* Sci-fi Range Input */
+.sci-fi-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    cursor: none;
 }
 
-.video-game-button:active {
-    box-shadow: none;
-    position: relative;
-    top: 0.2em;
-}
-
-.t-video-game-button:active {
-    box-shadow: none;
-    position: relative;
-    top: 0.2em;
-}
-
-.cclick {
-    box-shadow: none;
-    position: relative;
-    top: 0.2em;
-}
-
-.disabled_text {
-    color: #555;
-    font-weight: 600;
-    font-size: 50px;
-}
-
-.enabled_text {
-    color: #1ef806;
-    font-weight: 600;
-    font-size: 50px;
-}
-
-.play {
-    position: absolute;
-    z-index: 2;
-    cursor: pointer;
-    width: 210px;
-    height: 201px;
+.sci-fi-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #fff;
     border-radius: 50%;
-    top: 34%;
-    left: 73.4%;
-    opacity: 0;
+    box-shadow: 0 0 10px var(--primary-neon);
+    cursor: none;
+    margin-top: -6px;
 }
 
-.golmaal {
-    border-radius: 2px;
-    transform: translate(1.2px, 30.24px);
+/* Center Stage */
+.center-stage {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-top: 100px;
+}
+
+.test_tube-wrapper {
+    position: relative;
+    /* This needs to be the reference for absolute positioning */
+    width: 500px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fix for Reaction Indicators - Positioning inside the tube */
+/* Based on SVG viewBox 0 0 500 500 
+   Liquid path is roughly X: 219 to 281 (~62px wide) 
+   Y: 384 (bottom) up to ~29 (top)
+*/
+.reaction-indicators {
     position: absolute;
-    width: 200px;
-    height: 5px;
-    background-color: rgb(144 142 142 / 60%);
-}
-
-.golmaal_again {
-    border-radius: 2px;
-    z-index: 5;
-    transform: translateY(30px);
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    margin-right: 15px;
-    transform: translateY(20px);
-    width: 200px;
-    height: 5px;
-    background: rgb(144 142 142 / 60%);
-    border-radius: 5px;
-    background-image: linear-gradient(#0c0c0c, #0b0b0b);
-    background-size: 0% 100%;
-    background-repeat: no-repeat;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background: #141414;
-    cursor: ew-resize;
-    box-shadow: 0 0 2px 0 #555;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    box-shadow: none;
-    border: none;
+    bottom: 91px;
+    /* Exact alignment: 500px - 409px (SVG bottom Y) = 91px */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 62px;
+    /* Exact width: 281px - 219px = 62px */
+    /* Height is dynamic based on chemicals */
+    display: flex;
+    flex-direction: column-reverse;
     background: transparent;
+    border-radius: 0 0 31px 31px;
+    /* Half of width (62px) for perfect semicircle */
+    overflow: hidden;
+    z-index: 5;
+    /* Behind glass reflection */
+    opacity: 0.9;
 }
 
-.all>div {
-    height: 0px;
-    width: 63px;
+/* Ensure CustomTestTube SVG is on top of liquid columns but allows them to be seen?
+   Actually, SVG fills are transparent/glassy.
+   So put indicators BEHIND svg.
+*/
+.test_tube {
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+    /* Let clicks pass if needed */
 }
 
-.h {
-    z-index: 2;
-    bottom: 642px;
-    width: 60px;
-    position: absolute;
-    transform: translate(708px, 486px);
-
-    background-color: #05B9C4;
+.indicator {
+    width: 100%;
+    transition: height 0.3s ease;
 }
 
-.n {
-    z-index: 2;
-    bottom: 642px;
-    width: 60px;
-    position: absolute;
-    transform: translate(708px, 486px);
-
-    background-color: #04CE7E;
+/* Action Button */
+.action-button {
+    background: transparent;
+    border: 2px solid #333;
+    color: #333;
+    padding: 15px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    cursor: not-allowed;
 }
 
-.c {
-    z-index: 2;
-    bottom: 642px;
-    width: 60px;
-    position: absolute;
-    transform: translate(708px, 486px);
-
-    background-color: #FBC2E3;
+.action-button.active {
+    border-color: var(--primary-neon);
+    color: var(--primary-neon);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    background: rgba(0, 243, 255, 0.1);
+    cursor: pointer;
 }
 
-.f {
-    z-index: 2;
-    bottom: 642px;
-    width: 60px;
-    position: absolute;
-    transform: translate(708px, 486px);
-
-    background-color: goldenrod;
+.action-button.active:hover {
+    background: var(--primary-neon);
+    color: #000;
+    box-shadow: 0 0 40px var(--primary-neon);
 }
 
-.parda {
-    transform: translate(145px, -90px);
+/* Right Status Panel */
+.status-panel {
+    width: 300px;
+    height: 60%;
+    margin-right: 50px;
+    z-index: 10;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.parda_text {
-    font-family: 'Fredericka the Great', cursive;
-    color: aliceblue;
-    z-index: 2;
-    font-weight: 800;
+.status-title {
+    color: var(--secondary-neon);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
 }
 
-.parda_text>p {
-    margin: 0px;
-    font-family: 'Fredericka the Great', cursive;
-    font-size: 40px;
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+}
+
+.status-item .label {
+    color: #aaa;
+}
+
+.status-item .value {
+    color: #fff;
+    font-weight: 600;
+}
+
+.neon-text {
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.note-box {
+    margin-top: auto;
+    background: rgba(255, 0, 0, 0.1);
+    border-left: 3px solid red;
+    padding: 15px;
+    font-size: 0.9rem;
+}
+
+.note-warn {
+    color: red;
+    font-weight: 700;
+    margin-right: 5px;
 }

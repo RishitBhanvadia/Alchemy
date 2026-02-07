@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import HolographicLogin from '../components/3d-animations/HolographicLogin';
 import './login.css';
 import logo from '../assets/logo.png';
@@ -9,11 +10,20 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Simulate login for now
-        console.log("Logging in with", email, password);
-        navigate('/dashboard');
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) throw error;
+            console.log("Logged in:", data);
+            navigate('/dashboard');
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
     };
 
     return (
