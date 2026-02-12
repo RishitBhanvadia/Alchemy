@@ -15,7 +15,7 @@ const Lab = () => {
 
   const [animate, setAnimate] = useState(false);
   const [arr, setArr] = useState([]);
-  const [tcolor, SetTColor] = useState('');
+  const [tcolor, setTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
@@ -24,22 +24,22 @@ const Lab = () => {
 
   function change_tip() {
     if (chemA > 0) {
-      SetTColor('#05B9C4');
+      setTColor('#05B9C4');
     }
     else {
       if (chemB > 0) {
-        SetTColor('#04CE7E');
+        setTColor('#04CE7E');
       }
       else {
         if (chemC > 0) {
-          SetTColor('#FBC2E3');
+          setTColor('#FBC2E3');
         }
         else {
           if (chemD > 0) {
-            SetTColor('#DAA520');
+            setTColor('#DAA520');
           }
           else {
-            SetTColor("");
+            setTColor("");
           }
         }
       }
@@ -126,7 +126,7 @@ const Lab = () => {
   };
 
   const useHandlePlayClick = () => {
-    SetTColor("");
+    setTColor("");
     // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
@@ -138,7 +138,7 @@ const Lab = () => {
   };
 
   function onOrNot() {
-    var sum = 0;
+    let sum = 0;
     if (chemA > 0) sum += 1;
     if (chemB > 0) sum += 1;
     if (chemC > 0) sum += 1;
