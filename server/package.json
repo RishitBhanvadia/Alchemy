@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Yaksh",
   "license": "ISC",
@@ -18,5 +18,8 @@
     "express-rate-limit": "^8.2.1",
     "mongoose": "^7.3.1",
     "twilio": "^4.13.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
