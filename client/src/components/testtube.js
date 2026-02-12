@@ -32,7 +32,3 @@ const CustomTestTube = ({ color, hasLiquid }) => {
 }
 
 export default CustomTestTube;
-
-//path("M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V 387 H 218.985 Z")
-
-
