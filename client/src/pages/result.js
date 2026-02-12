@@ -58,12 +58,15 @@ const Result = () => {
           "color": (data && data[0]) ? data[0].color : "#ffffff",
           "main": (data && data[0]) ? data[0].product_name : "Unknown"
         };
-        if (cart === null) {
-          setCart([rdx]);
-        }
-        else {
-          setCart([...cart, rdx]);
-        }
+
+        // Fix for race condition: Read the latest cart from localStorage before updating.
+        // This ensures updates from other tabs or rapid changes are not lost.
+        // Also update localStorage immediately to minimize the race window.
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const newCart = [...currentCart, rdx];
+
+        localStorage.setItem('cart', JSON.stringify(newCart));
+        setCart(newCart);
       })
       .catch(error => {
         console.error("Fetch error:", error);

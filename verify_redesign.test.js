@@ -33,15 +33,19 @@ test('Redesign Verification Tour', async ({ page }) => {
     // Force change values of range inputs
     await page.evaluate(() => {
         const inputs = document.querySelectorAll('input[type="range"]');
+
+        // Helper to trigger React state update
+        const setReactValue = (element, value) => {
+            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+            nativeInputValueSetter.call(element, value);
+            element.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
         if (inputs[0]) {
-            inputs[0].value = 50;
-            inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
-            inputs[0].dispatchEvent(new Event('change', { bubbles: true }));
+            setReactValue(inputs[0], 50);
         }
         if (inputs[1]) {
-            inputs[1].value = 50;
-            inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
-            inputs[1].dispatchEvent(new Event('change', { bubbles: true }));
+            setReactValue(inputs[1], 50);
         }
     });
     await page.waitForTimeout(1000);
