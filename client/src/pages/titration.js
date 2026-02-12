@@ -36,7 +36,7 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  const [acidHeight, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
   const [data, setData] = useState(all_data[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
@@ -214,7 +214,7 @@ const Titration = () => {
 
             {/* Simulated SVG parts from original code, wrapped for positioning */}
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>
-              <TitrationSetup aheigth={acid_heigth} color={sColor} shaky={shaking} count={count} />
+              <TitrationSetup acidHeight={acidHeight} color={sColor} shaky={shaking} count={count} />
 
               {/* Dynamic Liquid Levels Overlay */}
               <div className="base_box" style={{
