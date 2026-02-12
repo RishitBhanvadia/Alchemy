@@ -8,7 +8,6 @@ import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
 
 const Titration = () => {
   const all_data = [
