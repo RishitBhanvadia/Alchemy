@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
@@ -36,12 +36,22 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  const [acidAdded, setAcidAdded] = useState(false);
   const [data, setData] = useState(all_data[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [message, setMessage] = useState("");
+
+  const acid_heigth = useMemo(() => {
+    if (!acidAdded) {
+      return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z";
+    }
+    if (count === 0) {
+      return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z";
+    }
+    return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
+  }, [acidAdded, count]);
 
   // Logic to save result
   const saveResult = async (finalCount) => {
@@ -91,18 +101,24 @@ const Titration = () => {
   // Timer Logic
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
+    if (isCounting) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
-        setCount(prevCount => prevCount + 1);
+        setCount(prevCount => {
+          if (prevCount >= 100) return prevCount;
+          return prevCount + 1;
+        });
       }, 100);
     }
-    return () => {
-      clearInterval(timerId);
-      if (count >= 99) setBehnede(false);
-    };
-  }, [isCounting, count]);
+    return () => clearInterval(timerId);
+  }, [isCounting]);
+
+  // Auto-stop logic
+  useEffect(() => {
+    if (count >= 100 && isCounting) {
+      setIsCounting(false);
+      setBehnede(false);
+    }
+  }, [count, isCounting]);
 
   const handleStart = () => {
     if (drop && !isCounting) {
@@ -177,7 +193,7 @@ const Titration = () => {
               </button>
 
               <button className="sci-fi-btn" disabled={!add_acid} onClick={() => {
-                setAcid("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z");
+                setAcidAdded(true);
                 setAddAcid(false);
                 setKMN(true);
               }}>
