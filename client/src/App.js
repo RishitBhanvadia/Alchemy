@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Lab from "./pages/lab";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -11,6 +12,7 @@ import History from "./pages/history";
 import Success from "./pages/success";
 import Navbar from "./components/Navbar";
 import CursorFollower from "./components/CursorFollower";
+import PageWrapper from "./components/PageWrapper";
 import "./app.css";
 
 function App() {
@@ -23,18 +25,20 @@ function App() {
       <CursorFollower />
       {showNavbar && <Navbar />}
 
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/lab" element={<Lab />} />
-        <Route path="/result" element={<Result />} />
-        <Route path="/titration" element={<Titration />} />
-        <Route path="/organic" element={<Organic />} />
-        <Route path="/inorganic" element={<Inorganic />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/success" element={<Success />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
+          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+          <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
+          <Route path="/lab" element={<PageWrapper><Lab /></PageWrapper>} />
+          <Route path="/result" element={<PageWrapper><Result /></PageWrapper>} />
+          <Route path="/titration" element={<PageWrapper><Titration /></PageWrapper>} />
+          <Route path="/organic" element={<PageWrapper><Organic /></PageWrapper>} />
+          <Route path="/inorganic" element={<PageWrapper><Inorganic /></PageWrapper>} />
+          <Route path="/history" element={<PageWrapper><History /></PageWrapper>} />
+          <Route path="/success" element={<PageWrapper><Success /></PageWrapper>} />
+        </Routes>
+      </AnimatePresence>
     </div>
   );
 }

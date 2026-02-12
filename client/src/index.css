@@ -15,17 +15,29 @@
   --font-main: 'Outfit', sans-serif;
 }
 
-body {
+html, body, #root, .App {
+  width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
+  /* Ensure the background covers the viewport even if content is absolute */
+  background: var(--bg-gradient);
+  background-attachment: fixed; /* Fix background scrolling */
+}
+
+body {
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--bg-gradient);
   color: var(--text-main);
   overflow-x: hidden;
   cursor: none;
   /* Hide default cursor for custom one */
+}
+
+.App {
+  position: relative;
+  overflow-x: hidden;
 }
 
 code {
