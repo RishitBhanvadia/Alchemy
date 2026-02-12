@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Navbar.css';
 import logo from '../assets/logo.png';
 
@@ -7,17 +8,27 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
-        <nav className="glass-navbar">
+        <nav className="glass-navbar" role="navigation" aria-label="Main navigation">
             <div className="nav-logo">
-                <img src={logo} alt="Alchemistry" />
+                <img src={logo} alt="Alchemistry Logo" />
                 <span className="logo-text neon-glow">ALCHEMISTRY</span>
             </div>
 
-            <div className="nav-links">
-                <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <div className="nav-links" role="menubar">
+                <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    aria-label="Navigate to Dashboard"
+                    role="menuitem"
+                >
                     DASHBOARD
                 </NavLink>
-                <NavLink to="/lab" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink
+                    to="/lab"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    aria-label="Navigate to Laboratory"
+                    role="menuitem"
+                >
                     LABORATORY
                 </NavLink>
 
@@ -25,6 +36,15 @@ const Navbar = () => {
                     className="nav-item dropdown-trigger"
                     onMouseEnter={() => setDropdownOpen(true)}
                     onMouseLeave={() => setDropdownOpen(false)}
+                    role="menuitem"
+                    aria-haspopup="true"
+                    aria-expanded={dropdownOpen}
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            setDropdownOpen(!dropdownOpen);
+                        }
+                    }}
                 >
                     MORE <i className="fa-solid fa-chevron-down"></i>
 
@@ -44,6 +64,10 @@ const Navbar = () => {
             </div>
         </nav>
     );
+};
+
+Navbar.propTypes = {
+    // No props currently, but ready for future additions
 };
 
 export default Navbar;

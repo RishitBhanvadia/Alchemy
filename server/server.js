@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
-const cors = require('cors'); // Adding CORS as it was in package.json and is good practice
+const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
 const rateLimit = require('express-rate-limit');
@@ -17,6 +18,24 @@ const limiter = rateLimit({
 
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
+
+// Security Headers with Helmet
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'"],
+        },
+    },
+    hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    }
+}));
 
 // Middleware
 app.use(cors());

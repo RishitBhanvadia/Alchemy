@@ -46,8 +46,6 @@ const ExpResult = ({ num, on }) => {
         setData(all_details[num])
     }, 1000);
 
-    console.log(on);
-
     return (
         <div>
             {

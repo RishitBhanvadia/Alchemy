@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { supabase } from '../supabaseClient';
 import HolographicLogin from '../components/3d-animations/HolographicLogin';
+import logger from '../utils/logger';
+import { showError, showSuccess } from '../utils/notifications';
 import './login.css';
 import logo from '../assets/logo.png';
 
@@ -19,10 +22,12 @@ const Login = () => {
             });
 
             if (error) throw error;
-            console.log("Logged in:", data);
+            logger.info('User logged in successfully', { userId: data.user?.id });
+            showSuccess('Login successful! Welcome back.');
             navigate('/dashboard');
         } catch (error) {
-            alert(error.error_description || error.message);
+            logger.error('Login failed', { error: error.message });
+            showError(error.error_description || error.message || 'Login failed. Please try again.');
         }
     };
 
@@ -59,6 +64,10 @@ const Login = () => {
             </HolographicLogin>
         </div>
     );
+};
+
+Login.propTypes = {
+    // No props currently, but ready for future additions
 };
 
 export default Login;
