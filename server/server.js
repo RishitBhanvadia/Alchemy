@@ -3,8 +3,11 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
 const cors = require('cors'); // Adding CORS as it was in package.json and is good practice
+const helmet = require('helmet');
 
 const app = express();
+app.use(helmet());
+
 const rateLimit = require('express-rate-limit');
 
 // Rate Limiting
