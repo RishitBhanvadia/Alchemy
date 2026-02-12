@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { NavLink } from "react-router-dom";
-import Star from '../assets/star.png'
 
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = useState("");
