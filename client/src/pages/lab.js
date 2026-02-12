@@ -14,8 +14,7 @@ const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [arr, setArr] = useState([]);
-  const [tcolor, SetTColor] = useState('');
+  const [tcolor, setTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
@@ -24,22 +23,22 @@ const Lab = () => {
 
   function change_tip() {
     if (chemA > 0) {
-      SetTColor('#05B9C4');
+      setTColor('#05B9C4');
     }
     else {
       if (chemB > 0) {
-        SetTColor('#04CE7E');
+        setTColor('#04CE7E');
       }
       else {
         if (chemC > 0) {
-          SetTColor('#FBC2E3');
+          setTColor('#FBC2E3');
         }
         else {
           if (chemD > 0) {
-            SetTColor('#DAA520');
+            setTColor('#DAA520');
           }
           else {
-            SetTColor("");
+            setTColor("");
           }
         }
       }
@@ -63,70 +62,30 @@ const Lab = () => {
 
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('A') === -1) {
-        setArr(prev => [...prev, '#848584c8']);
-      }
-    }
-    else {
-      if (arr.indexOf('A') !== -1) {
-        setArr(arr.filter(item => item !== '#848584c8'));
-      }
-    }
     setChemA(value);
     change_tip();
   };
 
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('B') === -1) {
-        setArr(prev => [...prev, '#F2F0F0']);
-      }
-    }
-    else {
-      if (arr.indexOf('B') !== -1) {
-        setArr(arr.filter(item => item !== '#F2F0F0'));
-      }
-    }
     setChemB(value);
     change_tip();
   };
 
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('C') === -1) {
-        setArr(prev => [...prev, '#2987f3bb']);
-      }
-    }
-    else {
-      if (arr.indexOf('C') !== -1) {
-        setArr(arr.filter(item => item !== '#2987f3bb'));
-      }
-    }
     setChemC(value);
     change_tip();
   };
 
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('D') === -1) {
-        setArr(prev => [...prev, '#6f4e37c1']);
-      }
-    }
-    else {
-      if (arr.indexOf('D') !== -1) {
-        setArr(arr.filter(item => item !== '#6f4e37c1'));
-      }
-    }
     setChemD(value);
     change_tip();
   };
 
   const useHandlePlayClick = () => {
-    SetTColor("");
+    setTColor("");
     // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
