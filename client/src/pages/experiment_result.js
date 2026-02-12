@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ResultCustomTestTube from "../components/result_testtube";
 import labgif from '../assets/labgigbl.gif'
 
@@ -41,10 +41,6 @@ const ExpResult = ({ num, on }) => {
             "characterstics": ["No Smoke", "No specific smell", "Does not dissolve in acetic acid", "No precipitates formed"]
         },
     ]
-    const [data, setData] = useState(undefined);
-    setTimeout(() => {
-        setData(all_details[num])
-    }, 1000);
 
     console.log(on);
 
