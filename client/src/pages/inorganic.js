@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import logo from '../assets/logo.png';
 import back from '../assets/back.jpg';
-import InCompoundImg from "../components/InCompundImg"; // Fixed typo in import if needed, but file is InCompundImg.js
+import InCompoundImg from "../components/InCompoundImg";
 import InExpResult from "../components/InExpResult";
 import "./lab.css";
 import "./inorganic.css";
