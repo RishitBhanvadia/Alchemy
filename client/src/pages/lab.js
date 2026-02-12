@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -14,37 +14,28 @@ const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [arr, setArr] = useState([]);
-  const [tcolor, SetTColor] = useState('');
+  // Removed unused arr state
+  const [tcolor, setTColor] = useState(''); // Renamed SetTColor to setTColor
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  function change_tip() {
+  // Replaced change_tip function with useEffect to fix stale state bug
+  useEffect(() => {
     if (chemA > 0) {
-      SetTColor('#05B9C4');
+      setTColor('#05B9C4');
+    } else if (chemB > 0) {
+      setTColor('#04CE7E');
+    } else if (chemC > 0) {
+      setTColor('#FBC2E3');
+    } else if (chemD > 0) {
+      setTColor('#DAA520');
+    } else {
+      setTColor("");
     }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+  }, [chemA, chemB, chemC, chemD]);
 
   useLayoutEffect(() => {
     if (animate) {
@@ -61,72 +52,13 @@ const Lab = () => {
     }
   }, [animate]);
 
-  const handleChemAChange = (e) => {
+  const handleChemChange = (setter) => (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('A') === -1) {
-        setArr(prev => [...prev, '#848584c8']);
-      }
-    }
-    else {
-      if (arr.indexOf('A') !== -1) {
-        setArr(arr.filter(item => item !== '#848584c8'));
-      }
-    }
-    setChemA(value);
-    change_tip();
-  };
-
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('B') === -1) {
-        setArr(prev => [...prev, '#F2F0F0']);
-      }
-    }
-    else {
-      if (arr.indexOf('B') !== -1) {
-        setArr(arr.filter(item => item !== '#F2F0F0'));
-      }
-    }
-    setChemB(value);
-    change_tip();
-  };
-
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('C') === -1) {
-        setArr(prev => [...prev, '#2987f3bb']);
-      }
-    }
-    else {
-      if (arr.indexOf('C') !== -1) {
-        setArr(arr.filter(item => item !== '#2987f3bb'));
-      }
-    }
-    setChemC(value);
-    change_tip();
-  };
-
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('D') === -1) {
-        setArr(prev => [...prev, '#6f4e37c1']);
-      }
-    }
-    else {
-      if (arr.indexOf('D') !== -1) {
-        setArr(arr.filter(item => item !== '#6f4e37c1'));
-      }
-    }
-    setChemD(value);
-    change_tip();
+    setter(value);
   };
 
   const useHandlePlayClick = () => {
-    SetTColor("");
+    setTColor("");
     // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
@@ -138,7 +70,7 @@ const Lab = () => {
   };
 
   function onOrNot() {
-    var sum = 0;
+    let sum = 0;
     if (chemA > 0) sum += 1;
     if (chemB > 0) sum += 1;
     if (chemC > 0) sum += 1;
@@ -173,13 +105,14 @@ const Lab = () => {
             <img src={hcl} alt="HCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>Conc. HCl</label>
+            <label htmlFor="chemA">Conc. HCl</label>
             <input
+              id="chemA"
               type="range"
               min="0"
               max={100 - chemB - chemC - chemD}
               value={chemA}
-              onChange={handleChemAChange}
+              onChange={handleChemChange(setChemA)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemA}%</span>
@@ -191,13 +124,14 @@ const Lab = () => {
             <img src={nacl} alt="NaCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>NaCl</label>
+            <label htmlFor="chemB">NaCl</label>
             <input
+              id="chemB"
               type="range"
               min="0"
               max={100 - chemA - chemC - chemD}
               value={chemB}
-              onChange={handleChemBChange}
+              onChange={handleChemChange(setChemB)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemB}%</span>
@@ -209,13 +143,14 @@ const Lab = () => {
             <img src={cuso4} alt="CuSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>CuSO4</label>
+            <label htmlFor="chemC">CuSO4</label>
             <input
+              id="chemC"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemD}
               value={chemC}
-              onChange={handleChemCChange}
+              onChange={handleChemChange(setChemC)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemC}%</span>
@@ -227,13 +162,14 @@ const Lab = () => {
             <img src={feso4} alt="FeSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>FeSO4</label>
+            <label htmlFor="chemD">FeSO4</label>
             <input
+              id="chemD"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemC}
               value={chemD}
-              onChange={handleChemDChange}
+              onChange={handleChemChange(setChemD)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemD}%</span>
