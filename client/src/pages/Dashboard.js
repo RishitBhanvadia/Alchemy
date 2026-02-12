@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { practicals } from "../data/practicals";
 import "./dashboard.css";
-// import ParticlesBg from "../components/ParticlesBg"; // Global theme handles bg now
 
 const Dashboard = () => {
+    const [selectedClass, setSelectedClass] = useState('All');
+
+    const filteredPracticals = selectedClass === 'All'
+        ? practicals
+        : practicals.filter(p => p.class === selectedClass);
+
     return (
         <div className="dashboard-page scene_element scene_element--fadein">
             <div className="dashboard-container">
                 <div className="dashboard-header">
-                    <h1 className="neon-glow">WELCOME, ADMIN</h1>
-                    <p className="subtitle">Select a module to begin experimentation</p>
+                    <h1 className="neon-glow">WELCOME, SCHOLAR</h1>
+                    <p className="subtitle">Select a module or browse practicals by class</p>
                 </div>
 
                 <div className="module-grid">
@@ -62,6 +68,42 @@ const Dashboard = () => {
                         <p>Review past experiment logs.</p>
                         <div className="card-glow"></div>
                     </Link>
+                </div>
+
+                <div className="practicals-section">
+                    <h2 className="section-title">STANDARD PRACTICALS</h2>
+
+                    <div className="class-filter">
+                        {['All', '10', '11', '12'].map(cls => (
+                            <button
+                                key={cls}
+                                className={`filter-btn ${selectedClass === cls ? 'active' : ''}`}
+                                onClick={() => setSelectedClass(cls)}
+                            >
+                                {cls === 'All' ? 'ALL CLASSES' : `CLASS ${cls}`}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="practicals-list">
+                        {filteredPracticals.map((group, index) => (
+                            <div key={index} className="practical-group glass-panel">
+                                <div className="group-header">
+                                    <span className="class-badge">Class {group.class}</span>
+                                    <h3>{group.category}</h3>
+                                </div>
+                                <div className="experiments-grid">
+                                    {group.experiments.map(exp => (
+                                        <div key={exp.id} className="experiment-card">
+                                            <h4>{exp.title}</h4>
+                                            <p>{exp.description}</p>
+                                            <Link to="/lab" className="start-btn">START PRACTICAL</Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
