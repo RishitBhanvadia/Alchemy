@@ -5,6 +5,16 @@ import logo from '../assets/logo.png';
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    const toggleMobileMenu = () => {
+        setIsMobileOpen(!isMobileOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setIsMobileOpen(false);
+        setDropdownOpen(false);
+    };
 
     return (
         <nav className="glass-navbar">
@@ -13,29 +23,40 @@ const Navbar = () => {
                 <span className="logo-text neon-glow">ALCHEMISTRY</span>
             </div>
 
-            <div className="nav-links">
-                <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <div className="hamburger" onClick={toggleMobileMenu}>
+                <i className={`fa-solid ${isMobileOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+            </div>
+
+            <div className={`nav-links ${isMobileOpen ? 'mobile-open' : ''}`}>
+                <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileMenu}
+                >
                     DASHBOARD
                 </NavLink>
-                <NavLink to="/lab" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <NavLink
+                    to="/lab"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileMenu}
+                >
                     LABORATORY
                 </NavLink>
 
                 <div
                     className="nav-item dropdown-trigger"
-                    onMouseEnter={() => setDropdownOpen(true)}
-                    onMouseLeave={() => setDropdownOpen(false)}
+                    onMouseEnter={() => window.innerWidth > 768 && setDropdownOpen(true)}
+                    onMouseLeave={() => window.innerWidth > 768 && setDropdownOpen(false)}
+                    onClick={() => window.innerWidth <= 768 && setDropdownOpen(!dropdownOpen)}
                 >
-                    MORE <i className="fa-solid fa-chevron-down"></i>
+                    MORE <i className={`fa-solid fa-chevron-down ${dropdownOpen ? 'rotate' : ''}`}></i>
 
-                    {dropdownOpen && (
-                        <div className="dropdown-menu glass-panel">
-                            <NavLink to="/history" className="dropdown-item">HISTORY</NavLink>
-                            <NavLink to="/organic" className="dropdown-item">ORGANIC</NavLink>
-                            <NavLink to="/inorganic" className="dropdown-item">INORGANIC</NavLink>
-                            <NavLink to="/titration" className="dropdown-item">TITRATION</NavLink>
-                        </div>
-                    )}
+                    <div className={`dropdown-menu glass-panel ${dropdownOpen ? 'show' : ''}`}>
+                        <NavLink to="/history" className="dropdown-item" onClick={closeMobileMenu}>HISTORY</NavLink>
+                        <NavLink to="/organic" className="dropdown-item" onClick={closeMobileMenu}>ORGANIC</NavLink>
+                        <NavLink to="/inorganic" className="dropdown-item" onClick={closeMobileMenu}>INORGANIC</NavLink>
+                        <NavLink to="/titration" className="dropdown-item" onClick={closeMobileMenu}>TITRATION</NavLink>
+                    </div>
                 </div>
             </div>
 

@@ -197,3 +197,73 @@
     font-size: 0.9rem;
     color: #ddd;
 }
+@media (max-width: 1024px) {
+    .titration-page {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        padding-bottom: 50px;
+        align-items: flex-start; /* Align top on mobile scroll */
+        padding-top: 100px;
+    }
+
+    .titration-container {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .titration-controls {
+        width: 90%;
+        max-width: 600px;
+        margin: 0 auto;
+        order: 2; /* Put controls below experiment */
+        padding: 20px;
+    }
+
+    .titration-experiment-area {
+        width: 100%;
+        min-height: 500px; /* Provide enough height for scaled SVG */
+        order: 1;
+        margin-bottom: 0;
+    }
+
+    .setup-container {
+        transform: scale(0.65);
+        transform-origin: center center;
+    }
+
+    .operating-buttons {
+        top: auto;
+        right: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: 15px;
+    }
+
+    .op-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .setup-container {
+        transform: scale(0.45);
+    }
+
+    .titration-experiment-area {
+        min-height: 400px;
+    }
+
+    .op-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 0.7rem;
+    }
+}

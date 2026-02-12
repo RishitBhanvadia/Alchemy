@@ -261,3 +261,68 @@
     font-weight: 700;
     margin-right: 5px;
 }
+@media (max-width: 1024px) {
+    .lab-page {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 100px;
+        overflow-y: auto;
+        padding-bottom: 50px;
+    }
+
+    .chemical-rack {
+        width: 90%;
+        max-width: 600px;
+        height: auto;
+        margin: 0 auto 30px auto;
+        padding: 20px;
+        order: 2; /* Visuals first */
+    }
+
+    .center-stage {
+        margin-top: 20px;
+        order: 1;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .status-panel {
+        width: 90%;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+        height: auto;
+        padding: 20px;
+        order: 3;
+    }
+
+    /* Scale down test tube on smaller screens */
+    .test_tube-wrapper {
+        transform: scale(0.8);
+        transform-origin: center center;
+        /* Adjust margins to reduce whitespace caused by scaling */
+        margin: -40px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .test_tube-wrapper {
+        transform: scale(0.6);
+        margin: -80px 0;
+    }
+
+    .action-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+
+    .chemical-rack, .status-panel {
+        width: 95%;
+        margin-bottom: 20px;
+    }
+
+    .chem-icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+}

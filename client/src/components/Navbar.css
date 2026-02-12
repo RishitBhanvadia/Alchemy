@@ -120,3 +120,102 @@
     color: black;
     box-shadow: 0 0 15px rgba(188, 19, 254, 0.5);
 }
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+@media (max-width: 768px) {
+    .glass-navbar {
+        padding: 0 20px;
+        width: 90%;
+        top: 15px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 250px;
+        height: 100vh;
+        background: rgba(10, 10, 20, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 100px;
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 20px;
+    }
+
+    .nav-links.mobile-open {
+        right: 0;
+    }
+
+    .nav-item {
+        height: auto;
+        font-size: 1.2rem;
+        width: 100%;
+        justify-content: center;
+        padding: 15px 0;
+    }
+
+    .nav-item.active::after {
+        display: none; /* remove underline on mobile */
+    }
+
+    .nav-item.active {
+        background: rgba(255, 255, 255, 0.05);
+        border-left: 4px solid #00f3ff;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        transform: none;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        display: none; /* Hidden by default */
+        margin-top: 10px;
+    }
+
+    .dropdown-menu.show {
+        display: flex;
+    }
+
+    .dropdown-trigger {
+        flex-direction: column;
+    }
+
+    .dropdown-item {
+        padding: 10px 0;
+        font-size: 1rem;
+        color: rgba(255,255,255,0.5);
+    }
+
+    .fa-chevron-down {
+        margin-left: 10px;
+        transition: transform 0.3s;
+    }
+
+    .rotate {
+        transform: rotate(180deg);
+    }
+
+    .nav-profile {
+        display: none; /* Hide profile on mobile to save space */
+    }
+}
