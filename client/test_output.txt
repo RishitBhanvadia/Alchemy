@@ -1,0 +1,12 @@
+
+> alchemy-client@0.1.0 test
+> react-scripts test
+
+No tests found, exiting with code 1
+Run with `--passWithNoTests` to exit with code 0
+In /app/client
+  33 files checked.
+  testMatch: /app/client/src/**/__tests__/**/*.{js,jsx,ts,tsx}, /app/client/src/**/*.{spec,test}.{js,jsx,ts,tsx} - 0 matches
+  testPathIgnorePatterns: /node_modules/ - 33 matches
+  testRegex:  - 0 matches
+Pattern:  - 0 matches
