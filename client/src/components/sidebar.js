@@ -1,123 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./sidebar.css";
 import { NavLink } from "react-router-dom";
-import Star from '../assets/star.png'
 
 const Sidebar = () => {
-  const [selectedTab, setSelectedTab] = useState("");
-
-  useEffect(() => {
-    const currentRoute = window.location.pathname;
-    setSelectedTab(getTabFromRoute(currentRoute));
-  }, []);
-
-  const handleTabClick = (tab) => {
-    setSelectedTab(tab);
-  };
-
-  const getTabFromRoute = (route) => {
-    switch (route) {
-      case "/lab":
-        return "lab";
-      case "/titration":
-        return "titration";
-      case "/organic":
-        return "organic";
-      case "/inorganic":
-        return "inorganic";
-      case "/history":
-        return "history";
-      default:
-        return "";
-    }
-  };
-
   return (
     <div className="sideBar">
       <div className="elements">
-        <NavLink
-          to="/lab"
-          activeClassName="selected"
-          onClick={() => handleTabClick("lab")}
-        >
-          <div
-            className={`element ${selectedTab === "lab" ? "selected" : ""}`}
-          >
-            <button
-              className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
-                }`}
+        <NavLink to="/lab">
+          {({ isActive }) => (
+            <div
+              className={`element ${isActive ? "selected" : ""}`}
             >
-              <i className="fa-solid fa-flask"></i>
-            </button>
-          </div>
+              <div
+                className={`element_button lab_button ${isActive ? "selected" : ""}`}
+              >
+                <i className="fa-solid fa-flask"></i>
+              </div>
+            </div>
+          )}
         </NavLink>
-        <NavLink
-          to="/titration"
-          activeClassName="selected"
-          onClick={() => handleTabClick("titration")}
-        >
-          <div
-            className={`element titration ${selectedTab === "titration" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
-                }`}
+        <NavLink to="/titration">
+          {({ isActive }) => (
+            <div
+              className={`element titration ${isActive ? "selected" : ""}`}
             >
-              <i className="fa-solid fa-flask-vial"></i>
-            </button>
-          </div>
+              <div
+                className={`element_button titration_button ${isActive ? "selected" : ""}`}
+              >
+                <i className="fa-solid fa-flask-vial"></i>
+              </div>
+            </div>
+          )}
         </NavLink>
-        <NavLink
-          to="/organic"
-          activeClassName="selected"
-          onClick={() => handleTabClick("organic")}
-        >
-          <div
-            className={`element organic ${selectedTab === "organic" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
-                }`}
+        <NavLink to="/organic">
+          {({ isActive }) => (
+            <div
+              className={`element organic ${isActive ? "selected" : ""}`}
             >
-              <i class="fa-solid fa-user-plus"></i>
-            </button>
-          </div>
+              <div
+                className={`element_button organic_button ${isActive ? "selected" : ""}`}
+              >
+                <i className="fa-solid fa-user-plus"></i>
+              </div>
+            </div>
+          )}
         </NavLink>
-        <NavLink
-          to="/inorganic"
-          activeClassName="selected"
-          onClick={() => handleTabClick("inorganic")}
-        >
-          <div
-            className={`element inorganic ${selectedTab === "inorganic" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
-                }`}
+        <NavLink to="/inorganic">
+          {({ isActive }) => (
+            <div
+              className={`element inorganic ${isActive ? "selected" : ""}`}
             >
-              <i class="fa-solid fa-user-minus"></i>
-            </button>
-          </div>
+              <div
+                className={`element_button inorganic_button ${isActive ? "selected" : ""}`}
+              >
+                <i className="fa-solid fa-user-minus"></i>
+              </div>
+            </div>
+          )}
         </NavLink>
-        <NavLink
-          to="/history"
-          activeClassName="selected"
-          onClick={() => handleTabClick("history")}
-        >
-          <div
-            className={`element ${selectedTab === "history" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button ${selectedTab === "history" ? "selected" : ""
-                }`}
+        <NavLink to="/history">
+          {({ isActive }) => (
+            <div
+              className={`element ${isActive ? "selected" : ""}`}
             >
-              <i class="fa-solid fa-clock-rotate-left"></i>
-            </button>
-          </div>
+              <div
+                className={`element_button ${isActive ? "selected" : ""}`}
+              >
+                <i className="fa-solid fa-clock-rotate-left"></i>
+              </div>
+            </div>
+          )}
         </NavLink>
       </div>
     </div>
