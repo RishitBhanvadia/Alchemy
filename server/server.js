@@ -3,9 +3,13 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
 const cors = require('cors'); // Adding CORS as it was in package.json and is good practice
+const helmet = require('helmet');
 
 const app = express();
 const rateLimit = require('express-rate-limit');
+
+// Security Headers
+app.use(helmet());
 
 // Rate Limiting
 const limiter = rateLimit({
