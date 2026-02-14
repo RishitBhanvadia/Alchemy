@@ -1,40 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    // Refs for direct DOM manipulation (Performance optimization: avoids re-renders on mousemove)
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
-        const addEventListeners = () => {
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseenter", onMouseEnter);
-            document.addEventListener("mouseleave", onMouseLeave);
-            document.addEventListener("mousedown", onMouseDown);
-            document.addEventListener("mouseup", onMouseUp);
-        };
-
-        const removeEventListeners = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseenter", onMouseEnter);
-            document.removeEventListener("mouseleave", onMouseLeave);
-            document.removeEventListener("mousedown", onMouseDown);
-            document.removeEventListener("mouseup", onMouseUp);
-        };
-
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            const { clientX, clientY } = e;
+            // Use translate3d for GPU acceleration
+            const transform = `translate3d(${clientX}px, ${clientY}px, 0) translate(-50%, -50%)`;
+
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = transform;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.transform = transform;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
+            // Safe check for tagName as target could be document
+            const tagName = target.tagName ? target.tagName.toLowerCase() : '';
+
             const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                tagName === 'button' ||
+                tagName === 'a' ||
+                (target.closest && (target.closest('button') || target.closest('a'))) ||
+                (target.classList && target.classList.contains('clickable'));
 
             setHovering(!!isClickable);
         };
@@ -55,8 +53,19 @@ const CursorFollower = () => {
             setClicking(false);
         };
 
-        addEventListeners();
-        return () => removeEventListeners();
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseenter", onMouseEnter);
+        document.addEventListener("mouseleave", onMouseLeave);
+        document.addEventListener("mousedown", onMouseDown);
+        document.addEventListener("mouseup", onMouseUp);
+
+        return () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseenter", onMouseEnter);
+            document.removeEventListener("mouseleave", onMouseLeave);
+            document.removeEventListener("mousedown", onMouseDown);
+            document.removeEventListener("mouseup", onMouseUp);
+        };
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
@@ -65,12 +74,14 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ left: 0, top: 0 }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ left: 0, top: 0 }}
             />
         </>
     );
