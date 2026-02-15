@@ -29,7 +29,8 @@ const Result = () => {
   useEffect(() => {
     if (!location.state) return;
 
-    fetch("https://alchemy-85hv.onrender.com/result/" + location.state.chemA + "/" + location.state.chemB + '/' + location.state.chemC + '/' + location.state.chemD)
+    const apiUrl = process.env.REACT_APP_API_URL;
+    fetch(`${apiUrl}/result/${location.state.chemA}/${location.state.chemB}/${location.state.chemC}/${location.state.chemD}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Server Error: ${response.status} ${response.statusText}`);
