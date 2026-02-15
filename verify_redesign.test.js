@@ -32,16 +32,26 @@ test('Redesign Verification Tour', async ({ page }) => {
     console.log('Interacting with controls...');
     // Force change values of range inputs
     await page.evaluate(() => {
+        const setNativeValue = (element, value) => {
+            const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
+            const prototype = Object.getPrototypeOf(element);
+            const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+
+            if (valueSetter && valueSetter !== prototypeValueSetter) {
+                prototypeValueSetter.call(element, value);
+            } else {
+                valueSetter.call(element, value);
+            }
+        };
+
         const inputs = document.querySelectorAll('input[type="range"]');
         if (inputs[0]) {
-            inputs[0].value = 50;
+            setNativeValue(inputs[0], 50);
             inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
-            inputs[0].dispatchEvent(new Event('change', { bubbles: true }));
         }
         if (inputs[1]) {
-            inputs[1].value = 50;
+            setNativeValue(inputs[1], 50);
             inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
-            inputs[1].dispatchEvent(new Event('change', { bubbles: true }));
         }
     });
     await page.waitForTimeout(1000);
