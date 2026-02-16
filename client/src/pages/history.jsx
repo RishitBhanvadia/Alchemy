@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
+import logger from '../utils/logger';
 import "./history.css";
 
 const History = () => {
@@ -24,7 +25,7 @@ const History = () => {
                     setExperiments(data || []);
                 }
             } catch (error) {
-                console.error("Error fetching history:", error);
+                logger.error("Error fetching history:", error);
             } finally {
                 setLoading(false);
             }

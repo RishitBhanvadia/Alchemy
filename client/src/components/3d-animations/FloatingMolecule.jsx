@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, Icosahedron } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 
 const FloatingMolecule = () => {
     const meshRef = useRef();
@@ -9,13 +10,15 @@ const FloatingMolecule = () => {
         const time = state.clock.getElapsedTime();
 
         // Auto-rotation
-        meshRef.current.rotation.y = time * 0.1;
-        meshRef.current.rotation.x = time * 0.05;
+        if (meshRef.current) {
+            meshRef.current.rotation.y = time * 0.1;
+            meshRef.current.rotation.x = time * 0.05;
 
-        // Look at mouse (subtle effect)
-        const { x, y } = state.mouse;
-        meshRef.current.rotation.x += y * 0.05;
-        meshRef.current.rotation.y += x * 0.05;
+            // Look at mouse (subtle effect)
+            const { x, y } = state.mouse;
+            meshRef.current.rotation.x += y * 0.05;
+            meshRef.current.rotation.y += x * 0.05;
+        }
     });
 
     return (

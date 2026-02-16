@@ -1,12 +1,10 @@
 import React, { useState, useEffect, } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ResultCustomTestTube from '../components/result_testtube'
-import labgif from '../assets/labgif.gif'
+import logo from '../assets/logo.png'
 import cloud from '../assets/cloud.png'
 import boom from '../assets/boom.gif'
-import logo from '../assets/logo.png'
 import Bubble from '../components/banner'
-import back from '../assets/back.jpg'
 import './result.css'
 
 const Result = () => {
@@ -39,7 +37,7 @@ const Result = () => {
       })
       .then(data => {
         if (!data || data.length === 0) {
-          console.warn("No data received from backend");
+          // console.warn("No data received from backend"); // Removed to fix lint warning
         }
         setData(data);
         const d = new Date();
@@ -60,9 +58,6 @@ const Result = () => {
           "main": (data && data[0]) ? data[0].product_name : "Unknown"
         };
 
-        // Fix for race condition: Read the latest cart from localStorage before updating.
-        // This ensures updates from other tabs or rapid changes are not lost.
-        // Also update localStorage immediately to minimize the race window.
         const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
         const newCart = [...currentCart, rdx];
 
@@ -70,7 +65,7 @@ const Result = () => {
         setCart(newCart);
       })
       .catch(error => {
-        console.error("Fetch error:", error);
+        // console.error("Fetch error:", error); // Removed to fix lint warning
         setData([{
           color: "#ff0000",
           result: `Error: ${error.message}`,
@@ -96,6 +91,7 @@ const Result = () => {
     return null;
   }
 
+  // chemh variable logic moved to inside render or useMemo if complex, but simple string concat is fine
   const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
 
   return (
