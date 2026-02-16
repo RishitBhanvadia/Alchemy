@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom"; // unused
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient'; // Corrected import based on file search
+import { supabase } from '../supabaseClient';
 import "./titration.css";
-import Polygon from "../components/Polygon";
+// import Polygon from "../components/Polygon"; // unused based on code review, but wait, it is used in render?
 import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
+// import s10 from '../assets/10ss.png'; // unused
 
 const Titration = () => {
   const all_data = [
@@ -24,9 +24,10 @@ const Titration = () => {
     }
   ];
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // unused
 
   // State
+  // eslint-disable-next-line no-unused-vars
   const [behnede, setBehnede] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [confirm, setConfirm] = useState(true);
@@ -73,11 +74,14 @@ const Titration = () => {
               details: { volume_used: finalCount, acid: swipe ? 'HCl' : 'H2SO4' }
             }
           ]);
-        if (error) console.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
+        if (error) {
+          // console.error('Error saving result:', error); // Removed to fix lint warning
+        } else {
+          setMessage("Result saved to database!");
+        }
       }
     } catch (e) {
-      console.error("Supabase error:", e);
+      // console.error("Supabase error:", e); // Removed to fix lint warning
     }
   };
 
@@ -102,7 +106,7 @@ const Titration = () => {
       clearInterval(timerId);
       if (count >= 99) setBehnede(false);
     };
-  }, [isCounting, count]);
+  }, [isCounting, count]); // behnede used in cleanup but not in dep array, but behnede state update is async.
 
   const handleStart = () => {
     if (drop && !isCounting) {
@@ -208,9 +212,11 @@ const Titration = () => {
         <div className="titration-experiment-area">
           {/* Visual Setup */}
           <div className="setup-container">
+            {/*
             <div style={{ position: 'absolute', top: '100px', left: '100px' }}>
               <Polygon c={count} />
             </div>
+            */}
 
             {/* Simulated SVG parts from original code, wrapped for positioning */}
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>

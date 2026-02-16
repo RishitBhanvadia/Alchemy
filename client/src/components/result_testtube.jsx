@@ -1,73 +1,207 @@
-import React, {useLayoutEffect, useRef} from 'react';
-import {gsap} from "gsap";
+import React, { useRef, useLayoutEffect } from "react";
+import PropTypes from 'prop-types';
+import { gsap } from 'gsap'
 
-const ResultCustomTestTube = ({color, solid_color, gas_color, gas, solid, str}) => {
-  const app = useRef();
-  
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      // use scoped selectors
-      if(gas){
-        gsap.to("#gas", { opacity: 1, y: 0, delay: 3, duration: 1.8});
-        gsap.to("#gas", {opacity: 0, delay: 3.4, duration: 1.5});
-      }
+const ResultCustomTestTube = ({ color, solid_color, gas_color, gas, solid, str }) => {
+    const app = useRef();
+    useLayoutEffect(() => {
+        let ctx = gsap.context(() => {
+            // use scoped selectors
+            if (gas === 'No') {
+                gsap.fromTo(".gas_particles", { opacity: 0 }, { duration: 0.12, opacity: 0 });
+            }
+            else {
+                gsap.fromTo(".gas_particles", { y: 20 }, { duration: 2, y: -200, opacity: 0, repeat: -1 });
+            }
 
-      if(solid){
-        gsap.to("#solids", { opacity: 1, y: 60, delay: 1, duration: 8});
-        gsap.to("#solids", {opacity: 0, delay: 4, duration: 5});
-      }
-      
-    }, app);
-    
-    return () => ctx.revert();
-  }, []);
-    return(
-        <svg width="500" ref={app} height="400" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id='gas'>
-                <path d="M38.5011 0C-27.2677 44.6548 47.632 54.2071 24.9382 111.533C75.9862 54.3506 -3.66963 56.6593 38.5013 0H38.5011ZM40.2051 7.64071C11.2569 39.9983 61.6209 55.9063 45.0416 92.5129C75.1745 55.7621 25.9492 44.1597 40.2054 7.64071H40.2051ZM9.10191 20.2488C-18.2781 52.0518 25.4962 71.0662 18.6971 106.69C35.1912 63.474 -6.31517 59.3616 9.10191 20.2488Z" fill={gas_color}/>
+            if (solid === 'No') {
+                gsap.fromTo(".solid_particles", { opacity: 0 }, { duration: 0.12, opacity: 0 });
+            }
+            else {
+                gsap.fromTo(".solid_particles", { y: -200 }, { duration: 2, y: 0, opacity: 1 });
+            }
+
+        }, app);
+
+        return () => ctx.revert();
+    }, [gas, solid]); // Added dependencies to fix react-hooks/exhaustive-deps warning
+
+    return (
+        <svg ref={app} width="405" height="500" viewBox="0 0 405 713" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="filter0_f_91_125" x="281.528" y="375.315" width="25.331" height="58.6307" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                    <feGaussianBlur stdDeviation="0.302325" result="effect1_foregroundBlur_91_125" />
+                </filter>
+                <linearGradient id="paint0_linear_91_125" x1="60.459" y1="348.866" x2="32.9742" y2="348.866" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#4A4A4A" />
+                    <stop offset="0.26613" stopColor="#4A4A4A" />
+                    <stop offset="1" stopColor="white" />
+                </linearGradient>
+                <linearGradient id="paint1_linear_91_125" x1="426.953" y1="697.767" x2="426.953" y2="708.622" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#4A4A4A" />
+                    <stop offset="0.175" stopColor="#4A4A4A" stopOpacity="0.24706" />
+                    <stop offset="0.39656" stopColor="#4A4A4A" stopOpacity="0.49804" />
+                    <stop offset="1" stopColor="#4A4A4A" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="paint2_linear_91_125" x1="70.1378" y1="268.485" x2="28.9936" y2="268.485" gradientUnits="userSpaceOnUse">
+                    <stop />
+                    <stop offset="1" stopOpacity="0" />
+                </linearGradient>
+            </defs>
+            <path d="M 296.463 407.929 C 296.463 407.929 296.365 427.866 296.031 433.292 L 294.276 434.546 L 293.834 410.223 L 281.623 408.078 C 282.724 406.109 281.952 417.902 280.604 415.999 C 259.587 402.629 204.152 394.671 165.859 383.398 C 146.423 378.241 151.426 369.46 149.93 358.466 C 149.93 352.728 142.387 352.321 142.387 338.12 V 305 V 274.778 C 140 309 165 341 167 275 V 277 V 284 V 338.12 C 171.484 352.24 164.471 352.144 164.471 358.209 C 163.045 370.792 167.827 372.373 174.783 374.913 C 186.559 378.943 200.707 380.889 209.651 383.183 C 218.596 385.477 277.808 397.353 277.808 397.353 C 281.751 397.148 282.166 407.41 281.445 405.101 L 296.463 407.929 Z" fill="#9D9B00" fillOpacity="0.7" className="tube_chem" stroke="#676767" strokeWidth="0.2" strokeLinecap="round" strokeLinejoin="round" />
+            <g opacity="0.78">
+                <g filter="url(#filter0_f_91_125)">
+                    <path d="M285.772 432.725L282.482 375.989" stroke="#676767" strokeWidth="0.7" />
+                    <path d="M304.124 433.33L305.904 375.93" stroke="#676767" strokeWidth="0.7" />
+                </g>
             </g>
-            <g id="7316977_3623545 1" className='tt'>
-            <g id="OBJECTS">
-            <g id="Group">
-            <g id="Group_2">
-            <g id="Group_3">
-            <path id="Vector" d="M218.985 13.2115V384.283C218.985 397.931 232.87 409 250.003 409C267.136 409 281.02 397.935 281.02 384.283V13.2115H218.985Z" fill="#E6EEF2"/>
-            <path id="permanent" d={str} fill={color}/>
-            <path id="Vector_3" d="M291 14.4467C291 18.0083 287.38 20.8934 282.91 20.8934H217.09C212.626 20.8934 209 18.0083 209 14.4467C209 10.8895 212.62 8 217.09 8H282.91C287.38 8 291 10.8851 291 14.4467Z" fill="white"/>
-            <path id="Vector_4" opacity="0.6" d="M240.22 388.809C240.22 390.821 238.172 392.453 235.647 392.453C233.122 392.453 231.073 390.821 231.073 388.809V29.7188C231.073 27.7067 233.122 26.0742 235.647 26.0742C238.172 26.0742 240.22 27.7067 240.22 29.7188V388.809Z" fill="white"/>
-            </g>
-            </g>
-            </g>
-            </g>
-            </g>
-            <g id='solids'>
-            <path d="M391.141 284.529C391.869 282.934 391.275 280.993 389.812 280.198C388.35 279.403 386.572 280.052 385.843 281.647C385.115 283.243 385.709 285.183 387.172 285.978C388.634 286.775 390.411 286.125 391.141 284.529Z" fill={solid_color}/>
-            <path d="M407.609 377.671C408.337 376.075 407.743 374.135 406.279 373.34C404.818 372.545 403.04 373.193 402.311 374.789C401.583 376.384 402.177 378.325 403.64 379.12C405.102 379.916 406.879 379.266 407.609 377.671Z" fill={solid_color}/>
-            <path d="M401.609 324.671C402.337 323.075 401.743 321.135 400.279 320.34C398.818 319.545 397.04 320.193 396.311 321.789C395.583 323.384 396.177 325.325 397.64 326.12C399.102 326.916 400.879 326.266 401.609 324.671Z" fill={solid_color}/>
-            <path d="M388.609 272.671C389.337 271.075 388.743 269.135 387.279 268.34C385.818 267.545 384.04 268.193 383.311 269.789C382.583 271.384 383.177 273.325 384.64 274.12C386.102 274.916 387.879 274.266 388.609 272.671Z" fill={solid_color}/>
-            <path d="M391.609 371.671C392.337 370.075 391.743 368.135 390.279 367.34C388.818 366.545 387.04 367.193 386.311 368.789C385.583 370.384 386.177 372.325 387.64 373.12C389.102 373.916 390.879 373.266 391.609 371.671Z" fill={solid_color}/>
-            <path d="M419.609 312.671C420.337 311.075 419.743 309.135 418.279 308.34C416.818 307.545 415.04 308.193 414.311 309.789C413.583 311.384 414.177 313.325 415.64 314.12C417.102 314.916 418.879 314.266 419.609 312.671Z" fill={solid_color}/>
-            <path d="M407.609 272.671C408.337 271.075 407.743 269.135 406.279 268.34C404.818 267.545 403.04 268.193 402.311 269.789C401.583 271.384 402.177 273.325 403.64 274.12C405.102 274.916 406.879 274.266 407.609 272.671Z" fill={solid_color}/>
-            <path d="M377.609 371.671C378.337 370.075 377.743 368.135 376.279 367.34C374.818 366.545 373.04 367.193 372.311 368.789C371.583 370.384 372.177 372.325 373.64 373.12C375.102 373.916 376.879 373.266 377.609 371.671Z" fill={solid_color}/>
-            <path d="M383.609 358.671C384.337 357.075 383.743 355.135 382.279 354.34C380.818 353.545 379.04 354.193 378.311 355.789C377.583 357.384 378.177 359.325 379.64 360.12C381.102 360.916 382.879 360.266 383.609 358.671Z" fill={solid_color}/>
-            <path d="M419.609 355.671C420.337 354.075 419.743 352.135 418.279 351.34C416.818 350.545 415.04 351.193 414.311 352.789C413.583 354.384 414.177 356.325 415.64 357.12C417.102 357.916 418.879 357.266 419.609 355.671Z" fill={solid_color}/>
-            <path d="M401.609 358.671C402.337 357.075 401.743 355.135 400.279 354.34C398.818 353.545 397.04 354.193 396.311 355.789C395.583 357.384 396.177 359.325 397.64 360.12C399.102 360.916 400.879 360.266 401.609 358.671Z" fill={solid_color}/>
-            <path d="M371.609 339.671C372.337 338.075 371.743 336.135 370.279 335.34C368.818 334.545 367.04 335.193 366.311 336.789C365.583 338.384 366.177 340.325 367.64 341.12C369.102 341.916 370.879 341.266 371.609 339.671Z" fill={solid_color}/>
-            <path d="M416.609 333.671C417.337 332.075 416.743 330.135 415.279 329.34C413.818 328.545 412.04 329.193 411.311 330.789C410.583 332.384 411.177 334.325 412.64 335.12C414.102 335.916 415.879 335.266 416.609 333.671Z" fill={solid_color}/>
-            <path d="M391.609 336.671C392.337 335.075 391.743 333.135 390.279 332.34C388.818 331.545 387.04 332.193 386.311 333.789C385.583 335.384 386.177 337.325 387.64 338.12C389.102 338.916 390.879 338.266 391.609 336.671Z" fill={solid_color}/>
-            <path d="M371.609 312.671C372.337 311.075 371.743 309.135 370.279 308.34C368.818 307.545 367.04 308.193 366.311 309.789C365.583 311.384 366.177 313.325 367.64 314.12C369.102 314.916 370.879 314.266 371.609 312.671Z" fill={solid_color}/>
-            <path d="M374.609 278.671C375.337 277.075 374.743 275.135 373.279 274.34C371.818 273.545 370.04 274.193 369.311 275.789C368.583 277.384 369.177 279.325 370.64 280.12C372.102 280.916 373.879 280.266 374.609 278.671Z" fill={solid_color}/>
-            <path d="M419.609 296.671C420.337 295.075 419.743 293.135 418.279 292.34C416.818 291.545 415.04 292.193 414.311 293.789C413.583 295.384 414.177 297.325 415.64 298.12C417.102 298.916 418.879 298.266 419.609 296.671Z" fill={solid_color}/>
-            <path d="M388.609 299.671C389.337 298.075 388.743 296.135 387.279 295.34C385.818 294.545 384.04 295.193 383.311 296.789C382.583 298.384 383.177 300.325 384.64 301.12C386.102 301.916 387.879 301.266 388.609 299.671Z" fill={solid_color}/>
-            <path d="M407.609 312.671C408.337 311.075 407.743 309.135 406.279 308.34C404.818 307.545 403.04 308.193 402.311 309.789C401.583 311.384 402.177 313.325 403.64 314.12C405.102 314.916 406.879 314.266 407.609 312.671Z" fill={solid_color}/>
-            <path d="M385.609 318.671C386.337 317.075 385.743 315.135 384.279 314.34C382.818 313.545 381.04 314.193 380.311 315.789C379.583 317.384 380.177 319.325 381.64 320.12C383.102 320.916 384.879 320.266 385.609 318.671Z" fill={solid_color}/>
-            </g>
+            <path d="M279.593 384.81L309.767 384.795C308.519 387.491 308.732 396.35 308.61 405.331C308.498 413.547 308.562 422.409 309.272 424.35L280.829 424.131C281.93 422.162 282.084 418.03 280.737 416.127C259.72 402.758 204.152 394.671 165.859 383.398C146.423 378.241 151.426 369.46 149.93 358.466C149.93 352.728 142.387 352.321 142.387 338.12V286.741V274.778C142.393 180.109 142.402 12.5914 142.456 9.4004C142.495 6.52705 138.9 6.49859 138.9 4.50241C138.9 2.511 140.981 2.48255 142.387 2.48255H171.484C171.484 2.48255 175.865 2.27391 175.865 4.50241C175.865 6.73567 171.484 6.65507 171.484 9.4004V271.004V283.417V338.12C171.484 352.24 164.471 352.144 164.471 358.209C163.045 370.792 167.827 372.373 174.783 374.913C186.559 378.943 200.706 380.889 209.651 383.183C218.596 385.477 277.808 397.353 277.808 397.353C281.751 397.148 280.314 387.119 279.593 384.81Z" fill="#D6E4ED" fillOpacity="0.247059" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M275.211 380.211C275.211 377.609 276.37 375.773 278.944 375.773H309.948C310.718 375.773 313.953 376.365 313.953 379.689C313.953 383.012 312.616 384.805 309.948 384.805H278.944C276.857 384.805 275.211 383.456 275.211 380.211Z" fill="#4D9DDB" fillOpacity="0.215686" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M146.579 294.66H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 337.69H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 303.266H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 316.175H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 298.963H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 307.569H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 311.872H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 324.781H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 320.478H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 329.084H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 333.387H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 251.631H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 260.237H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 273.146H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 255.934H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 264.54H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 268.843H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 281.752H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 277.449H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 286.055H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 290.357H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 208.602H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 217.208H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 230.116H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 212.905H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 221.51H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 225.813H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 238.722H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 234.419H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 243.025H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 247.328H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 165.572H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 174.178H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 187.087H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 169.875H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 178.481H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 182.784H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 195.693H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 191.39H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 199.996H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 204.299H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 122.543H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 131.149H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 144.057H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 126.846H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 135.452H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 139.755H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 152.663H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 148.36H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 156.966H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 161.269H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 79.5133H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 88.1191H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 101.028H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 83.8163H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 92.4221H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 96.7251H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 109.634H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 105.331H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 113.937H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 118.24H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M146.579 36.4839H167.051" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 45.0898H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M149.329 57.9987H164.301" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 40.7869H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 49.3928H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 53.6957H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 66.6045H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 62.3015H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 70.9075H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M152.663 75.2103H160.967" stroke="black" strokeWidth="0.35" strokeLinecap="round" />
+            <path d="M303.1 453.683V500.771L297.81 538.452V552.581H292.022V538.452L287.226 500.771V453.683" fill="#D6E4ED" fillOpacity="0.247059" />
+            <path d="M303.1 453.683V500.771L297.81 538.452V552.581H292.022V538.452L287.226 500.771V453.683" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M277.266 427.726C277.266 425.716 278.346 424.298 280.744 424.298H309.63C310.348 424.298 313.362 424.755 313.362 427.322C313.362 429.89 312.116 431.274 309.63 431.274H280.744C278.8 431.274 277.266 430.233 277.266 427.726Z" fill="#4D9DDB" fillOpacity="0.215686" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M283.015 373.526V368.571L244.119 363.028C244.119 363.028 240.57 362.279 240.57 360.468C240.57 358.642 241.967 349.534 241.967 349.534C241.967 349.534 242.676 346.48 246.027 346.072C249.379 345.674 284.812 343.991 293.181 343.991C307.702 343.991 310.209 345.717 314.433 346.442C318.643 347.163 319.431 348.453 319.431 349.889C319.431 351.34 320.198 360.169 320.198 360.169C320.198 360.169 319.535 362.9 316.21 363.782C312.878 364.664 305.217 368.571 305.217 368.571V373.526" fill="#4D9DDB" fillOpacity="0.215686" />
+            <path d="M283.015 373.526V368.571L244.119 363.028C244.119 363.028 240.57 362.279 240.57 360.468C240.57 358.642 241.967 349.534 241.967 349.534C241.967 349.534 242.676 346.48 246.027 346.072C249.379 345.674 284.812 343.991 293.181 343.991C307.702 343.991 310.209 345.717 314.433 346.442C318.643 347.163 319.431 348.453 319.431 349.889C319.431 351.34 320.198 360.169 320.198 360.169C320.198 360.169 319.535 362.9 316.21 363.782C312.878 364.664 305.217 368.571 305.217 368.571V373.526" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M281.119 375.236L286.235 372.658H301.481L306.82 375.236" fill="#4D9DDB" fillOpacity="0.215686" />
+            <path d="M281.119 375.236L286.235 372.658H301.481L306.82 375.236" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M280.58 415.731C282.942 413.716 281.43 398.614 278.962 396.851" stroke="#1A1A18" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M280.72 459.234V432.876H309.601V459.234H280.72Z" fill="#FF0505" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M280.72 437.027H309.606Z" fill="#FF0505" />
+            <path d="M280.72 437.027H309.606" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M286.674 455.236V442.114Z" fill="#FF0505" />
+            <path d="M286.674 455.236V442.114" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M303.213 455.236V442.114Z" fill="#FF0505" />
+            <path d="M303.213 455.236V442.114" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M294.938 455.236V442.114Z" fill="#FF0505" />
+            <path d="M294.938 455.236V442.114" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
+            <path d={str} fill={color} />
+            <path d="M291.86 690.921C354.959 690.921 354.2 690.921 354.2 682.363C354.2 652.354 354.2 788.926 354.2 536.51C354.2 530.808 357.621 527.353 359.149 524.761C359.912 523.467 358.78 522.157 354.2 522.157H225.734C225.734 522.157 222.556 522.157 219.922 524.304C216.866 526.796 215.2 528.939 216.74 530.712C225.734 528.939 225.734 529.521 225.734 533.991C225.734 583.095 225.734 649.74 225.734 682.363C225.734 690.921 225.923 690.921 291.86 690.921Z" fill="#E0E0F6" fillOpacity="0.376471" stroke="black" strokeWidth="1.06299" strokeLinejoin="round" />
+            <path d="M42.8123 0.783752H50.6248C55.4305 0.783752 59.3262 3.73759 59.3262 7.38131V690.306C59.3262 693.949 55.4305 696.903 50.6248 696.903H42.8123C38.0067 696.903 34.111 693.949 34.111 690.306V7.38131C34.111 3.73759 38.0067 0.783752 42.8123 0.783752Z" fill="url(#paint0_linear_91_125)" stroke="black" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M19.7932 691.385H397.289C401.102 691.385 404.193 692.508 404.193 693.894V700.263C404.193 701.648 401.102 702.772 397.289 702.772H19.7932C15.9804 702.772 12.8896 701.648 12.8896 700.263V693.894C12.8896 692.508 15.9804 691.385 19.7932 691.385Z" fill="url(#paint1_linear_91_125)" stroke="black" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M137.376 263.46H49.9079C48.4166 263.46 47.2076 263.62 47.2076 263.817V273.278C47.2076 273.475 48.4166 273.635 49.9079 273.635H137.376C138.867 273.635 140.076 273.475 140.076 273.278V263.817C140.076 263.62 138.867 263.46 137.376 263.46Z" fill="#797979" stroke="black" strokeLinecap="round" strokeLinejoin="bevel" />
+            <path d="M67.0829 246.02H29.2486C27.3435 246.02 25.7992 246.176 25.7992 246.369V290.805C25.7992 290.998 27.3435 291.154 29.2486 291.154H67.0829C68.9879 291.154 70.5324 290.998 70.5324 290.805V246.369C70.5324 246.176 68.9879 246.02 67.0829 246.02Z" fill="#797979" stroke="black" strokeLinecap="round" strokeLinejoin="bevel" />
+            <path fillRule="evenodd" clipRule="evenodd" d="M142.55 250.581L176.623 250.35L176.611 262.937L162.572 263.354L148.054 263.538L148.133 274.22L176.622 274.114V286.717L142.347 286.745L132.567 275.975L132.579 261.15L142.551 250.593L142.55 250.581Z" fill="#797979" stroke="black" />
+            <path opacity="0.67577" d="M29.6925 246.869H69.4499C69.6137 246.869 69.7465 246.887 69.7465 246.91V290.264C69.7465 290.287 69.6137 290.305 69.4499 290.305H29.6925C29.5287 290.305 29.3959 290.287 29.3959 290.264V246.91C29.3959 246.887 29.5287 246.869 29.6925 246.869Z" fill="url(#paint2_linear_91_125)" />
+            <path d="M24.678 263.079H22.9524C21.4946 263.079 20.3129 264.226 20.3129 265.641V270.595C20.3129 272.011 21.4946 273.158 22.9524 273.158H24.678C26.1358 273.158 27.3176 272.011 27.3176 270.595V265.641C27.3176 264.226 26.1358 263.079 24.678 263.079Z" fill="#797979" stroke="black" strokeLinecap="round" strokeLinejoin="bevel" />
+            <path d="M17.9342 250.179H3.58154C2.1237 250.179 0.941895 252.142 0.941895 254.563V282.817C0.941895 285.238 2.1237 287.201 3.58154 287.201H17.9342C19.3921 287.201 20.5739 285.238 20.5739 282.817V254.563C20.5739 252.142 19.3921 250.179 17.9342 250.179Z" fill="#E0D2FF" stroke="black" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="bevel" />
+            <path d="M1.17236 255.127H19.7287" stroke="black" strokeWidth="1.4" />
+            <path d="M1.63635 260.257H20.1927" stroke="black" strokeWidth="1.4" />
+            <path d="M1.93774 271.618H20.4941" stroke="black" strokeWidth="1.4" />
+            <path d="M1.93774 277.445H20.4941" stroke="black" strokeWidth="1.4" />
+            <path d="M1.72913 265.645H20.2855" stroke="black" strokeWidth="1.4" />
+            <path d="M1.72913 282.796H20.2855" stroke="black" strokeWidth="1.4" />
+            <circle cx="250" cy="690" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="270" cy="690" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="230" cy="690" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="290" cy="690" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="260" cy="680" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="220" cy="680" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="280" cy="680" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="240" cy="680" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="260" cy="670" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="280" cy="670" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="240" cy="670" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="250" cy="660" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="270" cy="660" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="260" cy="650" r="10" fill={solid_color} className="solid_particles" />
+            <circle cx="250" cy="690" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="270" cy="690" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="230" cy="690" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="290" cy="690" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="260" cy="680" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="220" cy="680" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="280" cy="680" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="240" cy="680" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="260" cy="670" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="280" cy="670" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="240" cy="670" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="250" cy="660" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="270" cy="660" r="10" fill={gas_color} className="gas_particles" />
+            <circle cx="260" cy="650" r="10" fill={gas_color} className="gas_particles" />
         </svg>
     )
 }
 
+ResultCustomTestTube.propTypes = {
+    color: PropTypes.string,
+    solid_color: PropTypes.string,
+    gas_color: PropTypes.string,
+    gas: PropTypes.string,
+    solid: PropTypes.string,
+    str: PropTypes.string
+};
+
 export default ResultCustomTestTube;
-
-//path("M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V 387 H 218.985 Z")
-
-

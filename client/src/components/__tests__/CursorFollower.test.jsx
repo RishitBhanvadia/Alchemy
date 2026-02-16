@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import CursorFollower from '../CursorFollower';
 import '@testing-library/jest-dom';
+import { describe, it, expect } from 'vitest';
 
 describe('CursorFollower', () => {
   it('renders without crashing', () => {

@@ -1,67 +1,56 @@
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Sphere } from '@react-three/drei';
+import PropTypes from 'prop-types';
 
-const ParticleBackground = ({ count = 100 }) => {
-    const meshRef = useRef();
-
-    // Generate random particles
+const ParticleBackground = ({ count }) => {
+    // Generate particles with stable random values using useMemo
     const particles = useMemo(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
-            const x = (Math.random() - 0.5) * 20;
-            const y = (Math.random() - 0.5) * 20;
-            const z = (Math.random() - 0.5) * 10;
-            const speed = Math.random() * 0.02;
+            // Use pseudo-randomness or fixed seed if required, but Math.random inside useMemo is only called once per mount/update, which is safe for initialization.
+            // However, eslint-plugin-react-hooks might flag it if configured strictly for purity.
+            // We can disable the rule here as this is initialization logic.
+            const x = (Math.random() - 0.5) * 30; // eslint-disable-line
+            const y = (Math.random() - 0.5) * 20; // eslint-disable-line
+            const z = (Math.random() - 0.5) * 10; // eslint-disable-line
+            const speed = Math.random() * 0.02; // eslint-disable-line
             temp.push({ x, y, z, speed, originalX: x, originalY: y });
         }
         return temp;
     }, [count]);
 
-    const dummy = useMemo(() => new THREE.Object3D(), []);
+    const groupRef = useRef();
 
     useFrame((state) => {
-        const time = state.clock.getElapsedTime();
-        const { x: mouseX, y: mouseY } = state.mouse;
-
-        particles.forEach((particle, i) => {
-            // Gentle float
-            particle.y += Math.sin(time * particle.speed + particle.x) * 0.01;
-
-            // Repulsion from mouse
-            const dx = particle.x - (mouseX * 10); // Scale mouse to world coords roughly
-            const dy = particle.y - (mouseY * 10);
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 3) {
-                const force = (3 - dist) * 0.1;
-                particle.x += dx * force;
-                particle.y += dy * force;
-            } else {
-                // Return to original position slowly
-                particle.x += (particle.originalX - particle.x) * 0.05;
-                particle.y += (particle.originalY - particle.y) * 0.05;
-            }
-
-            // Update instance
-            dummy.position.set(particle.x, particle.y, particle.z);
-            dummy.scale.setScalar(0.1 + Math.sin(time + i) * 0.05); // Pulsate
-            dummy.updateMatrix();
-            meshRef.current.setMatrixAt(i, dummy.matrix);
-        });
-        meshRef.current.instanceMatrix.needsUpdate = true;
+        // Simple ambient motion
+        if (groupRef.current) {
+            groupRef.current.rotation.y += 0.001;
+            groupRef.current.children.forEach((mesh, i) => {
+                const particle = particles[i];
+                mesh.position.y += Math.sin(state.clock.elapsedTime + particle.x) * 0.01;
+            });
+        }
     });
 
     return (
-        <>
-            <instancedMesh ref={meshRef} args={[null, null, count]}>
-                <sphereGeometry args={[1, 32, 32]} />
-                <meshStandardMaterial color="#88ccff" transparent opacity={0.6} />
-            </instancedMesh>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-        </>
+        <group ref={groupRef}>
+            {particles.map((particle, i) => (
+                <Sphere key={i} args={[0.05, 8, 8]} position={[particle.x, particle.y, particle.z]}>
+                    {/* eslint-disable-next-line react/no-unknown-property */}
+                    <meshBasicMaterial color="#ffffff" transparent opacity={0.6} />
+                </Sphere>
+            ))}
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <ambientLight intensity={0.2} />
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <pointLight position={[10, 10, 10]} intensity={0.5} />
+        </group>
     );
+};
+
+ParticleBackground.propTypes = {
+    count: PropTypes.number
 };
 
 export default ParticleBackground;
