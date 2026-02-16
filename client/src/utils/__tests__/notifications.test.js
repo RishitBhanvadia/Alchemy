@@ -2,13 +2,14 @@ import { describe, it, expect, vi } from 'vitest';
 import { showSuccess, showError, showInfo } from '../notifications';
 
 // Mock react-hot-toast
-vi.mock('react-hot-toast', () => ({
-    default: {
-        success: vi.fn(),
-        error: vi.fn(),
-        loading: vi.fn(),
-    },
-}));
+vi.mock('react-hot-toast', () => {
+    const toast = vi.fn();
+    toast.success = vi.fn();
+    toast.error = vi.fn();
+    toast.loading = vi.fn();
+    toast.dismiss = vi.fn();
+    return { default: toast };
+});
 
 import toast from 'react-hot-toast';
 
@@ -28,13 +29,10 @@ describe('Notification Utility', () => {
     });
 
     it('should call toast with correct message for info', () => {
-        // Assuming showInfo calls toast.loading or similar, or just toast()
-        // Adjust based on actual implementation.
-        // For now, I'll just check if it runs without error if showInfo exists.
-        if (typeof showInfo === 'function') {
-             showInfo('Info message');
-             // Add assertion if needed
-        }
+        showInfo('Info message');
+        expect(toast).toHaveBeenCalledWith('Info message', expect.objectContaining({
+            duration: 4000,
+        }));
     });
 
     it('should apply custom styling to success toast', () => {
