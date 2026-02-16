@@ -81,7 +81,7 @@ const Sidebar = () => {
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-user-plus"></i>
+              <i className="fa-solid fa-user-plus"></i>
             </button>
           </div>
         </NavLink>
@@ -98,7 +98,7 @@ const Sidebar = () => {
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-user-minus"></i>
+              <i className="fa-solid fa-user-minus"></i>
             </button>
           </div>
         </NavLink>
@@ -115,7 +115,7 @@ const Sidebar = () => {
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-clock-rotate-left"></i>
+              <i className="fa-solid fa-clock-rotate-left"></i>
             </button>
           </div>
         </NavLink>
