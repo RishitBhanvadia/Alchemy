@@ -1,4 +1,7 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react-hooks/purity */
 import React, { useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -62,6 +65,10 @@ const ParticleBackground = ({ count = 100 }) => {
             <pointLight position={[10, 10, 10]} intensity={1} />
         </>
     );
+};
+
+ParticleBackground.propTypes = {
+    count: PropTypes.number
 };
 
 export default ParticleBackground;

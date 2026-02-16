@@ -1,5 +1,6 @@
 import React from 'react';
-import Tilt from 'react-parallax-tilt';
+import PropTypes from 'prop-types';
+
 const HolographicLogin = ({ children }) => {
     return (
         <div className="login-card tilt-card" style={{
@@ -11,6 +12,10 @@ const HolographicLogin = ({ children }) => {
             {children}
         </div>
     );
+};
+
+HolographicLogin.propTypes = {
+    children: PropTypes.node
 };
 
 export default HolographicLogin;
