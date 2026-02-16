@@ -1,73 +1,46 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import './Navbar.css';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
+import logger from '../utils/logger';
+import './Navbar.css';
 
 const Navbar = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const handleLogout = async () => {
+        setLoading(true);
+        try {
+            await supabase.auth.signOut();
+            navigate('/login');
+        } catch (error) {
+            logger.error('Error logging out:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <nav className="glass-navbar" role="navigation" aria-label="Main navigation">
-            <div className="nav-logo">
-                <img src={logo} alt="Alchemistry Logo" />
-                <span className="logo-text neon-glow">ALCHEMISTRY</span>
+        <nav className="navbar">
+            <div className="navbar-logo">
+                <img src={logo} alt="Alchemy Logo" />
+                <span className="logo-text neon-text">ALCHEMY</span>
             </div>
 
-            <div className="nav-links" role="menubar">
-                <NavLink
-                    to="/dashboard"
-                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                    aria-label="Navigate to Dashboard"
-                    role="menuitem"
+            <div className="navbar-links">
+                <Link to="/dashboard" className="nav-link">DASHBOARD</Link>
+                <Link to="/history" className="nav-link">HISTORY</Link>
+                <button
+                    onClick={handleLogout}
+                    className="logout-btn"
+                    disabled={loading}
                 >
-                    DASHBOARD
-                </NavLink>
-                <NavLink
-                    to="/lab"
-                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                    aria-label="Navigate to Laboratory"
-                    role="menuitem"
-                >
-                    LABORATORY
-                </NavLink>
-
-                <div
-                    className="nav-item dropdown-trigger"
-                    onMouseEnter={() => setDropdownOpen(true)}
-                    onMouseLeave={() => setDropdownOpen(false)}
-                    role="menuitem"
-                    aria-haspopup="true"
-                    aria-expanded={dropdownOpen}
-                    tabIndex={0}
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            setDropdownOpen(!dropdownOpen);
-                        }
-                    }}
-                >
-                    MORE <i className="fa-solid fa-chevron-down"></i>
-
-                    {dropdownOpen && (
-                        <div className="dropdown-menu glass-panel">
-                            <NavLink to="/history" className="dropdown-item">HISTORY</NavLink>
-                            <NavLink to="/organic" className="dropdown-item">ORGANIC</NavLink>
-                            <NavLink to="/inorganic" className="dropdown-item">INORGANIC</NavLink>
-                            <NavLink to="/titration" className="dropdown-item">TITRATION</NavLink>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <div className="nav-profile">
-                <div className="profile-icon">ADM</div>
+                    {loading ? '...' : 'LOGOUT'}
+                </button>
             </div>
         </nav>
     );
-};
-
-Navbar.propTypes = {
-    // No props currently, but ready for future additions
 };
 
 export default Navbar;
