@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
 import "./titration.css";
@@ -8,7 +7,6 @@ import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
 
 const Titration = () => {
   const all_data = [
@@ -24,10 +22,8 @@ const Titration = () => {
     }
   ];
 
-  const navigate = useNavigate();
 
   // State
-  const [behnede, setBehnede] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [confirm, setConfirm] = useState(true);
   const [add_acid, setAddAcid] = useState(false);
@@ -100,13 +96,11 @@ const Titration = () => {
     }
     return () => {
       clearInterval(timerId);
-      if (count >= 99) setBehnede(false);
     };
   }, [isCounting, count]);
 
   const handleStart = () => {
     if (drop && !isCounting) {
-      setBehnede(true);
       setDrop(false);
       setStop(true);
       setIsCounting(true);
@@ -117,7 +111,6 @@ const Titration = () => {
     if (stopp) {
       setDrop(true);
       setStop(false);
-      setBehnede(false);
       setIsCounting(false);
       saveResult(count); // Save when stopped
     }

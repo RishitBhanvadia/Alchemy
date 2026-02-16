@@ -41,7 +41,7 @@ const ExpResult = ({ num, on }) => {
             "characterstics": ["No Smoke", "No specific smell", "Does not dissolve in acetic acid", "No precipitates formed"]
         },
     ]
-    const [data, setData] = useState(undefined);
+    const [, setData] = useState();
     setTimeout(() => {
         setData(all_details[num])
     }, 1000);

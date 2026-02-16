@@ -8,7 +8,6 @@ import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 const Lab = () => {
   const app = useRef();
@@ -149,16 +148,12 @@ const Lab = () => {
   const isPlayDisabled = !(onOrNot());
 
   // Determine status for 3D Beaker
-  let experimentStatus = 'neutral';
-  if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success';
 
   return (
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
       <div className="lab-3d-background">
         <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
         </CanvasContainer>
@@ -173,8 +168,9 @@ const Lab = () => {
             <img src={hcl} alt="HCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>Conc. HCl</label>
+            <label htmlFor="chemA">Conc. HCl</label>
             <input
+              id="chemA"
               type="range"
               min="0"
               max={100 - chemB - chemC - chemD}
@@ -191,8 +187,9 @@ const Lab = () => {
             <img src={nacl} alt="NaCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>NaCl</label>
+            <label htmlFor="chemB">NaCl</label>
             <input
+              id="chemB"
               type="range"
               min="0"
               max={100 - chemA - chemC - chemD}
@@ -209,8 +206,9 @@ const Lab = () => {
             <img src={cuso4} alt="CuSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>CuSO4</label>
+            <label htmlFor="chemC">CuSO4</label>
             <input
+              id="chemC"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemD}
@@ -227,8 +225,9 @@ const Lab = () => {
             <img src={feso4} alt="FeSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>FeSO4</label>
+            <label htmlFor="chemD">FeSO4</label>
             <input
+              id="chemD"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemC}
