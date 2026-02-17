@@ -8,7 +8,6 @@ import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 const Lab = () => {
   const app = useRef();
@@ -147,11 +146,6 @@ const Lab = () => {
   }
 
   const isPlayDisabled = !(onOrNot());
-
-  // Determine status for 3D Beaker
-  let experimentStatus = 'neutral';
-  if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success';
 
   return (
     <div className="lab-page" ref={app}>

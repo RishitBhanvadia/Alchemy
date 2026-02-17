@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -67,6 +69,10 @@ const ReactiveBeaker = ({ status }) => {
             <pointLight position={[5, 5, 5]} intensity={1} />
         </group>
     );
+};
+
+ReactiveBeaker.propTypes = {
+    status: PropTypes.string
 };
 
 export default ReactiveBeaker;

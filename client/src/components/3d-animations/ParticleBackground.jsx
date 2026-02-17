@@ -1,11 +1,13 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const ParticleBackground = ({ count = 100 }) => {
     const meshRef = useRef();
 
-    // Generate random particles
+    // Use useMemo for stable particle generation, no side effects
     const particles = useMemo(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
@@ -21,6 +23,8 @@ const ParticleBackground = ({ count = 100 }) => {
     const dummy = useMemo(() => new THREE.Object3D(), []);
 
     useFrame((state) => {
+        if (!meshRef.current) return;
+
         const time = state.clock.getElapsedTime();
         const { x: mouseX, y: mouseY } = state.mouse;
 
@@ -62,6 +66,10 @@ const ParticleBackground = ({ count = 100 }) => {
             <pointLight position={[10, 10, 10]} intensity={1} />
         </>
     );
+};
+
+ParticleBackground.propTypes = {
+    count: PropTypes.number
 };
 
 export default ParticleBackground;

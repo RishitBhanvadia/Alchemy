@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import logo from '../assets/logo.png'
-import back from '../assets/back.jpg'
 import CompoundImg from "../components/compoundImg";
 import ExpResult from "./experiment_result";
 import "./lab.css"

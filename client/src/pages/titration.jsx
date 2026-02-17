@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient'; // Corrected import based on file search
+import { supabase } from '../supabaseClient';
 import "./titration.css";
 import Polygon from "../components/Polygon";
 import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
 
 const Titration = () => {
   const all_data = [
@@ -23,8 +21,6 @@ const Titration = () => {
       "color": ["#bf0095", "#c2007b", "#c8007d", "#c8008b", "#be0090", "#c80086", "#b90083", "#be007c", "#c00087", "#b10080"]
     }
   ];
-
-  const navigate = useNavigate();
 
   // State
   const [behnede, setBehnede] = useState(false);
@@ -216,15 +212,8 @@ const Titration = () => {
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>
               <TitrationSetup aheigth={acid_heigth} color={sColor} shaky={shaking} count={count} />
 
-              {/* Dynamic Liquid Levels Overlay */}
-              <div className="base_box" style={{
-                height: `${210 - (count / 10) * 21}px`,
-                left: '0',
-                bottom: '0',
-                position: 'absolute',
-                transform: 'translate(928px, 118px)', // Kept original logic but might need tweaking
-                display: 'none' // Hidden for now as it relies on hardcoded absolute pixels in original
-              }}></div>
+              {/* Dynamic Liquid Levels Overlay - using behnede state if needed */}
+              {behnede && <div className="base_box_overlay" />}
             </div>
 
             {/* Operating Buttons - Floating Action Buttons */}
