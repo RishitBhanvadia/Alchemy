@@ -1,65 +1,96 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useReducer, useEffect, useCallback } from "react";
+// import { useNavigate } from "react-router-dom"; // Unused
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient'; // Corrected import based on file search
+import { supabase } from '../supabaseClient';
 import "./titration.css";
 import Polygon from "../components/Polygon";
 import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
+import { TITRATION_DATA, ACID_PATH_TEMPLATE, INITIAL_COLOR } from '../utils/titrationConstants';
+import { calculateAcidPath, calculateColor, calculateScore, getFeedbackMessage } from '../utils/titrationUtils';
+
+const initialState = {
+  isSetupConfirmed: false,
+  isAcidAdded: false,
+  isIndicatorAdded: false,
+  isDropping: false,
+  isShaking: false,
+  swipe: true, // true for HCl, false for H2SO4
+  acidPath: ACID_PATH_TEMPLATE.INITIAL,
+  data: TITRATION_DATA[0],
+  color: INITIAL_COLOR,
+  count: 0,
+  message: "",
+};
+
+function titrationReducer(state, action) {
+  switch (action.type) {
+    case 'SET_SWIPE':
+      return {
+        ...state,
+        swipe: action.payload,
+        data: action.payload ? TITRATION_DATA[0] : TITRATION_DATA[1]
+      };
+    case 'CONFIRM_SETUP':
+      return {
+        ...state,
+        isSetupConfirmed: true
+      };
+    case 'ADD_ACID':
+      return {
+        ...state,
+        isAcidAdded: true,
+        acidPath: ACID_PATH_TEMPLATE.FILLED
+      };
+    case 'ADD_INDICATOR':
+      return {
+        ...state,
+        isIndicatorAdded: true
+      };
+    case 'START_DROPPING':
+      return {
+        ...state,
+        isDropping: true
+      };
+    case 'STOP_DROPPING':
+      return {
+        ...state,
+        isDropping: false,
+        message: action.message || state.message
+      };
+    case 'SHAKE_START':
+      return { ...state, isShaking: true };
+    case 'SHAKE_END':
+      return { ...state, isShaking: false };
+    case 'UPDATE_COUNT': {
+      const newCount = state.count + 1;
+      return {
+        ...state,
+        count: newCount,
+        acidPath: calculateAcidPath(newCount)
+      };
+    }
+    case 'UPDATE_COLOR': {
+      const newColor = calculateColor(state.count, state.data);
+      return {
+        ...state,
+        color: newColor || state.color
+      };
+    }
+    case 'RESET':
+      return initialState;
+    default:
+      return state;
+  }
+}
 
 const Titration = () => {
-  const all_data = [
-    {
-      "reaction_id": "A",
-      "points": [8, 8.5, 9, 9.5, 10],
-      "color": ["#bf006b", "#bb0062", "#b80063", "#b70061", "#b8006a"]
-    },
-    {
-      "reaction_id": "B",
-      "points": [7.65, 7.9, 8.15, 8.4, 8.65, 8.9, 9.15, 9.4, 9.65, 10],
-      "color": ["#bf0095", "#c2007b", "#c8007d", "#c8008b", "#be0090", "#c80086", "#b90083", "#be007c", "#c00087", "#b10080"]
-    }
-  ];
+  const [state, dispatch] = useReducer(titrationReducer, initialState);
+  // const navigate = useNavigate(); // Unused
 
-  const navigate = useNavigate();
-
-  // State
-  const [behnede, setBehnede] = useState(false);
-  const [shaking, setShaking] = useState(false);
-  const [confirm, setConfirm] = useState(true);
-  const [add_acid, setAddAcid] = useState(false);
-  const [drop, setDrop] = useState(false);
-  const [stopp, setStop] = useState(false);
-  const [shake, setShake] = useState(false);
-  const [add_kmn, setKMN] = useState(false);
-  const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
-  const [data, setData] = useState(all_data[0]);
-  const [sColor, SetSColor] = useState('#3accff');
-  const [count, setCount] = useState(0);
-  const [isCounting, setIsCounting] = useState(false);
-  const [message, setMessage] = useState("");
-
-  // Logic to save result
-  const saveResult = async (finalCount) => {
-    // Calibrate score: 100 is target.
-    // Score = 100 - difference. Min 0.
-    const diff = Math.abs(100 - finalCount);
-    let score = 100 - diff;
-    if (score < 0) score = 0;
-
-    // Feedback message
-    let feedback = "";
-    if (score === 100) feedback = "Perfect Titration!";
-    else if (score >= 90) feedback = "Great job! Very close.";
-    else if (score >= 70) feedback = "Good attempt. Watch the color change closely.";
-    else feedback = "Overshot or Undershot. Try again!";
-
-    setMessage(`Score: ${score}/100. ${feedback}`);
-
+  const saveResultToDB = useCallback(async (finalCount, score) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -70,75 +101,65 @@ const Titration = () => {
               user_id: user.id,
               experiment_type: 'Titration',
               score: score,
-              details: { volume_used: finalCount, acid: swipe ? 'HCl' : 'H2SO4' }
+              details: { volume_used: finalCount, acid: state.swipe ? 'HCl' : 'H2SO4' }
             }
           ]);
         if (error) console.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
       }
     } catch (e) {
       console.error("Supabase error:", e);
     }
-  };
+  }, [state.swipe]);
 
-  function setting_up_exp() {
-    setConfirm(false);
-    setAddAcid(true);
-    if (swipe) setData(all_data[0]);
-    else setData(all_data[1]);
-  }
+  const handleStop = useCallback(() => {
+    if (state.isDropping) {
+      const score = calculateScore(state.count);
+      const feedback = getFeedbackMessage(score);
+      const message = `Score: ${score}/100. ${feedback}`;
+
+      dispatch({ type: 'STOP_DROPPING', message });
+      saveResultToDB(state.count, score);
+    }
+  }, [state.isDropping, state.count, saveResultToDB]);
 
   // Timer Logic
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
-      timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
-        setCount(prevCount => prevCount + 1);
-      }, 100);
+    if (state.isDropping) {
+        if (state.count < 100) {
+             timerId = setInterval(() => {
+                dispatch({ type: 'UPDATE_COUNT' });
+              }, 100);
+        } else {
+             handleStop();
+        }
     }
-    return () => {
-      clearInterval(timerId);
-      if (count >= 99) setBehnede(false);
-    };
-  }, [isCounting, count]);
+    return () => clearInterval(timerId);
+  }, [state.isDropping, state.count, handleStop]);
 
   const handleStart = () => {
-    if (drop && !isCounting) {
-      setBehnede(true);
-      setDrop(false);
-      setStop(true);
-      setIsCounting(true);
-    }
-  };
-
-  const handleStop = () => {
-    if (stopp) {
-      setDrop(true);
-      setStop(false);
-      setBehnede(false);
-      setIsCounting(false);
-      saveResult(count); // Save when stopped
+    if (!state.isDropping) {
+      dispatch({ type: 'START_DROPPING' });
     }
   };
 
   const handleShake = () => {
-    if (shake) {
-      setShaking(true);
-      setTimeout(() => setShaking(false), 500);
-      for (var i = 0; i < data.points.length; i++) {
-        if ((count / 10) >= data.points[i]) {
-          SetSColor(data.color[i]);
-          break;
-        }
-      }
-    }
-  }
+    dispatch({ type: 'SHAKE_START' });
+    setTimeout(() => dispatch({ type: 'SHAKE_END' }), 500);
+    dispatch({ type: 'UPDATE_COLOR' });
+  };
+
+  // Helper variables for button states
+  const canConfirm = !state.isSetupConfirmed;
+  const canAddAcid = state.isSetupConfirmed && !state.isAcidAdded;
+  const canAddIndicator = state.isAcidAdded && !state.isIndicatorAdded;
+  const canDrop = state.isIndicatorAdded && !state.isDropping;
+  const canStop = state.isDropping;
+  const canShake = state.isIndicatorAdded;
 
   return (
     <div className="titration-page">
-      <Navbar /> {/* New Top Navbar */}
+      <Navbar />
 
       <div className="titration-container">
 
@@ -152,12 +173,12 @@ const Titration = () => {
                 <div className="selection-row">
                   <span className="selection-label">ACID:</span>
                   <div className="chem-selector">
-                    <button className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
+                    <button className="arrow-btn" disabled={state.swipe || !canConfirm} onClick={() => dispatch({ type: 'SET_SWIPE', payload: true })}>&lt;</button>
                     <div className="chem-display">
-                      <img src={swipe ? hcl : nacl} alt="Acid" />
-                      <span>{swipe ? 'HCl' : 'H2SO4'}</span>
+                      <img src={state.swipe ? hcl : nacl} alt="Acid" />
+                      <span>{state.swipe ? 'HCl' : 'H2SO4'}</span>
                     </div>
-                    <button className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
+                    <button className="arrow-btn" disabled={!state.swipe || !canConfirm} onClick={() => dispatch({ type: 'SET_SWIPE', payload: false })}>&gt;</button>
                   </div>
                 </div>
 
@@ -172,23 +193,15 @@ const Titration = () => {
                 </div>
               </div>
 
-              <button className="sci-fi-btn" disabled={!confirm} onClick={setting_up_exp}>
+              <button className="sci-fi-btn" disabled={!canConfirm} onClick={() => dispatch({ type: 'CONFIRM_SETUP' })}>
                 CONFIRM SELECTION
               </button>
 
-              <button className="sci-fi-btn" disabled={!add_acid} onClick={() => {
-                setAcid("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z");
-                setAddAcid(false);
-                setKMN(true);
-              }}>
+              <button className="sci-fi-btn" disabled={!canAddAcid} onClick={() => dispatch({ type: 'ADD_ACID' })}>
                 ADD 10ML ACID
               </button>
 
-              <button className="sci-fi-btn" disabled={!add_kmn} onClick={() => {
-                setKMN(false);
-                setDrop(true);
-                setShake(true);
-              }}>
+              <button className="sci-fi-btn" disabled={!canAddIndicator} onClick={() => dispatch({ type: 'ADD_INDICATOR' })}>
                 ADD INDICATOR (KMnO4)
               </button>
 
@@ -200,42 +213,29 @@ const Titration = () => {
 
           <div className="note-box">
             <span style={{ fontWeight: 'bold', color: '#ff4d4d' }}>NOTE:</span> The solution of HCl is 1 M and H2SO4 is 2 M.
-            {message && <div style={{ color: '#00f3ff', marginTop: '10px' }}>{message}</div>}
+            {state.message && <div style={{ color: '#00f3ff', marginTop: '10px' }}>{state.message}</div>}
           </div>
         </div>
 
         {/* Right Experiment Area */}
         <div className="titration-experiment-area">
-          {/* Visual Setup */}
           <div className="setup-container">
             <div style={{ position: 'absolute', top: '100px', left: '100px' }}>
-              <Polygon c={count} />
+              <Polygon c={state.count} />
             </div>
 
-            {/* Simulated SVG parts from original code, wrapped for positioning */}
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>
-              <TitrationSetup aheigth={acid_heigth} color={sColor} shaky={shaking} count={count} />
-
-              {/* Dynamic Liquid Levels Overlay */}
-              <div className="base_box" style={{
-                height: `${210 - (count / 10) * 21}px`,
-                left: '0',
-                bottom: '0',
-                position: 'absolute',
-                transform: 'translate(928px, 118px)', // Kept original logic but might need tweaking
-                display: 'none' // Hidden for now as it relies on hardcoded absolute pixels in original
-              }}></div>
+              <TitrationSetup aheigth={state.acidPath} color={state.color} shaky={state.isShaking} count={state.count} />
             </div>
 
-            {/* Operating Buttons - Floating Action Buttons */}
             <div className="operating-buttons">
-              <button className="op-btn" disabled={!drop} onClick={handleStart}>
+              <button className="op-btn" disabled={!canDrop} onClick={handleStart}>
                 DROP
               </button>
-              <button className="op-btn" disabled={!stopp} onClick={handleStop}>
+              <button className="op-btn" disabled={!canStop} onClick={handleStop}>
                 STOP
               </button>
-              <button className="op-btn" disabled={!shake} onClick={handleShake}>
+              <button className="op-btn" disabled={!canShake} onClick={handleShake}>
                 SHAKE
               </button>
             </div>
