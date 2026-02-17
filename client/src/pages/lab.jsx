@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -8,13 +8,11 @@ import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [arr, setArr] = useState([]);
   const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
@@ -22,29 +20,19 @@ const Lab = () => {
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  function change_tip() {
+  useEffect(() => {
     if (chemA > 0) {
       SetTColor('#05B9C4');
+    } else if (chemB > 0) {
+      SetTColor('#04CE7E');
+    } else if (chemC > 0) {
+      SetTColor('#FBC2E3');
+    } else if (chemD > 0) {
+      SetTColor('#DAA520');
+    } else {
+      SetTColor("");
     }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+  }, [chemA, chemB, chemC, chemD]);
 
   useLayoutEffect(() => {
     if (animate) {
@@ -63,66 +51,22 @@ const Lab = () => {
 
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('A') === -1) {
-        setArr(prev => [...prev, '#848584c8']);
-      }
-    }
-    else {
-      if (arr.indexOf('A') !== -1) {
-        setArr(arr.filter(item => item !== '#848584c8'));
-      }
-    }
     setChemA(value);
-    change_tip();
   };
 
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('B') === -1) {
-        setArr(prev => [...prev, '#F2F0F0']);
-      }
-    }
-    else {
-      if (arr.indexOf('B') !== -1) {
-        setArr(arr.filter(item => item !== '#F2F0F0'));
-      }
-    }
     setChemB(value);
-    change_tip();
   };
 
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('C') === -1) {
-        setArr(prev => [...prev, '#2987f3bb']);
-      }
-    }
-    else {
-      if (arr.indexOf('C') !== -1) {
-        setArr(arr.filter(item => item !== '#2987f3bb'));
-      }
-    }
     setChemC(value);
-    change_tip();
   };
 
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      if (arr.indexOf('D') === -1) {
-        setArr(prev => [...prev, '#6f4e37c1']);
-      }
-    }
-    else {
-      if (arr.indexOf('D') !== -1) {
-        setArr(arr.filter(item => item !== '#6f4e37c1'));
-      }
-    }
     setChemD(value);
-    change_tip();
   };
 
   const useHandlePlayClick = () => {
@@ -148,11 +92,6 @@ const Lab = () => {
 
   const isPlayDisabled = !(onOrNot());
 
-  // Determine status for 3D Beaker
-  let experimentStatus = 'neutral';
-  if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success';
-
   return (
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
@@ -173,8 +112,9 @@ const Lab = () => {
             <img src={hcl} alt="HCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>Conc. HCl</label>
+            <label htmlFor="hcl-input">Conc. HCl</label>
             <input
+              id="hcl-input"
               type="range"
               min="0"
               max={100 - chemB - chemC - chemD}
@@ -191,8 +131,9 @@ const Lab = () => {
             <img src={nacl} alt="NaCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>NaCl</label>
+            <label htmlFor="nacl-input">NaCl</label>
             <input
+              id="nacl-input"
               type="range"
               min="0"
               max={100 - chemA - chemC - chemD}
@@ -209,8 +150,9 @@ const Lab = () => {
             <img src={cuso4} alt="CuSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>CuSO4</label>
+            <label htmlFor="cuso4-input">CuSO4</label>
             <input
+              id="cuso4-input"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemD}
@@ -227,8 +169,9 @@ const Lab = () => {
             <img src={feso4} alt="FeSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>FeSO4</label>
+            <label htmlFor="feso4-input">FeSO4</label>
             <input
+              id="feso4-input"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemC}
