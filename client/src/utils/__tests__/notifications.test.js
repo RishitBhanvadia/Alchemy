@@ -3,7 +3,7 @@ import { showSuccess, showError, showInfo } from '../notifications';
 
 // Mock react-hot-toast
 vi.mock('react-hot-toast', () => ({
-    default: vi.fn((message, options) => ({ id: 'toast-id' })),
+    default: vi.fn(() => ({ id: 'toast-id' })),
     success: vi.fn(),
     error: vi.fn(),
     loading: vi.fn(),

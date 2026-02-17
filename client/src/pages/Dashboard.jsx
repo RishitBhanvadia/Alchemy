@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
 import "./dashboard.css";
 // import ParticlesBg from "../components/ParticlesBg"; // Global theme handles bg now
 
