@@ -149,9 +149,9 @@ const Lab = () => {
   const isPlayDisabled = !(onOrNot());
 
   // Determine status for 3D Beaker
-  let experimentStatus = 'neutral';
-  if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success';
+  // let experimentStatus = 'neutral';
+  // if (animate) experimentStatus = 'loading';
+  // else if (!isPlayDisabled) experimentStatus = 'success';
 
   return (
     <div className="lab-page" ref={app}>
