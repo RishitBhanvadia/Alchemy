@@ -20,3 +20,5 @@ const CustomTestTube = ({arr}) => {
         </svg>
     )
 }
+
+export default CustomTestTube;

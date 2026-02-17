@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
 import "./titration.css";
@@ -8,7 +7,6 @@ import TitrationSetup from "../components/titration_setup";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
-import s10 from '../assets/10ss.png';
 
 const Titration = () => {
   const all_data = [
@@ -24,9 +22,8 @@ const Titration = () => {
     }
   ];
 
-  const navigate = useNavigate();
-
   // State
+  // eslint-disable-next-line no-unused-vars
   const [behnede, setBehnede] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [confirm, setConfirm] = useState(true);

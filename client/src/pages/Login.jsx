@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { supabase } from '../supabaseClient';
 import HolographicLogin from '../components/3d-animations/HolographicLogin';
 import logger from '../utils/logger';
@@ -66,10 +65,6 @@ const Login = () => {
             </HolographicLogin>
         </div>
     );
-};
-
-Login.propTypes = {
-    // No props currently, but ready for future additions
 };
 
 export default Login;
