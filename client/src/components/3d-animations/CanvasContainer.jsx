@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Canvas } from '@react-three/fiber';
 
 const CanvasContainer = ({ children, style, ...props }) => {
@@ -9,6 +10,11 @@ const CanvasContainer = ({ children, style, ...props }) => {
             </Canvas>
         </div>
     );
+};
+
+CanvasContainer.propTypes = {
+    children: PropTypes.node,
+    style: PropTypes.object
 };
 
 export default CanvasContainer;

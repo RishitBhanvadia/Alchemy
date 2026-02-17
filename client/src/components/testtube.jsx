@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CustomTestTube = ({ color, hasLiquid }) => {
     return (
@@ -30,6 +31,11 @@ const CustomTestTube = ({ color, hasLiquid }) => {
         </svg>
     )
 }
+
+CustomTestTube.propTypes = {
+    color: PropTypes.string,
+    hasLiquid: PropTypes.bool
+};
 
 export default CustomTestTube;
 

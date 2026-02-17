@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unknown-property */
 import React from "react";
+import PropTypes from 'prop-types';
 
 const TitrationSetup = ({ aheigth, color, shaky, count }) => {
     return (
@@ -141,5 +143,12 @@ const TitrationSetup = ({ aheigth, color, shaky, count }) => {
         </svg>
     )
 }
+
+TitrationSetup.propTypes = {
+    aheigth: PropTypes.number,
+    color: PropTypes.string,
+    shaky: PropTypes.bool,
+    count: PropTypes.number
+};
 
 export default TitrationSetup;

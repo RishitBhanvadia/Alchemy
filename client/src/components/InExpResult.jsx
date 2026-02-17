@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unknown-property */
 import React from "react";
+import PropTypes from 'prop-types';
 import ResultCustomTestTube from "./result_testtube";
 import labgif from '../assets/labgigbl.gif'
 
@@ -92,5 +94,10 @@ const InExpResult = ({ num, on }) => {
         </div>
     )
 }
+
+InExpResult.propTypes = {
+    num: PropTypes.number,
+    on: PropTypes.bool
+};
 
 export default InExpResult;
