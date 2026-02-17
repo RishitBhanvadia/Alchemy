@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const CustomTestTube = ({arr}) => {
+const TestTubeChanges = ({ arr }) => {
     return(
         <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="7316977_3623545 1">
@@ -20,3 +21,9 @@ const CustomTestTube = ({arr}) => {
         </svg>
     )
 }
+
+TestTubeChanges.propTypes = {
+    arr: PropTypes.array
+};
+
+export default TestTubeChanges;

@@ -1,5 +1,4 @@
 import React from 'react';
-import Tilt from 'react-parallax-tilt';
 const HolographicLogin = ({ children }) => {
     return (
         <div className="login-card tilt-card" style={{
