@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
+import log from '../utils/logger';
 import "./history.css";
 
 const History = () => {
@@ -24,7 +26,7 @@ const History = () => {
                     setExperiments(data || []);
                 }
             } catch (error) {
-                console.error("Error fetching history:", error);
+                log.error("Error fetching history:", error);
             } finally {
                 setLoading(false);
             }
@@ -57,7 +59,23 @@ const History = () => {
                             <p className="neon-text blink">LOADING ARCHIVES...</p>
                         </div>
                     ) : experiments.length === 0 ? (
-                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                        <div className="empty-state-container">
+                            <div className="empty-state-icon">
+                                <i className="fa-solid fa-flask-vial"></i>
+                            </div>
+                            <h2 className="empty-state-title">No Experiments Found</h2>
+                            <p className="empty-state-text">
+                                Your experiment logs are empty. Start an experiment to see your results here.
+                            </p>
+                            <div className="empty-state-actions">
+                                <Link to="/lab" className="cta-button primary">
+                                    <i className="fa-solid fa-flask"></i> Go to Lab
+                                </Link>
+                                <Link to="/titration" className="cta-button secondary">
+                                    <i className="fa-solid fa-vial"></i> Go to Titration
+                                </Link>
+                            </div>
+                        </div>
                     ) : (
                         <div className="table-wrapper">
                             <table className="history-table">
