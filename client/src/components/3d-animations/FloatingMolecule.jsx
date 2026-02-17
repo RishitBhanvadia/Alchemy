@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, Icosahedron } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 
 const FloatingMolecule = () => {
     const meshRef = useRef();

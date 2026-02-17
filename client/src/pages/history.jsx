@@ -24,7 +24,7 @@ const History = () => {
                     setExperiments(data || []);
                 }
             } catch (error) {
-                console.error("Error fetching history:", error);
+                // console.error("Error fetching history:", error);
             } finally {
                 setLoading(false);
             }

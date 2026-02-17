@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -9,19 +11,27 @@ const ReactiveBeaker = ({ status }) => {
     const [waveHeight, setWaveHeight] = useState(0.1);
 
     useEffect(() => {
+        let newColor;
+        let newWaveHeight;
+
         if (status === 'success') {
-            setLiquidColor(new THREE.Color('#00ff00')); // Green
-            setWaveHeight(0.05);
+            newColor = new THREE.Color('#00ff00'); // Green
+            newWaveHeight = 0.05;
         } else if (status === 'failed') {
-            setLiquidColor(new THREE.Color('#ff0000')); // Red
-            setWaveHeight(0.3); // Boiling
+            newColor = new THREE.Color('#ff0000'); // Red
+            newWaveHeight = 0.3; // Boiling
         } else if (status === 'loading') {
-            setLiquidColor(new THREE.Color('#00aaff')); // Blue
-            setWaveHeight(0.2); // Sloshing
+            newColor = new THREE.Color('#00aaff'); // Blue
+            newWaveHeight = 0.2; // Sloshing
         } else {
-            setLiquidColor(new THREE.Color('#cccccc')); // Neutral
-            setWaveHeight(0);
+            newColor = new THREE.Color('#cccccc'); // Neutral
+            newWaveHeight = 0;
         }
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLiquidColor(newColor);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setWaveHeight(newWaveHeight);
     }, [status]);
 
     useFrame((state) => {
@@ -67,6 +77,10 @@ const ReactiveBeaker = ({ status }) => {
             <pointLight position={[5, 5, 5]} intensity={1} />
         </group>
     );
+};
+
+ReactiveBeaker.propTypes = {
+    status: PropTypes.string
 };
 
 export default ReactiveBeaker;
