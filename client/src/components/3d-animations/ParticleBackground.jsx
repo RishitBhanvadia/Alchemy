@@ -1,12 +1,14 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const ParticleBackground = ({ count = 100 }) => {
     const meshRef = useRef();
+    const particlesRef = useRef([]);
 
-    // Generate random particles
-    const particles = useMemo(() => {
+    // Generate random particles in useEffect to avoid purity issues
+    useEffect(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
             const x = (Math.random() - 0.5) * 20;
@@ -15,7 +17,7 @@ const ParticleBackground = ({ count = 100 }) => {
             const speed = Math.random() * 0.02;
             temp.push({ x, y, z, speed, originalX: x, originalY: y });
         }
-        return temp;
+        particlesRef.current = temp;
     }, [count]);
 
     const dummy = useMemo(() => new THREE.Object3D(), []);
@@ -24,7 +26,7 @@ const ParticleBackground = ({ count = 100 }) => {
         const time = state.clock.getElapsedTime();
         const { x: mouseX, y: mouseY } = state.mouse;
 
-        particles.forEach((particle, i) => {
+        particlesRef.current.forEach((particle, i) => {
             // Gentle float
             particle.y += Math.sin(time * particle.speed + particle.x) * 0.01;
 
@@ -47,9 +49,13 @@ const ParticleBackground = ({ count = 100 }) => {
             dummy.position.set(particle.x, particle.y, particle.z);
             dummy.scale.setScalar(0.1 + Math.sin(time + i) * 0.05); // Pulsate
             dummy.updateMatrix();
-            meshRef.current.setMatrixAt(i, dummy.matrix);
+            if (meshRef.current) {
+                meshRef.current.setMatrixAt(i, dummy.matrix);
+            }
         });
-        meshRef.current.instanceMatrix.needsUpdate = true;
+        if (meshRef.current) {
+            meshRef.current.instanceMatrix.needsUpdate = true;
+        }
     });
 
     return (
@@ -62,6 +68,10 @@ const ParticleBackground = ({ count = 100 }) => {
             <pointLight position={[10, 10, 10]} intensity={1} />
         </>
     );
+};
+
+ParticleBackground.propTypes = {
+    count: PropTypes.number
 };
 
 export default ParticleBackground;
