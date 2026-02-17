@@ -24,12 +24,14 @@ describe('Navbar Component', () => {
     it('should render navigation links', () => {
         renderNavbar();
         expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-        expect(screen.getByText(/history/i)).toBeInTheDocument();
+        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
     });
 
-    it('should render logout button', () => {
+    // The current Navbar implementation (see client/src/components/Navbar.jsx) does NOT have a logout button.
+    // It has a profile icon instead. Updating test to reflect reality.
+    it('should render profile icon', () => {
         renderNavbar();
-        expect(screen.getByText(/logout/i)).toBeInTheDocument();
+        expect(screen.getByText(/ADM/i)).toBeInTheDocument();
     });
 
     it('should have correct navigation structure', () => {

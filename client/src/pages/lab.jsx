@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useState, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
@@ -167,8 +168,9 @@ const Lab = () => {
             <img src={hcl} alt="HCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>Conc. HCl</label>
+            <label htmlFor="conc_hcl">Conc. HCl</label>
             <input
+              id="conc_hcl"
               type="range"
               min="0"
               max={100 - chemB - chemC - chemD}
@@ -185,8 +187,9 @@ const Lab = () => {
             <img src={nacl} alt="NaCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>NaCl</label>
+            <label htmlFor="nacl">NaCl</label>
             <input
+              id="nacl"
               type="range"
               min="0"
               max={100 - chemA - chemC - chemD}
@@ -203,8 +206,9 @@ const Lab = () => {
             <img src={cuso4} alt="CuSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>CuSO4</label>
+            <label htmlFor="cuso4">CuSO4</label>
             <input
+              id="cuso4"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemD}
@@ -221,8 +225,9 @@ const Lab = () => {
             <img src={feso4} alt="FeSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>FeSO4</label>
+            <label htmlFor="feso4">FeSO4</label>
             <input
+              id="feso4"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemC}

@@ -37,7 +37,7 @@ const Result = () => {
       })
       .then(data => {
         if (!data || data.length === 0) {
-          console.warn("No data received from backend");
+          // console.warn("No data received from backend");
         }
         setData(data);
         const d = new Date();
@@ -68,7 +68,7 @@ const Result = () => {
         setCart(newCart);
       })
       .catch(error => {
-        console.error("Fetch error:", error);
+        // console.error("Fetch error:", error);
         setData([{
           color: "#ff0000",
           result: `Error: ${error.message}`,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CustomTestTube = ({arr}) => {
     return(
@@ -20,3 +21,9 @@ const CustomTestTube = ({arr}) => {
         </svg>
     )
 }
+
+CustomTestTube.propTypes = {
+    arr: PropTypes.array
+};
+
+export default CustomTestTube;

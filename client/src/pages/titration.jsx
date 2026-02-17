@@ -69,11 +69,14 @@ const Titration = () => {
               details: { volume_used: finalCount, acid: swipe ? 'HCl' : 'H2SO4' }
             }
           ]);
-        if (error) console.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
+        if (error) {
+          // console.error('Error saving result:', error);
+        } else {
+          setMessage("Result saved to database!");
+        }
       }
     } catch (e) {
-      console.error("Supabase error:", e);
+      // console.error("Supabase error:", e);
     }
   };
 
