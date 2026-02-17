@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect, useCallback } from "react";
-// import { useNavigate } from "react-router-dom"; // Unused
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import "./titration.css";
@@ -88,7 +87,6 @@ function titrationReducer(state, action) {
 
 const Titration = () => {
   const [state, dispatch] = useReducer(titrationReducer, initialState);
-  // const navigate = useNavigate(); // Unused
 
   const saveResultToDB = useCallback(async (finalCount, score) => {
     try {
@@ -104,9 +102,14 @@ const Titration = () => {
               details: { volume_used: finalCount, acid: state.swipe ? 'HCl' : 'H2SO4' }
             }
           ]);
-        if (error) console.error('Error saving result:', error);
+        if (error) {
+             // Use a logger or handle error appropriately in production
+             // eslint-disable-next-line no-console
+             console.error('Error saving result:', error);
+        }
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Supabase error:", e);
     }
   }, [state.swipe]);
