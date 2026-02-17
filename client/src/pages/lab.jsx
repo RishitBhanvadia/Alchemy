@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
