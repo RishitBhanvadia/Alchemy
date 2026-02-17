@@ -24,12 +24,12 @@ describe('Navbar Component', () => {
     it('should render navigation links', () => {
         renderNavbar();
         expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-        expect(screen.getByText(/history/i)).toBeInTheDocument();
+        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
     });
 
-    it('should render logout button', () => {
+    it('should render profile icon', () => {
         renderNavbar();
-        expect(screen.getByText(/logout/i)).toBeInTheDocument();
+        expect(screen.getByText(/adm/i)).toBeInTheDocument();
     });
 
     it('should have correct navigation structure', () => {

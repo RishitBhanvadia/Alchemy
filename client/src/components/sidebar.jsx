@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { NavLink } from "react-router-dom";
-import Star from '../assets/star.png'
 
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = useState("");
-
-  useEffect(() => {
-    const currentRoute = window.location.pathname;
-    setSelectedTab(getTabFromRoute(currentRoute));
-  }, []);
-
-  const handleTabClick = (tab) => {
-    setSelectedTab(tab);
-  };
 
   const getTabFromRoute = (route) => {
     switch (route) {
@@ -30,6 +20,16 @@ const Sidebar = () => {
       default:
         return "";
     }
+  };
+
+  useEffect(() => {
+    const currentRoute = window.location.pathname;
+    setSelectedTab(getTabFromRoute(currentRoute));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleTabClick = (tab) => {
+    setSelectedTab(tab);
   };
 
   return (
@@ -81,7 +81,7 @@ const Sidebar = () => {
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-user-plus"></i>
+              <i className="fa-solid fa-user-plus"></i>
             </button>
           </div>
         </NavLink>
@@ -98,7 +98,7 @@ const Sidebar = () => {
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-user-minus"></i>
+              <i className="fa-solid fa-user-minus"></i>
             </button>
           </div>
         </NavLink>
@@ -115,7 +115,7 @@ const Sidebar = () => {
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
             >
-              <i class="fa-solid fa-clock-rotate-left"></i>
+              <i className="fa-solid fa-clock-rotate-left"></i>
             </button>
           </div>
         </NavLink>
