@@ -1,0 +1,96 @@
+
+> alchemy-client@0.1.0 lint /app/client
+> eslint src --ext .js,.jsx
+
+
+/app/client/src/components/3d-animations/ParticleBackground.jsx
+  14:24  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  12 |         const temp = [];
+  13 |         for (let i = 0; i < count; i++) {
+> 14 |             const x = (Math.random() - 0.5) * 20;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  15 |             const y = (Math.random() - 0.5) * 20;
+  16 |             const z = (Math.random() - 0.5) * 10;
+  17 |             const speed = Math.random() * 0.02;                                                react-hooks/purity
+  15:24  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  13 |         for (let i = 0; i < count; i++) {
+  14 |             const x = (Math.random() - 0.5) * 20;
+> 15 |             const y = (Math.random() - 0.5) * 20;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  16 |             const z = (Math.random() - 0.5) * 10;
+  17 |             const speed = Math.random() * 0.02;
+  18 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });  react-hooks/purity
+  16:24  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  14 |             const x = (Math.random() - 0.5) * 20;
+  15 |             const y = (Math.random() - 0.5) * 20;
+> 16 |             const z = (Math.random() - 0.5) * 10;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  17 |             const speed = Math.random() * 0.02;
+  18 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });
+  19 |         }                                  react-hooks/purity
+  17:27  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  15 |             const y = (Math.random() - 0.5) * 20;
+  16 |             const z = (Math.random() - 0.5) * 10;
+> 17 |             const speed = Math.random() * 0.02;
+     |                           ^^^^^^^^^^^^^ Cannot call impure function
+  18 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });
+  19 |         }
+  20 |         return temp;                                                            react-hooks/purity
+
+/app/client/src/components/3d-animations/ReactiveBeaker.jsx
+  15:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  13 |     useEffect(() => {
+  14 |         if (status === 'success') {
+> 15 |             setLiquidColor(new THREE.Color('#00ff00')); // Green
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  16 |             setWaveHeight(0.05);
+  17 |         } else if (status === 'failed') {
+  18 |             setLiquidColor(new THREE.Color('#ff0000')); // Red  react-hooks/set-state-in-effect
+
+/app/client/src/components/sidebar.jsx
+  27:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  25 |   useEffect(() => {
+  26 |     const currentRoute = window.location.pathname;
+> 27 |     setSelectedTab(getTabFromRoute(currentRoute));
+     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |   }, [getTabFromRoute]);
+  29 |
+  30 |   const handleTabClick = (tab) => {  react-hooks/set-state-in-effect
+
+/app/client/src/pages/__tests__/Dashboard.test.jsx
+  2:26  error  'fireEvent' is defined but never used  no-unused-vars
+
+/app/client/src/pages/experiment_result.jsx
+   5:22  warning  'num' is missing in props validation       react/prop-types
+   5:27  warning  'on' is missing in props validation        react/prop-types
+  44:12  error    'data' is assigned a value but never used  no-unused-vars
+
+✖ 10 problems (8 errors, 2 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.

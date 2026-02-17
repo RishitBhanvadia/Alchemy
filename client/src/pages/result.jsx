@@ -1,12 +1,10 @@
 import React, { useState, useEffect, } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ResultCustomTestTube from '../components/result_testtube'
-import labgif from '../assets/labgif.gif'
 import cloud from '../assets/cloud.png'
 import boom from '../assets/boom.gif'
 import logo from '../assets/logo.png'
 import Bubble from '../components/banner'
-import back from '../assets/back.jpg'
 import './result.css'
 
 const Result = () => {
@@ -39,7 +37,7 @@ const Result = () => {
       })
       .then(data => {
         if (!data || data.length === 0) {
-          console.warn("No data received from backend");
+          // console.warn("No data received from backend");
         }
         setData(data);
         const d = new Date();
@@ -70,7 +68,7 @@ const Result = () => {
         setCart(newCart);
       })
       .catch(error => {
-        console.error("Fetch error:", error);
+        // console.error("Fetch error:", error);
         setData([{
           color: "#ff0000",
           result: `Error: ${error.message}`,

@@ -1,15 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import { showSuccess, showError, showInfo } from '../notifications';
-
-// Mock react-hot-toast
-vi.mock('react-hot-toast', () => ({
-    default: vi.fn((message, options) => ({ id: 'toast-id' })),
-    success: vi.fn(),
-    error: vi.fn(),
-    loading: vi.fn(),
-}));
-
 import toast from 'react-hot-toast';
+
+// Mock react-hot-toast properly
+vi.mock('react-hot-toast', () => {
+    const success = vi.fn();
+    const error = vi.fn();
+    const loading = vi.fn();
+    const toast = vi.fn();
+    toast.success = success;
+    toast.error = error;
+    toast.loading = loading;
+    return { default: toast };
+});
 
 describe('Notification Utility', () => {
     it('should call toast.success with correct message', () => {
