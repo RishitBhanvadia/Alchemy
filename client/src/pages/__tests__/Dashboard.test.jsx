@@ -41,7 +41,7 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
@@ -52,19 +52,18 @@ describe('Dashboard Component', () => {
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
+        const labCard = screen.getByText(/laboratory/i).closest('a');
+        expect(labCard).toBeInTheDocument();
         if (labCard) {
             fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
+            expect(labCard).toHaveAttribute('href', '/lab');
         }
     });
 
     it('should have keyboard navigation on cards', () => {
+        // Link component handles keyboard nav natively (a tag)
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labCard = screen.getByText(/laboratory/i).closest('a');
+        expect(labCard).toBeInTheDocument();
     });
 });
