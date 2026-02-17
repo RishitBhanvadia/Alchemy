@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,18 +26,31 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // Optimization: Directly update DOM style transform for better performance
+            // Uses translate3d for GPU acceleration and avoids layout thrashing from top/left updates
+            const x = e.clientX;
+            const y = e.clientY;
+
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            // Optimization: Safety check for tagName existence
+            if (target && target.tagName) {
+                const isClickable =
+                    target.tagName.toLowerCase() === 'button' ||
+                    target.tagName.toLowerCase() === 'a' ||
+                    target.closest('button') ||
+                    target.closest('a') ||
+                    target.classList.contains('clickable');
 
-            setHovering(!!isClickable);
+                setHovering(!!isClickable);
+            }
         };
 
         const onMouseEnter = () => {
@@ -65,12 +79,12 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
