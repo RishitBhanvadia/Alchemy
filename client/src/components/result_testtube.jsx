@@ -21,7 +21,7 @@ const ResultCustomTestTube = ({color, solid_color, gas_color, gas, solid, str}) 
     }, app);
     
     return () => ctx.revert();
-  }, []);
+  }, [gas, solid]);
     return(
         <svg width="500" ref={app} height="400" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id='gas'>
