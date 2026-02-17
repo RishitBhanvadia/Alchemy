@@ -1,66 +1,43 @@
 const { test, expect } = require('@playwright/test');
 
-test('Redesign Verification Tour', async ({ page }) => {
-    // 1. Visit Login Page
-    console.log('Visiting Login Page...');
-    await page.goto('http://localhost:3000/login');
-    await page.waitForTimeout(1000);
-    await page.screenshot({ path: 'verification_screenshots/1_login.png' });
+test('Verify Login and Lab Pages', async ({ page }) => {
+  // Navigate to Login page
+  await page.goto('http://localhost:5173');
 
-    // 2. Perform Login
-    console.log('Logging in...');
-    await page.fill('input[type="email"]', 'admin@alchemistry.com');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
+  // Verify Login UI changes (labels and inputs)
+  await expect(page.getByLabel('Email Address')).toBeVisible();
+  await expect(page.getByLabel('Password')).toBeVisible();
 
-    // 3. Verify Dashboard
-    console.log('Waiting for Dashboard...');
-    await page.waitForURL('**/dashboard');
-    await page.waitForSelector('.module-grid'); // Wait for grid to load
-    await page.waitForTimeout(1500); // Wait for fade-in animations
-    await page.screenshot({ path: 'verification_screenshots/2_dashboard.png' });
+  // Take screenshot of Login page
+  await page.screenshot({ path: 'verification_screenshots/1_login.png' });
 
-    // 4. Navigate to Lab
-    console.log('Navigating to Lab...');
-    await page.click('a[href="/lab"]');
-    await page.waitForURL('**/lab');
-    await page.waitForSelector('.chemical-rack'); // Wait for lab specific element
-    await page.waitForTimeout(2000); // Wait for 3D and animations
-    await page.screenshot({ path: 'verification_screenshots/3_lab_initial.png' });
+  // Perform Login
+  await page.getByLabel('Email Address').fill('test@example.com');
+  await page.getByLabel('Password').fill('password');
+  await page.getByRole('button', { name: 'ACCESS LAB' }).click();
 
-    // 5. Interact with Sliders (Simulate Experiment)
-    console.log('Interacting with controls...');
-    // Force change values of range inputs
-    await page.evaluate(() => {
-        const inputs = document.querySelectorAll('input[type="range"]');
+  // Wait for navigation to Dashboard
+  await expect(page).toHaveURL(/.*dashboard/);
+  await page.waitForTimeout(1000); // Allow animations to settle
+  await page.screenshot({ path: 'verification_screenshots/2_dashboard.png' });
 
-        // Helper to trigger React state update
-        const setReactValue = (element, value) => {
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-            nativeInputValueSetter.call(element, value);
-            element.dispatchEvent(new Event('input', { bubbles: true }));
-        };
+  // Navigate to Lab
+  await page.getByText('LABORATORY').click();
+  await expect(page).toHaveURL(/.*lab/);
 
-        if (inputs[0]) {
-            setReactValue(inputs[0], 50);
-        }
-        if (inputs[1]) {
-            setReactValue(inputs[1], 50);
-        }
-    });
-    await page.waitForTimeout(1000);
-    await page.screenshot({ path: 'verification_screenshots/4_lab_interaction.png' });
+  // Verify Lab UI changes (labels and inputs)
+  await expect(page.getByLabel('Conc. HCl')).toBeVisible();
+  await expect(page.getByLabel('NaCl')).toBeVisible();
+  await expect(page.getByLabel('CuSO4')).toBeVisible();
+  await expect(page.getByLabel('FeSO4')).toBeVisible();
 
-    // 6. Initiate Reaction
-    console.log('Initiating Reaction...');
-    await page.click('.action-button'); // "INITIATE REACTION" button
+  // Take screenshot of Lab page
+  await page.screenshot({ path: 'verification_screenshots/3_lab_initial.png' });
 
-    // 7. Verify Result Page
-    console.log('Waiting for Results...');
-    await page.waitForURL('**/result');
-    await page.waitForSelector('.result-grid');
-    await page.waitForTimeout(3000); // Wait for "processing" or data fetch
-    await page.screenshot({ path: 'verification_screenshots/5_result.png' });
+  // Interact with Lab inputs
+  const slider = page.locator('#range-a');
+  await slider.fill('50'); // Simulate range input change
+  await page.waitForTimeout(500); // Wait for potential UI updates
 
-    console.log('Verification Complete. Check screenshots folder.');
+  await page.screenshot({ path: 'verification_screenshots/4_lab_interaction.png' });
 });

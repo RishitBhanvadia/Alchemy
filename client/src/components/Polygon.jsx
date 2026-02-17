@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 const Polygon = ({c}) => {
     return(
@@ -9,3 +10,6 @@ const Polygon = ({c}) => {
 }
 
 export default Polygon;
+Polygon.propTypes = {
+  c: PropTypes.number
+};

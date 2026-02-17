@@ -1,103 +1,34 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import logo from '../assets/logo.png'
-import back from '../assets/back.jpg'
-import CompoundImg from "../components/compoundImg";
-import ExpResult from "./experiment_result";
-import "./lab.css"
-import './organic.css'
+import React from "react";
+// import logo from '../assets/logo.png';
+// import back from '../assets/back.jpg';
+import { NavLink } from "react-router-dom";
+import "./organic.css"
 
 const Organic = () => {
-  const navigate = useNavigate();
-  const [on, setOn] = useState(false);
-  const [first, setFirst] = useState(true);
-  const [datanum, setDatanum] = useState(0);
-  const [wrong, setWrong] = useState(false);
-  const [uans, setUAns] = useState('');
+    return (
+        <div className="organic-page scene_element scene_element--fadein">
+            <NavLink to="/dashboard" className="back-btn">
+                <i className="fa-solid fa-arrow-left"></i> BACK
+            </NavLink>
+            <div className="organic-container">
+                <h1 className="neon-text">ORGANIC CHEMISTRY</h1>
+                <p className="description">Explore the reactions of carbon compounds.</p>
 
-  // Animation logic for result
-  function send_info(i) {
-    setOn(true);
-    setTimeout(() => {
-      setOn(false);
-    }, 1000);
-    setFirst(false);
-    setDatanum(i);
-  }
-
-  function checkAns() {
-    if (uans === '2') {
-      navigate("/success", {
-        replace: true,
-      });
-    }
-    else {
-      setWrong(true);
-      setTimeout(() => {
-        setWrong(false);
-      }, 1000);
-    }
-  }
-
-  const handleChange = (event) => {
-    setUAns(event.target.value);
-  };
-
-  return (
-    <div className="organic-page">
-      <Navbar />
-
-      <div className="organic-container">
-        <h1 className="neon-glow page-title">ORGANIC ANALYISIS</h1>
-
-        <div className="glass-panel experiment-panel">
-          <div className="note-display">
-            <span className="note-label">NOTE:</span> Refer Your Chemistry Lab Manual Page - 70
-          </div>
-
-          <div className="experiment-visuals">
-            {first ? (
-              <div className="fade-in">
-                <CompoundImg />
-              </div>
-            ) : (
-              <div className="fade-in">
-                <ExpResult num={datanum} on={on} />
-              </div>
-            )}
-          </div>
-
-          <div className="controls-grid">
-            {[0, 1, 2, 3, 4, 5, 6].map((groupNum) => (
-              <button
-                key={groupNum}
-                onClick={() => send_info(groupNum)}
-                className="neon-button test-btn"
-              >
-                Group {groupNum} Test
-              </button>
-            ))}
-          </div>
-
-          <div className="answer-section">
-            <div className="glass-input-group">
-              <span className="input-label">GROUP</span>
-              <input
-                type="text"
-                className={`glass-input ${wrong ? 'shake-error' : ''}`}
-                onChange={handleChange}
-                placeholder="0, 1, 2, 3..."
-              />
-              <button onClick={() => checkAns()} className="neon-button submit-btn">
-                SUBMIT
-              </button>
+                <div className="experiment-list glass-panel">
+                    <div className="experiment-item">
+                        <h3>Functional Group Analysis</h3>
+                        <p>Identify functional groups in organic compounds.</p>
+                        <button className="start-btn">COMING SOON</button>
+                    </div>
+                    <div className="experiment-item">
+                        <h3>Synthesis Reactions</h3>
+                        <p>Create esters and polymers.</p>
+                        <button className="start-btn">COMING SOON</button>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
-};
+    )
+}
 
 export default Organic;
