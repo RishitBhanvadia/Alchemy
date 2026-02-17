@@ -23,7 +23,7 @@ const CustomTestTube = ({arr}) => {
 }
 
 CustomTestTube.propTypes = {
-    arr: PropTypes.array
+    arr: PropTypes.array.isRequired
 };
 
 export default CustomTestTube;

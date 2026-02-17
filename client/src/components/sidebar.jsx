@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import "./sidebar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
-  const [selectedTab, setSelectedTab] = useState("");
-
+  const location = useLocation();
   const getTabFromRoute = useCallback((route) => {
     switch (route) {
       case "/lab":
@@ -22,14 +21,7 @@ const Sidebar = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const currentRoute = window.location.pathname;
-    setSelectedTab(getTabFromRoute(currentRoute));
-  }, [getTabFromRoute]);
-
-  const handleTabClick = (tab) => {
-    setSelectedTab(tab);
-  };
+  const selectedTab = getTabFromRoute(location.pathname);
 
   return (
     <div className="sideBar">
@@ -37,7 +29,6 @@ const Sidebar = () => {
         <NavLink
           to="/lab"
           className={({ isActive }) => isActive ? "selected" : ""}
-          onClick={() => handleTabClick("lab")}
         >
           <div
             className={`element ${selectedTab === "lab" ? "selected" : ""}`}
@@ -53,7 +44,6 @@ const Sidebar = () => {
         <NavLink
           to="/titration"
           className={({ isActive }) => isActive ? "selected" : ""}
-          onClick={() => handleTabClick("titration")}
         >
           <div
             className={`element titration ${selectedTab === "titration" ? "selected" : ""
@@ -70,7 +60,6 @@ const Sidebar = () => {
         <NavLink
           to="/organic"
           className={({ isActive }) => isActive ? "selected" : ""}
-          onClick={() => handleTabClick("organic")}
         >
           <div
             className={`element organic ${selectedTab === "organic" ? "selected" : ""
@@ -87,7 +76,6 @@ const Sidebar = () => {
         <NavLink
           to="/inorganic"
           className={({ isActive }) => isActive ? "selected" : ""}
-          onClick={() => handleTabClick("inorganic")}
         >
           <div
             className={`element inorganic ${selectedTab === "inorganic" ? "selected" : ""
@@ -104,7 +92,6 @@ const Sidebar = () => {
         <NavLink
           to="/history"
           className={({ isActive }) => isActive ? "selected" : ""}
-          onClick={() => handleTabClick("history")}
         >
           <div
             className={`element ${selectedTab === "history" ? "selected" : ""

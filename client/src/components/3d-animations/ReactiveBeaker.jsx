@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
@@ -7,24 +7,22 @@ import * as THREE from 'three';
 
 const ReactiveBeaker = ({ status }) => {
     const liquidRef = useRef();
-    const [liquidColor, setLiquidColor] = useState(new THREE.Color('#00aaff'));
-    const [waveHeight, setWaveHeight] = useState(0.1);
 
-    useEffect(() => {
-        if (status === 'success') {
-            setLiquidColor(new THREE.Color('#00ff00')); // Green
-            setWaveHeight(0.05);
-        } else if (status === 'failed') {
-            setLiquidColor(new THREE.Color('#ff0000')); // Red
-            setWaveHeight(0.3); // Boiling
-        } else if (status === 'loading') {
-            setLiquidColor(new THREE.Color('#00aaff')); // Blue
-            setWaveHeight(0.2); // Sloshing
-        } else {
-            setLiquidColor(new THREE.Color('#cccccc')); // Neutral
-            setWaveHeight(0);
-        }
-    }, [status]);
+    // Derive state from props (cleaner pattern than useEffect + useState)
+    let liquidColor, waveHeight;
+    if (status === 'success') {
+        liquidColor = new THREE.Color('#00ff00'); // Green
+        waveHeight = 0.05;
+    } else if (status === 'failed') {
+        liquidColor = new THREE.Color('#ff0000'); // Red
+        waveHeight = 0.3; // Boiling
+    } else if (status === 'loading') {
+        liquidColor = new THREE.Color('#00aaff'); // Blue
+        waveHeight = 0.2; // Sloshing
+    } else {
+        liquidColor = new THREE.Color('#cccccc'); // Neutral
+        waveHeight = 0;
+    }
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();

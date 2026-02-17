@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import ResultCustomTestTube from "../components/result_testtube";
+import ResultCustomTestTube from "./result_testtube";
 import labgif from '../assets/labgigbl.gif'
 
 const InExpResult = ({ num, on }) => {
