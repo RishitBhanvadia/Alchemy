@@ -38,8 +38,9 @@ const Login = () => {
                 <h2 className="login-title">STUDENT LOGIN</h2>
                 <form onSubmit={handleLogin}>
                     <div className="input-group">
-                        <label className="input-label">Email Address</label>
+                        <label htmlFor="email" className="input-label">Email Address</label>
                         <input
+                            id="email"
                             type="email"
                             className="login-input"
                             placeholder="student@university.edu"
@@ -49,8 +50,9 @@ const Login = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label className="input-label">Password</label>
+                        <label htmlFor="password" className="input-label">Password</label>
                         <input
+                            id="password"
                             type="password"
                             className="login-input"
                             placeholder="••••••••"

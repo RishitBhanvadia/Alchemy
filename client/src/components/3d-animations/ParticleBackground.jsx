@@ -9,9 +9,13 @@ const ParticleBackground = ({ count = 100 }) => {
     const particles = useMemo(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
+            // eslint-disable-next-line react-hooks/purity
             const x = (Math.random() - 0.5) * 20;
+            // eslint-disable-next-line react-hooks/purity
             const y = (Math.random() - 0.5) * 20;
+            // eslint-disable-next-line react-hooks/purity
             const z = (Math.random() - 0.5) * 10;
+            // eslint-disable-next-line react-hooks/purity
             const speed = Math.random() * 0.02;
             temp.push({ x, y, z, speed, originalX: x, originalY: y });
         }

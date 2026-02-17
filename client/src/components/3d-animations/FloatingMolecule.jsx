@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, Icosahedron } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 
 const FloatingMolecule = () => {
     const meshRef = useRef();
@@ -31,6 +31,7 @@ const FloatingMolecule = () => {
                 const x = Math.cos(angle) * 2;
                 const y = Math.sin(angle) * 2;
                 return (
+                    // eslint-disable-next-line react/no-unknown-property
                     <group key={i} position={[x, y, 0]}>
                         <Sphere args={[0.4, 32, 32]}>
                             <meshStandardMaterial color="#00aaff" roughness={0.3} metalness={0.8} />
@@ -48,6 +49,7 @@ const FloatingMolecule = () => {
                 const x = Math.cos(angle) * 2;
                 const z = Math.sin(angle) * 2;
                 return (
+                    // eslint-disable-next-line react/no-unknown-property
                     <group key={i + 6} position={[x, 0, z]}>
                         <Sphere args={[0.4, 32, 32]}>
                             <meshStandardMaterial color="#00ffaa" roughness={0.3} metalness={0.8} />

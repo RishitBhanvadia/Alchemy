@@ -22,6 +22,7 @@ const ReactiveBeaker = ({ status }) => {
             setLiquidColor(new THREE.Color('#cccccc')); // Neutral
             setWaveHeight(0);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status]);
 
     useFrame((state) => {
