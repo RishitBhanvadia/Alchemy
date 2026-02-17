@@ -1,4 +1,5 @@
 import React, {useLayoutEffect, useRef} from 'react';
+import PropTypes from 'prop-types';
 import {gsap} from "gsap";
 
 const ResultCustomTestTube = ({color, solid_color, gas_color, gas, solid, str}) => {
@@ -71,3 +72,12 @@ export default ResultCustomTestTube;
 //path("M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V 387 H 218.985 Z")
 
 
+
+ResultCustomTestTube.propTypes = {
+  color: PropTypes.string,
+  solid_color: PropTypes.string,
+  gas_color: PropTypes.string,
+  gas: PropTypes.bool,
+  solid: PropTypes.bool,
+  str: PropTypes.string
+};

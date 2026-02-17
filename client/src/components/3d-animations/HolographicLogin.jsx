@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Tilt from 'react-parallax-tilt';
 const HolographicLogin = ({ children }) => {
     return (
@@ -14,3 +15,7 @@ const HolographicLogin = ({ children }) => {
 };
 
 export default HolographicLogin;
+
+HolographicLogin.propTypes = {
+  children: PropTypes.node
+};

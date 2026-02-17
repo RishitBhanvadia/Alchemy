@@ -24,7 +24,7 @@ const Titration = () => {
     }
   ];
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // State
   const [behnede, setBehnede] = useState(false);

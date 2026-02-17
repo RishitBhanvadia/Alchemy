@@ -1,4 +1,5 @@
 import React, { useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -65,3 +66,7 @@ const ParticleBackground = ({ count = 100 }) => {
 };
 
 export default ParticleBackground;
+
+ParticleBackground.propTypes = {
+  count: PropTypes.number
+};

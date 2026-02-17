@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -70,3 +71,7 @@ const ReactiveBeaker = ({ status }) => {
 };
 
 export default ReactiveBeaker;
+
+ReactiveBeaker.propTypes = {
+  status: PropTypes.string
+};
