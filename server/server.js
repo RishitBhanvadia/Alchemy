@@ -1,11 +1,15 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 
 const app = express();
+
+// Security: Enable trust proxy for correct IP handling behind load balancers (e.g. Render/Heroku)
+// This ensures the rate limiter works correctly and doesn't block all users globally.
+app.set('trust proxy', 1);
+
 const rateLimit = require('express-rate-limit');
 
 // Rate Limiting
@@ -39,8 +43,8 @@ app.use(helmet({
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-app.use(bodyParser.json());
+// Removed body-parser middleware as no POST routes exist and large body limits pose a DoS risk.
+// If JSON parsing is needed in future, use express.json({ limit: '10kb' }).
 
 // Request Logger with Response Status
 app.use((req, res, next) => {
@@ -66,9 +70,14 @@ app.use('/result', resultRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Connected to server on port ${PORT}`);
-    console.log("Environment Check:");
-    console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
-    console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
-});
+// Export app for testing and ensure server only starts if run directly
+if (require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Connected to server on port ${PORT}`);
+        console.log("Environment Check:");
+        console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
+        console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
+    });
+}
+
+module.exports = app;
