@@ -28,6 +28,8 @@ const Titration = () => {
 
   // State
 
+  const INITIAL_ACID_HEIGHT = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z";
+
   const [shaking, setShaking] = useState(false);
   const [confirm, setConfirm] = useState(true);
   const [add_acid, setAddAcid] = useState(false);
@@ -36,7 +38,7 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  const [acid_heigth, setAcid] = useState(INITIAL_ACID_HEIGHT);
   const [data, setData] = useState(all_data[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
@@ -192,7 +194,22 @@ const Titration = () => {
                 ADD INDICATOR (KMnO4)
               </button>
 
-              <button className="sci-fi-btn" onClick={() => window.location.reload()}>
+              <button className="sci-fi-btn" onClick={() => {
+                setShaking(false);
+                setConfirm(true);
+                setAddAcid(false);
+                setDrop(false);
+                setStop(false);
+                setShake(false);
+                setKMN(false);
+                setSwipe(true);
+                setAcid(INITIAL_ACID_HEIGHT);
+                setData(all_data[0]);
+                SetSColor('#3accff');
+                setCount(0);
+                setIsCounting(false);
+                setMessage("");
+              }}>
                 RESET EXPERIMENT
               </button>
             </div>
