@@ -130,7 +130,7 @@ const Titration = () => {
       for (var i = 0; i < data.points.length; i++) {
         if ((count / 10) >= data.points[i]) {
           SetSColor(data.color[i]);
-          break;
+
         }
       }
     }
