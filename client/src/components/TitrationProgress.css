@@ -1,0 +1,104 @@
+.titration-progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 0 10px;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+/* Active State */
+.step-item.active .step-circle {
+    border-color: var(--primary-neon);
+    color: var(--primary-neon);
+    box-shadow: 0 0 10px var(--primary-neon);
+    background-color: rgba(0, 243, 255, 0.1);
+}
+
+.step-item.active .step-label {
+    color: var(--primary-neon);
+    font-weight: 700;
+}
+
+/* Completed State */
+.step-item.completed .step-circle {
+    border-color: var(--primary-neon);
+    background-color: var(--primary-neon);
+    color: #000;
+}
+
+.step-item.completed .step-label {
+    color: var(--primary-neon);
+    opacity: 0.7;
+}
+
+.check-icon {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Connecting Line */
+.step-line {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-50%);
+    z-index: -1;
+    /* Adjust width to connect to next item properly */
+    /* This needs to be handled carefully in flexbox */
+    display: none;
+}
+
+/* Better approach for connecting lines:
+   Using pseudo-elements on the container or items might be tricky with flex-space-between.
+   Let's try a simple absolute line behind everything.
+*/
+
+.titration-progress-container::before {
+    content: '';
+    position: absolute;
+    top: 15px; /* Half of circle height (30px) */
+    left: 25px; /* Offset to start from first circle center approx */
+    right: 25px; /* Offset to end at last circle center approx */
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+    transform: translateY(-50%);
+}

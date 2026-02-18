@@ -5,6 +5,7 @@ import { supabase } from '../supabaseClient'; // Corrected import based on file 
 import "./titration.css";
 import Polygon from "../components/Polygon";
 import TitrationSetup from "../components/titration_setup";
+import TitrationProgress from "../components/TitrationProgress";
 import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
@@ -136,6 +137,11 @@ const Titration = () => {
     }
   }
 
+  let currentStep = 1;
+  if (!confirm && add_acid) currentStep = 2;
+  else if (!confirm && !add_acid && add_kmn) currentStep = 3;
+  else if (!confirm && !add_acid && !add_kmn) currentStep = 4;
+
   return (
     <div className="titration-page">
       <Navbar /> {/* New Top Navbar */}
@@ -146,6 +152,8 @@ const Titration = () => {
         <div className="glass-panel titration-controls">
           <div>
             <h2 className="panel-title neon-glow">TITRATION SETUP</h2>
+
+            <TitrationProgress currentStep={currentStep} />
 
             <div className="control-section">
               <div className="chem-selection">
