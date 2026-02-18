@@ -1,26 +1,20 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import PropTypes from 'prop-types';
 
 const ReactiveBeaker = ({ status }) => {
     const liquidRef = useRef();
-    const [liquidColor, setLiquidColor] = useState(new THREE.Color('#00aaff'));
-    const [waveHeight, setWaveHeight] = useState(0.1);
-
-    useEffect(() => {
+    const { liquidColor, waveHeight } = React.useMemo(() => {
         if (status === 'success') {
-            setLiquidColor(new THREE.Color('#00ff00')); // Green
-            setWaveHeight(0.05);
+            return { liquidColor: new THREE.Color('#00ff00'), waveHeight: 0.05 }; // Green
         } else if (status === 'failed') {
-            setLiquidColor(new THREE.Color('#ff0000')); // Red
-            setWaveHeight(0.3); // Boiling
+            return { liquidColor: new THREE.Color('#ff0000'), waveHeight: 0.3 }; // Red
         } else if (status === 'loading') {
-            setLiquidColor(new THREE.Color('#00aaff')); // Blue
-            setWaveHeight(0.2); // Sloshing
+            return { liquidColor: new THREE.Color('#00aaff'), waveHeight: 0.2 }; // Blue
         } else {
-            setLiquidColor(new THREE.Color('#cccccc')); // Neutral
-            setWaveHeight(0);
+            return { liquidColor: new THREE.Color('#cccccc'), waveHeight: 0 }; // Neutral
         }
     }, [status]);
 
@@ -67,6 +61,10 @@ const ReactiveBeaker = ({ status }) => {
             <pointLight position={[5, 5, 5]} intensity={1} />
         </group>
     );
+};
+
+ReactiveBeaker.propTypes = {
+    status: PropTypes.string
 };
 
 export default ReactiveBeaker;

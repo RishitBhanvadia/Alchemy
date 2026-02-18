@@ -1,0 +1,220 @@
+
+> alchemy-client@0.1.0 lint
+> eslint src --ext .js,.jsx
+
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\3d-animations\CanvasContainer.jsx
+  4:28  warning  'children' is missing in props validation  react/prop-types
+  4:38  warning  'style' is missing in props validation     react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\3d-animations\FloatingMolecule.jsx
+   3:18  error  'Icosahedron' is defined but never used  no-unused-vars
+  25:55  error  Unknown property 'roughness' found       react/no-unknown-property
+  25:71  error  Unknown property 'metalness' found       react/no-unknown-property
+  34:36  error  Unknown property 'position' found        react/no-unknown-property
+  36:67  error  Unknown property 'roughness' found       react/no-unknown-property
+  36:83  error  Unknown property 'metalness' found       react/no-unknown-property
+  39:31  error  Unknown property 'position' found        react/no-unknown-property
+  39:62  error  Unknown property 'rotation' found        react/no-unknown-property
+  40:47  error  Unknown property 'args' found            react/no-unknown-property
+  41:81  error  Unknown property 'transparent' found     react/no-unknown-property
+  51:40  error  Unknown property 'position' found        react/no-unknown-property
+  53:67  error  Unknown property 'roughness' found       react/no-unknown-property
+  53:83  error  Unknown property 'metalness' found       react/no-unknown-property
+  56:31  error  Unknown property 'position' found        react/no-unknown-property
+  56:62  error  Unknown property 'rotation' found        react/no-unknown-property
+  57:47  error  Unknown property 'args' found            react/no-unknown-property
+  58:81  error  Unknown property 'transparent' found     react/no-unknown-property
+  64:27  error  Unknown property 'intensity' found       react/no-unknown-property
+  65:25  error  Unknown property 'position' found        react/no-unknown-property
+  65:49  error  Unknown property 'intensity' found       react/no-unknown-property
+  66:24  error  Unknown property 'position' found        react/no-unknown-property
+  66:51  error  Unknown property 'angle' found           react/no-unknown-property
+  66:63  error  Unknown property 'penumbra' found        react/no-unknown-property
+  66:76  error  Unknown property 'intensity' found       react/no-unknown-property
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\3d-animations\HolographicLogin.jsx
+  2:8   error    'Tilt' is defined but never used           no-unused-vars
+  3:29  warning  'children' is missing in props validation  react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\3d-animations\ParticleBackground.jsx
+   5:31  warning  'count' is missing in props validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react/prop-types
+  12:24  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  10 |         const temp = [];
+  11 |         for (let i = 0; i < count; i++) {
+> 12 |             const x = (Math.random() - 0.5) * 20;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  13 |             const y = (Math.random() - 0.5) * 20;
+  14 |             const z = (Math.random() - 0.5) * 10;
+  15 |             const speed = Math.random() * 0.02;                                                react-hooks/purity
+  13:24  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  11 |         for (let i = 0; i < count; i++) {
+  12 |             const x = (Math.random() - 0.5) * 20;
+> 13 |             const y = (Math.random() - 0.5) * 20;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  14 |             const z = (Math.random() - 0.5) * 10;
+  15 |             const speed = Math.random() * 0.02;
+  16 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });  react-hooks/purity
+  14:24  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  12 |             const x = (Math.random() - 0.5) * 20;
+  13 |             const y = (Math.random() - 0.5) * 20;
+> 14 |             const z = (Math.random() - 0.5) * 10;
+     |                        ^^^^^^^^^^^^^ Cannot call impure function
+  15 |             const speed = Math.random() * 0.02;
+  16 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });
+  17 |         }                                  react-hooks/purity
+  15:27  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  13 |             const y = (Math.random() - 0.5) * 20;
+  14 |             const z = (Math.random() - 0.5) * 10;
+> 15 |             const speed = Math.random() * 0.02;
+     |                           ^^^^^^^^^^^^^ Cannot call impure function
+  16 |             temp.push({ x, y, z, speed, originalX: x, originalY: y });
+  17 |         }
+  18 |         return temp;                                                            react-hooks/purity
+  57:42  error    Unknown property 'args' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react/no-unknown-property
+  58:33  error    Unknown property 'args' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react/no-unknown-property
+  59:55  error    Unknown property 'transparent' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unknown-property
+  61:27  error    Unknown property 'intensity' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unknown-property
+  62:25  error    Unknown property 'position' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react/no-unknown-property
+  62:49  error    Unknown property 'intensity' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unknown-property
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\3d-animations\ReactiveBeaker.jsx
+   6:27  warning  'status' is missing in props validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react/prop-types
+  13:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  11 |     useEffect(() => {
+  12 |         if (status === 'success') {
+> 13 |             setLiquidColor(new THREE.Color('#00ff00')); // Green
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  14 |             setWaveHeight(0.05);
+  15 |         } else if (status === 'failed') {
+  16 |             setLiquidColor(new THREE.Color('#ff0000')); // Red  react-hooks/set-state-in-effect
+  37:16  error    Unknown property 'position' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react/no-unknown-property
+  52:59  error    Unknown property 'transparent' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unknown-property
+  66:27  error    Unknown property 'intensity' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react/no-unknown-property
+  67:25  error    Unknown property 'position' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react/no-unknown-property
+  67:46  error    Unknown property 'intensity' found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react/no-unknown-property
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\InExpResult.jsx
+  5:24  warning  'num' is missing in props validation  react/prop-types
+  5:29  warning  'on' is missing in props validation   react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\Navbar.jsx
+  3:8  error  'PropTypes' is defined but never used  no-unused-vars
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\Polygon.jsx
+  3:19  warning  'c' is missing in props validation  react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\result_testtube.jsx
+   4:32  warning  'color' is missing in props validation                                                                                      react/prop-types
+   4:39  warning  'solid_color' is missing in props validation                                                                                react/prop-types
+   4:52  warning  'gas_color' is missing in props validation                                                                                  react/prop-types
+   4:63  warning  'gas' is missing in props validation                                                                                        react/prop-types
+   4:68  warning  'solid' is missing in props validation                                                                                      react/prop-types
+   4:75  warning  'str' is missing in props validation                                                                                        react/prop-types
+  23:6   warning  React Hook useLayoutEffect has missing dependencies: 'gas' and 'solid'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\sidebar.jsx
+   4:8   error  'Star' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+  11:20  error  Error: Cannot access variable before it is declared
+
+`getTabFromRoute` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+   9 |   useEffect(() => {
+  10 |     const currentRoute = window.location.pathname;
+> 11 |     setSelectedTab(getTabFromRoute(currentRoute));
+     |                    ^^^^^^^^^^^^^^^ `getTabFromRoute` accessed before it is declared
+  12 |   }, []);
+  13 |
+  14 |   const handleTabClick = (tab) => {
+
+  16 |   };
+  17 |
+> 18 |   const getTabFromRoute = (route) => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 19 |     switch (route) {
+     | ^^^^^^^^^^^^^^^^^^^^
+> 20 |       case "/lab":
+     …
+     | ^^^^^^^^^^^^^^^^^^^^
+> 32 |     }
+     | ^^^^^^^^^^^^^^^^^^^^
+> 33 |   };
+     | ^^^^^ `getTabFromRoute` is declared here
+  34 |
+  35 |   return (
+  36 |     <div className="sideBar">  react-hooks/immutability
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\testtube.jsx
+  3:27  warning  'color' is missing in props validation      react/prop-types
+  3:34  warning  'hasLiquid' is missing in props validation  react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\testtubechanges.jsx
+  3:7   error    'CustomTestTube' is assigned a value but never used  no-unused-vars
+  3:26  warning  'arr' is missing in props validation                 react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\components\titration_setup.jsx
+  3:27  warning  'aheigth' is missing in props validation  react/prop-types
+  3:36  warning  'color' is missing in props validation    react/prop-types
+  3:43  warning  'shaky' is missing in props validation    react/prop-types
+  3:50  warning  'count' is missing in props validation    react/prop-types
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\Dashboard.jsx
+  3:8  error  'PropTypes' is defined but never used  no-unused-vars
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\experiment_result.jsx
+   5:22  warning  'num' is missing in props validation       react/prop-types
+   5:27  warning  'on' is missing in props validation        react/prop-types
+  44:12  error    'data' is assigned a value but never used  no-unused-vars
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\history.jsx
+  27:17  warning  Unexpected console statement  no-console
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\inorganic.jsx
+  4:8  error  'logo' is defined but never used  no-unused-vars
+  5:8  error  'back' is defined but never used  no-unused-vars
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\lab.jsx
+  11:8  error  Parsing error: Identifier 'CanvasContainer' has already been declared
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\organic.jsx
+  4:8  error  'logo' is defined but never used  no-unused-vars
+  5:8  error  'back' is defined but never used  no-unused-vars
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\result.jsx
+   4:8   error    'labgif' is defined but never used  no-unused-vars
+   9:8   error    'back' is defined but never used    no-unused-vars
+  42:11  warning  Unexpected console statement        no-console
+  73:9   warning  Unexpected console statement        no-console
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\pages\titration.jsx
+  11:8   error    's10' is defined but never used                no-unused-vars
+  27:9   error    'navigate' is assigned a value but never used  no-unused-vars
+  30:10  error    'behnede' is assigned a value but never used   no-unused-vars
+  76:20  warning  Unexpected console statement                   no-console
+  80:7   warning  Unexpected console statement                   no-console
+
+C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\src\utils\__tests__\notifications.test.js
+  6:21  error  'message' is defined but never used   no-unused-vars
+  6:30  error  '_options' is defined but never used  no-unused-vars
+
+✖ 88 problems (59 errors, 29 warnings)
+

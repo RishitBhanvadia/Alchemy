@@ -36,7 +36,41 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "react/no-unknown-property": [
+        "error",
+        {
+          "ignore": [
+            "css",
+            "args",
+            "position",
+            "rotation",
+            "intensity",
+            "groundColor",
+            "object",
+            "geometry",
+            "material",
+            "attach",
+            "side",
+            "transparent",
+            "opacity",
+            "roughness",
+            "metalness",
+            "angle",
+            "penumbra",
+            "decay",
+            "distance",
+            "azimuth",
+            "polar",
+            "config",
+            "mass",
+            "tension",
+            "friction"
+          ]
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [

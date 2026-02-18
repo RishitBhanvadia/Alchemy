@@ -8,13 +8,12 @@ import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
+
 
 const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [arr, setArr] = useState([]);
   const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
@@ -64,14 +63,10 @@ const Lab = () => {
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('A') === -1) {
-        setArr(prev => [...prev, '#848584c8']);
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     else {
-      if (arr.indexOf('A') !== -1) {
-        setArr(arr.filter(item => item !== '#848584c8'));
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     setChemA(value);
     change_tip();
@@ -80,14 +75,10 @@ const Lab = () => {
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('B') === -1) {
-        setArr(prev => [...prev, '#F2F0F0']);
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     else {
-      if (arr.indexOf('B') !== -1) {
-        setArr(arr.filter(item => item !== '#F2F0F0'));
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     setChemB(value);
     change_tip();
@@ -96,14 +87,10 @@ const Lab = () => {
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('C') === -1) {
-        setArr(prev => [...prev, '#2987f3bb']);
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     else {
-      if (arr.indexOf('C') !== -1) {
-        setArr(arr.filter(item => item !== '#2987f3bb'));
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     setChemC(value);
     change_tip();
@@ -112,14 +99,10 @@ const Lab = () => {
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
-      if (arr.indexOf('D') === -1) {
-        setArr(prev => [...prev, '#6f4e37c1']);
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     else {
-      if (arr.indexOf('D') !== -1) {
-        setArr(arr.filter(item => item !== '#6f4e37c1'));
-      }
+      // Logic for tracking active chemicals (removed unused arr)
     }
     setChemD(value);
     change_tip();
@@ -149,9 +132,7 @@ const Lab = () => {
   const isPlayDisabled = !(onOrNot());
 
   // Determine status for 3D Beaker
-  let experimentStatus = 'neutral';
-  if (animate) experimentStatus = 'loading';
-  else if (!isPlayDisabled) experimentStatus = 'success';
+  // Determine status for 3D Beaker (removed unused experimentStatus)
 
   return (
     <div className="lab-page" ref={app}>
@@ -173,8 +154,9 @@ const Lab = () => {
             <img src={hcl} alt="HCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>Conc. HCl</label>
+            <label htmlFor="hcl-range">Conc. HCl</label>
             <input
+              id="hcl-range"
               type="range"
               min="0"
               max={100 - chemB - chemC - chemD}
@@ -191,8 +173,9 @@ const Lab = () => {
             <img src={nacl} alt="NaCl" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>NaCl</label>
+            <label htmlFor="nacl-range">NaCl</label>
             <input
+              id="nacl-range"
               type="range"
               min="0"
               max={100 - chemA - chemC - chemD}
@@ -209,8 +192,9 @@ const Lab = () => {
             <img src={cuso4} alt="CuSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>CuSO4</label>
+            <label htmlFor="cuso4-range">CuSO4</label>
             <input
+              id="cuso4-range"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemD}
@@ -227,8 +211,9 @@ const Lab = () => {
             <img src={feso4} alt="FeSO4" className="chem-icon" />
           </div>
           <div className="range-wrapper">
-            <label>FeSO4</label>
+            <label htmlFor="feso4-range">FeSO4</label>
             <input
+              id="feso4-range"
               type="range"
               min="0"
               max={100 - chemA - chemB - chemC}

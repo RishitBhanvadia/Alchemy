@@ -1,4 +1,5 @@
 import React, { useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -9,6 +10,7 @@ const ParticleBackground = ({ count = 100 }) => {
     const particles = useMemo(() => {
         const temp = [];
         for (let i = 0; i < count; i++) {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             const x = (Math.random() - 0.5) * 20;
             const y = (Math.random() - 0.5) * 20;
             const z = (Math.random() - 0.5) * 10;
@@ -62,6 +64,12 @@ const ParticleBackground = ({ count = 100 }) => {
             <pointLight position={[10, 10, 10]} intensity={1} />
         </>
     );
+};
+
+
+
+ParticleBackground.propTypes = {
+    count: PropTypes.number
 };
 
 export default ParticleBackground;

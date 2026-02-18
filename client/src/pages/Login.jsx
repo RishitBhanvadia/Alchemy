@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+
 import { supabase } from '../supabaseClient';
 import HolographicLogin from '../components/3d-animations/HolographicLogin';
 import logger from '../utils/logger';
@@ -38,8 +38,9 @@ const Login = () => {
                 <h2 className="login-title">STUDENT LOGIN</h2>
                 <form onSubmit={handleLogin}>
                     <div className="input-group">
-                        <label className="input-label">Email Address</label>
+                        <label className="input-label" htmlFor="email">Email Address</label>
                         <input
+                            id="email"
                             type="email"
                             className="login-input"
                             placeholder="student@university.edu"
@@ -49,8 +50,9 @@ const Login = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label className="input-label">Password</label>
+                        <label className="input-label" htmlFor="password">Password</label>
                         <input
+                            id="password"
                             type="password"
                             className="login-input"
                             placeholder="••••••••"
@@ -66,8 +68,6 @@ const Login = () => {
     );
 };
 
-Login.propTypes = {
-    // No props currently, but ready for future additions
-};
+
 
 export default Login;
