@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
 import "./titration.css";
 import Polygon from "../components/Polygon";
@@ -9,6 +8,7 @@ import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
 import logger from '../utils/logger';
+import { showSuccess } from "../utils/notifications";
 
 const Titration = () => {
   const all_data = [
@@ -74,7 +74,7 @@ const Titration = () => {
             }
           ]);
         if (error) logger.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
+        else showSuccess("Result saved to database!");
       }
     } catch (e) {
       logger.error("Supabase error:", e);
@@ -138,7 +138,6 @@ const Titration = () => {
 
   return (
     <div className="titration-page">
-      <Navbar /> {/* New Top Navbar */}
 
       <div className="titration-container">
 
@@ -152,12 +151,12 @@ const Titration = () => {
                 <div className="selection-row">
                   <span className="selection-label">ACID:</span>
                   <div className="chem-selector">
-                    <button className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
+                    <button className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)} aria-label="Select previous chemical">&lt;</button>
                     <div className="chem-display">
                       <img src={swipe ? hcl : nacl} alt="Acid" />
                       <span>{swipe ? 'HCl' : 'H2SO4'}</span>
                     </div>
-                    <button className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
+                    <button className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)} aria-label="Select next chemical">&gt;</button>
                   </div>
                 </div>
 
