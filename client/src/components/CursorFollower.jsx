@@ -1,31 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
+    // Use refs for direct DOM manipulation to avoid re-renders on mouse move
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+    const positionRef = useRef({ x: 0, y: 0 });
+    const requestRef = useRef(null);
+
     useEffect(() => {
-        const addEventListeners = () => {
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseenter", onMouseEnter);
-            document.addEventListener("mouseleave", onMouseLeave);
-            document.addEventListener("mousedown", onMouseDown);
-            document.addEventListener("mouseup", onMouseUp);
+        // Animation loop to update position smoothly
+        const animate = () => {
+            if (cursorRef.current && dotRef.current) {
+                const { x, y } = positionRef.current;
+                // Combine translate3d for performance with translate(-50%, -50%) for centering
+                const transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+                cursorRef.current.style.transform = transform;
+                dotRef.current.style.transform = transform;
+            }
+            requestRef.current = requestAnimationFrame(animate);
         };
 
-        const removeEventListeners = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseenter", onMouseEnter);
-            document.removeEventListener("mouseleave", onMouseLeave);
-            document.removeEventListener("mousedown", onMouseDown);
-            document.removeEventListener("mouseup", onMouseUp);
-        };
+        requestRef.current = requestAnimationFrame(animate);
 
+        return () => {
+            if (requestRef.current) {
+                cancelAnimationFrame(requestRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // Update position ref without triggering re-render
+            positionRef.current = { x: e.clientX, y: e.clientY };
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -55,8 +67,19 @@ const CursorFollower = () => {
             setClicking(false);
         };
 
-        addEventListeners();
-        return () => removeEventListeners();
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseenter", onMouseEnter);
+        document.addEventListener("mouseleave", onMouseLeave);
+        document.addEventListener("mousedown", onMouseDown);
+        document.addEventListener("mouseup", onMouseUp);
+
+        return () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseenter", onMouseEnter);
+            document.removeEventListener("mouseleave", onMouseLeave);
+            document.removeEventListener("mousedown", onMouseDown);
+            document.removeEventListener("mouseup", onMouseUp);
+        };
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
@@ -65,12 +88,15 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                // Initial style to ensure it starts at 0,0 (or match CSS default)
+                style={{ left: 0, top: 0 }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ left: 0, top: 0 }}
             />
         </>
     );
