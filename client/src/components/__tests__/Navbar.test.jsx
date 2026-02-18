@@ -24,7 +24,7 @@ describe('Navbar Component', () => {
     it('should render navigation links', () => {
         renderNavbar();
         expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-        expect(screen.getByText(/history/i)).toBeInTheDocument();
+        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
     });
 
     it('should render logout button', () => {

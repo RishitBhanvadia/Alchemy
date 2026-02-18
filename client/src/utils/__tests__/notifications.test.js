@@ -1,13 +1,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import { showSuccess, showError, showInfo } from '../notifications';
 
-// Mock react-hot-toast
-vi.mock('react-hot-toast', () => ({
-    default: vi.fn(() => ({ id: 'toast-id' })),
-    success: vi.fn(),
-    error: vi.fn(),
-    loading: vi.fn(),
-}));
+vi.mock('react-hot-toast', () => {
+    const toastFn = vi.fn(() => ({ id: 'toast-id' }));
+    toastFn.success = vi.fn();
+    toastFn.error = vi.fn();
+    toastFn.loading = vi.fn();
+    toastFn.dismiss = vi.fn();
+    return { default: toastFn };
+});
 
 import toast from 'react-hot-toast';
 

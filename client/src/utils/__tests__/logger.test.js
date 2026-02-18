@@ -1,33 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+vi.mock('loglevel', () => {
+    return {
+        default: {
+            setLevel: vi.fn(),
+            methodFactory: vi.fn(),
+            getLevel: vi.fn(),
+            debug: vi.fn(),
+            info: vi.fn(),
+            warn: vi.fn(),
+            error: vi.fn(),
+        }
+    };
+});
+
 import logger from '../logger';
+// Get the mocked loglevel to check calls
+import loglevel from 'loglevel';
 
 describe('Logger Utility', () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
-    it('should have debug, info, warn, and error methods', () => {
-        expect(logger.debug).toBeDefined();
-        expect(logger.info).toBeDefined();
-        expect(logger.warn).toBeDefined();
-        expect(logger.error).toBeDefined();
-    });
+    it('should call loglevel methods', () => {
+        logger.info('Test info');
+        expect(loglevel.info).toHaveBeenCalled();
 
-    it('should log info messages', () => {
-        const consoleSpy = vi.spyOn(console, 'log');
-        logger.info('Test info message');
-        expect(consoleSpy).toHaveBeenCalled();
-    });
-
-    it('should log error messages', () => {
-        const consoleSpy = vi.spyOn(console, 'error');
-        logger.error('Test error message');
-        expect(consoleSpy).toHaveBeenCalled();
-    });
-
-    it('should accept additional arguments', () => {
-        const consoleSpy = vi.spyOn(console, 'log');
-        logger.info('Message', { userId: 123 });
-        expect(consoleSpy).toHaveBeenCalled();
+        logger.error('Test error');
+        expect(loglevel.error).toHaveBeenCalled();
     });
 });

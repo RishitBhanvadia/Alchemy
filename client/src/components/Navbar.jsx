@@ -57,12 +57,24 @@ const Navbar = () => {
                         </div>
                     )}
                 </div>
+
             </div>
 
             <div className="nav-profile">
                 <div className="profile-icon">ADM</div>
+                <button
+                    className="logout-button"
+                    onClick={async () => {
+                        const { supabase } = await import('../supabaseClient');
+                        await supabase.auth.signOut();
+                        window.location.href = '/';
+                    }}
+                    style={{ marginLeft: '1rem', background: 'transparent', border: '1px solid #ff0055', color: '#ff0055', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
+                >
+                    LOGOUT
+                </button>
             </div>
-        </nav>
+        </nav >
     );
 };
 
