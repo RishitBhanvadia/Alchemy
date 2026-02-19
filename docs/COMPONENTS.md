@@ -221,7 +221,7 @@ This document provides detailed information about the React components used in t
 **Purpose**: SVG visualization of titration apparatus.
 
 **Props**:
-- `aheigth` (string): SVG path for liquid level
+- `acidHeight` (string): SVG path for liquid level
 - `color` (string): Liquid color
 - `shaky` (boolean): Apply shake animation
 - `count` (number): Titration count
@@ -229,7 +229,7 @@ This document provides detailed information about the React components used in t
 **Example**:
 ```jsx
 <TitrationSetup 
-    aheigth="M 291.86..." 
+    acidHeight="M 291.86..."
     color="#ff0055" 
     shaky={true} 
     count={50} 
