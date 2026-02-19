@@ -74,7 +74,7 @@ const Titration = () => {
             }
           ]);
         if (error) logger.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
+        else setMessage(prev => prev.includes("Result saved") ? prev : prev + " Result saved to database!");
       }
     } catch (e) {
       logger.error("Supabase error:", e);
@@ -152,12 +152,12 @@ const Titration = () => {
                 <div className="selection-row">
                   <span className="selection-label">ACID:</span>
                   <div className="chem-selector">
-                    <button className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
+                    <button className="arrow-btn" aria-label="Select Hydrochloric Acid" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
                     <div className="chem-display">
                       <img src={swipe ? hcl : nacl} alt="Acid" />
                       <span>{swipe ? 'HCl' : 'H2SO4'}</span>
                     </div>
-                    <button className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
+                    <button className="arrow-btn" aria-label="Select Sulfuric Acid" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
                   </div>
                 </div>
 
@@ -200,7 +200,7 @@ const Titration = () => {
 
           <div className="note-box">
             <span style={{ fontWeight: 'bold', color: '#ff4d4d' }}>NOTE:</span> The solution of HCl is 1 M and H2SO4 is 2 M.
-            {message && <div style={{ color: '#00f3ff', marginTop: '10px' }}>{message}</div>}
+            {message && <div role="status" aria-live="polite" style={{ color: '#00f3ff', marginTop: '10px' }}>{message}</div>}
           </div>
         </div>
 
