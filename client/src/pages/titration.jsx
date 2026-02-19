@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
@@ -36,12 +36,24 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  // acid_heigth state removed, replaced by derived value
   const [data, setData] = useState(all_data[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [message, setMessage] = useState("");
+
+  // Derived state for acid height
+  // Optimized: Derived from state instead of being stored in state, avoiding redundant updates
+  const acidHeight = useMemo(() => {
+    if (add_acid) {
+      // Initial state before adding acid
+      return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z";
+    }
+    // Calculated height based on titration progress
+    const height = 644 - ((count / 10) * 4.3);
+    return `M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V${height}H226.348Z`;
+  }, [add_acid, count]);
 
   // Logic to save result
   const saveResult = async (finalCount) => {
@@ -89,20 +101,25 @@ const Titration = () => {
   }
 
   // Timer Logic
+  // Optimized: Removed count dependency to prevent interval recreation on every tick
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
+    if (isCounting) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
-        setCount(prevCount => prevCount + 1);
+        setCount(prevCount => {
+          if (prevCount >= 100) {
+            setIsCounting(false);
+            return prevCount;
+          }
+          return prevCount + 1;
+        });
       }, 100);
     }
     return () => {
       clearInterval(timerId);
 
     };
-  }, [isCounting, count]);
+  }, [isCounting]); // Removed count dependency
 
   const handleStart = () => {
     if (drop && !isCounting) {
@@ -177,7 +194,7 @@ const Titration = () => {
               </button>
 
               <button className="sci-fi-btn" disabled={!add_acid} onClick={() => {
-                setAcid("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z");
+                // setAcid removed, derived from add_acid=false and count
                 setAddAcid(false);
                 setKMN(true);
               }}>
@@ -214,7 +231,7 @@ const Titration = () => {
 
             {/* Simulated SVG parts from original code, wrapped for positioning */}
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>
-              <TitrationSetup aheigth={acid_heigth} color={sColor} shaky={shaking} count={count} />
+              <TitrationSetup aheigth={acidHeight} color={sColor} shaky={shaking} count={count} />
 
               {/* Dynamic Liquid Levels Overlay */}
               <div className="base_box" style={{
