@@ -1,4 +1,10 @@
+
 const request = require('supertest');
+
+// Set dummy environment variables before requiring the app
+process.env.SUPABASE_URL = 'https://example.supabase.co';
+process.env.SUPABASE_KEY = 'dummy-key';
+
 const app = require('../server');
 
 describe('Security Headers & Rate Limiting', () => {
