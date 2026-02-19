@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import './Navbar.css';
 import logo from '../assets/logo.png';
 
@@ -64,10 +63,6 @@ const Navbar = () => {
             </div>
         </nav>
     );
-};
-
-Navbar.propTypes = {
-    // No props currently, but ready for future additions
 };
 
 export default Navbar;

@@ -1,73 +1,82 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { supabase } from '../supabaseClient';
+import { toast } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
 import HolographicLogin from '../components/3d-animations/HolographicLogin';
-import logger from '../utils/logger';
-import { showError, showSuccess } from '../utils/notifications';
-import './login.css';
-import logo from '../assets/logo.png';
+import ParticleBackground from '../components/3d-animations/ParticleBackground';
+import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
 const Login = () => {
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
             });
 
             if (error) throw error;
-            logger.info('User logged in successfully', { userId: data.user?.id });
-            showSuccess('Login successful! Welcome back.');
+            toast.success('Access Granted');
             navigate('/dashboard');
         } catch (error) {
-            logger.error('Login failed', { error: error.message });
-            showError(error.error_description || error.message || 'Login failed. Please try again.');
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="login-page">
-            <HolographicLogin>
-                <img src={logo} alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
-                <h2 className="login-title">STUDENT LOGIN</h2>
-                <form onSubmit={handleLogin}>
-                    <div className="input-group">
-                        <label className="input-label">Email Address</label>
-                        <input
-                            type="email"
-                            className="login-input"
-                            placeholder="student@university.edu"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+            <div className="background-canvas">
+                <CanvasContainer>
+                    <ParticleBackground count={1000} />
+                </CanvasContainer>
+            </div>
+
+            <div className="login-container">
+                <HolographicLogin>
+                    <h1 className="neon-text">SYSTEM ACCESS</h1>
+                    <form onSubmit={handleLogin} className="login-form">
+                        <div className="input-group">
+                            <label htmlFor="email">IDENTIFIER</label>
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="USER@ALCHEMY.LAB"
+                                disabled={loading}
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="password">PASSPHRASE</label>
+                            <input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                disabled={loading}
+                            />
+                        </div>
+                        <button type="submit" className="cyber-button" disabled={loading}>
+                            {loading ? 'AUTHENTICATING...' : 'INITIALIZE SESSION'}
+                        </button>
+                    </form>
+                    <div className="login-links">
+                        <Link to="/register">NEW USER REGISTRATION</Link>
+                        <Link to="/forgot-password">RESET CREDENTIALS</Link>
                     </div>
-                    <div className="input-group">
-                        <label className="input-label">Password</label>
-                        <input
-                            type="password"
-                            className="login-input"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="login-button">ACCESS LAB</button>
-                </form>
-            </HolographicLogin>
+                </HolographicLogin>
+            </div>
         </div>
     );
-};
-
-Login.propTypes = {
-    // No props currently, but ready for future additions
 };
 
 export default Login;

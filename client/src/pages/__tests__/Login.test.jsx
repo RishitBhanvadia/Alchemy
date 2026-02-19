@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
+import { supabase } from '../../supabaseClient';
 
 // Mock navigate
 const mockNavigate = vi.fn();
@@ -14,11 +15,10 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
-            signInWithPassword: mockSignInWithPassword,
+            signInWithPassword: vi.fn(),
         },
     },
 }));
@@ -29,6 +29,10 @@ vi.mock('react-hot-toast', () => ({
         error: vi.fn(),
         success: vi.fn(),
     },
+    toast: {
+        error: vi.fn(),
+        success: vi.fn(),
+    }
 }));
 
 describe('Login Component', () => {
@@ -46,34 +50,39 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        // Adjust selectors based on actual placeholder text (uppercase in placeholder)
+        // or usage of labels.
+        // The placeholder in Login.jsx is "USER@ALCHEMY.LAB" and "••••••••"
+        // But `getByPlaceholderText` with regex /email/i might not match "USER@..."
+        // Let's use getByLabelText since we fixed labels.
+        expect(screen.getByLabelText(/identifier/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/passphrase/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /initialize session/i });
         expect(submitButton).toBeInTheDocument();
     });
 
     it('should handle form submission', async () => {
-        mockSignInWithPassword.mockResolvedValue({
+        supabase.auth.signInWithPassword.mockResolvedValue({
             data: { user: { id: '123', email: 'test@example.com' } },
             error: null,
         });
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/identifier/i);
+        const passwordInput = screen.getByLabelText(/passphrase/i);
+        const submitButton = screen.getByRole('button', { name: /initialize session/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            expect(mockSignInWithPassword).toHaveBeenCalledWith({
+            expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
                 email: 'test@example.com',
                 password: 'password123',
             });
@@ -81,23 +90,23 @@ describe('Login Component', () => {
     });
 
     it('should handle login error', async () => {
-        mockSignInWithPassword.mockResolvedValue({
+        supabase.auth.signInWithPassword.mockResolvedValue({
             data: null,
             error: { message: 'Invalid credentials' },
         });
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/identifier/i);
+        const passwordInput = screen.getByLabelText(/passphrase/i);
+        const submitButton = screen.getByRole('button', { name: /initialize session/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            expect(mockSignInWithPassword).toHaveBeenCalled();
+            expect(supabase.auth.signInWithPassword).toHaveBeenCalled();
         });
     });
 });

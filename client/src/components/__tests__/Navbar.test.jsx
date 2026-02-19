@@ -1,40 +1,34 @@
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import Navbar from '../Navbar';
-
-// Mock supabase
-vi.mock('../../supabaseClient', () => ({
-    supabase: {
-        auth: {
-            signOut: vi.fn(),
-        },
-    },
-}));
 
 describe('Navbar Component', () => {
     const renderNavbar = () => {
-        return render(
-            <BrowserRouter>
+        render(
+            <MemoryRouter>
                 <Navbar />
-            </BrowserRouter>
+            </MemoryRouter>
         );
     };
 
     it('should render navigation links', () => {
         renderNavbar();
         expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-        expect(screen.getByText(/history/i)).toBeInTheDocument();
-    });
-
-    it('should render logout button', () => {
-        renderNavbar();
-        expect(screen.getByText(/logout/i)).toBeInTheDocument();
+        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        // The dropdown trigger is "MORE", and actual items (history, etc.) are in the dropdown
+        // We can test if "MORE" exists
+        expect(screen.getByText(/more/i)).toBeInTheDocument();
     });
 
     it('should have correct navigation structure', () => {
-        const { container } = renderNavbar();
-        const nav = container.querySelector('nav');
+        renderNavbar();
+        const nav = screen.getByRole('navigation');
         expect(nav).toBeInTheDocument();
+    });
+
+    it('should render profile icon', () => {
+        renderNavbar();
+        expect(screen.getByText('ADM')).toBeInTheDocument();
     });
 });

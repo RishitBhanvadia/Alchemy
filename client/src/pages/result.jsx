@@ -1,224 +1,133 @@
-import React, { useState, useEffect, } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import ResultCustomTestTube from '../components/result_testtube'
-import labgif from '../assets/labgif.gif'
-import cloud from '../assets/cloud.png'
-import boom from '../assets/boom.gif'
-import logo from '../assets/logo.png'
-import Bubble from '../components/banner'
-import back from '../assets/back.jpg'
-import './result.css'
+import React, { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
+import ResultTestTube from "../components/result_testtube";
+import ExpResult from "./experiment_result";
+import "./result.css"
+import axios from 'axios';
+import { supabase } from '../supabaseClient';
+import { toast } from 'react-hot-toast';
 
 const Result = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+    const location = useLocation();
+    const { chemA, chemB, chemC, chemD } = location.state || { chemA: 0, chemB: 0, chemC: 0, chemD: 0 };
+    const [result, setResult] = useState('');
+    const [color, setColor] = useState('');
+    const [s_color, setSColor] = useState('');
+    const [num, setNum] = useState(0);
+    const [on, setOn] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
-  // State hooks must be unconditional (at the top)
-  const [data, setData] = useState();
-  const localCart = JSON.parse(localStorage.getItem('cart'));
-  const [cart, setCart] = useState(localCart);
+    const calculateResult = useCallback(async () => {
+        try {
+            const response = await axios.post('/api/calculate-result', {
+                chemA, chemB, chemC, chemD
+            });
 
-  // Redirect if no state (e.g., user refreshed the page)
-  useEffect(() => {
-    if (!location.state) {
-      navigate('/lab');
-    }
-  }, [location.state, navigate]);
+            const { result, color, solid_color, num } = response.data;
+            setResult(result);
+            setColor(color);
+            setSColor(solid_color);
+            setNum(num);
 
-  // Data fetching hook
-  useEffect(() => {
-    if (!location.state) return;
-
-    const apiUrl = import.meta.env.VITE_API_URL || "https://alchemy-85hv.onrender.com";
-    fetch(`${apiUrl}/result/${location.state.chemA}/${location.state.chemB}/${location.state.chemC}/${location.state.chemD}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server Error: ${response.status} ${response.statusText}`);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error calculating result:', error);
+            setResult('Error');
         }
-        return response.json();
-      })
-      .then(data => {
-        if (!data || data.length === 0) {
-          console.warn("No data received from backend");
-        }
-        setData(data);
-        const d = new Date();
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-        const date = d.getDate();
-        const month = months[d.getMonth()];
-        const year = d.getFullYear();
-        const hr = d.getHours();
-        const min = d.getMinutes();
-        const rdx = {
-          "date": date + " " + month + " " + year,
-          "time": hr + ":" + min,
-          "conc_a": location.state.chemA,
-          "conc_b": location.state.chemB,
-          "conc_c": location.state.chemC,
-          "conc_d": location.state.chemD,
-          "color": (data && data[0]) ? data[0].color : "#ffffff",
-          "main": (data && data[0]) ? data[0].product_name : "Unknown"
-        };
+    }, [chemA, chemB, chemC, chemD]);
 
-        // Fix for race condition: Read the latest cart from localStorage before updating.
-        // This ensures updates from other tabs or rapid changes are not lost.
-        // Also update localStorage immediately to minimize the race window.
-        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const newCart = [...currentCart, rdx];
+    useEffect(() => {
+        calculateResult();
+    }, [calculateResult]);
 
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        setCart(newCart);
-      })
-      .catch(error => {
-        console.error("Fetch error:", error);
-        setData([{
-          color: "#ff0000",
-          result: `Error: ${error.message}`,
-          solid_color: "#000",
-          gas_color: "#000",
-          gas: "None",
-          solid: "None",
-          product_name: "Error",
-          product_info: `Debug Info: ${error.message}`,
-          product_properties: [],
-          product_uses: []
-        }]);
-      });
-  }, [location.state]);
+    const handleSaveResult = async () => {
+        setIsSaving(true);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
 
-  // Cart persistence hook
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  // Early return MUST happen after all hooks
-  if (!location.state) {
-    return null;
-  }
-
-  const chemh = "M 218.985 165.204 V 384.283 C 218.985 397.931 232.87 409 250.003 409 C 267.136 409 281.02 397.935 281.02 384.283 V" + (387.28 - (location.state.chemA + location.state.chemB + location.state.chemC + location.state.chemD) * 3.3) + "H 218.985 Z";
-
-  return (
-    <div className="result-page">
-      {
-        (typeof data === "undefined" || !data) ?
-          (
-            <div className="loading-container glass-panel">
-              <div className="logo-spinner">
-                <img src={logo} alt="Loading..." className="loading-logo-img" />
-              </div>
-              <p className="neon-text blink">ANALYZING REACTION...</p>
-            </div>
-          ) :
-          <div className='result-container'>
-            {/* Background Elements */}
-            <div className="bubbles"><Bubble /></div>
-
-            {
-              data.map((item, index) => (
-                <div className="result-content-wrapper" key={index}>
-
-                  <div className="result-header glass-panel">
-                    <div className="boom-container">
-                      <img src={boom} alt="Reaction" />
-                    </div>
-                    <h2 className="neon-glow">REACTION COMPLETE</h2>
-                    <div className="note-badge">NOTE: Standard Temperature & Pressure</div>
-                  </div>
-
-                  <div className="result-grid">
-                    {/* Left: Input Analysis */}
-                    <div className="glass-panel input-analysis">
-                      <h3 className="section-title">INPUT ANALYSIS</h3>
-                      <div className="chemical-list">
-                        <div className="chem-row">
-                          <div className="color-dot box_hcl"></div>
-                          <span className="chem-label">Conc. HCl</span>
-                          <div className="progress-bar-wrapper">
-                            <div className="progress-fill" style={{ width: `${location.state.chemA}%`, background: '#05B9C4' }}></div>
-                          </div>
-                          <span className="chem-percent">{location.state.chemA}%</span>
-                        </div>
-                        <div className="chem-row">
-                          <div className="color-dot box_nacl"></div>
-                          <span className="chem-label">NaCl</span>
-                          <div className="progress-bar-wrapper">
-                            <div className="progress-fill" style={{ width: `${location.state.chemB}%`, background: '#04CE7E' }}></div>
-                          </div>
-                          <span className="chem-percent">{location.state.chemB}%</span>
-                        </div>
-                        <div className="chem-row">
-                          <div className="color-dot box_cuso4"></div>
-                          <span className="chem-label">CuSO4</span>
-                          <div className="progress-bar-wrapper">
-                            <div className="progress-fill" style={{ width: `${location.state.chemC}%`, background: '#FBC2E3' }}></div>
-                          </div>
-                          <span className="chem-percent">{location.state.chemC}%</span>
-                        </div>
-                        <div className="chem-row">
-                          <div className="color-dot box_feso4"></div>
-                          <span className="chem-label">FeSO4</span>
-                          <div className="progress-bar-wrapper">
-                            <div className="progress-fill" style={{ width: `${location.state.chemD}%`, background: '#DAA520' }}></div>
-                          </div>
-                          <span className="chem-percent">{location.state.chemD}%</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Center: Test Tube Result */}
-                    <div className="glass-panel visual-result">
-                      <h3 className="section-title">OBSERVATION</h3>
-                      <div className="result-equation neon-text">{item.result}</div>
-
-                      <div className="result-testtube-container">
-                        <ResultCustomTestTube color={item.color} solid_color={item.solid_color} gas_color={item.gas_color} gas={item.gas} solid={item.solid} str={chemh} />
-                      </div>
-
-                      <div className="smell-indicator">
-                        <img src={cloud} alt="" />
-                        <span className={(location.state.chemA > 0) ? "smell-warn" : "smell-safe"}>
-                          {(location.state.chemA > 0) ? "PUNGENT ODOR DETECTED (HCl)" : "NO DISTINCT ODOR"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Right: Product Info */}
-                    <div className="glass-panel product-details">
-                      <h3 className="section-title">PRODUCT DATA</h3>
-                      {
-                        (item.product_name === "") ? <div className="no-product">No Reaction / No Products</div> :
-                          <>
-                            <h1 className="product-name neon-glow">{item.product_name}</h1>
-                            <p className="product-desc">{item.product_info}</p>
-
-                            <div className="info-group">
-                              <h4><i className="fa-solid fa-dna"></i> PROPERTIES</h4>
-                              <ul>
-                                {item.product_properties.map((p, i) => <li key={i}>{p}</li>)}
-                              </ul>
-                            </div>
-
-                            <div className="info-group">
-                              <h4><i className="fa-solid fa-mortar-pestle"></i> APPLICATIONS</h4>
-                              <ul>
-                                {item.product_uses.map((u, i) => <li key={i}>{u}</li>)}
-                              </ul>
-                            </div>
-                          </>
-                      }
-                      <button className='next-button action-button' onClick={() => { navigate("/lab") }}>
-                        NEW EXPERIMENT
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))
+            if (!user) {
+                toast.error('Please login to save results');
+                return;
             }
-          </div>
-      }
-    </div>
-  )
-}
+
+            const { error } = await supabase
+                .from('experiments')
+                .insert([
+                    {
+                        user_id: user.id,
+                        chemical_a: chemA,
+                        chemical_b: chemB,
+                        chemical_c: chemC,
+                        chemical_d: chemD,
+                        result_value: num,
+                        result_description: result,
+                        color_code: color
+                    }
+                ]);
+
+            if (error) throw error;
+            toast.success('Result saved successfully!');
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error saving result:', error);
+            toast.error('Failed to save result');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    return (
+        <div className="result-page">
+            <h1 className="neon-text">REACTION ANALYSIS</h1>
+
+            <div className="result-content glass-panel">
+                <div className="visualization-area">
+                    <div className="result-tube-container">
+                        <ResultTestTube solid_color={s_color} color={color} />
+                    </div>
+                </div>
+
+                <div className="data-area">
+                    <div className="data-card">
+                        <h3>INPUT PARAMETERS</h3>
+                        <div className="parameter-grid">
+                            <div className="param-item">
+                                <span className="label">HCl</span>
+                                <span className="value">{chemA}%</span>
+                            </div>
+                            <div className="param-item">
+                                <span className="label">NaCl</span>
+                                <span className="value">{chemB}%</span>
+                            </div>
+                            <div className="param-item">
+                                <span className="label">CuSO4</span>
+                                <span className="value">{chemC}%</span>
+                            </div>
+                            <div className="param-item">
+                                <span className="label">FeSO4</span>
+                                <span className="value">{chemD}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="action-area">
+                        <button className="cyber-button" onClick={() => setOn(!on)}>
+                            {on ? 'HIDE DATA' : 'VIEW DATA'}
+                        </button>
+                        <button
+                            className="cyber-button save-btn"
+                            onClick={handleSaveResult}
+                            disabled={isSaving}
+                        >
+                            {isSaving ? 'SAVING...' : 'SAVE TO DATABASE'}
+                        </button>
+                    </div>
+
+                    <ExpResult on={on} num={num} />
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Result;

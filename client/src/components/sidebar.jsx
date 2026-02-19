@@ -1,123 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./sidebar.css";
 import { NavLink } from "react-router-dom";
-import Star from '../assets/star.png'
 
 const Sidebar = () => {
-  const [selectedTab, setSelectedTab] = useState("");
-
-  useEffect(() => {
-    const currentRoute = window.location.pathname;
-    setSelectedTab(getTabFromRoute(currentRoute));
-  }, []);
-
-  const handleTabClick = (tab) => {
-    setSelectedTab(tab);
-  };
-
-  const getTabFromRoute = (route) => {
-    switch (route) {
-      case "/lab":
-        return "lab";
-      case "/titration":
-        return "titration";
-      case "/organic":
-        return "organic";
-      case "/inorganic":
-        return "inorganic";
-      case "/history":
-        return "history";
-      default:
-        return "";
-    }
-  };
-
   return (
     <div className="sideBar">
-      <div className="elements">
+      <div className="sideBarList">
+        {/* Lab Link */}
         <NavLink
           to="/lab"
-          activeClassName="selected"
-          onClick={() => handleTabClick("lab")}
+          className={({ isActive }) => `sideBarItem ${isActive ? "active" : ""}`}
         >
-          <div
-            className={`element ${selectedTab === "lab" ? "selected" : ""}`}
-          >
-            <button
-              className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
-                }`}
-            >
-              <i className="fa-solid fa-flask"></i>
-            </button>
+          <div className="sideBarIcon">
+            <i className="fa-solid fa-flask"></i>
           </div>
+          <div className="sideBarText">Laboratory</div>
         </NavLink>
-        <NavLink
-          to="/titration"
-          activeClassName="selected"
-          onClick={() => handleTabClick("titration")}
-        >
-          <div
-            className={`element titration ${selectedTab === "titration" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
-                }`}
-            >
-              <i className="fa-solid fa-flask-vial"></i>
-            </button>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/organic"
-          activeClassName="selected"
-          onClick={() => handleTabClick("organic")}
-        >
-          <div
-            className={`element organic ${selectedTab === "organic" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
-                }`}
-            >
-              <i class="fa-solid fa-user-plus"></i>
-            </button>
-          </div>
-        </NavLink>
-        <NavLink
-          to="/inorganic"
-          activeClassName="selected"
-          onClick={() => handleTabClick("inorganic")}
-        >
-          <div
-            className={`element inorganic ${selectedTab === "inorganic" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
-                }`}
-            >
-              <i class="fa-solid fa-user-minus"></i>
-            </button>
-          </div>
-        </NavLink>
+
+        {/* History Link */}
         <NavLink
           to="/history"
-          activeClassName="selected"
-          onClick={() => handleTabClick("history")}
+          className={({ isActive }) => `sideBarItem ${isActive ? "active" : ""}`}
         >
-          <div
-            className={`element ${selectedTab === "history" ? "selected" : ""
-              }`}
-          >
-            <button
-              className={`element_button ${selectedTab === "history" ? "selected" : ""
-                }`}
-            >
-              <i class="fa-solid fa-clock-rotate-left"></i>
-            </button>
+          <div className="sideBarIcon">
+            <i className="fa-solid fa-clock-rotate-left"></i>
           </div>
+          <div className="sideBarText">History</div>
+        </NavLink>
+
+        {/* Organic Link */}
+        <NavLink
+          to="/organic"
+          className={({ isActive }) => `sideBarItem ${isActive ? "active" : ""}`}
+        >
+          <div className="sideBarIcon">
+            <i className="fa-solid fa-leaf"></i>
+          </div>
+          <div className="sideBarText">Organic</div>
+        </NavLink>
+
+        {/* Inorganic Link */}
+        <NavLink
+          to="/inorganic"
+          className={({ isActive }) => `sideBarItem ${isActive ? "active" : ""}`}
+        >
+          <div className="sideBarIcon">
+            <i className="fa-solid fa-gem"></i>
+          </div>
+          <div className="sideBarText">Inorganic</div>
+        </NavLink>
+
+        {/* Titration Link */}
+        <NavLink
+          to="/titration"
+          className={({ isActive }) => `sideBarItem ${isActive ? "active" : ""}`}
+        >
+          <div className="sideBarIcon">
+            <i className="fa-solid fa-vial"></i>
+          </div>
+          <div className="sideBarText">Titration</div>
         </NavLink>
       </div>
     </div>

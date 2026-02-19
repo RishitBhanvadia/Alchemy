@@ -9,3 +9,10 @@ expect.extend(matchers);
 afterEach(() => {
     cleanup();
 });
+
+// Polyfill ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+};
