@@ -13,8 +13,9 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
-const mockSignInWithPassword = vi.fn();
+// Mock supabase with hoisted mock function
+const mockSignInWithPassword = vi.hoisted(() => vi.fn());
+
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -46,13 +47,14 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        // Use more resilient queries if placeholders change
+        expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i }); // Updated to match actual text
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +66,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/Email Address/i);
+        const passwordInput = screen.getByLabelText(/Password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +90,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/Email Address/i);
+        const passwordInput = screen.getByLabelText(/Password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });

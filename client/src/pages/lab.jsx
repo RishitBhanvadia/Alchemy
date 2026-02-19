@@ -62,62 +62,37 @@ const Lab = () => {
 
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemA(value);
     change_tip();
   };
 
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemB(value);
     change_tip();
   };
 
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemC(value);
     change_tip();
   };
 
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemD(value);
     change_tip();
   };
 
   const useHandlePlayClick = () => {
     SetTColor("");
-    // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
       navigate("/result", {
         replace: true,
         state: { chemA, chemB, chemC, chemD },
       });
-    }, 1500); // Increased delay to show animation
+    }, 1500);
   };
 
   function onOrNot() {
@@ -130,16 +105,24 @@ const Lab = () => {
   }
 
   const isPlayDisabled = !(onOrNot());
+  const activeCount = [chemA, chemB, chemC, chemD].filter(c => c > 0).length;
 
-  // Determine status for 3D Beaker
-  // Determine status for 3D Beaker (removed unused experimentStatus)
+  const getStatusText = () => {
+    if (isPlayDisabled) return "AWAITING INPUT";
+    return "READY TO REACT";
+  };
+
+  const getGuidanceMessage = () => {
+    if (activeCount === 0) return "Select a chemical from the rack to begin.";
+    if (activeCount === 1) return "Select at least one more chemical to enable reaction.";
+    return "Reaction conditions met. Press Initiate to proceed.";
+  };
 
   return (
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
       <div className="lab-3d-background">
         <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
         </CanvasContainer>
@@ -246,18 +229,24 @@ const Lab = () => {
           disabled={isPlayDisabled}
           onClick={useHandlePlayClick}
         >
-          {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
+          {!animate ? (isPlayDisabled ? 'SELECT REACTANTS' : 'INITIATE REACTION') : 'PROCESSING...'}
         </button>
       </div>
 
-      {/* Right Panel: Status/Info (Optional, kept minimal for now) */}
+      {/* Right Panel: Status/Info */}
       <div className="glass-panel status-panel">
-        <h3 className="status-title">STATUS</h3>
+        <h3 className="status-title">REACTION MONITOR</h3>
         <div className="status-item">
-          <span className="label">System:</span>
-          <span className="value neon-text">ONLINE</span>
+          <span className="label">System Status:</span>
+          <span className={`value ${isPlayDisabled ? 'text-warning' : 'text-success'}`}>
+            {getStatusText()}
+          </span>
         </div>
-        {/* Simplified for students as requested (removed Temp/Pressure) */}
+
+        <div className="guidance-box">
+           <p>{getGuidanceMessage()}</p>
+        </div>
+
         <div className="note-box">
           <span className="note-warn">NOTE:</span> All solutions are 1 M
         </div>
