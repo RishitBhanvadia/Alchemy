@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/result/:match*",
-            "destination": "https://alchemy-86hv.onrender.com/result/:match*"
+            "destination": "https://alchemy-85hv.onrender.com/result/:match*"
         },
         {
             "source": "/:path*",
