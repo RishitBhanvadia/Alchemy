@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
@@ -58,6 +58,4 @@ describe('Dashboard Component', () => {
         const labCard = screen.getByText(/laboratory/i).closest('a');
         expect(labCard).toHaveAttribute('href', '/lab');
     });
-
-    // Removed keyboard nav test if it relied on div[role="button"] which might have changed to <a> tags
 });
