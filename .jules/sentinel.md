@@ -1,0 +1,4 @@
+## 2026-02-19 - Missing 'trust proxy' Configuration
+**Vulnerability:** The Express.js application lacked `app.set('trust proxy', 1)`, causing `express-rate-limit` to misidentify user IP addresses when deployed behind a proxy (like Vercel/Render). This meant all users shared the same rate limit bucket (likely `::1` or the proxy's IP), creating a Denial of Service risk where 100 requests globally would block everyone.
+**Learning:** Always verify `trust proxy` configuration when using `express-rate-limit` or any IP-based middleware in a proxied environment. The default behavior is unsafe for production availability.
+**Prevention:** Include a test case that sends requests with distinct `X-Forwarded-For` headers and asserts that they are treated as separate clients (e.g., checking `RateLimit-Remaining` headers).
