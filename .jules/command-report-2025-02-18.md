@@ -48,17 +48,17 @@ CONTEXT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 The CI environment runs Node 18.x.
-The project currently uses `jsdom^28.0.0` and `vitest^4.0.18`, which require Node 20+.
-This causes `ERR_REQUIRE_ESM` errors during test execution in CI.
+The project currently uses `jsdom^28.0.0` and `vitest^4.0.18`.
+`jsdom` v23+ and newer `vitest` versions have stricter Node requirements (often 20+), causing `ERR_REQUIRE_ESM` errors in Node 18 during CI execution.
 Additionally, there are test configuration and logic issues in the client.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 THE PROBLEM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. **Dependency Incompatibility:** `jsdom` v28 and `vitest` v4 are incompatible with Node 18.
-2. **Test Config:** Vitest incorrectly picks up Playwright E2E tests in `tests/`.
-3. **Test Logic:** `Login.test.jsx` has hoisting issues and incorrect selectors. `Dashboard.test.jsx` has outdated text expectations.
+1. **Dependency Incompatibility:** `jsdom` v28 requires Node 20+. CI uses Node 18. This crashes the test suite.
+2. **Test Config:** Vitest incorrectly picks up Playwright E2E tests in `tests/`, causing syntax errors during unit testing.
+3. **Test Logic:** `Login.test.jsx` fails due to incorrect `vi.mock` hoisting and mismatched selectors (expecting "Login" vs "ACCESS LAB"). `Dashboard.test.jsx` expects incorrect title text.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EXACT ERROR OUTPUT
@@ -96,15 +96,15 @@ ROOT CAUSE
 - **Node Version:** Dependencies require Node 20+, but CI is Node 18.
 - **Vitest Config:** Default include pattern encompasses `tests/` (Playwright).
 - **Hoisting:** `vi.mock` usage in Login test references uninitialized variables.
-- **Selectors:** Login test uses placeholders/text that don't match the UI ("ACCESS LAB" vs "Login").
+- **Selectors:** Login test uses placeholders/text that don't match the UI.
 - **Content:** Dashboard title changed to "WELCOME, ADMIN".
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 WHAT TO FIX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Step 1: Downgrade dependencies in `client/package.json`:
-   - `jsdom`: `^25.0.1`
+Step 1: Downgrade dependencies in `client/package.json` for Node 18 compatibility:
+   - `jsdom`: `^25.0.1` (Last version supporting Node 18)
    - `vitest`: `^2.1.8`
    - `@vitest/ui`: `^2.1.8`
    - `vite`: `^5.4.11`
