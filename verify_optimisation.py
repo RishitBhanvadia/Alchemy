@@ -22,7 +22,6 @@ def run():
         except:
             print("Landing page title NOT found.")
 
-        # Take immediate screenshot (FCP)
         if not os.path.exists("verification_screenshots"):
             os.makedirs("verification_screenshots")
 
