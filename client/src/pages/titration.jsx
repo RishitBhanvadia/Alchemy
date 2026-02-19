@@ -9,22 +9,9 @@ import hcl from "../assets/hc.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
 import logger from '../utils/logger';
+import { TITRATION_DATA, calculateAcidPath, calculateColor } from '../utils/titrationUtils';
 
 const Titration = () => {
-  const all_data = [
-    {
-      "reaction_id": "A",
-      "points": [8, 8.5, 9, 9.5, 10],
-      "color": ["#bf006b", "#bb0062", "#b80063", "#b70061", "#b8006a"]
-    },
-    {
-      "reaction_id": "B",
-      "points": [7.65, 7.9, 8.15, 8.4, 8.65, 8.9, 9.15, 9.4, 9.65, 10],
-      "color": ["#bf0095", "#c2007b", "#c8007d", "#c8008b", "#be0090", "#c80086", "#b90083", "#be007c", "#c00087", "#b10080"]
-    }
-  ];
-
-
 
   // State
 
@@ -36,8 +23,8 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
-  const [data, setData] = useState(all_data[0]);
+  const [acidHeight, setAcidHeight] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  const [data, setData] = useState(TITRATION_DATA[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
@@ -84,8 +71,8 @@ const Titration = () => {
   function setting_up_exp() {
     setConfirm(false);
     setAddAcid(true);
-    if (swipe) setData(all_data[0]);
-    else setData(all_data[1]);
+    if (swipe) setData(TITRATION_DATA[0]);
+    else setData(TITRATION_DATA[1]);
   }
 
   // Timer Logic
@@ -93,8 +80,8 @@ const Titration = () => {
     let timerId;
     if (isCounting && count < 100) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
+        const newPath = calculateAcidPath(count);
+        setAcidHeight(newPath);
         setCount(prevCount => prevCount + 1);
       }, 100);
     }
@@ -127,11 +114,9 @@ const Titration = () => {
     if (shake) {
       setShaking(true);
       setTimeout(() => setShaking(false), 500);
-      for (var i = 0; i < data.points.length; i++) {
-        if ((count / 10) >= data.points[i]) {
-          SetSColor(data.color[i]);
-
-        }
+      const newColor = calculateColor(count, data);
+      if (newColor) {
+        SetSColor(newColor);
       }
     }
   }
@@ -177,7 +162,7 @@ const Titration = () => {
               </button>
 
               <button className="sci-fi-btn" disabled={!add_acid} onClick={() => {
-                setAcid("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z");
+                setAcidHeight(calculateAcidPath(0));
                 setAddAcid(false);
                 setKMN(true);
               }}>
@@ -214,7 +199,7 @@ const Titration = () => {
 
             {/* Simulated SVG parts from original code, wrapped for positioning */}
             <div style={{ position: 'relative', transform: 'translateX(-50px)' }}>
-              <TitrationSetup aheigth={acid_heigth} color={sColor} shaky={shaking} count={count} />
+              <TitrationSetup acidHeight={acidHeight} color={sColor} shaky={shaking} count={count} />
 
               {/* Dynamic Liquid Levels Overlay */}
               <div className="base_box" style={{
