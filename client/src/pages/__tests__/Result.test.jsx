@@ -67,9 +67,19 @@ vi.mock('../utils/logger', () => ({
 
 // Mock React Router
 const routerMocks = vi.hoisted(() => {
+    const useLocation = vi.fn(() => ({
+        state: {
+            chemA: 10,
+            chemB: 0,
+            chemC: 0,
+            chemD: 0,
+            experimentId: 'exp-123'
+        }
+    }));
+    const useNavigate = vi.fn(() => vi.fn());
     return {
-        useLocation: vi.fn(),
-        useNavigate: vi.fn(),
+        useLocation,
+        useNavigate,
     };
 });
 
@@ -81,18 +91,6 @@ vi.mock('react-router-dom', async () => {
         useNavigate: routerMocks.useNavigate,
     };
 });
-
-// Setup default mock implementation for router
-routerMocks.useLocation.mockReturnValue({
-    state: {
-        chemA: 10,
-        chemB: 0,
-        chemC: 0,
-        chemD: 0,
-        experimentId: 'exp-123'
-    }
-});
-routerMocks.useNavigate.mockReturnValue(vi.fn());
 
 describe('Result Page', () => {
     beforeEach(() => {
