@@ -3,8 +3,15 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
-// Mock navigate
-const mockNavigate = vi.fn();
+// Define mocks using vi.hoisted to ensure they are available before imports
+const { mockNavigate, mockSignInWithPassword, mockError, mockSuccess } = vi.hoisted(() => ({
+    mockNavigate: vi.fn(),
+    mockSignInWithPassword: vi.fn(),
+    mockError: vi.fn(),
+    mockSuccess: vi.fn()
+}));
+
+// Mock react-router-dom
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -14,7 +21,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -23,13 +29,29 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
-// Mock toast
-vi.mock('react-hot-toast', () => ({
+// Mock logger
+vi.mock('../../utils/logger', () => ({
     default: {
+        info: vi.fn(),
         error: vi.fn(),
-        success: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
     },
 }));
+
+// Mock holographic login component
+vi.mock('../components/3d-animations/HolographicLogin', () => ({
+    default: ({ children }) => <div data-testid="holographic-login">{children}</div>
+}));
+
+// Mock notifications (named exports as per Login.jsx usage)
+vi.mock('../../utils/notifications', () => ({
+    showSuccess: mockSuccess,
+    showError: mockError,
+}));
+
+// Mock static assets
+vi.mock('../assets/logo.png', () => ({ default: 'logo.png' }));
 
 describe('Login Component', () => {
     beforeEach(() => {
@@ -46,13 +68,14 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        // Use getByLabelText as per best practices and likely implementation
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +87,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -77,6 +100,8 @@ describe('Login Component', () => {
                 email: 'test@example.com',
                 password: 'password123',
             });
+            expect(mockSuccess).toHaveBeenCalledWith('Login successful! Welcome back.');
+            expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
         });
     });
 
@@ -88,9 +113,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
@@ -98,6 +123,7 @@ describe('Login Component', () => {
 
         await waitFor(() => {
             expect(mockSignInWithPassword).toHaveBeenCalled();
+            expect(mockError).toHaveBeenCalledWith('Invalid credentials');
         });
     });
 });
