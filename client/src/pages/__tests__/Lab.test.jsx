@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Lab from '../lab';
 
@@ -99,28 +99,14 @@ describe('Lab Component', () => {
         renderLab();
         // A: HCl (#05B9C4), B: NaCl (#04CE7E), C: CuSO4 (#FBC2E3), D: FeSO4 (#DAA520)
 
-        const hclInput = screen.getByLabelText(/Conc. HCl/i);
-        const naclInput = screen.getByLabelText(/NaCl/i);
-        const cuso4Input = screen.getByLabelText(/CuSO4/i);
         const feso4Input = screen.getByLabelText(/FeSO4/i);
         const testTube = screen.getByTestId('test-tube');
 
-        // Note: The original implementation has a known bug where the color update lags behind by one render.
-        // We might not be able to easily test the *immediate* color change with the current buggy implementation
-        // using simple fireEvent unless we trigger another render.
-        // However, let's try to simulate the sequence.
-
-        // Set D
+        // Set D (FeSO4 - #DAA520)
         fireEvent.change(feso4Input, { target: { value: '10' } });
-        // In buggy implementation, color update happens AFTER this render cycle for the NEXT change.
-        // But let's assume we want to test the intended behavior or at least capture current state.
-        // If the test fails because of the bug, I will know I need to fix it.
 
-        // Actually, let's skip asserting the color on the *first* change if it's buggy,
-        // or check if it eventually updates.
-
-        // Let's just check if it renders. The Refactor will fix the bug, so the test should pass AFTER refactor.
-        // For "Before" state, this test might fail if I assert strict correctness.
-        // I will write the test expecting CORRECT behavior, and if it fails now, that confirms the bug.
+        // Verify color update (Refactor fixes the sync bug, so this should work immediately)
+        // Note: The test uses style.color, but the mock applies style={{ color: color }}
+        expect(testTube).toHaveStyle({ color: '#DAA520' });
     });
 });
