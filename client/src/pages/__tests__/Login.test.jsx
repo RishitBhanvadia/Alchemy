@@ -13,8 +13,11 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
-const mockSignInWithPassword = vi.fn();
+// Mock supabase with hoisting
+const { mockSignInWithPassword } = vi.hoisted(() => {
+    return { mockSignInWithPassword: vi.fn() };
+});
+
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -23,13 +26,19 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
-// Mock toast
-vi.mock('react-hot-toast', () => ({
-    default: {
-        error: vi.fn(),
-        success: vi.fn(),
-    },
+// Mock HolographicLogin
+vi.mock('../../components/3d-animations/HolographicLogin', () => ({
+    default: ({ children }) => <div data-testid="holographic-login">{children}</div>,
 }));
+
+// Mock notifications
+vi.mock('../../utils/notifications', () => ({
+    showSuccess: vi.fn(),
+    showError: vi.fn(),
+}));
+
+// Mock image
+vi.mock('../../assets/logo.png', () => ({ default: 'logo.png' }));
 
 describe('Login Component', () => {
     beforeEach(() => {
@@ -46,13 +55,13 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +73,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,13 +97,46 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
         fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            expect(mockSignInWithPassword).toHaveBeenCalled();
+        });
+    });
+
+    it('should show loading state on submit', async () => {
+        let resolveLogin;
+        const loginPromise = new Promise((resolve) => {
+            resolveLogin = resolve;
+        });
+
+        mockSignInWithPassword.mockReturnValue(loginPromise);
+
+        renderLogin();
+
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.click(submitButton);
+
+        // Check for loading state immediately
+        expect(submitButton).toHaveTextContent(/initializing/i);
+        expect(submitButton).toBeDisabled();
+
+        // Resolve the promise to finish the test cleanly
+        resolveLogin({
+            data: { user: { id: '123' } },
+            error: null,
+        });
 
         await waitFor(() => {
             expect(mockSignInWithPassword).toHaveBeenCalled();
