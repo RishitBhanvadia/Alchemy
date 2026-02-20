@@ -41,7 +41,9 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The title "WELCOME, ADMIN" is split across elements or contains "WELCOME", but "dashboard" isn't the visible title.
+        // The component actually renders: <h1 className="neon-glow">WELCOME, ADMIN</h1>
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
