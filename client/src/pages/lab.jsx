@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -21,7 +21,7 @@ const Lab = () => {
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  function change_tip() {
+  const change_tip = useCallback(() => {
     if (chemA > 0) {
       SetTColor('#05B9C4');
     }
@@ -43,7 +43,7 @@ const Lab = () => {
         }
       }
     }
-  }
+  }, [chemA, chemB, chemC, chemD]);
 
   useLayoutEffect(() => {
     if (animate) {
@@ -62,7 +62,7 @@ const Lab = () => {
 
   useEffect(() => {
     change_tip();
-  }, [chemA, chemB, chemC, chemD]);
+  }, [change_tip]);
 
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
