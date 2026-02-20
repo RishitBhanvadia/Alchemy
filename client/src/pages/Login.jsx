@@ -12,9 +12,11 @@ const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -27,7 +29,10 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             logger.error('Login failed', { error: error.message });
-            showError(error.error_description || error.message || 'Login failed. Please try again.');
+            showError(
+                error.error_description || error.message || 'Login failed. Please try again.'
+            );
+            setLoading(false);
         }
     };
 
@@ -38,7 +43,9 @@ const Login = () => {
                 <h2 className="login-title">STUDENT LOGIN</h2>
                 <form onSubmit={handleLogin}>
                     <div className="input-group">
-                        <label className="input-label" htmlFor="email">Email Address</label>
+                        <label className="input-label" htmlFor="email">
+                            Email Address
+                        </label>
                         <input
                             id="email"
                             type="email"
@@ -50,7 +57,9 @@ const Login = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label className="input-label" htmlFor="password">Password</label>
+                        <label className="input-label" htmlFor="password">
+                            Password
+                        </label>
                         <input
                             id="password"
                             type="password"
@@ -61,13 +70,19 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">ACCESS LAB</button>
+                    <button
+                        type="submit"
+                        className="login-button"
+                        disabled={loading}
+                        aria-busy={loading}
+                        aria-disabled={loading}
+                    >
+                        {loading ? 'INITIALIZING...' : 'ACCESS LAB'}
+                    </button>
                 </form>
             </HolographicLogin>
         </div>
     );
 };
-
-
 
 export default Login;
