@@ -115,7 +115,7 @@ const Lab = () => {
     setTimeout(() => {
       navigate("/result", {
         replace: true,
-        state: { chemA, chemB, chemC, chemD },
+        state: { chemA, chemB, chemC, chemD, experimentId: Date.now().toString() },
       });
     }, 1500); // Increased delay to show animation
   };

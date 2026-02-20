@@ -6,6 +6,7 @@ import boom from '../assets/boom.gif'
 import logo from '../assets/logo.png'
 import Bubble from '../components/banner'
 import logger from '../utils/logger';
+import { supabase } from '../supabaseClient';
 import './result.css'
 
 const Result = () => {
@@ -58,6 +59,42 @@ const Result = () => {
           "color": (data && data[0]) ? data[0].color : "#ffffff",
           "main": (data && data[0]) ? data[0].product_name : "Unknown"
         };
+
+        // Save to Supabase (History)
+        if (data && data.length > 0 && location.state.experimentId) {
+          const expId = location.state.experimentId;
+          const storageKey = `exp_saved_${expId}`;
+
+          if (!sessionStorage.getItem(storageKey)) {
+            const resultItem = data[0];
+            supabase.auth.getUser().then(({ data: { user } }) => {
+              if (user) {
+                supabase.from('experiment_results').insert([{
+                  user_id: user.id,
+                  experiment_type: 'Reaction',
+                  score: 100,
+                  details: {
+                    inputs: {
+                      chemA: location.state.chemA,
+                      chemB: location.state.chemB,
+                      chemC: location.state.chemC,
+                      chemD: location.state.chemD
+                    },
+                    product: resultItem.product_name,
+                    result: resultItem.result,
+                    experimentId: expId
+                  }
+                }]).then(({ error }) => {
+                  if (error) {
+                    logger.error("Failed to save result:", error);
+                  } else {
+                    sessionStorage.setItem(storageKey, 'true');
+                  }
+                });
+              }
+            });
+          }
+        }
 
         // Fix for race condition: Read the latest cart from localStorage before updating.
         // This ensures updates from other tabs or rapid changes are not lost.
