@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -60,6 +60,10 @@ const Lab = () => {
     }
   }, [animate]);
 
+  useEffect(() => {
+    change_tip();
+  }, [chemA, chemB, chemC, chemD]);
+
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
     if (value !== 0) {
@@ -69,7 +73,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemA(value);
-    change_tip();
   };
 
   const handleChemBChange = (e) => {
@@ -81,7 +84,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemB(value);
-    change_tip();
   };
 
   const handleChemCChange = (e) => {
@@ -93,7 +95,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemC(value);
-    change_tip();
   };
 
   const handleChemDChange = (e) => {
@@ -105,7 +106,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemD(value);
-    change_tip();
   };
 
   const useHandlePlayClick = () => {
