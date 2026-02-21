@@ -9,3 +9,8 @@ LOGICGUARD'S JOURNAL - CRITICAL LEARNINGS ONLY
 **Bug:** Vitest was attempting to run Playwright E2E tests in the `tests/` directory, causing `ERR_REQUIRE_ESM` failures due to environment mismatches. Additionally, unit tests for `Login` and `Dashboard` were failing due to outdated selectors and hoisting issues with `vi.mock`.
 **Root Cause:** The `vitest.config.js` file did not exclude the `tests/` folder from the test run, only from coverage.
 **Learning:** Always explicitly exclude E2E test directories (like `tests/` or `playwright/`) in the `test.exclude` configuration of `vitest.config.js` to prevent accidental execution in the unit test environment. Also, use `vi.hoisted()` when mocking modules that are needed before the mock factory is called.
+
+## 2024-05-24 - CI/CD Pipeline Fragility - Part 2
+**Bug:** The CI pipeline failed on a linting error in `client/src/pages/__tests__/Dashboard.test.jsx` because `fireEvent` was imported but unused after refactoring the test to rely on default accessibility behaviors.
+**Root Cause:** ESLint rule `no-unused-vars` was triggered.
+**Learning:** When refactoring tests to be more accessible (e.g., checking focus state instead of firing events), always clean up unused imports immediately. Local linting (`npm run lint`) should be part of the verification process before pushing.
