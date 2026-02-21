@@ -6,6 +6,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const app = express();
+// Enable proxy trust for correct IP resolution in rate limiting
+app.set('trust proxy', 1);
+
 const rateLimit = require('express-rate-limit');
 
 // Rate Limiting
@@ -39,7 +42,7 @@ app.use(helmet({
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(bodyParser.json());
 
 // Request Logger with Response Status
@@ -47,7 +50,7 @@ app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} ${res.statusCode} ${duration}ms`);
     });
     next();
 });
@@ -66,9 +69,13 @@ app.use('/result', resultRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Connected to server on port ${PORT}`);
-    console.log("Environment Check:");
-    console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
-    console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
-});
+if (require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Connected to server on port ${PORT}`);
+        console.log("Environment Check:");
+        console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
+        console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
+    });
+}
+
+module.exports = app;
