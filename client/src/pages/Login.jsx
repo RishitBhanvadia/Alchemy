@@ -12,9 +12,11 @@ const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -28,6 +30,8 @@ const Login = () => {
         } catch (error) {
             logger.error('Login failed', { error: error.message });
             showError(error.error_description || error.message || 'Login failed. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -61,7 +65,14 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">ACCESS LAB</button>
+                    <button
+                        type="submit"
+                        className="login-button"
+                        disabled={loading}
+                        aria-busy={loading}
+                    >
+                        {loading ? 'INITIALIZING...' : 'ACCESS LAB'}
+                    </button>
                 </form>
             </HolographicLogin>
         </div>
