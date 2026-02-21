@@ -14,3 +14,8 @@ LOGICGUARD'S JOURNAL - CRITICAL LEARNINGS ONLY
 **Bug:** The CI pipeline failed on a linting error in `client/src/pages/__tests__/Dashboard.test.jsx` because `fireEvent` was imported but unused after refactoring the test to rely on default accessibility behaviors.
 **Root Cause:** ESLint rule `no-unused-vars` was triggered.
 **Learning:** When refactoring tests to be more accessible (e.g., checking focus state instead of firing events), always clean up unused imports immediately. Local linting (`npm run lint`) should be part of the verification process before pushing.
+
+## 2024-05-24 - Dependency Compatibility in Node 18
+**Bug:** CI pipeline failed with `ERR_REQUIRE_ESM` inside `jsdom` (v28) dependencies.
+**Root Cause:** The project was using `jsdom@28.0.0` and `vitest@4.0.18`, which require Node 20+, but the CI environment runs Node 18.20.8. This caused `jsdom` to pull in ESM-only dependencies that failed in the CJS/ESM interop context of Node 18.
+**Learning:** When working in a fixed CI environment (e.g., Node 18), always pin dependencies to compatible versions. Downgrading `jsdom` to `^25.0.1` and `vitest` to `^2.1.8` resolved the issue. Always check `package.json` engines field or release notes when encountering opaque ESM errors in older Node versions.

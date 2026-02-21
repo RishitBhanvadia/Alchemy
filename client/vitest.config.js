@@ -13,7 +13,7 @@ export default defineConfig({
             '.idea',
             '.git',
             '.cache',
-            'tests/', // Exclude Playwright tests
+            'tests/**', // Exclude Playwright tests
         ],
         coverage: {
             provider: 'v8',
