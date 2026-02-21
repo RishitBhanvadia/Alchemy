@@ -41,29 +41,33 @@ exports.calculateResult = async (req, res) => {
         let c = Math.round(chem_c / 10) * 10;
         let d = Math.round(chem_d / 10) * 10;
 
-        // Adjust rounding errors if sum < 100 after rounding
+        // Adjust rounding errors iteratively until sum is exactly 100
         let final_add = a + b + c + d;
-        if (final_add < 100) {
-            const maxVal = Math.max(a, b, c, d);
-            if (a === maxVal) a += 10;
-            else if (b === maxVal) b += 10;
-            else if (c === maxVal) c += 10;
-            else d += 10;
+        let attempts = 0;
+        const MAX_ATTEMPTS = 20; // Safety break
+
+        while (final_add !== 100 && attempts < MAX_ATTEMPTS) {
+            attempts++;
+            if (final_add < 100) {
+                // Add to largest component
+                const maxVal = Math.max(a, b, c, d);
+                if (a === maxVal) a += 10;
+                else if (b === maxVal) b += 10;
+                else if (c === maxVal) c += 10;
+                else d += 10;
+            } else {
+                // Subtract from largest component
+                const maxVal = Math.max(a, b, c, d);
+                if (a === maxVal) a -= 10;
+                else if (b === maxVal) b -= 10;
+                else if (c === maxVal) c -= 10;
+                else d -= 10;
+            }
+            final_add = a + b + c + d;
         }
 
-        // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
-            let for_min_a = (a === 0) ? 1000 : a;
-            let for_min_b = (b === 0) ? 1000 : b;
-            let for_min_c = (c === 0) ? 1000 : c;
-            let for_min_d = (d === 0) ? 1000 : d;
-
-            const minVal = Math.min(for_min_a, for_min_b, for_min_c, for_min_d);
-
-            if (a === minVal) a -= 10;
-            else if (b === minVal) b -= 10;
-            else if (c === minVal) c -= 10;
-            else d -= 10;
+        if (attempts >= MAX_ATTEMPTS) {
+            console.error(`Failed to converge sum to 100. Current sum: ${final_add}`);
         }
 
         // Calculate reaction_id hash
