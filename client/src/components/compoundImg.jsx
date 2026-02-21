@@ -1,5 +1,5 @@
-import React from "react";
-import Comp from '../assets/comp_1.png'
+import React from 'react';
+import Comp from '../assets/comp_1.png';
 
 const CompoundImg = () => {
     return (
@@ -9,7 +9,7 @@ const CompoundImg = () => {
                 <img src={Comp} alt="" />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CompoundImg;

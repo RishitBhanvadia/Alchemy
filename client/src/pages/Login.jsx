@@ -27,7 +27,9 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             logger.error('Login failed', { error: error.message });
-            showError(error.error_description || error.message || 'Login failed. Please try again.');
+            showError(
+                error.error_description || error.message || 'Login failed. Please try again.'
+            );
         }
     };
 
@@ -38,7 +40,9 @@ const Login = () => {
                 <h2 className="login-title">STUDENT LOGIN</h2>
                 <form onSubmit={handleLogin}>
                     <div className="input-group">
-                        <label className="input-label" htmlFor="email">Email Address</label>
+                        <label className="input-label" htmlFor="email">
+                            Email Address
+                        </label>
                         <input
                             id="email"
                             type="email"
@@ -50,7 +54,9 @@ const Login = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label className="input-label" htmlFor="password">Password</label>
+                        <label className="input-label" htmlFor="password">
+                            Password
+                        </label>
                         <input
                             id="password"
                             type="password"
@@ -61,13 +67,13 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">ACCESS LAB</button>
+                    <button type="submit" className="login-button">
+                        ACCESS LAB
+                    </button>
                 </form>
             </HolographicLogin>
         </div>
     );
 };
-
-
 
 export default Login;

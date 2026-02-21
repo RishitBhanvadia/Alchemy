@@ -31,8 +31,8 @@ const ParticleBackground = ({ count = 100 }) => {
             particle.y += Math.sin(time * particle.speed + particle.x) * 0.01;
 
             // Repulsion from mouse
-            const dx = particle.x - (mouseX * 10); // Scale mouse to world coords roughly
-            const dy = particle.y - (mouseY * 10);
+            const dx = particle.x - mouseX * 10; // Scale mouse to world coords roughly
+            const dy = particle.y - mouseY * 10;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < 3) {
@@ -66,10 +66,8 @@ const ParticleBackground = ({ count = 100 }) => {
     );
 };
 
-
-
 ParticleBackground.propTypes = {
-    count: PropTypes.number
+    count: PropTypes.number,
 };
 
 export default ParticleBackground;

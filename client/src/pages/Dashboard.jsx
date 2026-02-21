@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import "./dashboard.css";
+import './dashboard.css';
 // import ParticlesBg from "../components/ParticlesBg"; // Global theme handles bg now
 
 const Dashboard = () => {
@@ -68,7 +68,5 @@ const Dashboard = () => {
         </div>
     );
 };
-
-
 
 export default Dashboard;
