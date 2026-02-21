@@ -47,17 +47,23 @@ const Navbar = () => {
                     }}
                 >
                     MORE <i className="fa-solid fa-chevron-down"></i>
-
                     {dropdownOpen && (
                         <div className="dropdown-menu glass-panel">
-                            <NavLink to="/history" className="dropdown-item">HISTORY</NavLink>
-                            <NavLink to="/organic" className="dropdown-item">ORGANIC</NavLink>
-                            <NavLink to="/inorganic" className="dropdown-item">INORGANIC</NavLink>
-                            <NavLink to="/titration" className="dropdown-item">TITRATION</NavLink>
+                            <NavLink to="/history" className="dropdown-item">
+                                HISTORY
+                            </NavLink>
+                            <NavLink to="/organic" className="dropdown-item">
+                                ORGANIC
+                            </NavLink>
+                            <NavLink to="/inorganic" className="dropdown-item">
+                                INORGANIC
+                            </NavLink>
+                            <NavLink to="/titration" className="dropdown-item">
+                                TITRATION
+                            </NavLink>
                         </div>
                     )}
                 </div>
-
             </div>
 
             <div className="nav-profile">
@@ -69,15 +75,21 @@ const Navbar = () => {
                         await supabase.auth.signOut();
                         window.location.href = '/';
                     }}
-                    style={{ marginLeft: '1rem', background: 'transparent', border: '1px solid #ff0055', color: '#ff0055', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
+                    style={{
+                        marginLeft: '1rem',
+                        background: 'transparent',
+                        border: '1px solid #ff0055',
+                        color: '#ff0055',
+                        padding: '5px 10px',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                    }}
                 >
                     LOGOUT
                 </button>
             </div>
-        </nav >
+        </nav>
     );
 };
-
-
 
 export default Navbar;

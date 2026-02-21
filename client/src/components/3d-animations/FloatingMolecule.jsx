@@ -53,7 +53,10 @@ const FloatingMolecule = () => {
                             <meshStandardMaterial color="#00ffaa" roughness={0.3} metalness={0.8} />
                         </Sphere>
                         {/* Bonds */}
-                        <mesh position={[-x / 2, 0, -z / 2]} rotation={[0, -angle - Math.PI / 2, Math.PI / 2]}>
+                        <mesh
+                            position={[-x / 2, 0, -z / 2]}
+                            rotation={[0, -angle - Math.PI / 2, Math.PI / 2]}
+                        >
                             <cylinderGeometry args={[0.1, 0.1, 2, 32]} />
                             <meshStandardMaterial color="#ffffff" opacity={0.5} transparent />
                         </mesh>
@@ -63,7 +66,13 @@ const FloatingMolecule = () => {
 
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
-            <spotLight position={[-10, -10, -10]} angle={0.3} penumbra={1} intensity={2} color="#ff0055" />
+            <spotLight
+                position={[-10, -10, -10]}
+                angle={0.3}
+                penumbra={1}
+                intensity={2}
+                color="#ff0055"
+            />
         </group>
     );
 };

@@ -19,17 +19,19 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    background: '#0a0a0a',
-                    color: '#ff0055',
-                    padding: '20px',
-                    textAlign: 'center'
-                }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100vh',
+                        background: '#0a0a0a',
+                        color: '#ff0055',
+                        padding: '20px',
+                        textAlign: 'center',
+                    }}
+                >
                     <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>
                         ⚠️ Something went wrong
                     </h1>
@@ -46,7 +48,7 @@ class ErrorBoundary extends React.Component {
                             borderRadius: '8px',
                             cursor: 'pointer',
                             fontSize: '1rem',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
                         }}
                     >
                         Reload Page

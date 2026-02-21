@@ -1,19 +1,18 @@
-.sideBar{
+.sideBar {
     height: 713px;
     background-color: rgb(27, 27, 27);
     width: 4.1%;
-
 }
 
-.element{
+.element {
     padding: 20px 8px;
 }
 
-.elements{
+.elements {
     padding-top: 69px;
 }
 
-.element_button{
+.element_button {
     color: aliceblue;
     background-color: transparent;
     border: none;
@@ -21,12 +20,12 @@
     cursor: pointer;
 }
 
-span{
+span {
     font-size: 24px;
     font-weight: 600;
     font-family: 'Ubuntu', 'sans-serif';
 }
- 
+
 .selected {
     border-top-left-radius: 30%;
     border-bottom-left-radius: 30%;
@@ -34,10 +33,9 @@ span{
     color: black;
 }
 
-.star_div > img{
+.star_div > img {
     left: -5px;
     height: 60px;
     position: absolute;
     z-index: 6;
 }
-
