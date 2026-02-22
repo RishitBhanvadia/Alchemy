@@ -14,7 +14,10 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
+const { mockSignInWithPassword } = vi.hoisted(() => {
+    return { mockSignInWithPassword: vi.fn() };
+});
+
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -31,6 +34,26 @@ vi.mock('react-hot-toast', () => ({
     },
 }));
 
+// Mock HolographicLogin to avoid WebGL context errors
+vi.mock('../../components/3d-animations/HolographicLogin', () => ({
+    default: ({ children }) => <div data-testid="holographic-login">{children}</div>
+}));
+
+// Mock logger
+vi.mock('../../utils/logger', () => ({
+    default: {
+        info: vi.fn(),
+        error: vi.fn(),
+    }
+}));
+
+// Mock notifications
+vi.mock('../../utils/notifications', () => ({
+    showSuccess: vi.fn(),
+    showError: vi.fn(),
+}));
+
+
 describe('Login Component', () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -46,13 +69,14 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        // Use getByLabelText as per accessibility best practices seen in other tests
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +88,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +112,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
