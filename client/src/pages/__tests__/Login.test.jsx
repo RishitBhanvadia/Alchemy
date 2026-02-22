@@ -3,8 +3,17 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
-// Mock navigate
-const mockNavigate = vi.fn();
+// Mock dependencies
+const { mockNavigate, mockSignInWithPassword, mockShowError, mockShowSuccess } = vi.hoisted(() => {
+    return {
+        mockNavigate: vi.fn(),
+        mockSignInWithPassword: vi.fn(),
+        mockShowError: vi.fn(),
+        mockShowSuccess: vi.fn(),
+    };
+});
+
+// Mock react-router-dom
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -13,8 +22,7 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
-const mockSignInWithPassword = vi.fn();
+// Mock supabaseClient
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -23,11 +31,22 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
-// Mock toast
-vi.mock('react-hot-toast', () => ({
+// Mock HolographicLogin (avoid 3D canvas issues in tests)
+vi.mock('../../components/3d-animations/HolographicLogin', () => ({
+    default: ({ children }) => <div data-testid="holographic-login">{children}</div>,
+}));
+
+// Mock notifications
+vi.mock('../../utils/notifications', () => ({
+    showError: mockShowError,
+    showSuccess: mockShowSuccess,
+}));
+
+// Mock logger
+vi.mock('../../utils/logger', () => ({
     default: {
+        info: vi.fn(),
         error: vi.fn(),
-        success: vi.fn(),
     },
 }));
 
@@ -46,14 +65,10 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
-    });
-
-    it('should have submit button', () => {
-        renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
-        expect(submitButton).toBeInTheDocument();
+        // Use label text as it's better for accessibility
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /access lab/i })).toBeInTheDocument();
     });
 
     it('should handle form submission', async () => {
@@ -64,9 +79,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -78,6 +93,9 @@ describe('Login Component', () => {
                 password: 'password123',
             });
         });
+
+        expect(mockShowSuccess).toHaveBeenCalledWith(expect.stringMatching(/login successful/i));
+        expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should handle login error', async () => {
@@ -88,9 +106,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
@@ -99,5 +117,8 @@ describe('Login Component', () => {
         await waitFor(() => {
             expect(mockSignInWithPassword).toHaveBeenCalled();
         });
+
+        expect(mockShowError).toHaveBeenCalledWith('Invalid credentials');
+        expect(mockNavigate).not.toHaveBeenCalled();
     });
 });
