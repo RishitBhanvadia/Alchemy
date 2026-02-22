@@ -5,6 +5,53 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const calculateConcentrations = (chem_a, chem_b, chem_c, chem_d) => {
+    let a_val = chem_a;
+    let b_val = chem_b;
+    let c_val = chem_c;
+    let d_val = chem_d;
+
+    const add = a_val + b_val + c_val + d_val;
+
+    // Normalize if sum < 100
+    if (add < 100) {
+        a_val = (a_val / add) * 100;
+        b_val = (b_val / add) * 100;
+        c_val = (c_val / add) * 100;
+        d_val = (d_val / add) * 100;
+    }
+
+    let a = Math.round(a_val / 10) * 10;
+    let b = Math.round(b_val / 10) * 10;
+    let c = Math.round(c_val / 10) * 10;
+    let d = Math.round(d_val / 10) * 10;
+
+    // Adjust rounding errors if sum < 100 after rounding
+    let final_add = a + b + c + d;
+    while (final_add < 100) {
+        const maxVal = Math.max(a, b, c, d);
+        if (a === maxVal) a += 10;
+        else if (b === maxVal) b += 10;
+        else if (c === maxVal) c += 10;
+        else d += 10;
+        final_add += 10;
+    }
+
+    // Adjust rounding errors if sum > 100 after rounding
+    while (final_add > 100) {
+        const maxVal = Math.max(a, b, c, d);
+        if (a === maxVal) a -= 10;
+        else if (b === maxVal) b -= 10;
+        else if (c === maxVal) c -= 10;
+        else d -= 10;
+        final_add -= 10;
+    }
+
+    return { a, b, c, d };
+};
+
+exports.calculateConcentrations = calculateConcentrations;
+
 exports.calculateResult = async (req, res) => {
     try {
         const params = ['chem_a', 'chem_b', 'chem_c', 'chem_d'];
@@ -26,45 +73,7 @@ exports.calculateResult = async (req, res) => {
         let chem_c = Number(req.params.chem_c);
         let chem_d = Number(req.params.chem_d);
 
-        const add = chem_a + chem_b + chem_c + chem_d;
-
-        // Normalize if sum < 100
-        if (add < 100) {
-            chem_a = (chem_a / add) * 100;
-            chem_b = (chem_b / add) * 100;
-            chem_c = (chem_c / add) * 100;
-            chem_d = (chem_d / add) * 100;
-        }
-
-        let a = Math.round(chem_a / 10) * 10;
-        let b = Math.round(chem_b / 10) * 10;
-        let c = Math.round(chem_c / 10) * 10;
-        let d = Math.round(chem_d / 10) * 10;
-
-        // Adjust rounding errors if sum < 100 after rounding
-        let final_add = a + b + c + d;
-        if (final_add < 100) {
-            const maxVal = Math.max(a, b, c, d);
-            if (a === maxVal) a += 10;
-            else if (b === maxVal) b += 10;
-            else if (c === maxVal) c += 10;
-            else d += 10;
-        }
-
-        // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
-            let for_min_a = (a === 0) ? 1000 : a;
-            let for_min_b = (b === 0) ? 1000 : b;
-            let for_min_c = (c === 0) ? 1000 : c;
-            let for_min_d = (d === 0) ? 1000 : d;
-
-            const minVal = Math.min(for_min_a, for_min_b, for_min_c, for_min_d);
-
-            if (a === minVal) a -= 10;
-            else if (b === minVal) b -= 10;
-            else if (c === minVal) c -= 10;
-            else d -= 10;
-        }
+        const { a, b, c, d } = calculateConcentrations(chem_a, chem_b, chem_c, chem_d);
 
         // Calculate reaction_id hash
         let reaction_id = 0;
@@ -72,8 +81,6 @@ exports.calculateResult = async (req, res) => {
         if (b !== 0) reaction_id += 10;
         if (c !== 0) reaction_id += 100;
         if (d !== 0) reaction_id += 1000;
-
-        console.log(`Querying Supabase: A:${a}, B:${b}, C:${c}, D:${d}, ID:${reaction_id}`);
 
         // Query Supabase
         const { data, error } = await supabase
