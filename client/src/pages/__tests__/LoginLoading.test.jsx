@@ -13,7 +13,7 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
+// Mock supabase with delay
 const { mockSignInWithPassword } = vi.hoisted(() => {
     return { mockSignInWithPassword: vi.fn() };
 });
@@ -26,7 +26,6 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
-// Mock toast
 vi.mock('react-hot-toast', () => ({
     default: {
         error: vi.fn(),
@@ -34,7 +33,7 @@ vi.mock('react-hot-toast', () => ({
     },
 }));
 
-describe('Login Component', () => {
+describe('Login Loading State', () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
@@ -47,22 +46,11 @@ describe('Login Component', () => {
         );
     };
 
-    it('should render login form', () => {
-        renderLogin();
-        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    });
-
-    it('should have submit button', () => {
-        renderLogin();
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
-        expect(submitButton).toBeInTheDocument();
-    });
-
-    it('should handle form submission', async () => {
-        mockSignInWithPassword.mockResolvedValue({
-            data: { user: { id: '123', email: 'test@example.com' } },
-            error: null,
+    it('should show loading state during submission', async () => {
+        // Mock a delayed response
+        mockSignInWithPassword.mockImplementation(async () => {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            return { data: { user: { id: '123' } }, error: null };
         });
 
         renderLogin();
@@ -75,29 +63,10 @@ describe('Login Component', () => {
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
         fireEvent.click(submitButton);
 
-        await waitFor(() => {
-            expect(mockSignInWithPassword).toHaveBeenCalledWith({
-                email: 'test@example.com',
-                password: 'password123',
-            });
-        });
-    });
-
-    it('should handle login error', async () => {
-        mockSignInWithPassword.mockResolvedValue({
-            data: null,
-            error: { message: 'Invalid credentials' },
-        });
-
-        renderLogin();
-
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
-
-        fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
-        fireEvent.click(submitButton);
+        // Check if button text changes and is disabled
+        expect(screen.getByRole('button', { name: /initializing.../i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /initializing.../i })).toBeDisabled();
+        expect(screen.getByRole('button', { name: /initializing.../i })).toHaveAttribute('aria-busy', 'true');
 
         await waitFor(() => {
             expect(mockSignInWithPassword).toHaveBeenCalled();
