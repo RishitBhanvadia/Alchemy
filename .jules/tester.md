@@ -1,0 +1,1 @@
+## 2025-02-19 - Vitest vs Playwright Config\n**Gap:** Playwright tests running in Vitest.\n**Learning:** Vitest by default picks up all `*.spec.js` files including E2E tests in `tests/`.\n**Pattern:** Explicitly exclude `tests/` in `vitest.config.js` to prevent runner conflicts.
