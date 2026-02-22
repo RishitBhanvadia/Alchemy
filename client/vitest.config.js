@@ -7,6 +7,8 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './src/test/setup.js',
+        // Exclude Playwright E2E tests (located in client/tests/)
+        exclude: ['node_modules', 'dist', '.idea', '.git', '.cache', 'tests/**'],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
