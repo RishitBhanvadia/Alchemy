@@ -39,7 +39,8 @@ app.use(helmet({
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+// Limit URL-encoded bodies to prevent DoS (CWE-770)
+app.use(bodyParser.urlencoded({ extended: true, limit: "100kb" }));
 app.use(bodyParser.json());
 
 // Request Logger with Response Status
@@ -63,6 +64,17 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/result', resultRoutes);
+
+// Global Error Handler (prevents stack trace leakage)
+app.use((err, req, res, next) => {
+    console.error(`[Error] ${err.message}`);
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.status(err.status || 500).json({
+        message: err.status === 413 ? "Payload Too Large" : "Internal Server Error"
+    });
+});
 
 const PORT = process.env.PORT || 5000;
 
