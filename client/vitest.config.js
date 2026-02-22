@@ -7,6 +7,9 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './src/test/setup.js',
+        // Explicitly include only source tests, excluding Playwright e2e tests
+        include: ['src/**/*.{test,spec}.{js,jsx}'],
+        exclude: ['tests/**', 'node_modules/**'],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
