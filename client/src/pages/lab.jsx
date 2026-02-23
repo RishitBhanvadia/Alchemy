@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -20,7 +20,6 @@ const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
 
   const [chemicals, setChemicals] = useState({
@@ -30,11 +29,8 @@ const Lab = () => {
     chemD: 0
   });
 
-  // Update tip color based on first active chemical
-  useEffect(() => {
-    const activeChem = CHEMICALS.find(c => chemicals[c.id] > 0);
-    SetTColor(activeChem ? activeChem.color : '');
-  }, [chemicals]);
+  const activeChem = CHEMICALS.find(c => chemicals[c.id] > 0);
+  const tcolor = animate ? '' : (activeChem ? activeChem.color : '');
 
   useLayoutEffect(() => {
     if (animate) {
@@ -56,8 +52,7 @@ const Lab = () => {
     setChemicals(prev => ({ ...prev, [id]: value }));
   };
 
-  const useHandlePlayClick = () => {
-    SetTColor("");
+  const handlePlayClick = () => {
     setAnimate(true);
     setTimeout(() => {
       navigate("/result", {
@@ -138,7 +133,7 @@ const Lab = () => {
         <button
           className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
           disabled={isPlayDisabled}
-          onClick={useHandlePlayClick}
+          onClick={handlePlayClick}
         >
           {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
         </button>

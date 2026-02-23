@@ -68,4 +68,16 @@ describe('Lab Component', () => {
 
       expect(button).not.toBeDisabled();
   });
+
+  it('updates test tube color based on active chemical', () => {
+    renderLab();
+    const hclInput = screen.getByLabelText('Conc. HCl');
+    // HCl color is #05B9C4 (from CHEMICALS array in component)
+
+    fireEvent.change(hclInput, { target: { value: '20' } });
+
+    const testTube = screen.getByTestId('test-tube');
+    // Using rgb conversion for color comparison or just checking style directly
+    expect(testTube).toHaveStyle({ color: '#05B9C4' });
+  });
 });
