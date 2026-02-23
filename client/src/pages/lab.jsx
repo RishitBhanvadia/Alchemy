@@ -7,7 +7,6 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
 
 const Lab = () => {
@@ -136,13 +135,8 @@ const Lab = () => {
 
   return (
     <div className="lab-page" ref={app}>
-      {/* Background 3D Layer */}
+      {/* Background 3D Layer - Removed unused CanvasContainer to optimize performance */}
       <div className="lab-3d-background">
-        <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-        </CanvasContainer>
       </div>
 
       {/* Left Panel: Chemical Rack */}
