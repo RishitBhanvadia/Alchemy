@@ -1,4 +1,9 @@
-## 2024-10-24 - Removed Unused Three.js from Lab Page
-**Bottleneck:** The `Lab` page was importing `CanvasContainer` and rendering an empty `Canvas` with only lights. This caused the page to load the heavy Three.js library (`@react-three/fiber`, `three`) and initialize a WebGL context unnecessarily.
-**Impact:** Reduced the code executed on the Lab page. Users visiting `/lab` directly (or after login) no longer download or initialize Three.js, significantly improving load time and reducing memory usage. The `Lab` chunk remains small (~23KB) and independent of the large 3D chunks (~800KB+) used by the Landing page.
-**Learning:** Checking for "empty" wrapper components that import heavy libraries is a quick win. Even if the visible 3D elements were removed, the container itself was still pulling in the entire 3D engine.
+## 2024-10-24 - CI/CD Troubleshooting (Fixed)
+**Bottleneck:** CI pipeline failing with `[vitest-pool]: Failed to start forks worker` and `ERR_REQUIRE_ESM`.
+**Impact:** Prevents merging code.
+**Learning:** `jsdom` v28+ (and `html-encoding-sniffer`) has issues with `require()` of ES modules in certain Node environments, particularly when used with Vitest on Node 18. Downgrading to a known stable version (v25.0.1) or pinning dependencies is necessary for stability in this legacy-ish environment.
+**Fixes:**
+- Downgraded `jsdom` to `25.0.1`.
+- Excluded Playwright tests (`tests/**`) in `client/vitest.config.js`.
+- Fixed `Dashboard.test.jsx` to match correct UI text ("WELCOME, ADMIN").
+- Fixed `Login.test.jsx` to use `vi.hoisted` for mocks to prevent ReferenceError.
