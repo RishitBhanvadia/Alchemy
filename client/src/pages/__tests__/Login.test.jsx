@@ -3,8 +3,16 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
-// Mock navigate
-const mockNavigate = vi.fn();
+// Use vi.hoisted to ensure mock variables are available at the top level
+const { mockNavigate, mockSignInWithPassword, mockToaster } = vi.hoisted(() => ({
+    mockNavigate: vi.fn(),
+    mockSignInWithPassword: vi.fn(),
+    mockToaster: {
+        error: vi.fn(),
+        success: vi.fn(),
+    },
+}));
+
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -13,8 +21,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
-const mockSignInWithPassword = vi.fn();
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -23,12 +29,9 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
-// Mock toast
 vi.mock('react-hot-toast', () => ({
-    default: {
-        error: vi.fn(),
-        success: vi.fn(),
-    },
+    default: mockToaster,
+    Toaster: () => null, // Mock Toaster component if used
 }));
 
 describe('Login Component', () => {
@@ -46,13 +49,21 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        // Login usually has Email and Password fields
+        // Checking for labels is more accessible, but placeholder text is common fallback
+        // Let's use getByLabelText if possible, or query multiple attributes
+        const emailInput = screen.queryByLabelText(/email/i) || screen.queryByPlaceholderText(/email/i);
+        const passwordInput = screen.queryByLabelText(/password/i) || screen.queryByPlaceholderText(/password/i);
+
+        expect(emailInput).toBeInTheDocument();
+        expect(passwordInput).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        // The button might say 'Login', 'Sign In', 'Access Lab', etc.
+        // Memory says "submit button with the text 'ACCESS LAB'"
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +75,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.queryByLabelText(/email/i) || screen.queryByPlaceholderText(/email/i);
+        const passwordInput = screen.queryByLabelText(/password/i) || screen.queryByPlaceholderText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +99,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.queryByLabelText(/email/i) || screen.queryByPlaceholderText(/email/i);
+        const passwordInput = screen.queryByLabelText(/password/i) || screen.queryByPlaceholderText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
