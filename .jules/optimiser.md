@@ -1,0 +1,4 @@
+## 2024-10-24 - Removed Unused Three.js from Lab Page
+**Bottleneck:** The `Lab` page was importing `CanvasContainer` and rendering an empty `Canvas` with only lights. This caused the page to load the heavy Three.js library (`@react-three/fiber`, `three`) and initialize a WebGL context unnecessarily.
+**Impact:** Reduced the code executed on the Lab page. Users visiting `/lab` directly (or after login) no longer download or initialize Three.js, significantly improving load time and reducing memory usage. The `Lab` chunk remains small (~23KB) and independent of the large 3D chunks (~800KB+) used by the Landing page.
+**Learning:** Checking for "empty" wrapper components that import heavy libraries is a quick win. Even if the visible 3D elements were removed, the container itself was still pulling in the entire 3D engine.
