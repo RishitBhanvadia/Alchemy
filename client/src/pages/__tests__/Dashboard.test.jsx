@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
@@ -13,7 +13,7 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock supabase
+// Mock supabase - Dashboard doesn't use it directly but other components might
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -21,12 +21,6 @@ vi.mock('../../supabaseClient', () => ({
                 data: { user: { email: 'test@example.com' } },
             }),
         },
-        from: vi.fn(() => ({
-            select: vi.fn().mockResolvedValue({
-                data: [],
-                error: null,
-            }),
-        })),
     },
 }));
 
@@ -41,30 +35,26 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The title is "WELCOME, ADMIN"
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        // Check for module names using role="heading" to be specific
+        // Use stricter regex for "organic" to avoid matching "inorganic"
+        expect(screen.getByRole('heading', { name: /laboratory/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /titration/i })).toBeInTheDocument();
+        // ^organic$ matches exactly "organic" (case-insensitive), avoiding partial match with "inorganic"
+        expect(screen.getByRole('heading', { name: /^organic$/i })).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
-    });
-
-    it('should have keyboard navigation on cards', () => {
-        renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        // In React Router <Link>, clicking it triggers navigation.
+        // We can find the link by its text or href.
+        // We use closest('a') on the heading to find the link wrapping it.
+        const labLink = screen.getByRole('heading', { name: /laboratory/i }).closest('a');
+        expect(labLink).toHaveAttribute('href', '/lab');
     });
 });
