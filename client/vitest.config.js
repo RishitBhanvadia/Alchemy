@@ -7,6 +7,10 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './src/test/setup.js',
+        // Only run tests in src/
+        include: ['src/**/*.{test,spec}.{js,jsx}'],
+        // Explicitly exclude root tests folder which contains Playwright tests
+        exclude: ['tests/**', 'node_modules', '**/dist/**'],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
