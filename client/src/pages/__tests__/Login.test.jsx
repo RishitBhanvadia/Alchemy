@@ -3,8 +3,15 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
+// Mock functions with vi.hoisted
+const { mockNavigate, mockSignInWithPassword } = vi.hoisted(() => {
+    return {
+        mockNavigate: vi.fn(),
+        mockSignInWithPassword: vi.fn(),
+    };
+});
+
 // Mock navigate
-const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -14,7 +21,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -24,11 +30,21 @@ vi.mock('../../supabaseClient', () => ({
 }));
 
 // Mock toast
-vi.mock('react-hot-toast', () => ({
-    default: {
-        error: vi.fn(),
-        success: vi.fn(),
-    },
+vi.mock('react-hot-toast', () => {
+    const toast = vi.fn();
+    toast.error = vi.fn();
+    toast.success = vi.fn();
+    toast.loading = vi.fn();
+    toast.dismiss = vi.fn();
+    return {
+        default: toast,
+        Toaster: () => null,
+    };
+});
+
+// Mock HolographicLogin
+vi.mock('../../components/3d-animations/HolographicLogin', () => ({
+    default: ({ children }) => <div data-testid="holographic-login">{children}</div>
 }));
 
 describe('Login Component', () => {
@@ -46,13 +62,15 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(/student@university.edu/i)).toBeInTheDocument();
+        // Placeholder is dots '••••••••', so use label instead for robustness
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        // The button text is "ACCESS LAB", not "Login"
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +82,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText(/student@university.edu/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +106,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText(/student@university.edu/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
