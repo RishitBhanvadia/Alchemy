@@ -39,7 +39,7 @@ app.use(helmet({
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(bodyParser.json());
 
 // Request Logger with Response Status
@@ -63,6 +63,16 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/result', resultRoutes);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
 
 const PORT = process.env.PORT || 5000;
 
