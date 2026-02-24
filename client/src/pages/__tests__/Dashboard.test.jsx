@@ -41,7 +41,8 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The title actually renders "WELCOME, ADMIN"
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
