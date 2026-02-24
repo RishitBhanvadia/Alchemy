@@ -1,10 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
 // Mock navigate
-const mockNavigate = vi.fn();
 // Use vi.hoisted to ensure mocks are available before imports
 const mocks = vi.hoisted(() => ({
     useNavigate: vi.fn(),
