@@ -14,36 +14,20 @@ const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+  // Derived state for test tube color - optimizations to prevent stale state and reduce re-renders
+  let tcolor = '';
+  if (chemA > 0) tcolor = '#05B9C4';
+  else if (chemB > 0) tcolor = '#04CE7E';
+  else if (chemC > 0) tcolor = '#FBC2E3';
+  else if (chemD > 0) tcolor = '#DAA520';
+
+  if (animate) tcolor = '';
 
   useLayoutEffect(() => {
     if (animate) {
@@ -69,7 +53,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemA(value);
-    change_tip();
   };
 
   const handleChemBChange = (e) => {
@@ -81,7 +64,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemB(value);
-    change_tip();
   };
 
   const handleChemCChange = (e) => {
@@ -93,7 +75,6 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemC(value);
-    change_tip();
   };
 
   const handleChemDChange = (e) => {
@@ -105,11 +86,9 @@ const Lab = () => {
       // Logic for tracking active chemicals (removed unused arr)
     }
     setChemD(value);
-    change_tip();
   };
 
   const useHandlePlayClick = () => {
-    SetTColor("");
     // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
