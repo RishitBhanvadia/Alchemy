@@ -9,261 +9,160 @@ import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
+const CHEMICALS = [
+    { id: 'chemA', name: 'Conc. HCl', icon: hcl, color: '#05B9C4', indicatorClass: 'h' },
+    { id: 'chemB', name: 'NaCl', icon: nacl, color: '#04CE7E', indicatorClass: 'n' },
+    { id: 'chemC', name: 'CuSO4', icon: cuso4, color: '#FBC2E3', indicatorClass: 'c' },
+    { id: 'chemD', name: 'FeSO4', icon: feso4, color: '#DAA520', indicatorClass: 'f' }
+];
 
 const Lab = () => {
-  const app = useRef();
+    const app = useRef();
+    const navigate = useNavigate();
 
-  const [animate, setAnimate] = useState(false);
-  const [tcolor, SetTColor] = useState('');
-  const navigate = useNavigate();
-  const [chemA, setChemA] = useState(0);
-  const [chemB, setChemB] = useState(0);
-  const [chemC, setChemC] = useState(0);
-  const [chemD, setChemD] = useState(0);
+    const [animate, setAnimate] = useState(false);
+    const [chemicals, setChemicals] = useState({
+        chemA: 0,
+        chemB: 0,
+        chemC: 0,
+        chemD: 0
+    });
 
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
+    // Derive tcolor from chemicals state (Priority: A > B > C > D)
+    const getTipColor = () => {
+        const activeChem = CHEMICALS.find(chem => chemicals[chem.id] > 0);
+        return activeChem ? activeChem.color : '';
+    };
+
+    const tcolor = getTipColor();
+
+    useLayoutEffect(() => {
+        if (animate) {
+            let ctx = gsap.context(() => {
+                gsap.fromTo(".test_tube", { rotation: -9 }, { duration: 0.12, rotation: 6, repeat: -1 });
+                // Animate indicators
+                CHEMICALS.forEach(chem => {
+                    gsap.fromTo(`.${chem.indicatorClass}`, { opacity: 1 }, { duration: 0.12, opacity: 0 });
+                });
+            }, app);
+            return () => ctx.revert();
         }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+    }, [animate]);
 
-  useLayoutEffect(() => {
-    if (animate) {
-      let ctx = gsap.context(() => {
-        // use scoped selectors
-        gsap.fromTo(".test_tube", { rotation: -9 }, { duration: 0.12, rotation: 6, repeat: -1 });
-        gsap.fromTo(".h", { opacity: 1 }, { duration: 0.12, opacity: 0 });
-        gsap.fromTo(".n", { opacity: 1 }, { duration: 0.12, opacity: 0 });
-        gsap.fromTo(".c", { opacity: 1 }, { duration: 0.12, opacity: 0 });
-        gsap.fromTo(".f", { opacity: 1 }, { duration: 0.12, opacity: 0 });
+    const handleChemicalChange = (id, value) => {
+        setChemicals(prev => ({
+            ...prev,
+            [id]: parseInt(value) || 0
+        }));
+    };
 
-      }, app);
-      return () => ctx.revert();
-    }
-  }, [animate]);
+    const useHandlePlayClick = () => {
+        setAnimate(true);
+        setTimeout(() => {
+            navigate("/result", {
+                replace: true,
+                state: chemicals,
+            });
+        }, 1500);
+    };
 
-  const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
-  };
+    const onOrNot = () => {
+        // Count how many chemicals have > 0 volume
+        const count = Object.values(chemicals).filter(val => val > 0).length;
+        return count >= 2;
+    };
 
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
-  };
+    const isPlayDisabled = !(onOrNot());
 
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
-  };
+    return (
+        <div className="lab-page" ref={app}>
+            <div className="lab-3d-background">
+                <CanvasContainer>
+                    <ambientLight intensity={0.5} />
+                    <pointLight position={[10, 10, 10]} />
+                </CanvasContainer>
+            </div>
 
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
-    change_tip();
-  };
+            <div className="glass-panel chemical-rack">
+                <h2 className="panel-title neon-glow">CHEMICAL RACK</h2>
 
-  const useHandlePlayClick = () => {
-    SetTColor("");
-    // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
-    setAnimate(true);
-    setTimeout(() => {
-      navigate("/result", {
-        replace: true,
-        state: { chemA, chemB, chemC, chemD },
-      });
-    }, 1500); // Increased delay to show animation
-  };
+                {CHEMICALS.map((chem) => {
+                    // Calculate max allowed value for this chemical
+                    // It is 100 - sum of all other chemicals
+                    const currentSum = Object.entries(chemicals)
+                        .filter(([key]) => key !== chem.id)
+                        .reduce((acc, [, val]) => acc + val, 0);
+                    const maxVal = 100 - currentSum;
 
-  function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
-  }
+                    return (
+                        <div className="chem-control-group" key={chem.id}>
+                            <div className="chem-icon-wrapper" style={{ borderColor: chem.color }}>
+                                <img src={chem.icon} alt={chem.name} className="chem-icon" />
+                            </div>
+                            <div className="range-wrapper">
+                                <label htmlFor={`${chem.id}-range`}>{chem.name}</label>
+                                <input
+                                    id={`${chem.id}-range`}
+                                    type="range"
+                                    min="0"
+                                    max={maxVal}
+                                    value={chemicals[chem.id]}
+                                    onChange={(e) => handleChemicalChange(chem.id, e.target.value)}
+                                    className="sci-fi-range"
+                                />
+                                <span className="chem-value">{chemicals[chem.id]}%</span>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
 
-  const isPlayDisabled = !(onOrNot());
+            <div className="center-stage">
+                <div className="test_tube-wrapper">
+                    <div className="test_tube">
+                        <CustomTestTube
+                            color={tcolor}
+                            hasLiquid={Object.values(chemicals).some(val => val > 0)}
+                        />
+                    </div>
+                    <div className="reaction-indicators">
+                        {CHEMICALS.map(chem => (
+                            <div
+                                key={chem.id}
+                                className={`indicator ${chem.indicatorClass}`}
+                                style={{
+                                    height: `${3.23 * chemicals[chem.id]}px`,
+                                    background: chem.color
+                                }}
+                            ></div>
+                        ))}
+                    </div>
+                </div>
 
-  // Determine status for 3D Beaker
-  // Determine status for 3D Beaker (removed unused experimentStatus)
+                <button
+                    className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
+                    disabled={isPlayDisabled}
+                    onClick={useHandlePlayClick}
+                >
+                    {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
+                </button>
+                {isPlayDisabled && (
+                    <p className="helper-text">Add at least two chemicals to initiate reaction</p>
+                )}
+            </div>
 
-  return (
-    <div className="lab-page" ref={app}>
-      {/* Background 3D Layer */}
-      <div className="lab-3d-background">
-        <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-        </CanvasContainer>
-      </div>
-
-      {/* Left Panel: Chemical Rack */}
-      <div className="glass-panel chemical-rack">
-        <h2 className="panel-title neon-glow">CHEMICAL RACK</h2>
-
-        <div className="chem-control-group">
-          <div className="chem-icon-wrapper" style={{ borderColor: '#05B9C4' }}>
-            <img src={hcl} alt="HCl" className="chem-icon" />
-          </div>
-          <div className="range-wrapper">
-            <label htmlFor="hcl-range">Conc. HCl</label>
-            <input
-              id="hcl-range"
-              type="range"
-              min="0"
-              max={100 - chemB - chemC - chemD}
-              value={chemA}
-              onChange={handleChemAChange}
-              className="sci-fi-range"
-            />
-            <span className="chem-value">{chemA}%</span>
-          </div>
+            <div className="glass-panel status-panel">
+                <h3 className="status-title">STATUS</h3>
+                <div className="status-item">
+                    <span className="label">System:</span>
+                    <span className="value neon-text">ONLINE</span>
+                </div>
+                <div className="note-box">
+                    <span className="note-warn">NOTE:</span> All solutions are 1 M
+                </div>
+            </div>
         </div>
-
-        <div className="chem-control-group">
-          <div className="chem-icon-wrapper" style={{ borderColor: '#04CE7E' }}>
-            <img src={nacl} alt="NaCl" className="chem-icon" />
-          </div>
-          <div className="range-wrapper">
-            <label htmlFor="nacl-range">NaCl</label>
-            <input
-              id="nacl-range"
-              type="range"
-              min="0"
-              max={100 - chemA - chemC - chemD}
-              value={chemB}
-              onChange={handleChemBChange}
-              className="sci-fi-range"
-            />
-            <span className="chem-value">{chemB}%</span>
-          </div>
-        </div>
-
-        <div className="chem-control-group">
-          <div className="chem-icon-wrapper" style={{ borderColor: '#FBC2E3' }}>
-            <img src={cuso4} alt="CuSO4" className="chem-icon" />
-          </div>
-          <div className="range-wrapper">
-            <label htmlFor="cuso4-range">CuSO4</label>
-            <input
-              id="cuso4-range"
-              type="range"
-              min="0"
-              max={100 - chemA - chemB - chemD}
-              value={chemC}
-              onChange={handleChemCChange}
-              className="sci-fi-range"
-            />
-            <span className="chem-value">{chemC}%</span>
-          </div>
-        </div>
-
-        <div className="chem-control-group">
-          <div className="chem-icon-wrapper" style={{ borderColor: '#DAA520' }}>
-            <img src={feso4} alt="FeSO4" className="chem-icon" />
-          </div>
-          <div className="range-wrapper">
-            <label htmlFor="feso4-range">FeSO4</label>
-            <input
-              id="feso4-range"
-              type="range"
-              min="0"
-              max={100 - chemA - chemB - chemC}
-              value={chemD}
-              onChange={handleChemDChange}
-              className="sci-fi-range"
-            />
-            <span className="chem-value">{chemD}%</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Center Area: Test Tube Visualization */}
-      <div className="center-stage">
-        <div className="test_tube-wrapper">
-          <div className="test_tube">
-            <CustomTestTube color={tcolor} hasLiquid={chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0} />
-          </div>
-          {/* Reaction indicators (visuals) */}
-          <div className="reaction-indicators">
-            <div className="indicator h" style={{ height: `${3.23 * chemA}px`, background: '#05B9C4' }}></div>
-            <div className="indicator n" style={{ height: `${3.23 * chemB}px`, background: '#04CE7E' }}></div>
-            <div className="indicator c" style={{ height: `${3.23 * chemC}px`, background: '#FBC2E3' }}></div>
-            <div className="indicator f" style={{ height: `${3.23 * chemD}px`, background: '#DAA520' }}></div>
-          </div>
-        </div>
-
-        <button
-          className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
-          disabled={isPlayDisabled}
-          onClick={useHandlePlayClick}
-        >
-          {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
-        </button>
-      </div>
-
-      {/* Right Panel: Status/Info (Optional, kept minimal for now) */}
-      <div className="glass-panel status-panel">
-        <h3 className="status-title">STATUS</h3>
-        <div className="status-item">
-          <span className="label">System:</span>
-          <span className="value neon-text">ONLINE</span>
-        </div>
-        {/* Simplified for students as requested (removed Temp/Pressure) */}
-        <div className="note-box">
-          <span className="note-warn">NOTE:</span> All solutions are 1 M
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Lab;
