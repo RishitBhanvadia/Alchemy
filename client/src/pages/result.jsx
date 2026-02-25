@@ -6,6 +6,7 @@ import boom from '../assets/boom.gif'
 import logo from '../assets/logo.png'
 import Bubble from '../components/banner'
 import logger from '../utils/logger';
+import { supabase } from '../supabaseClient';
 import './result.css'
 
 const Result = () => {
@@ -67,6 +68,37 @@ const Result = () => {
 
         localStorage.setItem('cart', JSON.stringify(newCart));
         setCart(newCart);
+
+        // Save to Supabase
+        const saveToHistory = async () => {
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              const { error } = await supabase
+                .from('experiment_results')
+                .insert({
+                  user_id: user.id,
+                  experiment_type: 'Chemical Reaction',
+                  score: 100,
+                  details: {
+                    conc_a: location.state.chemA,
+                    conc_b: location.state.chemB,
+                    conc_c: location.state.chemC,
+                    conc_d: location.state.chemD,
+                    product: (data && data[0]) ? data[0].product_name : "Unknown",
+                    color: (data && data[0]) ? data[0].color : "#ffffff"
+                  }
+                });
+
+              if (error) {
+                logger.error("Error saving result to Supabase:", error);
+              }
+            }
+          } catch (err) {
+            logger.error("Error in saveToHistory:", err);
+          }
+        };
+        saveToHistory();
       })
       .catch(error => {
         logger.error("Fetch error:", error);
