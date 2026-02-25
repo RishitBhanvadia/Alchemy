@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
+import PropTypes from 'prop-types';
 import Lab from '../lab';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -13,16 +14,26 @@ vi.mock('gsap', () => ({
 }));
 
 // Mock 3D components
+const MockCanvasContainer = ({ children }) => <div data-testid="canvas-container">{children}</div>;
+MockCanvasContainer.propTypes = {
+  children: PropTypes.node
+};
+
 vi.mock('../components/3d-animations/CanvasContainer', () => ({
-  default: ({ children }) => <div data-testid="canvas-container">{children}</div>,
+  default: MockCanvasContainer,
 }));
 
 vi.mock('@react-three/drei', () => ({
   OrbitControls: () => null,
 }));
 
+const MockCanvas = ({ children }) => <div>{children}</div>;
+MockCanvas.propTypes = {
+  children: PropTypes.node
+};
+
 vi.mock('@react-three/fiber', () => ({
-  Canvas: ({ children }) => <div>{children}</div>,
+  Canvas: MockCanvas,
   useFrame: () => null,
 }));
 

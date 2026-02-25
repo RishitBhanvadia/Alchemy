@@ -52,8 +52,13 @@
         {
             "files": [
                 "**/*.test.js",
-                "**/*.spec.js"
+                "**/*.test.jsx",
+                "**/*.spec.js",
+                "**/*.spec.jsx"
             ],
+            "env": {
+                "jest": true
+            },
             "rules": {
                 "no-unused-vars": "off"
             }
