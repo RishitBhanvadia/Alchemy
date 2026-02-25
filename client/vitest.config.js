@@ -17,5 +17,6 @@ export default defineConfig({
                 '**/dist/**',
             ],
         },
+        exclude: ['tests/**', 'node_modules/**'],
     },
 });
