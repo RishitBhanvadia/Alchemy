@@ -14,7 +14,10 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
+const { mockSignInWithPassword } = vi.hoisted(() => ({
+    mockSignInWithPassword: vi.fn(),
+}));
+
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {

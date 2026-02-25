@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const TitrationSetup = ({ aheigth, color, shaky, count }) => {
+const TitrationSetup = ({ acidHeight, color, shaky, count }) => {
     return (
         <svg width="405" height="500" viewBox="0 0 405 713" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M 296.463 407.929 C 296.463 407.929 296.365 427.866 296.031 433.292 L 294.276 434.546 L 293.834 410.223 L 281.623 408.078 C 282.724 406.109 281.952 417.902 280.604 415.999 C 259.587 402.629 204.152 394.671 165.859 383.398 C 146.423 378.241 151.426 369.46 149.93 358.466 C 149.93 352.728 142.387 352.321 142.387 338.12 V 305 V 274.778 C 140 309 165 341 167 275 V 277 V 284 V 338.12 C 171.484 352.24 164.471 352.144 164.471 358.209 C 163.045 370.792 167.827 372.373 174.783 374.913 C 186.559 378.943 200.707 380.889 209.651 383.183 C 218.596 385.477 277.808 397.353 277.808 397.353 C 281.751 397.148 282.166 407.41 281.445 405.101 L 296.463 407.929 Z" fill="#9D9B00" fillOpacity={(count >= 99) ? '0' : '0.7'} className="tube_chem" stroke="#676767" strokeWidth="0.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -101,7 +101,7 @@ const TitrationSetup = ({ aheigth, color, shaky, count }) => {
             <path d="M303.213 455.236V442.114" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M294.938 455.236V442.114Z" fill="#FF0505" />
             <path d="M294.938 455.236V442.114" stroke="#1A1A18" strokeLinecap="round" strokeLinejoin="round" />
-            <path d={aheigth} fill={color} />
+            <path d={acidHeight} fill={color} />
             <path d="M291.86 690.921C354.959 690.921 354.2 690.921 354.2 682.363C354.2 652.354 354.2 788.926 354.2 536.51C354.2 530.808 357.621 527.353 359.149 524.761C359.912 523.467 358.78 522.157 354.2 522.157H225.734C225.734 522.157 222.556 522.157 219.922 524.304C216.866 526.796 215.2 528.939 216.74 530.712C225.734 528.939 225.734 529.521 225.734 533.991C225.734 583.095 225.734 649.74 225.734 682.363C225.734 690.921 225.923 690.921 291.86 690.921Z" fill="#E0E0F6" fillOpacity="0.376471" className={shaky ? 'dabba' : ''} stroke="black" strokeWidth="1.06299" strokeLinejoin="round" />
             <path d="M42.8123 0.783752H50.6248C55.4305 0.783752 59.3262 3.73759 59.3262 7.38131V690.306C59.3262 693.949 55.4305 696.903 50.6248 696.903H42.8123C38.0067 696.903 34.111 693.949 34.111 690.306V7.38131C34.111 3.73759 38.0067 0.783752 42.8123 0.783752Z" fill="url(#paint0_linear_91_125)" stroke="black" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M19.7932 691.385H397.289C401.102 691.385 404.193 692.508 404.193 693.894V700.263C404.193 701.648 401.102 702.772 397.289 702.772H19.7932C15.9804 702.772 12.8896 701.648 12.8896 700.263V693.894C12.8896 692.508 15.9804 691.385 19.7932 691.385Z" fill="url(#paint1_linear_91_125)" stroke="black" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -144,7 +144,7 @@ const TitrationSetup = ({ aheigth, color, shaky, count }) => {
 }
 
 TitrationSetup.propTypes = {
-    aheigth: PropTypes.string,
+    acidHeight: PropTypes.string,
     color: PropTypes.string,
     shaky: PropTypes.bool,
     count: PropTypes.number
