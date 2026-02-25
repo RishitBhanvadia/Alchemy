@@ -50,6 +50,7 @@ const Navbar = () => {
 
                     {dropdownOpen && (
                         <div className="dropdown-menu glass-panel">
+                            <NavLink to="/profile" className="dropdown-item">PROFILE</NavLink>
                             <NavLink to="/history" className="dropdown-item">HISTORY</NavLink>
                             <NavLink to="/organic" className="dropdown-item">ORGANIC</NavLink>
                             <NavLink to="/inorganic" className="dropdown-item">INORGANIC</NavLink>
