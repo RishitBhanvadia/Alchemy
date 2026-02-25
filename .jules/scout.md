@@ -1,0 +1,9 @@
+## 2026-02-25 - [Virtual Lab Data Integrity Gap]
+**Market Insight:** Virtual labs are fundamentally educational tools that require persistent student records for grading and progress tracking. Competitors like Labster and PhET (with login) automatically sync all experiment results to the cloud, allowing students and teachers to review performance over time.
+**Codebase Match:** The `History.jsx` component is built to display past experiments by querying the `experiment_results` table in Supabase. However, the `Result.jsx` component currently only saves the experiment outcome to the browser's `localStorage` (under the key 'cart') and never triggers a database insertion.
+**Opportunity:** This is a critical functional gap that renders the "History" feature useless for actual persistence. Implementing a `saveResultToSupabase` function in `Result.jsx` is a high-priority quick win that will immediately enable the intended functionality.
+
+## 2026-02-25 - [Missing Safety Protocol Standard]
+**Market Insight:** A key value proposition of virtual labs is "safe experimentation." Top competitors (Labster, PraxiLabs) reinforce this by mandating virtual safety protocols (e.g., clicking to put on goggles/gloves) before the simulation begins. This teaches real-world lab safety habits.
+**Codebase Match:** Alchemistry currently allows users to jump straight into mixing chemicals in `Lab.jsx` with only a subtle "System: ONLINE" status. There is no interactive safety check or PPE (Personal Protective Equipment) requirement.
+**Opportunity:** Add a `SafetyModal` component that interrupts the user before entering the `Lab` route, requiring them to "Equip Goggles" and "Wear Coat." This is a low-effort, high-impact feature that significantly increases the educational value and realism of the app.
