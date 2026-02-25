@@ -248,6 +248,9 @@ const Lab = () => {
         >
           {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
         </button>
+        {isPlayDisabled && (
+          <p className="helper-text">Add at least two chemicals to initiate reaction</p>
+        )}
       </div>
 
       {/* Right Panel: Status/Info (Optional, kept minimal for now) */}
