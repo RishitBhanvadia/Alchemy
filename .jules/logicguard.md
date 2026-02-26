@@ -1,0 +1,4 @@
+## 2025-05-15 - [Bug in Normalization and Rounding Adjustment]
+**Bug:** The `calculateResult` function would produce `NaN` when all inputs were 0, and incorrectly add a chemical (changing 0 to 10) due to a rounding adjustment logic that assumed `sum < 100` meant rounding loss, even when `sum` was naturally 0.
+**Root Cause:** The logic assumed that `sum < 100` always implied a rounding error that needed correction by adding to the max value. It failed to account for the case where the sum is legitimately 0 (no chemicals added), leading to both division by zero during normalization and artificial chemical addition during rounding adjustment.
+**Learning:** Logic designed to "correct" data (like normalization or rounding fixes) must strictly validate the base assumptions (e.g., that there is data to correct) to avoid corrupting valid edge cases (like empty/zero inputs). Always verify that "correction" logic doesn't activate on empty or zero-sum states unless intended.
