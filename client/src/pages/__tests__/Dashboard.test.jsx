@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
@@ -31,6 +31,10 @@ vi.mock('../../supabaseClient', () => ({
 }));
 
 describe('Dashboard Component', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
     const renderDashboard = () => {
         return render(
             <BrowserRouter>
@@ -41,30 +45,28 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        // Use exact matching to avoid "ORGANIC" matching "INORGANIC"
+        expect(screen.getByText(/^laboratory$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^titration$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^organic$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^inorganic$/i)).toBeInTheDocument();
+        expect(screen.getByText(/^history$/i)).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
-    });
+        // Find the link wrapping the "LABORATORY" text
+        // The accessible name of the link includes both the h3 (LABORATORY) and p (description) text.
+        // So strict name matching might be tricky if description changes.
+        // We can find by text and traverse up, or use a partial match on the name.
 
-    it('should have keyboard navigation on cards', () => {
-        renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labLink = screen.getByRole('link', { name: /laboratory/i });
+        expect(labLink).toBeInTheDocument();
+        expect(labLink).toHaveAttribute('href', '/lab');
     });
 });
