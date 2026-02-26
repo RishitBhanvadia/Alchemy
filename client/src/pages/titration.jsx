@@ -36,12 +36,21 @@ const Titration = () => {
   const [shake, setShake] = useState(false);
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
-  const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
+  // Removed acid_heigth state for performance optimization
   const [data, setData] = useState(all_data[0]);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [message, setMessage] = useState("");
+
+  // Derived state for acid height to prevent re-renders and timer resets
+  const getAcidHeight = () => {
+    if (confirm || add_acid) {
+      return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z";
+    }
+    return "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
+  };
+  const acid_heigth = getAcidHeight();
 
   // Logic to save result
   const saveResult = async (finalCount) => {
@@ -91,18 +100,20 @@ const Titration = () => {
   // Timer Logic
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
+    if (isCounting) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
-        setCount(prevCount => prevCount + 1);
+        setCount(prevCount => {
+          if (prevCount >= 100) {
+            return prevCount;
+          }
+          return prevCount + 1;
+        });
       }, 100);
     }
     return () => {
       clearInterval(timerId);
-
     };
-  }, [isCounting, count]);
+  }, [isCounting]);
 
   const handleStart = () => {
     if (drop && !isCounting) {
@@ -177,7 +188,6 @@ const Titration = () => {
               </button>
 
               <button className="sci-fi-btn" disabled={!add_acid} onClick={() => {
-                setAcid("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 644.637H226.348Z");
                 setAddAcid(false);
                 setKMN(true);
               }}>
