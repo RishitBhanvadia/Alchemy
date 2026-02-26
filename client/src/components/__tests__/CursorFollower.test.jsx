@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import CursorFollower from '../CursorFollower';
-import { vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 describe('CursorFollower', () => {
     it('renders the cursor elements', () => {
