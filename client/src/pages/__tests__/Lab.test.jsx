@@ -25,7 +25,7 @@ vi.mock('gsap', () => ({
 
 // Mock CanvasContainer
 vi.mock('../../components/3d-animations/CanvasContainer', () => ({
-    default: ({ children }) => <div data-testid="canvas-container">{children}</div>
+    default: () => <div data-testid="canvas-container" />
 }));
 
 // Mock CustomTestTube
