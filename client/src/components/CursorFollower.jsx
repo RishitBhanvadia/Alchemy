@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,16 +26,26 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            const x = e.clientX;
+            const y = e.clientY;
+
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
+            if (!target || !target.tagName) return;
+
             const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
+                (target.tagName.toLowerCase && target.tagName.toLowerCase() === 'button') ||
+                (target.tagName.toLowerCase && target.tagName.toLowerCase() === 'a') ||
                 target.closest('button') ||
                 target.closest('a') ||
-                target.classList.contains('clickable');
+                (target.classList && target.classList.contains('clickable'));
 
             setHovering(!!isClickable);
         };
@@ -65,12 +76,14 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ top: 0, left: 0 }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ top: 0, left: 0 }}
             />
         </>
     );
