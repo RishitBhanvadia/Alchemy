@@ -7,6 +7,16 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './src/test/setup.js',
+        // Explicitly include source tests only, excluding root-level tests/ folder which contains Playwright tests
+        include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+        exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/cypress/**',
+            '**/.{idea,git,cache,output,temp}/**',
+            '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+            'tests/**', // Exclude Playwright tests directory
+        ],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
