@@ -1,15 +1,23 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
+import React from 'react';
 
-// Mock navigate
-const mockNavigate = vi.fn();
+// Use vi.hoisted for mocks to avoid hoisting issues
+const mocks = vi.hoisted(() => ({
+    navigate: vi.fn(),
+    getUser: vi.fn().mockResolvedValue({
+        data: { user: { email: 'test@example.com' } },
+    }),
+}));
+
+// Mock react-router-dom
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
         ...actual,
-        useNavigate: () => mockNavigate,
+        useNavigate: () => mocks.navigate,
     };
 });
 
@@ -17,9 +25,7 @@ vi.mock('react-router-dom', async () => {
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
-            getUser: vi.fn().mockResolvedValue({
-                data: { user: { email: 'test@example.com' } },
-            }),
+            getUser: mocks.getUser,
         },
         from: vi.fn(() => ({
             select: vi.fn().mockResolvedValue({
@@ -41,30 +47,43 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The dashboard title is "WELCOME, ADMIN" based on Dashboard.jsx code
+        expect(screen.getByText(/WELCOME, ADMIN/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+
+        // Use getAllByRole to handle potential duplicates (e.g. from navbar)
+        // Or better, verify there is at least one link for each module
+        const labLinks = screen.getAllByRole('link', { name: /laboratory/i });
+        expect(labLinks.length).toBeGreaterThan(0);
+
+        const titrationLinks = screen.getAllByRole('link', { name: /titration/i });
+        expect(titrationLinks.length).toBeGreaterThan(0);
+
+        const organicLinks = screen.getAllByRole('link', { name: /organic/i });
+        expect(organicLinks.length).toBeGreaterThan(0);
+
+        const inorganicLinks = screen.getAllByRole('link', { name: /inorganic/i });
+        expect(inorganicLinks.length).toBeGreaterThan(0);
+
+        const historyLinks = screen.getAllByRole('link', { name: /history/i });
+        expect(historyLinks.length).toBeGreaterThan(0);
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        // Get the specific card link, assuming the first one or finding by specific container if needed
+        // Assuming the module cards are unique enough or we just check the first one
+        const labLink = screen.getAllByRole('link', { name: /laboratory/i })[0];
+        expect(labLink).toHaveAttribute('href', '/lab');
     });
 
     it('should have keyboard navigation on cards', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labLink = screen.getAllByRole('link', { name: /laboratory/i })[0];
+        labLink.focus();
+        expect(labLink).toHaveFocus();
     });
 });
