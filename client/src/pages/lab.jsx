@@ -163,6 +163,7 @@ const Lab = () => {
               value={chemA}
               onChange={handleChemAChange}
               className="sci-fi-range"
+              aria-label="Concentration of HCl"
             />
             <span className="chem-value">{chemA}%</span>
           </div>
@@ -182,6 +183,7 @@ const Lab = () => {
               value={chemB}
               onChange={handleChemBChange}
               className="sci-fi-range"
+              aria-label="Concentration of NaCl"
             />
             <span className="chem-value">{chemB}%</span>
           </div>
@@ -201,6 +203,7 @@ const Lab = () => {
               value={chemC}
               onChange={handleChemCChange}
               className="sci-fi-range"
+              aria-label="Concentration of CuSO4"
             />
             <span className="chem-value">{chemC}%</span>
           </div>
@@ -220,6 +223,7 @@ const Lab = () => {
               value={chemD}
               onChange={handleChemDChange}
               className="sci-fi-range"
+              aria-label="Concentration of FeSO4"
             />
             <span className="chem-value">{chemD}%</span>
           </div>
@@ -241,9 +245,13 @@ const Lab = () => {
           </div>
         </div>
 
+        {isPlayDisabled && (
+            <p className="helper-text" aria-live="polite">Add at least two chemicals to initiate reaction</p>
+        )}
         <button
           className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
           disabled={isPlayDisabled}
+          aria-disabled={isPlayDisabled}
           onClick={useHandlePlayClick}
         >
           {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
