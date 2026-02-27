@@ -17,5 +17,7 @@ export default defineConfig({
                 '**/dist/**',
             ],
         },
+        include: ['src/**/*.{test,spec}.{js,jsx}'],
+        exclude: ['tests/**', 'node_modules', 'dist'],
     },
 });
