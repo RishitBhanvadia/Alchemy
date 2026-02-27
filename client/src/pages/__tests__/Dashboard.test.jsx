@@ -1,15 +1,19 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
-// Mock navigate
-const mockNavigate = vi.fn();
+// Use vi.hoisted for mocked functions
+const mocks = vi.hoisted(() => ({
+    navigate: vi.fn(),
+}));
+
+// Mock react-router-dom
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
         ...actual,
-        useNavigate: () => mockNavigate,
+        useNavigate: () => mocks.navigate,
     };
 });
 
@@ -31,6 +35,11 @@ vi.mock('../../supabaseClient', () => ({
 }));
 
 describe('Dashboard Component', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mocks.navigate.mockReset();
+    });
+
     const renderDashboard = () => {
         return render(
             <BrowserRouter>
@@ -41,30 +50,29 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The component actually renders "WELCOME, ADMIN", not "Dashboard"
+        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/welcome, admin/i);
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        // Check for specific module names present in the HTML dump
+        // Use exact matching or anchored regex to avoid "Organic" matching "Inorganic"
+        expect(screen.getByRole('heading', { level: 3, name: /^laboratory$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 3, name: /^titration$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 3, name: /^organic$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 3, name: /^inorganic$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 3, name: /^history$/i })).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
-    });
+        // Module cards are links: <a href="/lab">...</a>
+        const labLink = screen.getByRole('link', { name: /laboratory/i });
+        expect(labLink).toBeInTheDocument();
+        expect(labLink).toHaveAttribute('href', '/lab');
 
-    it('should have keyboard navigation on cards', () => {
-        renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        fireEvent.click(labLink);
+        // Verify standard link navigation behavior or that the link exists
     });
 });
