@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 import InCompoundImg from "../components/InCompundImg"; // Fixed typo in import if needed, but file is InCompundImg.js
-import InExpResult from "../components/InExpResult";
 import "./lab.css";
 import "./inorganic.css";
+
+const InExpResult = lazy(() => import("../components/InExpResult"));
 
 const Inorganic = () => {
   const navigate = useNavigate();
@@ -61,7 +62,9 @@ const Inorganic = () => {
               </div>
             ) : (
               <div className="fade-in result-container">
-                <InExpResult num={datanum} on={on} />
+                <Suspense fallback={<div>Loading Result...</div>}>
+                  <InExpResult num={datanum} on={on} />
+                </Suspense>
               </div>
             )}
           </div>

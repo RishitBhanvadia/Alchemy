@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 import CompoundImg from "../components/compoundImg";
-import ExpResult from "./experiment_result";
 import "./lab.css"
 import './organic.css'
+
+const ExpResult = lazy(() => import("./experiment_result"));
 
 const Organic = () => {
   const navigate = useNavigate();
@@ -62,7 +63,9 @@ const Organic = () => {
               </div>
             ) : (
               <div className="fade-in">
-                <ExpResult num={datanum} on={on} />
+                <Suspense fallback={<div>Loading Result...</div>}>
+                  <ExpResult num={datanum} on={on} />
+                </Suspense>
               </div>
             )}
           </div>
