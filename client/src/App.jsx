@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react';
 import Navbar from "./components/Navbar";
 import CursorFollower from "./components/CursorFollower";
 import ErrorBoundary from "./components/ErrorBoundary";
+import GlobalLoader from "./components/GlobalLoader";
 import "./app.css";
 import "./accessibility.css";
 
@@ -30,19 +31,7 @@ function App() {
         {showNavbar && <Navbar />}
         <Toaster />
 
-        <Suspense fallback={
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            background: '#0a0a0a',
-            color: '#00ff88',
-            fontSize: '1.5rem'
-          }}>
-            Loading...
-          </div>
-        }>
+        <Suspense fallback={<GlobalLoader />}>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
