@@ -15,4 +15,11 @@ export default defineConfig({
     build: {
         outDir: 'build',
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        include: ['src/**/*.{test,spec}.{js,jsx}'],
+        exclude: ['**/node_modules/**', 'tests/**', '**/e2e/**', '**/playwright-tests/**', '**/*.spec.js'],
+        setupFiles: './src/test/setup.js',
+    },
 });
