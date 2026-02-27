@@ -47,7 +47,8 @@ app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+        // Sentinel: Use req.path instead of req.url to avoid logging sensitive query parameters
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} ${res.statusCode} ${duration}ms`);
     });
     next();
 });
@@ -68,7 +69,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Connected to server on port ${PORT}`);
-    console.log("Environment Check:");
-    console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
-    console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
+    // Sentinel: Removed sensitive environment variable checks from logs
 });
