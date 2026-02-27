@@ -1,34 +1,8 @@
+
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
-
-// Mock navigate
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useNavigate: () => mockNavigate,
-    };
-});
-
-// Mock supabase
-vi.mock('../../supabaseClient', () => ({
-    supabase: {
-        auth: {
-            getUser: vi.fn().mockResolvedValue({
-                data: { user: { email: 'test@example.com' } },
-            }),
-        },
-        from: vi.fn(() => ({
-            select: vi.fn().mockResolvedValue({
-                data: [],
-                error: null,
-            }),
-        })),
-    },
-}));
 
 describe('Dashboard Component', () => {
     const renderDashboard = () => {
@@ -41,30 +15,30 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        // The title is "WELCOME, ADMIN" based on the component code
+        expect(screen.getByText(/WELCOME, ADMIN/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        // Check for module names. Using precise regex or roles to avoid partial matches (e.g., ORGANIC vs INORGANIC)
+        expect(screen.getByRole('heading', { name: /^LABORATORY$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /^TITRATION$/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /^ORGANIC$/i })).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        // The cards are Links, so they should have hrefs
+        const labLink = screen.getByRole('link', { name: /laboratory/i });
+        expect(labLink).toHaveAttribute('href', '/lab');
     });
 
     it('should have keyboard navigation on cards', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        // Links are naturally keyboard accessible, checking if they exist is sufficient for this test scope
+        // unless there's custom key handlers, which there aren't in the provided code.
+        const labLink = screen.getByRole('link', { name: /laboratory/i });
+        expect(labLink).toBeInTheDocument();
     });
 });
