@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
@@ -8,6 +9,7 @@ import "./history.css";
 const History = () => {
     const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     // Fetch data from Supabase "experiment_results"
     useEffect(() => {
@@ -58,7 +60,16 @@ const History = () => {
                             <p className="neon-text blink">LOADING ARCHIVES...</p>
                         </div>
                     ) : experiments.length === 0 ? (
-                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                        <div className="empty-state">
+                            <div className="empty-state-icon">
+                                <i className="fa-solid fa-flask-vial"></i>
+                            </div>
+                            <h3 className="empty-state-title">No Experiments Found</h3>
+                            <p className="empty-state-text">Your laboratory log is currently empty. Start conducting experiments to see them recorded here.</p>
+                            <button className="empty-state-btn action-button active" onClick={() => navigate("/dashboard")}>
+                                START EXPERIMENT
+                            </button>
+                        </div>
                     ) : (
                         <div className="table-wrapper">
                             <table className="history-table">
