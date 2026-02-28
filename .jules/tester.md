@@ -1,0 +1,4 @@
+## 2024-02-28 - Testing Client Pages
+**Gap:** Testing client pages like Login.jsx and Dashboard.jsx
+**Learning:** `vi.mock` creates hoisting issues when importing dependencies that use components having 3D elements (Three.js), leading to `Cannot access 'X' before initialization` in JSDOM, and the text for some Dashboard test assertions were incorrectly configured.
+**Pattern:** Mock 3D components and use `vi.hoisted` explicitly for assigning `vi.fn()` to constant references so that Vitest hoists them before mocking components; configure text matchers effectively, e.g. `screen.getByText(/WELCOME, ADMIN/i)` to match exact element content. Also, exclude `tests/` path from `vitest.config.js` to ensure Playwright e2e test files do not interfere with unit tests.
