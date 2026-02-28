@@ -60,51 +60,9 @@ const Lab = () => {
     }
   }, [animate]);
 
-  const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
-  };
-
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
-  };
-
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
-  };
-
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
+  const createChemChangeHandler = (setChem) => (e) => {
+    const value = parseInt(e.target.value) || 0;
+    setChem(value);
     change_tip();
   };
 
@@ -161,7 +119,7 @@ const Lab = () => {
               min="0"
               max={100 - chemB - chemC - chemD}
               value={chemA}
-              onChange={handleChemAChange}
+              onChange={createChemChangeHandler(setChemA)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemA}%</span>
@@ -180,7 +138,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemC - chemD}
               value={chemB}
-              onChange={handleChemBChange}
+              onChange={createChemChangeHandler(setChemB)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemB}%</span>
@@ -199,7 +157,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemB - chemD}
               value={chemC}
-              onChange={handleChemCChange}
+              onChange={createChemChangeHandler(setChemC)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemC}%</span>
@@ -218,7 +176,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemB - chemC}
               value={chemD}
-              onChange={handleChemDChange}
+              onChange={createChemChangeHandler(setChemD)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemD}%</span>
