@@ -37,7 +37,7 @@ const Sidebar = () => {
           <div
             className={`element ${selectedTab === "lab" ? "selected" : ""}`}
           >
-            <button
+            <button aria-label="Laboratory"
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
             >
@@ -54,7 +54,7 @@ const Sidebar = () => {
             className={`element titration ${selectedTab === "titration" ? "selected" : ""
               }`}
           >
-            <button
+            <button aria-label="Titration"
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
             >
@@ -71,7 +71,7 @@ const Sidebar = () => {
             className={`element organic ${selectedTab === "organic" ? "selected" : ""
               }`}
           >
-            <button
+            <button aria-label="Organic Chemistry"
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
             >
@@ -88,7 +88,7 @@ const Sidebar = () => {
             className={`element inorganic ${selectedTab === "inorganic" ? "selected" : ""
               }`}
           >
-            <button
+            <button aria-label="Inorganic Chemistry"
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
             >
@@ -105,7 +105,7 @@ const Sidebar = () => {
             className={`element ${selectedTab === "history" ? "selected" : ""
               }`}
           >
-            <button
+            <button aria-label="History"
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
             >
