@@ -28,6 +28,25 @@ exports.calculateResult = async (req, res) => {
 
         const add = chem_a + chem_b + chem_c + chem_d;
 
+        if (add === 0) {
+            // Early return to prevent division by zero creating NaN
+            let reaction_id = 0;
+            const { data, error } = await supabase
+                .from('results')
+                .select('*')
+                .eq('conc_a', 0)
+                .eq('conc_b', 0)
+                .eq('conc_c', 0)
+                .eq('conc_d', 0)
+                .eq('reaction_id', 0);
+
+            if (error) {
+                console.error("Supabase Query Error:", error);
+                return res.status(500).json({ message: "Database Error" });
+            }
+            return res.json(data);
+        }
+
         // Normalize if sum < 100
         if (add < 100) {
             chem_a = (chem_a / add) * 100;
@@ -43,16 +62,17 @@ exports.calculateResult = async (req, res) => {
 
         // Adjust rounding errors if sum < 100 after rounding
         let final_add = a + b + c + d;
-        if (final_add < 100) {
+        while (final_add < 100) {
             const maxVal = Math.max(a, b, c, d);
             if (a === maxVal) a += 10;
             else if (b === maxVal) b += 10;
             else if (c === maxVal) c += 10;
             else d += 10;
+            final_add += 10;
         }
 
         // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
+        while (final_add > 100) {
             let for_min_a = (a === 0) ? 1000 : a;
             let for_min_b = (b === 0) ? 1000 : b;
             let for_min_c = (c === 0) ? 1000 : c;
@@ -64,6 +84,7 @@ exports.calculateResult = async (req, res) => {
             else if (b === minVal) b -= 10;
             else if (c === minVal) c -= 10;
             else d -= 10;
+            final_add -= 10;
         }
 
         // Calculate reaction_id hash
