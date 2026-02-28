@@ -4,7 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
 // Mock navigate
-const mockNavigate = vi.fn();
+const { mockNavigate } = vi.hoisted(() => ({
+    mockNavigate: vi.fn()
+}));
+
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -41,7 +44,7 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/WELCOME, ADMIN/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
