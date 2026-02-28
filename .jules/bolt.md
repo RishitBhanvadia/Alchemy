@@ -1,0 +1,3 @@
+## 2024-05-24 - Cursor Position State Thrashing
+**Learning:** Tracking high-frequency events like `mousemove` using React `useState` causes massive performance bottlenecks due to continuous component re-rendering (up to 60+ times per second). This was specifically observed in the `CursorFollower` component tracking `(x, y)` coordinates.
+**Action:** Always use `useRef` and direct DOM manipulation (e.g., `ref.current.style.left = ...`) for high-frequency visual updates that do not need to trigger React render cycles. Preserve state only for properties that genuinely require a re-render (like boolean toggle states where React can bail out if unchanged).
