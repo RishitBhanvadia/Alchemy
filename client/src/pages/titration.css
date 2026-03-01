@@ -189,6 +189,10 @@
     cursor: not-allowed;
 }
 
+.note-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 77, 77, 0.1);
     border-left: 3px solid #ff4d4d;
     font-size: 0.9rem;
     color: #ddd;

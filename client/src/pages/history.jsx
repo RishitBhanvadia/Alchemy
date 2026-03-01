@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
@@ -6,6 +7,7 @@ import logger from '../utils/logger';
 import "./history.css";
 
 const History = () => {
+    const navigate = useNavigate();
     const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -58,7 +60,17 @@ const History = () => {
                             <p className="neon-text blink">LOADING ARCHIVES...</p>
                         </div>
                     ) : experiments.length === 0 ? (
-                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                        <div className="empty-state-container">
+                            <div className="empty-icon-wrapper">
+                                <i className="fa-solid fa-flask-vial"></i>
+                            </div>
+                            <h3 className="empty-state-title neon-glow">NO ARCHIVES FOUND</h3>
+                            <p className="empty-state-desc">Your experiment log is currently empty. Start a new chemical reaction or titration to build your history.</p>
+                            <div className="empty-state-actions">
+                                <button className="sci-fi-btn action-btn" onClick={() => navigate('/lab')}>ENTER LABORATORY</button>
+                                <button className="sci-fi-btn action-btn" onClick={() => navigate('/titration')}>START TITRATION</button>
+                            </div>
+                        </div>
                     ) : (
                         <div className="table-wrapper">
                             <table className="history-table">
