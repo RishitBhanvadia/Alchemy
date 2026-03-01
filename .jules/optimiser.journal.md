@@ -1,0 +1,4 @@
+## 2024-05-24 - Defer massive asset loading in conditionally rendered components
+**Bottleneck:** The `organic.jsx` and `inorganic.jsx` pages were unnecessarily loading the 1.8MB `labgigbl.gif` asset upon initial page load. This was because the `ExpResult` and `InExpResult` components were statically imported, forcing the bundler to include the massive asset in their parent route chunks.
+**Impact:** Deferring the loading of these components using `React.lazy` and `Suspense` significantly reduces the initial payload for the Organic and Inorganic module pages, removing the 1.8MB asset overhead until a user explicitly clicks a test button to trigger a result render.
+**Learning:** Components containing massive media assets (like heavy GIFs or videos) that are only conditionally rendered *after* user interaction should always be lazy-loaded to prevent blocking or bloating the initial page load bundle.
