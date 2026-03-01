@@ -1,0 +1,4 @@
+## 2024-05-24 - Derived State vs Synchronous Helper Calls
+**Before:** Event handlers like `handleChemAChange` called `setChemA(value)` and then immediately called a synchronous helper `change_tip()` which relied on the `chemA` state to determine the test tube color (`tcolor`).
+**Issue:** `change_tip()` was reading the outdated state of `chemA` because React state updates (`setChemA`) are asynchronous and batch-processed. This leads to subtle bugs where the UI lags one step behind the user input. Additionally, managing `tcolor` as a separate state variable was redundant.
+**Learning:** Avoid using separate state variables and synchronous helper functions for values that can be derived entirely from existing state. By replacing the `tcolor` state with a derived variable (`computedTcolor`) calculated during the render phase, the code becomes simpler, more predictable, and immune to stale state closures.
