@@ -41,13 +41,13 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
         // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        expect(screen.getByText(/^LABORATORY$/i)).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
