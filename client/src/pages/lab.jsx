@@ -14,35 +14,18 @@ const Lab = () => {
   const app = useRef();
 
   const [animate, setAnimate] = useState(false);
-  const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
+  let computedTcolor = "";
+  if (!animate) {
+    if (chemA > 0) computedTcolor = '#05B9C4';
+    else if (chemB > 0) computedTcolor = '#04CE7E';
+    else if (chemC > 0) computedTcolor = '#FBC2E3';
+    else if (chemD > 0) computedTcolor = '#DAA520';
   }
 
   useLayoutEffect(() => {
@@ -60,56 +43,12 @@ const Lab = () => {
     }
   }, [animate]);
 
-  const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
-  };
-
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
-  };
-
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
-  };
-
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
-    change_tip();
-  };
+  const handleChemAChange = (e) => setChemA(parseInt(e.target.value));
+  const handleChemBChange = (e) => setChemB(parseInt(e.target.value));
+  const handleChemCChange = (e) => setChemC(parseInt(e.target.value));
+  const handleChemDChange = (e) => setChemD(parseInt(e.target.value));
 
   const useHandlePlayClick = () => {
-    SetTColor("");
     // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
@@ -120,16 +59,7 @@ const Lab = () => {
     }, 1500); // Increased delay to show animation
   };
 
-  function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
-  }
-
-  const isPlayDisabled = !(onOrNot());
+  const isPlayDisabled = [chemA, chemB, chemC, chemD].filter(v => v > 0).length < 2;
 
   // Determine status for 3D Beaker
   // Determine status for 3D Beaker (removed unused experimentStatus)
@@ -230,7 +160,7 @@ const Lab = () => {
       <div className="center-stage">
         <div className="test_tube-wrapper">
           <div className="test_tube">
-            <CustomTestTube color={tcolor} hasLiquid={chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0} />
+            <CustomTestTube color={computedTcolor} hasLiquid={chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0} />
           </div>
           {/* Reaction indicators (visuals) */}
           <div className="reaction-indicators">
