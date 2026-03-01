@@ -5,7 +5,7 @@ import { supabase } from '../supabaseClient'; // Corrected import based on file 
 import "./titration.css";
 import Polygon from "../components/Polygon";
 import TitrationSetup from "../components/titration_setup";
-import hcl from "../assets/hc.png";
+import hcl from "../assets/hcl.png";
 import nacl from '../assets/h2so4.png';
 import AB from '../assets/ab.png';
 import logger from '../utils/logger';

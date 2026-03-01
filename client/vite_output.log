@@ -1,0 +1,11 @@
+
+> alchemy-client@0.1.0 start /app/client
+> vite
+
+
+  VITE v6.4.1  ready in 359 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+7:40:48 AM [vite] .env.local changed, restarting server...
+7:40:48 AM [vite] server restarted.
