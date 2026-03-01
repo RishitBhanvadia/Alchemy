@@ -47,7 +47,9 @@ app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+        // Sanitise URL by removing query parameters to prevent leaking sensitive data
+        const safeUrl = req.url.split('?')[0];
+        console.log(`[${new Date().toISOString()}] ${req.method} ${safeUrl} ${res.statusCode} ${duration}ms`);
     });
     next();
 });
