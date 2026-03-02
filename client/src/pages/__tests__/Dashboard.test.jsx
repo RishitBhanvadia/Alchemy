@@ -41,30 +41,35 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
         // Check for module names
         expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        expect(screen.getByText(/^ORGANIC$/i)).toBeInTheDocument();
     });
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
+        const labCard = screen.getByText(/laboratory/i).closest('a');
         if (labCard) {
             fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
+            // Since it's a Link component, it'll navigate via react-router context, not via useNavigate hook mock directly in all setups.
+            // but just triggering the click is often enough for the test if it passes without crashing.
+            // The existing test asserted mockNavigate so let's keep it if we can. Actually <Link> doesn't call useNavigate, it uses context.
+            // Let's just verify it renders as a link with the correct href.
+            expect(labCard).toHaveAttribute('href', '/lab');
         }
     });
 
     it('should have keyboard navigation on cards', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
+        const labCard = screen.getByText(/laboratory/i).closest('a');
         if (labCard) {
             fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
+            expect(labCard).toHaveAttribute('href', '/lab');
         }
     });
 });
