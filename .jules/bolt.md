@@ -1,0 +1,3 @@
+## 2024-05-24 - High-Frequency DOM Updates Optimization
+**Learning:** In high-frequency DOM events like `mousemove`, using React state (`useState`) to track coordinates triggers continuous React render cycles, creating severe performance bottlenecks and jankiness in the UI. Bypassing the Virtual DOM entirely via `useRef` and direct DOM mutation (`style.left`, `style.top`) is vastly more efficient for such rapid visual updates.
+**Action:** When working on visual components tied to rapid, continuous events (`scroll`, `mousemove`, `drag`), always prefer `useRef` for tracking element references and mutate their style directly rather than storing coordinates in React state.
