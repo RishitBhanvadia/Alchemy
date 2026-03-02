@@ -4,16 +4,14 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import CursorFollower from '../CursorFollower';
 
 describe('CursorFollower', () => {
-  let container;
   beforeEach(() => {
     // Render before each test
-    const result = render(
+    render(
       <div>
         <button id="btn">Click me</button>
         <CursorFollower />
       </div>
     );
-    container = result.container;
   });
 
   afterEach(() => {
