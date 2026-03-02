@@ -38,7 +38,12 @@ app.use(helmet({
 }));
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:3000', 'http://localhost:4173', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
 
