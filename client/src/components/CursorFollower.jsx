@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
+
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -25,7 +27,18 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // ⚡ Bolt Optimisation:
+            // Bypassing React state (useState) for high-frequency mousemove events.
+            // Directly mutating DOM style properties via useRef prevents continuous
+            // Virtual DOM re-renders, significantly improving UI performance and reducing jank.
+            if (cursorRef.current) {
+                cursorRef.current.style.left = `${e.clientX}px`;
+                cursorRef.current.style.top = `${e.clientY}px`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.left = `${e.clientX}px`;
+                dotRef.current.style.top = `${e.clientY}px`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -65,12 +78,12 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
