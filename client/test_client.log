@@ -1,0 +1,247 @@
+
+> alchemy-client@0.1.0 test /app/client
+> vitest -- --reporter=verbose --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/app/client[39m
+
+ [31m❯[39m src/pages/__tests__/Login.test.jsx [2m([22m[2m0 test[22m[2m)[22m
+[90mstderr[2m | src/components/__tests__/Navbar.test.jsx[2m > [22m[2mNavbar Component[2m > [22m[2mshould render navigation links
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/components/__tests__/Navbar.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 157[2mms[22m[39m
+ [31m❯[39m tests/race_condition.spec.js [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m tests/visual-layer.spec.js [2m([22m[2m0 test[22m[2m)[22m
+[90mstderr[2m | src/pages/__tests__/Dashboard.test.jsx[2m > [22m[2mDashboard Component[2m > [22m[2mshould render dashboard title
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/utils/__tests__/notifications.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [31m❯[39m src/pages/__tests__/Dashboard.test.jsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 97[2mms[22m[39m
+[31m     [31m×[31m should render dashboard title[39m[32m 67[2mms[22m[39m
+     [32m✓[39m should render module cards[32m 11[2mms[22m[39m
+     [32m✓[39m should navigate on module card click[32m 9[2mms[22m[39m
+     [32m✓[39m should have keyboard navigation on cards[32m 6[2mms[22m[39m
+ [32m✓[39m src/utils/__tests__/logger.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/race_condition.spec.js[2m [ tests/race_condition.spec.js ][22m
+[31m[1mError[22m: Playwright Test did not expect test.describe() to be called here.
+Most common reasons include:
+- You are calling test.describe() in a configuration file.
+- You are calling test.describe() in a file that is imported by the configuration file.
+- You have two different versions of @playwright/test. This usually happens
+  when one of the dependencies in your package.json depends on @playwright/test.[39m
+[90m [2m❯[22m TestTypeImpl._currentSuite node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:[2m75:13[22m[39m
+[90m [2m❯[22m TestTypeImpl._describe node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:[2m115:24[22m[39m
+[90m [2m❯[22m Function.describe node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/transform/transform.js:[2m282:12[22m[39m
+[36m [2m❯[22m tests/race_condition.spec.js:[2m3:6[22m[39m
+    [90m  1| [39m[35mconst[39m { test[33m,[39m expect } [33m=[39m [34mrequire[39m([32m'@playwright/test'[39m)[33m;[39m
+    [90m  2| [39m
+    [90m  3| [39mtest[33m.[39m[34mdescribe[39m([32m'Race Condition Reproduction'[39m[33m,[39m () [33m=>[39m {
+    [90m   | [39m     [31m^[39m
+    [90m  4| [39m    [34mtest[39m([32m'Parallel Result Addition to Cart'[39m[33m,[39m [35masync[39m ({ context }) [33m=>[39m {
+    [90m  5| [39m        // Create two pages within the same context (sharing localStor…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/visual-layer.spec.js[2m [ tests/visual-layer.spec.js ][22m
+[31m[1mError[22m: Playwright Test did not expect test.describe() to be called here.
+Most common reasons include:
+- You are calling test.describe() in a configuration file.
+- You are calling test.describe() in a file that is imported by the configuration file.
+- You have two different versions of @playwright/test. This usually happens
+  when one of the dependencies in your package.json depends on @playwright/test.[39m
+[90m [2m❯[22m TestTypeImpl._currentSuite node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:[2m75:13[22m[39m
+[90m [2m❯[22m TestTypeImpl._describe node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/common/testType.js:[2m115:24[22m[39m
+[90m [2m❯[22m Function.describe node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/transform/transform.js:[2m282:12[22m[39m
+[36m [2m❯[22m tests/visual-layer.spec.js:[2m3:6[22m[39m
+    [90m  1| [39m[35mconst[39m { test[33m,[39m expect } [33m=[39m [34mrequire[39m([32m'@playwright/test'[39m)[33m;[39m
+    [90m  2| [39m
+    [90m  3| [39mtest[33m.[39m[34mdescribe[39m([32m'3D Visual Layer Tests'[39m[33m,[39m () [33m=>[39m {
+    [90m   | [39m     [31m^[39m
+    [90m  4| [39m
+    [90m  5| [39m    test('Landing Page: Molecule Animation & Interaction', async ({ pa…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/Login.test.jsx[2m [ src/pages/__tests__/Login.test.jsx ][22m
+[31m[1mError[22m: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock[39m
+[36m [2m❯[22m src/pages/Login.jsx:[2m4:1[22m[39m
+    [90m  2| [39m[35mimport[39m { useNavigate } [35mfrom[39m [32m'react-router-dom'[39m[33m;[39m
+    [90m  3| [39m
+    [90m  4| [39m[35mimport[39m { supabase } [35mfrom[39m [32m'../supabaseClient'[39m[33m;[39m
+    [90m   | [39m[31m^[39m
+    [90m  5| [39mimport HolographicLogin from '../components/3d-animations/HolographicL…
+    [90m  6| [39m[35mimport[39m logger [35mfrom[39m [32m'../utils/logger'[39m[33m;[39m
+
+[31m[1mCaused by: ReferenceError[22m: Cannot access 'mockSignInWithPassword' before initialization[39m
+[36m [2m❯[22m src/pages/__tests__/Login.test.jsx:[2m21:33[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/Dashboard.test.jsx[2m > [22mDashboard Component[2m > [22mshould render dashboard title
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: /dashboard/i. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"dashboard-page scene_element scene_element--fadein"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"dashboard-container"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"dashboard-header"[31m
+        [36m>[31m
+          [36m<h1[31m
+            [33mclass[31m=[32m"neon-glow"[31m
+          [36m>[31m
+            [0mWELCOME, ADMIN[0m
+          [36m</h1>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"subtitle"[31m
+          [36m>[31m
+            [0mSelect a module to begin experimentation[0m
+          [36m</p>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"module-grid"[31m
+        [36m>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"module-card glass-panel"[31m
+            [33mhref[31m=[32m"/lab"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"icon-container"[31m
+            [36m>[31m
+              [36m<i[31m
+                [33mclass[31m=[32m"fa-solid fa-flask"[31m
+              [36m/>[31m
+            [36m</div>[31m
+            [36m<h3>[31m
+              [0mLABORATORY[0m
+            [36m</h3>[31m
+            [36m<p>[31m
+              [0mConduct virtual chemical reactions.[0m
+            [36m</p>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"card-glow"[31m
+            [36m/>[31m
+          [36m</a>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"module-card glass-panel"[31m
+            [33mhref[31m=[32m"/titration"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"icon-container"[31m
+            [36m>[31m
+              [36m<i[31m
+                [33mclass[31m=[32m"fa-solid fa-flask-vial"[31m
+              [36m/>[31m
+            [36m</div>[31m
+            [36m<h3>[31m
+              [0mTITRATION[0m
+            [36m</h3>[31m
+            [36m<p>[31m
+              [0mPrecise volumetric analysis.[0m
+            [36m</p>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"card-glow"[31m
+            [36m/>[31m
+          [36m</a>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"module-card glass-panel"[31m
+            [33mhref[31m=[32m"/organic"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"icon-container"[31m
+            [36m>[31m
+              [36m<i[31m
+                [33mclass[31m=[32m"fa-solid fa-dna"[31m
+              [36m/>[31m
+            [36m</div>[31m
+            [36m<h3>[31m
+              [0mORGANIC[0m
+            [36m</h3>[31m
+            [36m<p>[31m
+              [0mExplore carbon-based chemistry.[0m
+            [36m</p>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"card-glow"[31m
+            [36m/>[31m
+          [36m</a>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"module-card glass-panel"[31m
+            [33mhref[31m=[32m"/inorganic"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"icon-container"[31m
+            [36m>[31m
+              [36m<i[31m
+                [33mclass[31m=[32m"fa-solid fa-atom"[31m
+              [36m/>[31m
+            [36m</div>[31m
+            [36m<h3>[31m
+              [0mINORGANIC[0m
+            [36m</h3>[31m
+            [36m<p>[31m
+              [0mStudy elements and compounds.[0m
+            [36m</p>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"card-glow"[31m
+            [36m/>[31m
+          [36m</a>[31m
+          [36m<a[31m
+            [33mclass[31m=[32m"module-card glass-panel"[31m
+            [33mhref[31m=[32m"/history"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"icon-container"[31m
+            [36m>[31m
+              [36m<i[31m
+                [33mclass[31m=[32m"fa-solid fa-clock-rotate-left"[31m
+              [36m/>[31m
+            [36m</div>[31m
+            [36m<h3>[31m
+              [0mHISTORY[0m
+            [36m</h3>[31m
+            [36m<p>[31m
+              [0mReview past experiment logs.[0m
+            [36m</p>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"card-glow"[31m
+            [36m/>[31m
+          [36m</a>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/__tests__/Dashboard.test.jsx:[2m44:23[22m[39m
+    [90m 42| [39m    [34mit[39m([32m'should render dashboard title'[39m[33m,[39m () [33m=>[39m {
+    [90m 43| [39m        [34mrenderDashboard[39m()[33m;[39m
+    [90m 44| [39m        [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([36m/dashboard/i[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                      [31m^[39m
+    [90m 45| [39m    })[33m;[39m
+    [90m 46| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 14:03:38
+[2m   Duration [22m 6.52s[2m (transform 411ms, setup 2.97s, import 369ms, tests 267ms, environment 8.31s)[22m
+
+ ELIFECYCLE  Test failed. See above for more details.
