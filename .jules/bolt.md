@@ -1,0 +1,3 @@
+## 2024-05-24 - Avoid Interval Recreation in React Effects
+**Learning:** In components with rapidly updating state via `setInterval` (like the timer in `client/src/pages/titration.jsx`), including the state variable (e.g., `count`) in the `useEffect` dependency array causes the interval to be continuously cleared and recreated on every tick. This leads to inefficient and janky re-rendering.
+**Action:** Use functional state updates (e.g., `setCount(prev => prev + 1)`) to access the latest state within the interval closure. This allows the state variable to be removed from the effect's dependency array, ensuring the interval is set up only once and runs smoothly.

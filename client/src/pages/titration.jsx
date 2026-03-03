@@ -91,18 +91,25 @@ const Titration = () => {
   // Timer Logic
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
+    if (isCounting) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
-        setCount(prevCount => prevCount + 1);
+        setCount(prevCount => {
+          if (prevCount >= 100) {
+            clearInterval(timerId);
+            return prevCount;
+          }
+          // Bolt: Calculate and set SVG height dynamically within state updater callback.
+          // This avoids adding 'count' to useEffect dependencies and prevents interval recreation.
+          var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((prevCount / 10) * 4.3)) + "H226.348Z";
+          setAcid(made_str);
+          return prevCount + 1;
+        });
       }, 100);
     }
     return () => {
       clearInterval(timerId);
-
     };
-  }, [isCounting, count]);
+  }, [isCounting]);
 
   const handleStart = () => {
     if (drop && !isCounting) {
