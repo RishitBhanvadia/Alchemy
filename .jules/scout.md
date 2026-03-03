@@ -1,0 +1,7 @@
+## 2026-03-03 - Bridging Practical Interaction with Theoretical Understanding
+
+**Market Insight:** Top competitors in the virtual chemistry space (like Labster and ChemCollective) consistently pair interactive 3D physical tasks with real-time theoretical data visualization (e.g., concentration viewers) and scenario-based assessments (e.g., in-experiment theory quizzes) to ensure students understand the *why* behind the *what*.
+
+**Codebase Match:** Alchemistry's modules (`lab.jsx` and `titration.jsx`) are currently open-sandbox physical simulators. They excel at visual interaction (mixing chemicals, color changes) but lack integrated theoretical checks (quizzes) or real-time numerical data output (concentration displays) during the reaction. The raw data (e.g., `chemA`, `chemB` values, volume used) already exists in state and is stored in `experiment_results`, but isn't explicitly shown to the user or tested against theory.
+
+**Opportunity:** Implementing a "Theory Quiz" modal before allowing an experiment to start in `titration.jsx` and a dynamic "Data Viewer" panel in `lab.jsx`'s existing status area are low-effort, high-impact changes that instantly elevate the application from a simple simulator to a structured educational tool.
