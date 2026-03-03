@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
 import logger from '../utils/logger';
@@ -43,6 +44,7 @@ const History = () => {
 
     return (
         <div className="history-page">
+            <Navbar />
 
             <div className="history-container">
                 <h1 className="neon-glow page-title">EXPERIMENT LOGS</h1>

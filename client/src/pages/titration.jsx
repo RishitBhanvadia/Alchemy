@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient'; // Corrected import based on file search
 import "./titration.css";
 import Polygon from "../components/Polygon";
@@ -137,6 +138,7 @@ const Titration = () => {
 
   return (
     <div className="titration-page">
+      <Navbar /> {/* New Top Navbar */}
 
       <div className="titration-container">
 
