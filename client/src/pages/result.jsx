@@ -14,8 +14,7 @@ const Result = () => {
 
   // State hooks must be unconditional (at the top)
   const [data, setData] = useState();
-  const localCart = JSON.parse(localStorage.getItem('cart'));
-  const [cart, setCart] = useState(localCart);
+  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')));
 
   // Redirect if no state (e.g., user refreshed the page)
   useEffect(() => {

@@ -14,7 +14,9 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
+const { mockSignInWithPassword } = vi.hoisted(() => {
+    return { mockSignInWithPassword: vi.fn() };
+});
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -31,6 +33,13 @@ vi.mock('react-hot-toast', () => ({
     },
 }));
 
+// Mock HolographicLogin
+vi.mock('../../components/3d-animations/HolographicLogin', () => {
+    return {
+        default: ({ children }) => <div data-testid="holographic-login-mock">{children}</div>,
+    };
+});
+
 describe('Login Component', () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -46,13 +55,13 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(/student@university.edu/i)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(/••••••••/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /access/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +73,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText(/student@university.edu/i);
+        const passwordInput = screen.getByPlaceholderText(/••••••••/i);
+        const submitButton = screen.getByRole('button', { name: /access/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +97,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText(/student@university.edu/i);
+        const passwordInput = screen.getByPlaceholderText(/••••••••/i);
+        const submitButton = screen.getByRole('button', { name: /access/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
