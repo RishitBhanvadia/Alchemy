@@ -1,4 +1,6 @@
-## 2026-03-03 - Lazy Initialisation in useState
-**Bottleneck:** The result.jsx page synchronously parsed the 'cart' localStorage item on every re-render (which includes 3D animations and layout shifts).
-**Impact:** A noticeable reduction in main thread blocking time during continuous state updates in the Result component.
-**Learning:** For expensive synchronous operations like JSON.parse() during useState initialization, always use a lazy initialization function to ensure it's evaluated only on the initial render.
+## 2026-03-03 - Vitest Config Exclusions (ERR_REQUIRE_ESM)
+**Learning:** Hardcoding exclusions (like '**/tests/**' and '**/*.spec.js') inside 'exclude' rather than importing  avoids CI breakages in some Node 18 setups where 'html-encoding-sniffer' breaks via .
+**Action:** When working with Vite + Vitest, simply list explicit strings in the test.exclude array.
+## 2026-03-03 - Vitest Config Exclusions (ERR_REQUIRE_ESM)
+**Learning:** Hardcoding exclusions (like '**/tests/**' and '**/*.spec.js') inside 'exclude' rather than importing configDefaults avoids CI breakages in some Node 18 setups where 'html-encoding-sniffer' breaks.
+**Action:** When working with Vite + Vitest, simply list explicit strings in the test.exclude array.
