@@ -1,6 +1,0 @@
-Progress: resolved 0, reused 1, downloaded 0, added 0
- WARN  4 deprecated subdependencies found: glob@10.5.0, glob@7.2.3, inflight@1.0.6, scmp@2.1.0
-Already up to date
-Progress: resolved 449, reused 431, downloaded 0, added 0, done
-
-Done in 1.4s using pnpm v10.28.0
