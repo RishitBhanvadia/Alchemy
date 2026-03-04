@@ -1,0 +1,6 @@
+# Scout Journal
+
+## 2024-05-24 - Virtual Chemistry Lab Tools Missing Educational Scaffolding
+**Market Insight:** Market leaders like Labster, PraxiLabs, and ExploreLearning emphasize structured learning paths, guided tutorials, quizzes, and real-time theoretical data visualization (e.g., concentration viewers, molecular-level observation) alongside their 3D simulations. They aim not just to simulate reactions, but to guide the student through the scientific method.
+**Codebase Match:** Alchemistry currently provides the "sandbox" (the 3D simulation and chemical mixing via sliders in `/lab`, `/titration`, `/organic`, `/inorganic`), but lacks the educational scaffolding. It is purely a sandbox without built-in guidance, quizzes, or step-by-step experiment instructions.
+**Opportunity:** Adding educational scaffolding (like guided tutorials, an AI lab assistant/tooltip system, or a built-in quiz/knowledge check system linked to experiments) would elevate Alchemistry from a simple sandbox to a comprehensive learning platform, aligning it with market leaders.
