@@ -1,0 +1,4 @@
+## 2024-05-18 - Duplicate Navbar Component Rendering
+**Before:** `client/src/App.jsx` dynamically rendered `<Navbar />` based on the route, but several individual page components (`titration.jsx`, `organic.jsx`, `inorganic.jsx`, `history.jsx`) were also explicitly importing and rendering `<Navbar />` inside their own JSX structures.
+**Issue:** This caused duplicate rendering of the Navbar, degrading performance and potentially causing UI glitches, as two Navbars would be mounted simultaneously on those specific pages.
+**Learning:** In a React application using centralized routing (like `react-router-dom`), global layout components (like Navbars or Footers) should be managed entirely at the root layout level (`App.jsx`). Page components should remain agnostic to global layout elements to prevent duplication and ensure a single source of truth for layout state.
