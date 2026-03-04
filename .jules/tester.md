@@ -1,0 +1,4 @@
+## 2025-03-04 - Testing complex controller logic that relies on Supabase client
+**Gap:** The critical business logic for chemical calculation and rounding edge cases inside `resultController.calculateResult` was untested. The existing tests only mocked the express route and did not verify the actual logic.
+**Learning:** Testing logic involving complex chained mocks (like the Supabase JS client) is important. When mocking `@supabase/supabase-js`, `jest.mock` should configure a properly structured mock object that returns the appropriate nested methods, allowing `.from().select().eq().then()` to function in Jest tests without runtime errors.
+**Pattern:** For business logic that interacts directly with Supabase, write discrete Jest tests targeting the controller functions (rather than the entire API) and provide chained mock implementations for the DB client.
