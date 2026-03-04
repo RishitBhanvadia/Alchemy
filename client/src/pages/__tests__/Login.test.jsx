@@ -14,7 +14,12 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
+const { mockSignInWithPassword } = vi.hoisted(() => {
+    return {
+        mockSignInWithPassword: vi.fn(),
+    };
+});
+
 vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
@@ -22,6 +27,13 @@ vi.mock('../../supabaseClient', () => ({
         },
     },
 }));
+
+// Mock HolographicLogin because it uses WebGL/Three.js which may not work in JSDOM
+vi.mock('../../components/3d-animations/HolographicLogin', () => {
+    return {
+        default: ({ children }) => <div data-testid="holographic-login-mock">{children}</div>,
+    };
+});
 
 // Mock toast
 vi.mock('react-hot-toast', () => ({
@@ -46,13 +58,13 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('student@university.edu')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('••••••••')).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +76,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText('student@university.edu');
+        const passwordInput = screen.getByPlaceholderText('••••••••');
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +100,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByPlaceholderText('student@university.edu');
+        const passwordInput = screen.getByPlaceholderText('••••••••');
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });

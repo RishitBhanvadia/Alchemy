@@ -41,7 +41,7 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/WELCOME, ADMIN/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
@@ -52,19 +52,17 @@ describe('Dashboard Component', () => {
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labCard = screen.getByText(/laboratory/i).closest('a');
+        expect(labCard).toHaveAttribute('href', '/lab');
     });
 
     it('should have keyboard navigation on cards', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labCard = screen.getByText(/laboratory/i).closest('a');
+        expect(labCard).toBeInTheDocument();
+        // Native <a> tags have keyboard accessibility by default.
+        // The mockNavigate is not called because Link uses internal navigation, and the href handles it.
+        // We will assert the link has proper attributes for accessibility.
+        expect(labCard).toHaveAttribute('href', '/lab');
     });
 });
