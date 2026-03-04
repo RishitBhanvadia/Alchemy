@@ -1,0 +1,4 @@
+## 2024-05-19 - Consolidate Navbar Rendering
+**Bottleneck:** Duplicate rendering of the `Navbar` component. `App.jsx` handled the conditional rendering, but individual page components like `titration.jsx`, `organic.jsx`, `inorganic.jsx`, and `history.jsx` were also explicitly importing and rendering the same `Navbar` component. This led to redundant React component trees and unnecessary overhead during route transitions.
+**Impact:** Small but measurable improvement in route transition performance and memory reduction, eliminating one duplicate set of navigation links and dropdown handlers per page mount. Cleaned up code structure significantly.
+**Learning:** Always verify that layout components managed at the application router level (like headers/footers) are not inadvertently re-imported and re-rendered at the page/component level to prevent duplicate React subtrees.
