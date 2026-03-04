@@ -28,7 +28,7 @@
     background: linear-gradient(to right, #ffffff, #a5b4fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    text-shadow: 0 0 20px var(--primary-neon);
 }
 
 .landing-subtitle {
@@ -43,13 +43,13 @@
 .start-button {
     padding: 15px 50px;
     font-size: 1.2rem;
-    font-weight: 600;
-    color: white;
-    background: var(--primary-blue);
+    font-weight: 700;
+    color: #050510;
+    background: var(--primary-neon);
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -58,9 +58,10 @@
 }
 
 .start-button:hover {
-    background: var(--secondary-purple);
+    background: var(--secondary-neon);
+    color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 25px rgba(188, 19, 254, 0.6);
 }
 
 .start-button:active {
