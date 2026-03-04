@@ -30,6 +30,7 @@ const Login = () => {
         } catch (error) {
             logger.error('Login failed', { error: error.message });
             showError(error.error_description || error.message || 'Login failed. Please try again.');
+        } finally {
             setIsLoading(false);
         }
     };
