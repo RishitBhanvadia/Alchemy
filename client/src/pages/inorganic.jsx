@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 import InCompoundImg from "../components/InCompundImg"; // Fixed typo in import if needed, but file is InCompundImg.js
 import InExpResult from "../components/InExpResult";
@@ -44,7 +43,6 @@ const Inorganic = () => {
 
   return (
     <div className="inorganic-page">
-      <Navbar />
 
       <div className="inorganic-container">
         <h1 className="neon-glow page-title">INORGANIC ANALYSIS</h1>
