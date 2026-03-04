@@ -59,9 +59,9 @@
 
 .login-input:focus {
     outline: none;
-    border-color: var(--primary-blue);
+    border-color: var(--primary-neon);
     background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
 }
 
 .login-input::placeholder {
@@ -74,17 +74,18 @@
     margin-top: 10px;
     border: none;
     border-radius: 8px;
-    background: var(--primary-blue);
-    color: white;
+    background: var(--primary-neon);
+    color: #050510;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Montserrat', sans-serif;
 }
 
 .login-button:hover {
-    background: var(--secondary-purple);
+    background: var(--secondary-neon);
+    color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(188, 19, 254, 0.4);
 }
