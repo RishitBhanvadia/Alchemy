@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef, lazy, Suspense } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -7,9 +7,7 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
-
-// Lazy load heavy 3D modules
-const CanvasContainer = lazy(() => import('../components/3d-animations/CanvasContainer'));
+import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
 
 const Lab = () => {
@@ -140,13 +138,11 @@ const Lab = () => {
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
       <div className="lab-3d-background">
-        <Suspense fallback={<div className="canvas-placeholder" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} />}>
-          <CanvasContainer>
-            {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-          </CanvasContainer>
-        </Suspense>
+        <CanvasContainer>
+          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+        </CanvasContainer>
       </div>
 
       {/* Left Panel: Chemical Rack */}
