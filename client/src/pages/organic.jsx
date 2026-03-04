@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 import CompoundImg from "../components/compoundImg";
 import ExpResult from "./experiment_result";
@@ -45,7 +44,6 @@ const Organic = () => {
 
   return (
     <div className="organic-page">
-      <Navbar />
 
       <div className="organic-container">
         <h1 className="neon-glow page-title">ORGANIC ANALYISIS</h1>
