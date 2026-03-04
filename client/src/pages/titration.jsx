@@ -91,18 +91,27 @@ const Titration = () => {
   // Timer Logic
   useEffect(() => {
     let timerId;
-    if (isCounting && count < 100) {
+    if (isCounting) {
       timerId = setInterval(() => {
-        var made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
-        setAcid(made_str);
         setCount(prevCount => prevCount + 1);
       }, 100);
     }
     return () => {
-      clearInterval(timerId);
-
+      if (timerId) clearInterval(timerId);
     };
-  }, [isCounting, count]);
+  }, [isCounting]);
+
+  // Handle side effects from timer updates
+  useEffect(() => {
+    if (isCounting) {
+      if (count >= 100) {
+        setIsCounting(false);
+      } else {
+        const made_str = "M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V" + (644 - ((count / 10) * 4.3)) + "H226.348Z";
+        setAcid(made_str);
+      }
+    }
+  }, [count, isCounting]);
 
   const handleStart = () => {
     if (drop && !isCounting) {
