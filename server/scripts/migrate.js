@@ -1,10 +1,16 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
-// Credentials provided by user for migration only
-const SUPABASE_URL = 'https://madcquepligcvwkfycud.supabase.co';
-const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGNxdWVwbGlnY3Z3a2Z5Y3VkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDM4NzMwMCwiZXhwIjoyMDg1OTYzMzAwfQ.alfgbAhbrxP7Y25qrlmY-3D6uUAsK5PAyYjAW4_ygQU';
+// Credentials provided by environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+
+if (!SUPABASE_URL || !SERVICE_KEY) {
+    console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_KEY in environment variables.");
+    process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
