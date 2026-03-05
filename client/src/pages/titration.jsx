@@ -200,8 +200,12 @@ const Titration = () => {
 
           <div className="note-box">
             <span style={{ fontWeight: 'bold', color: '#ff4d4d' }}>NOTE:</span> The solution of HCl is 1 M and H2SO4 is 2 M.
-            {message && <div style={{ color: '#00f3ff', marginTop: '10px' }}>{message}</div>}
           </div>
+          {message && (
+            <div className="result-box">
+              {message}
+            </div>
+          )}
         </div>
 
         {/* Right Experiment Area */}
