@@ -38,10 +38,11 @@ const Sidebar = () => {
             className={`element ${selectedTab === "lab" ? "selected" : ""}`}
           >
             <button
+              aria-label="Laboratory"
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
             >
-              <i className="fa-solid fa-flask"></i>
+              <i className="fa-solid fa-flask" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -55,10 +56,11 @@ const Sidebar = () => {
               }`}
           >
             <button
+              aria-label="Titration"
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
             >
-              <i className="fa-solid fa-flask-vial"></i>
+              <i className="fa-solid fa-flask-vial" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -72,10 +74,11 @@ const Sidebar = () => {
               }`}
           >
             <button
+              aria-label="Organic"
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
             >
-              <i className="fa-solid fa-user-plus"></i>
+              <i className="fa-solid fa-user-plus" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -89,10 +92,11 @@ const Sidebar = () => {
               }`}
           >
             <button
+              aria-label="Inorganic"
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
             >
-              <i className="fa-solid fa-user-minus"></i>
+              <i className="fa-solid fa-user-minus" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -106,10 +110,11 @@ const Sidebar = () => {
               }`}
           >
             <button
+              aria-label="History"
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
             >
-              <i className="fa-solid fa-clock-rotate-left"></i>
+              <i className="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
