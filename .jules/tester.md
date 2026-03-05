@@ -1,0 +1,4 @@
+## 2025-03-05 - Fixing Playwright test loading in Vitest
+**Gap:** Vitest was picking up and running Playwright E2E files (`tests/*.spec.js`) using JSDOM environment, causing unexpected API failures because `test.describe` was not expected.
+**Learning:** By strictly limiting the included test files in `vitest.config.js` with `include: ["src/**/*.{test,spec}.{js,jsx}"]` and ignoring the global `tests` directory, the unit test runner properly ignores integration/E2E test files that have their own designated runners. This ensures the Node 18.x JSDOM environment runs securely without requiring `jsdom` version updates to support different runner hooks.
+**Pattern:** To securely isolate test execution environments in a monorepo, restrict unit test matching (`vitest.config.js`) explicitly to the component source folders rather than allowing arbitrary directory crawling.
