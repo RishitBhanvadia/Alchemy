@@ -43,11 +43,9 @@ const Lab = () => {
 
   const handleChemChange = (type) => (e) => {
     const value = parseInt(e.target.value) || 0;
-    setChems(prev => {
-      const next = { ...prev, [type]: value };
-      change_tip(next);
-      return next;
-    });
+    const next = { ...chems, [type]: value };
+    setChems(next);
+    change_tip(next);
   };
 
   const useHandlePlayClick = () => {
