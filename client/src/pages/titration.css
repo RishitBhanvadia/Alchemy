@@ -189,9 +189,32 @@
     cursor: not-allowed;
 }
 
+.note-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
     border-left: 3px solid #ff4d4d;
     font-size: 0.9rem;
     color: #ddd;
+    margin-top: 20px;
+}
+
+.result-box {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 3px solid var(--primary-neon, #00f3ff);
+    font-size: 1rem;
+    color: #fff;
+    margin-top: 15px;
+    font-weight: 600;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
