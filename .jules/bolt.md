@@ -1,0 +1,3 @@
+## 2024-03-05 - Lazy load 3D components on Landing page
+**Learning:** Massive initial JS payloads for 3D components (like @react-three/fiber and @react-three/drei) block the main thread and severely increase Time To Interactive (TTI) and First Contentful Paint (FCP).
+**Action:** Always lazy load heavy 3D components using `React.lazy` and `Suspense`, especially when they are used on initial landing pages, to prioritize the rendering of critical content (like text and buttons). Also, when lazy-loading named exports, map the export to the default property using a promise chain (`import(...).then(module => ({ default: module.ExportName }))`).
