@@ -152,12 +152,12 @@ const Titration = () => {
                 <div className="selection-row">
                   <span className="selection-label">ACID:</span>
                   <div className="chem-selector">
-                    <button className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
+                    <button aria-label="Previous Acid" className="arrow-btn" disabled={swipe || !confirm} onClick={() => setSwipe(true)}>&lt;</button>
                     <div className="chem-display">
                       <img src={swipe ? hcl : nacl} alt="Acid" />
                       <span>{swipe ? 'HCl' : 'H2SO4'}</span>
                     </div>
-                    <button className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
+                    <button aria-label="Next Acid" className="arrow-btn" disabled={!swipe || !confirm} onClick={() => setSwipe(false)}>&gt;</button>
                   </div>
                 </div>
 
