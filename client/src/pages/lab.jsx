@@ -16,33 +16,14 @@ const Lab = () => {
   const [animate, setAnimate] = useState(false);
   const [tcolor, SetTColor] = useState('');
   const navigate = useNavigate();
-  const [chemA, setChemA] = useState(0);
-  const [chemB, setChemB] = useState(0);
-  const [chemC, setChemC] = useState(0);
-  const [chemD, setChemD] = useState(0);
+  const [chems, setChems] = useState({ A: 0, B: 0, C: 0, D: 0 });
 
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
+  function change_tip(currentChems) {
+    if (currentChems.A > 0) return SetTColor('#05B9C4');
+    if (currentChems.B > 0) return SetTColor('#04CE7E');
+    if (currentChems.C > 0) return SetTColor('#FBC2E3');
+    if (currentChems.D > 0) return SetTColor('#DAA520');
+    SetTColor('');
   }
 
   useLayoutEffect(() => {
@@ -60,52 +41,11 @@ const Lab = () => {
     }
   }, [animate]);
 
-  const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
-  };
-
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
-  };
-
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
-  };
-
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
-    change_tip();
+  const handleChemChange = (type) => (e) => {
+    const value = parseInt(e.target.value) || 0;
+    const next = { ...chems, [type]: value };
+    setChems(next);
+    change_tip(next);
   };
 
   const useHandlePlayClick = () => {
@@ -115,18 +55,13 @@ const Lab = () => {
     setTimeout(() => {
       navigate("/result", {
         replace: true,
-        state: { chemA, chemB, chemC, chemD },
+        state: { chemA: chems.A, chemB: chems.B, chemC: chems.C, chemD: chems.D },
       });
     }, 1500); // Increased delay to show animation
   };
 
   function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
+    return Object.values(chems).filter(val => val > 0).length >= 2;
   }
 
   const isPlayDisabled = !(onOrNot());
@@ -159,12 +94,12 @@ const Lab = () => {
               id="hcl-range"
               type="range"
               min="0"
-              max={100 - chemB - chemC - chemD}
-              value={chemA}
-              onChange={handleChemAChange}
+              max={100 - chems.B - chems.C - chems.D}
+              value={chems.A}
+              onChange={handleChemChange('A')}
               className="sci-fi-range"
             />
-            <span className="chem-value">{chemA}%</span>
+            <span className="chem-value">{chems.A}%</span>
           </div>
         </div>
 
@@ -178,12 +113,12 @@ const Lab = () => {
               id="nacl-range"
               type="range"
               min="0"
-              max={100 - chemA - chemC - chemD}
-              value={chemB}
-              onChange={handleChemBChange}
+              max={100 - chems.A - chems.C - chems.D}
+              value={chems.B}
+              onChange={handleChemChange('B')}
               className="sci-fi-range"
             />
-            <span className="chem-value">{chemB}%</span>
+            <span className="chem-value">{chems.B}%</span>
           </div>
         </div>
 
@@ -197,12 +132,12 @@ const Lab = () => {
               id="cuso4-range"
               type="range"
               min="0"
-              max={100 - chemA - chemB - chemD}
-              value={chemC}
-              onChange={handleChemCChange}
+              max={100 - chems.A - chems.B - chems.D}
+              value={chems.C}
+              onChange={handleChemChange('C')}
               className="sci-fi-range"
             />
-            <span className="chem-value">{chemC}%</span>
+            <span className="chem-value">{chems.C}%</span>
           </div>
         </div>
 
@@ -216,12 +151,12 @@ const Lab = () => {
               id="feso4-range"
               type="range"
               min="0"
-              max={100 - chemA - chemB - chemC}
-              value={chemD}
-              onChange={handleChemDChange}
+              max={100 - chems.A - chems.B - chems.C}
+              value={chems.D}
+              onChange={handleChemChange('D')}
               className="sci-fi-range"
             />
-            <span className="chem-value">{chemD}%</span>
+            <span className="chem-value">{chems.D}%</span>
           </div>
         </div>
       </div>
@@ -230,14 +165,14 @@ const Lab = () => {
       <div className="center-stage">
         <div className="test_tube-wrapper">
           <div className="test_tube">
-            <CustomTestTube color={tcolor} hasLiquid={chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0} />
+            <CustomTestTube color={tcolor} hasLiquid={chems.A > 0 || chems.B > 0 || chems.C > 0 || chems.D > 0} />
           </div>
           {/* Reaction indicators (visuals) */}
           <div className="reaction-indicators">
-            <div className="indicator h" style={{ height: `${3.23 * chemA}px`, background: '#05B9C4' }}></div>
-            <div className="indicator n" style={{ height: `${3.23 * chemB}px`, background: '#04CE7E' }}></div>
-            <div className="indicator c" style={{ height: `${3.23 * chemC}px`, background: '#FBC2E3' }}></div>
-            <div className="indicator f" style={{ height: `${3.23 * chemD}px`, background: '#DAA520' }}></div>
+            <div className="indicator h" style={{ height: `${3.23 * chems.A}px`, background: '#05B9C4' }}></div>
+            <div className="indicator n" style={{ height: `${3.23 * chems.B}px`, background: '#04CE7E' }}></div>
+            <div className="indicator c" style={{ height: `${3.23 * chems.C}px`, background: '#FBC2E3' }}></div>
+            <div className="indicator f" style={{ height: `${3.23 * chems.D}px`, background: '#DAA520' }}></div>
           </div>
         </div>
 
