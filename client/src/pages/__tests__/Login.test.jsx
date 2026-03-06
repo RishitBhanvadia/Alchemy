@@ -14,14 +14,17 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock supabase
-const mockSignInWithPassword = vi.fn();
-vi.mock('../../supabaseClient', () => ({
-    supabase: {
-        auth: {
-            signInWithPassword: mockSignInWithPassword,
+vi.mock('../../supabaseClient', () => {
+    const mockSignInWithPassword = vi.fn();
+    return {
+        supabase: {
+            auth: {
+                signInWithPassword: (...args) => mockSignInWithPassword(...args),
+            },
         },
-    },
-}));
+        mockSignInWithPassword, // export for tests
+    };
+});
 
 // Mock toast
 vi.mock('react-hot-toast', () => ({
@@ -46,17 +49,18 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
         expect(submitButton).toBeInTheDocument();
     });
 
     it('should handle form submission', async () => {
+        const { mockSignInWithPassword } = await import('../../supabaseClient');
         mockSignInWithPassword.mockResolvedValue({
             data: { user: { id: '123', email: 'test@example.com' } },
             error: null,
@@ -64,9 +68,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/Email Address/i);
+        const passwordInput = screen.getByLabelText(/Password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -81,6 +85,7 @@ describe('Login Component', () => {
     });
 
     it('should handle login error', async () => {
+        const { mockSignInWithPassword } = await import('../../supabaseClient');
         mockSignInWithPassword.mockResolvedValue({
             data: null,
             error: { message: 'Invalid credentials' },
@@ -88,9 +93,9 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByPlaceholderText(/email/i);
-        const passwordInput = screen.getByPlaceholderText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /login/i });
+        const emailInput = screen.getByLabelText(/Email Address/i);
+        const passwordInput = screen.getByLabelText(/Password/i);
+        const submitButton = screen.getByRole('button', { name: /ACCESS LAB/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
