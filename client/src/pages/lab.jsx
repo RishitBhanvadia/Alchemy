@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, lazy, Suspense } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -7,8 +7,9 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
+// ⚡ Bolt: Lazy load CanvasContainer to defer loading of @react-three/fiber until needed
+const CanvasContainer = lazy(() => import('../components/3d-animations/CanvasContainer'));
 
 const Lab = () => {
   const app = useRef();
@@ -62,55 +63,30 @@ const Lab = () => {
 
   const handleChemAChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemA(value);
     change_tip();
   };
 
   const handleChemBChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemB(value);
     change_tip();
   };
 
   const handleChemCChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemC(value);
     change_tip();
   };
 
   const handleChemDChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
     setChemD(value);
     change_tip();
   };
 
   const useHandlePlayClick = () => {
     SetTColor("");
-    // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
     setTimeout(() => {
       navigate("/result", {
@@ -131,18 +107,17 @@ const Lab = () => {
 
   const isPlayDisabled = !(onOrNot());
 
-  // Determine status for 3D Beaker
-  // Determine status for 3D Beaker (removed unused experimentStatus)
-
   return (
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
       <div className="lab-3d-background">
-        <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-        </CanvasContainer>
+        <Suspense fallback={null}>
+          <CanvasContainer>
+            {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+          </CanvasContainer>
+        </Suspense>
       </div>
 
       {/* Left Panel: Chemical Rack */}
