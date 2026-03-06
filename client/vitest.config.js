@@ -17,5 +17,6 @@ export default defineConfig({
                 '**/dist/**',
             ],
         },
+        exclude: ['node_modules', 'tests/**'], // exclude Playwright tests
     },
 });

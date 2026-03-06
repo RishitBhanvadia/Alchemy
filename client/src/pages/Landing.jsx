@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './landing.css';
 import logo from '../assets/logo.png';
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import FloatingMolecule from '../components/3d-animations/FloatingMolecule';
-import { OrbitControls } from '@react-three/drei';
+
+const CanvasContainer = lazy(() => import('../components/3d-animations/CanvasContainer'));
+const FloatingMolecule = lazy(() => import('../components/3d-animations/FloatingMolecule'));
+const OrbitControls = lazy(() => import('@react-three/drei').then(module => ({ default: module.OrbitControls })));
 
 const Landing = () => {
     const navigate = useNavigate();
 
     return (
         <div className="landing-page">
-            <CanvasContainer style={{ zIndex: 1 }}>
-                <FloatingMolecule />
-                <OrbitControls enableZoom={false} enablePan={false} />
-            </CanvasContainer>
+            <Suspense fallback={null}>
+                <CanvasContainer style={{ zIndex: 1 }}>
+                    <FloatingMolecule />
+                    <OrbitControls enableZoom={false} enablePan={false} />
+                </CanvasContainer>
+            </Suspense>
 
             <div className="landing-content">
                 <img src={logo} alt="Alchemistry Logo" style={{ height: '120px', marginBottom: '20px' }} />
