@@ -24,6 +24,7 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
+            // Note: 'unsafe-inline' is required for Vite during development/build
             styleSrc: ["'self'", "'unsafe-inline'"],
             scriptSrc: ["'self'"],
             imgSrc: ["'self'", "data:", "https:"],
@@ -38,9 +39,24 @@ app.use(helmet({
 }));
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-app.use(bodyParser.json());
+// Restrict CORS to specific origins to prevent unauthorized cross-origin access
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['http://localhost:3000', 'http://localhost:5173'];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
+
+// Limit request payloads to 1mb to prevent DOS attacks via memory exhaustion
+app.use(bodyParser.urlencoded({ extended: true, limit: "1mb" }));
+app.use(bodyParser.json({ limit: "1mb" }));
 
 // Request Logger with Response Status
 app.use((req, res, next) => {
