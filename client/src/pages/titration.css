@@ -189,6 +189,7 @@
     cursor: not-allowed;
 }
 
+.warning-message {
     border-left: 3px solid #ff4d4d;
     font-size: 0.9rem;
     color: #ddd;
