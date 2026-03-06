@@ -1,0 +1,4 @@
+## 2024-05-24 - Result Calculation Fix
+**Bug:** The logic that adjusts rounding errors when calculating reaction percentages (`final_add < 100` and `final_add > 100`) uses `if` instead of `while`. This means if the rounding error is more than 10 (e.g. 25,25,25,25 rounds to 30,30,30,30 resulting in sum=120), the single `if` adjustment only reduces it to 110, violating the invariant that the concentrations must sum exactly to 100.
+**Root Cause:** Rounding four values can result in a cumulative error greater than a single `10` unit adjustment step. `if` was used instead of `while` so it didn't repeatedly adjust until reaching exactly 100.
+**Learning:** For normalization routines where elements are quantized and must sum to a specific target, always use iterative loops (`while`) to distribute cumulative rounding errors, as single-step condition checks (`if`) cannot handle multi-unit discrepancies.
