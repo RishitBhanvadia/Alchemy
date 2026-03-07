@@ -1,0 +1,4 @@
+## 2024-03-07 - Lazy Load Heavy Three.js Canvas Container
+**Bottleneck:** The `CanvasContainer` chunk (which imports `@react-three/fiber` and `@react-three/drei`) was ~856KB, causing a massive delay in the initial load time of the Landing and Lab pages, blocking the rest of the UI from rendering quickly.
+**Impact:** Initial bundle sizes for Landing and Lab pages will be significantly smaller, improving the time-to-interactive for the main React UI. The 3D elements will load smoothly in the background.
+**Learning:** Even though the pages (`Landing.jsx`, `lab.jsx`) themselves are lazy-loaded via `App.jsx`, synchronously importing heavy dependencies like Three.js *inside* those pages blocks their rendering. By further lazy-loading the heavy `CanvasContainer` *within* the lazy-loaded pages and wrapping it in `Suspense`, the critical UI text and buttons can appear instantly while the 3D assets load asynchronously.
