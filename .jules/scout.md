@@ -1,0 +1,4 @@
+## 2026-03-07 - Market Analysis
+**Market Insight:** Virtual chemistry labs (Labster, PraxiLabs, ChemCollective) all emphasize realism, interactivity, and safety features. A common feature among top competitors is a built-in interactive tutorial/onboarding, guided experiments (step-by-step), quiz/assessment integration for educational value, and detailed safety equipment simulation.
+**Codebase Match:** The current Alchemistry codebase has a sandbox-style lab (`lab.jsx`), a dashboard (`Dashboard.jsx`), and history (`history.jsx`). It tracks experiments and shows results, but lacks an onboarding flow, guided experiment steps, and safety gear simulation.
+**Opportunity:** Adding a guided experiment mode (step-by-step instructions) and a contextual tutorial/onboarding flow would bridge the gap with top competitors and improve the educational value for students.
