@@ -1,70 +1,63 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 
-// Mock navigate
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useNavigate: () => mockNavigate,
-    };
-});
-
-// Mock supabase
-vi.mock('../../supabaseClient', () => ({
-    supabase: {
-        auth: {
-            getUser: vi.fn().mockResolvedValue({
-                data: { user: { email: 'test@example.com' } },
-            }),
-        },
-        from: vi.fn(() => ({
-            select: vi.fn().mockResolvedValue({
-                data: [],
-                error: null,
-            }),
-        })),
-    },
-}));
-
 describe('Dashboard Component', () => {
+    // Helper component to verify navigation
+    const LocationDisplay = () => {
+        return <div data-testid="location-display">Current Route Rendered</div>;
+    };
+
     const renderDashboard = () => {
         return render(
-            <BrowserRouter>
-                <Dashboard />
-            </BrowserRouter>
+            <MemoryRouter initialEntries={['/dashboard']}>
+                <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/lab" element={<LocationDisplay />} />
+                </Routes>
+            </MemoryRouter>
         );
     };
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/WELCOME, ADMIN/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
         renderDashboard();
-        // Check for module names
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        expect(screen.getByText('LABORATORY')).toBeInTheDocument();
+        expect(screen.getByText('TITRATION')).toBeInTheDocument();
+        expect(screen.getByText('ORGANIC')).toBeInTheDocument();
+        expect(screen.getByText('INORGANIC')).toBeInTheDocument();
+        expect(screen.getByText('HISTORY')).toBeInTheDocument();
     });
 
-    it('should navigate on module card click', () => {
+    it('should navigate on module card click', async () => {
+        const user = userEvent.setup();
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+
+        // Click the LABORATORY card
+        const labCard = screen.getByText('LABORATORY').closest('a');
+        await user.click(labCard);
+
+        // Verify navigation occurred (LocationDisplay rendered)
+        expect(screen.getByTestId('location-display')).toBeInTheDocument();
     });
 
-    it('should have keyboard navigation on cards', () => {
+    it('should have keyboard navigation on cards', async () => {
+        const user = userEvent.setup();
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+
+        // Press Tab to focus the first card (LABORATORY)
+        await user.tab();
+        const labCard = screen.getByText('LABORATORY').closest('a');
+        expect(labCard).toHaveFocus();
+
+        // Press Enter to activate
+        await user.keyboard('{Enter}');
+        expect(screen.getByTestId('location-display')).toBeInTheDocument();
     });
 });
