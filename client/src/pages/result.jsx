@@ -14,8 +14,14 @@ const Result = () => {
 
   // State hooks must be unconditional (at the top)
   const [data, setData] = useState();
-  const localCart = JSON.parse(localStorage.getItem('cart'));
-  const [cart, setCart] = useState(localCart);
+  // eslint-disable-next-line no-unused-vars
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('cart')) || [];
+    } catch (e) {
+      return [];
+    }
+  });
 
   // Redirect if no state (e.g., user refreshed the page)
   useEffect(() => {
@@ -23,6 +29,20 @@ const Result = () => {
       navigate('/lab');
     }
   }, [location.state, navigate]);
+
+  useEffect(() => {
+    const handleStorage = (e) => {
+      if (e.key === 'cart') {
+        try {
+          setCart(JSON.parse(e.newValue) || []);
+        } catch (error) {
+          setCart([]);
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   // Data fetching hook
   useEffect(() => {
@@ -62,9 +82,13 @@ const Result = () => {
         // Fix for race condition: Read the latest cart from localStorage before updating.
         // This ensures updates from other tabs or rapid changes are not lost.
         // Also update localStorage immediately to minimize the race window.
-        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentCart = [];
+        try {
+          currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        } catch (e) {
+          currentCart = [];
+        }
         const newCart = [...currentCart, rdx];
-
         localStorage.setItem('cart', JSON.stringify(newCart));
         setCart(newCart);
       })
@@ -84,11 +108,6 @@ const Result = () => {
         }]);
       });
   }, [location.state]);
-
-  // Cart persistence hook
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
 
   // Early return MUST happen after all hooks
   if (!location.state) {

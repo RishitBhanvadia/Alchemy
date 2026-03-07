@@ -7,8 +7,8 @@ test.describe('Race Condition Reproduction', () => {
         const page2 = await context.newPage();
 
         // Navigate both pages to the lab page
-        await page1.goto('http://localhost:3000/lab');
-        await page2.goto('http://localhost:3000/lab');
+        await page1.goto('http://localhost:4173/lab');
+        await page2.goto('http://localhost:4173/lab');
 
         // Clear local storage initially
         await page1.evaluate(() => localStorage.clear());
@@ -59,40 +59,16 @@ test.describe('Race Condition Reproduction', () => {
         // So we need at least TWO chemicals > 0.
 
         // Page 1: A=10, B=10
-        await page1.evaluate(() => {
-            const ranges = document.querySelectorAll('input[type="range"]');
-            const inputA = ranges[0];
-            const inputB = ranges[1];
+        await page1.waitForSelector('input[type="range"]');
+        await page2.waitForSelector('input[type="range"]');
 
-            // React 16+ hack to trigger onChange
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        await page1.fill('#hcl-range', '10');
+        await page1.fill('#nacl-range', '10');
 
-            nativeInputValueSetter.call(inputA, 10);
-            inputA.dispatchEvent(new Event('input', { bubbles: true }));
-
-            nativeInputValueSetter.call(inputB, 10);
-            inputB.dispatchEvent(new Event('input', { bubbles: true }));
-        });
-
-        // Page 2: A=20, B=20
-        await page2.evaluate(() => {
-            const ranges = document.querySelectorAll('input[type="range"]');
-            const inputA = ranges[0];
-            const inputB = ranges[1];
-
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-
-            nativeInputValueSetter.call(inputA, 20);
-            inputA.dispatchEvent(new Event('input', { bubbles: true }));
-
-            nativeInputValueSetter.call(inputB, 20);
-            inputB.dispatchEvent(new Event('input', { bubbles: true }));
-        });
+        await page2.fill('#hcl-range', '20');
+        await page2.fill('#nacl-range', '20');
 
         // Click "INITIATE REACTION" button concurrently on both pages
-        // The button has class .action-button
-        // It should be enabled now.
-
         await Promise.all([
             page1.click('.action-button'),
             page2.click('.action-button')
@@ -108,7 +84,7 @@ test.describe('Race Condition Reproduction', () => {
         console.log('Both pages loaded result. Checking localStorage...');
 
         // Check localStorage in Page 1
-        const cart = await page1.evaluate(() => JSON.parse(localStorage.getItem('cart') || '[]'));
+        const cart = await page1.evaluate(() => JSON.parse(window.localStorage.getItem('cart') || '[]'));
 
         console.log('Final Cart Length:', cart.length);
         console.log('Final Cart Contents:', cart);

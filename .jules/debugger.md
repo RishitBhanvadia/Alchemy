@@ -1,0 +1,5 @@
+## 2026-03-07 - Fix Cross-Tab Data Loss Race Condition in Cart State
+
+**Bug:** When multiple tabs process chemical reactions concurrently, or rapidly in sequence, the second tab overwrites the results of the first tab in `localStorage`, leading to silent data loss.
+**Root Cause:** The `result.jsx` page was reading from the initial closure `cart` state in the `fetch().then` block instead of the current `localStorage` state. It then blindly overwrote `localStorage` with this stale array.
+**Learning:** For critical client-side persistence like a shopping cart, React state must not be the source of truth for saving data if multiple tabs can edit it. Instead, always use atomic, synchronous read-modify-write patterns directly on `localStorage` (`const current = JSON.parse(localStorage.getItem('key')) || []; current.push(new); localStorage.setItem('key', JSON.stringify(current));`) and subsequently sync the React state. Always wrap `JSON.parse` of local storage in a try-catch block to prevent UI crashes if storage gets corrupted by another script or tab.
