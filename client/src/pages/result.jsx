@@ -14,6 +14,7 @@ const Result = () => {
 
   // State hooks must be unconditional (at the top)
   const [data, setData] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [cart, setCart] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('cart')) || [];
