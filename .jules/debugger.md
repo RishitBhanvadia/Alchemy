@@ -1,0 +1,4 @@
+## 2024-05-24 - Result Normalization NaN and Loop Corrections
+**Bug:** When mixing empty solutions (0 for all components) or inputs causing `final_add` rounding to be off by >10 (e.g., 25/25/25/25 rounds to 30/30/30/30 yielding sum 120), the backend propagated `NaN` due to zero-division or returned wrong total because error correction only executed once via `if`.
+**Root Cause:** The normalization failed to check `add > 0` before zero-division, resulting in `NaN` which cascaded to `Math.round`. Then, the `final_add` adjustment relied on an `if` statement rather than a `while` loop, so adjustments were capped at 10%.
+**Learning:** For continuous variable adjustments toward a fixed sum (like 100%), always check preconditions against division-by-zero (`> 0`) and use `while` loops instead of single-pass `if` blocks to handle variable scale offsets.
