@@ -22,27 +22,11 @@ const Lab = () => {
   const [chemD, setChemD] = useState(0);
 
   function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
+    if (chemA > 0) return SetTColor('#05B9C4');
+    if (chemB > 0) return SetTColor('#04CE7E');
+    if (chemC > 0) return SetTColor('#FBC2E3');
+    if (chemD > 0) return SetTColor('#DAA520');
+    SetTColor("");
   }
 
   useLayoutEffect(() => {
@@ -61,50 +45,22 @@ const Lab = () => {
   }, [animate]);
 
   const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
+    setChemA(parseInt(e.target.value));
     change_tip();
   };
 
   const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
+    setChemB(parseInt(e.target.value));
     change_tip();
   };
 
   const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
+    setChemC(parseInt(e.target.value));
     change_tip();
   };
 
   const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
+    setChemD(parseInt(e.target.value));
     change_tip();
   };
 
@@ -121,11 +77,7 @@ const Lab = () => {
   };
 
   function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
+    const sum = [chemA, chemB, chemC, chemD].filter(chem => chem > 0).length;
     return sum >= 2;
   }
 
