@@ -1,29 +1,38 @@
 const request = require('supertest');
 const express = require('express');
+const resultRoutes = require('../routes/resultRoutes');
 
-// Mock the server setup
+jest.mock('@supabase/supabase-js', () => {
+    const mockEq = jest.fn();
+    const eqChain = { eq: mockEq };
+    mockEq.mockReturnValue(eqChain);
+
+    // allow await on the last eq
+    eqChain.then = function(resolve, reject) {
+        resolve({ data: [{ result_name: 'Success' }], error: null });
+    };
+
+    return {
+        createClient: jest.fn(() => ({
+            from: jest.fn(() => ({
+                select: jest.fn(() => ({
+                    eq: mockEq
+                }))
+            }))
+        }))
+    };
+});
+
+// Create the app and use the real routes to test the controller logic
 const app = express();
 app.use(express.json());
 
-// Mock result route
-app.get('/result/:chem_a/:chem_b/:chem_c/:chem_d', (req, res) => {
-    const { chem_a, chem_b, chem_c, chem_d } = req.params;
+// Set dummy env vars for supabase url and key
+process.env.SUPABASE_URL = 'http://localhost';
+process.env.SUPABASE_KEY = 'dummy-key';
 
-    // Validate parameters
-    if (isNaN(chem_a) || isNaN(chem_b) || isNaN(chem_c) || isNaN(chem_d)) {
-        return res.status(400).json({ message: 'Invalid parameters' });
-    }
-
-    // Mock successful response
-    res.json([{
-        id: 1,
-        conc_a: parseInt(chem_a),
-        conc_b: parseInt(chem_b),
-        conc_c: parseInt(chem_c),
-        conc_d: parseInt(chem_d),
-        result_name: 'Test Result'
-    }]);
-});
+// Apply routes
+app.use('/result', resultRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });

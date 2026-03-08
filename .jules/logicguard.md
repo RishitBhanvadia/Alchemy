@@ -1,0 +1,4 @@
+## 2024-05-18 - Logic Error in Result Normalization and Rounding Adjustments
+**Bug:** Division by zero during normalization outputting `NaN` for variables when all parameters are `0`, and an off-by-ten rounding logic bug where adjustments for gap sums > 10 in `final_add` were incorrect (such as inputs 25, 25, 25, 25 resulting in total 110%).
+**Root Cause:** Using `if` conditions to adjust `add` differences failed when differences were greater than `10` since `final_add` required multiple adjustment steps. Furthermore, dividing by zero without bounds-checking `add > 0` caused floating-point math issues.
+**Learning:** Always verify `sum > 0` to prevent `NaN` during data division steps, and apply iterations with loop constructs (e.g. `while`) when performing mathematical convergence instead of hard-coded one-off statements.
