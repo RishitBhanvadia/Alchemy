@@ -1,0 +1,3 @@
+## 2024-05-18 - Nested Interactive Element Accessibility in NavLinks
+**Learning:** Adding interactive elements (like `<button>`) inside other interactive or focusable elements (like `<NavLink>` anchor tags) creates confusing double-focus issues for keyboard and screen reader users. Furthermore, icon-only navigation links lack context.
+**Action:** When nesting interactive elements for styling or semantic reasons, remove the nested element from the tab order (`tabIndex={-1}`) so only the parent is focusable. Additionally, ensure parent navigational links have `aria-label`s and decorative icons are hidden (`aria-hidden="true"`).
