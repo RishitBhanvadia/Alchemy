@@ -1,0 +1,4 @@
+## 2024-11-20 - Guided Experiment Workflows vs Sandbox
+**Market Insight:** Top competitors (Beyond Labz, PraxiLabs) distinguish themselves not just by simulation fidelity, but by providing structured educational scaffolding (lab manuals, worksheets, auto-grading).
+**Codebase Match:** Alchemistry currently provides high-quality sandboxes (Titration, Lab) but lacks built-in guidance or assessment beyond a basic score. The data model (`experiment_results` in Supabase) is primed to store more detailed, step-by-step progress.
+**Opportunity:** Transitioning Alchemistry from a sandbox to an educational platform by integrating a "Lab Manual" component that tracks progress and offers guided mode vs. open-ended mode.
