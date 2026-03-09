@@ -1,0 +1,4 @@
+## 2026-03-09 - Transitioning from Sandbox to Structured Learning
+**Market Insight:** Top competitors in the virtual chemistry lab space (Labster, PraxiLabs) distinguish themselves not just by simulation fidelity, but by wrapping the simulation in a structured learning path (lab manuals, safety protocols, narrative quizzes). Pure sandbox environments are losing ground to guided educational experiences.
+**Codebase Match:** Alchemistry currently drops users directly into a highly polished, interactive 3D sandbox (`/lab`) with no prior context, safety requirements, or post-experiment assessment, despite having a backend history system to record scores.
+**Opportunity:** By adding pre-lab briefings and integrating step-by-step guidance into the existing UI, Alchemistry can elevate itself from a pure simulation engine to a comprehensive EdTech platform with minimal architectural changes.
