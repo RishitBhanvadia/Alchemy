@@ -1,35 +1,56 @@
 const request = require('supertest');
 const express = require('express');
 
+// Create mock variables with "mock" prefix to avoid jest scoping issues
+const mockEq = jest.fn();
+const mockEqChain = {
+    eq: mockEq,
+    then: (resolve) => resolve({ data: [{ result_name: 'Test Result' }], error: null })
+};
+mockEq.mockReturnValue(mockEqChain);
+
+// Mock external dependencies
+jest.mock('@supabase/supabase-js', () => ({
+    createClient: jest.fn(() => ({
+        from: jest.fn(() => ({
+            select: jest.fn(() => ({
+                eq: mockEq,
+                then: (resolve) => resolve({ data: [{ result_name: 'Test Result' }], error: null })
+            }))
+        }))
+    }))
+}));
+
+const { createClient } = require('@supabase/supabase-js');
+const resultRoutes = require('../routes/resultRoutes');
+
 // Mock the server setup
 const app = express();
 app.use(express.json());
 
-// Mock result route
-app.get('/result/:chem_a/:chem_b/:chem_c/:chem_d', (req, res) => {
-    const { chem_a, chem_b, chem_c, chem_d } = req.params;
-
-    // Validate parameters
-    if (isNaN(chem_a) || isNaN(chem_b) || isNaN(chem_c) || isNaN(chem_d)) {
-        return res.status(400).json({ message: 'Invalid parameters' });
-    }
-
-    // Mock successful response
-    res.json([{
-        id: 1,
-        conc_a: parseInt(chem_a),
-        conc_b: parseInt(chem_b),
-        conc_c: parseInt(chem_c),
-        conc_d: parseInt(chem_d),
-        result_name: 'Test Result'
-    }]);
-});
+// Mount the actual router
+app.use('/result', resultRoutes);
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
 describe('API Endpoints', () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockEq.mockReturnValue(mockEqChain);
+
+        // Setup mock Supabase client
+        const mockFrom = jest.fn().mockReturnValue({
+            select: jest.fn().mockReturnValue(mockEqChain)
+        });
+
+        createClient.mockImplementation(() => ({
+            from: mockFrom
+        }));
+    });
+
     describe('GET /result/:a/:b/:c/:d', () => {
         it('should return result for valid parameters', async () => {
             const response = await request(app)
@@ -38,6 +59,24 @@ describe('API Endpoints', () => {
 
             expect(response.body).toBeInstanceOf(Array);
             expect(response.body[0]).toHaveProperty('result_name');
+            // Check that eq mock was called with the correct normalized rounding
+            expect(mockEq).toHaveBeenCalledWith('conc_a', 50);
+            expect(mockEq).toHaveBeenCalledWith('conc_b', 30);
+            expect(mockEq).toHaveBeenCalledWith('conc_c', 20);
+            expect(mockEq).toHaveBeenCalledWith('conc_d', 0);
+        });
+
+        it('should correctly normalize and round concentrations that sum to < 100', async () => {
+            await request(app)
+                .get('/result/33/33/33/0')
+                .expect(200);
+
+            // 33/33/33 -> sum 99. Each becomes 33.33 -> round 30, 30, 30 -> add up 90.
+            // Loop adds 10 to max -> 40, 30, 30
+            expect(mockEq).toHaveBeenCalledWith('conc_a', 40);
+            expect(mockEq).toHaveBeenCalledWith('conc_b', 30);
+            expect(mockEq).toHaveBeenCalledWith('conc_c', 30);
+            expect(mockEq).toHaveBeenCalledWith('conc_d', 0);
         });
 
         it('should return 400 for invalid parameters', async () => {
@@ -52,6 +91,11 @@ describe('API Endpoints', () => {
                 .expect(200);
 
             expect(response.body).toBeInstanceOf(Array);
+            // 0/0/0/0 -> sum 0. division by zero avoided. remains 0, 0, 0, 0.
+            expect(mockEq).toHaveBeenCalledWith('conc_a', 0);
+            expect(mockEq).toHaveBeenCalledWith('conc_b', 0);
+            expect(mockEq).toHaveBeenCalledWith('conc_c', 0);
+            expect(mockEq).toHaveBeenCalledWith('conc_d', 0);
         });
 
         it('should handle maximum concentrations', async () => {
