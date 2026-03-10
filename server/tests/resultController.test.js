@@ -50,7 +50,8 @@ describe('calculateResult logic', () => {
         await calculateResult(req, res);
 
         // Assert it logs exact normalized rounding to hit exactly 100
-        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('ID:1111'));
+        // (normalization=25, rounding=30, sum=120, then reduced by 20 on a)
+        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('A:10, B:30, C:30, D:30, ID:1111'));
         consoleSpy.mockRestore();
     });
 });
