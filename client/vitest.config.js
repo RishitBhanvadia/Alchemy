@@ -17,13 +17,5 @@ export default defineConfig({
                 '**/dist/**',
             ],
         },
-        exclude: [
-            'node_modules',
-            'dist',
-            '.idea',
-            '.git',
-            '.cache',
-            'tests/**'
-        ]
     },
 });
