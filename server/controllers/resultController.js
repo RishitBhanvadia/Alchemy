@@ -26,44 +26,48 @@ exports.calculateResult = async (req, res) => {
         let chem_c = Number(req.params.chem_c);
         let chem_d = Number(req.params.chem_d);
 
+        const TARGET_SUM = 100;
+        const ROUNDING_STEP = 10;
+        const PENALTY_FOR_ZERO = 1000;
+
         const add = chem_a + chem_b + chem_c + chem_d;
 
-        // Normalize if sum < 100
-        if (add < 100) {
-            chem_a = (chem_a / add) * 100;
-            chem_b = (chem_b / add) * 100;
-            chem_c = (chem_c / add) * 100;
-            chem_d = (chem_d / add) * 100;
+        // Normalize if sum < TARGET_SUM
+        if (add < TARGET_SUM) {
+            chem_a = (chem_a / add) * TARGET_SUM;
+            chem_b = (chem_b / add) * TARGET_SUM;
+            chem_c = (chem_c / add) * TARGET_SUM;
+            chem_d = (chem_d / add) * TARGET_SUM;
         }
 
-        let a = Math.round(chem_a / 10) * 10;
-        let b = Math.round(chem_b / 10) * 10;
-        let c = Math.round(chem_c / 10) * 10;
-        let d = Math.round(chem_d / 10) * 10;
+        let a = Math.round(chem_a / ROUNDING_STEP) * ROUNDING_STEP;
+        let b = Math.round(chem_b / ROUNDING_STEP) * ROUNDING_STEP;
+        let c = Math.round(chem_c / ROUNDING_STEP) * ROUNDING_STEP;
+        let d = Math.round(chem_d / ROUNDING_STEP) * ROUNDING_STEP;
 
-        // Adjust rounding errors if sum < 100 after rounding
+        // Adjust rounding errors if sum < TARGET_SUM after rounding
         let final_add = a + b + c + d;
-        if (final_add < 100) {
+        if (final_add < TARGET_SUM) {
             const maxVal = Math.max(a, b, c, d);
-            if (a === maxVal) a += 10;
-            else if (b === maxVal) b += 10;
-            else if (c === maxVal) c += 10;
-            else d += 10;
+            if (a === maxVal) a += ROUNDING_STEP;
+            else if (b === maxVal) b += ROUNDING_STEP;
+            else if (c === maxVal) c += ROUNDING_STEP;
+            else d += ROUNDING_STEP;
         }
 
-        // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
-            let for_min_a = (a === 0) ? 1000 : a;
-            let for_min_b = (b === 0) ? 1000 : b;
-            let for_min_c = (c === 0) ? 1000 : c;
-            let for_min_d = (d === 0) ? 1000 : d;
+        // Adjust rounding errors if sum > TARGET_SUM after rounding
+        if (final_add > TARGET_SUM) {
+            let for_min_a = (a === 0) ? PENALTY_FOR_ZERO : a;
+            let for_min_b = (b === 0) ? PENALTY_FOR_ZERO : b;
+            let for_min_c = (c === 0) ? PENALTY_FOR_ZERO : c;
+            let for_min_d = (d === 0) ? PENALTY_FOR_ZERO : d;
 
             const minVal = Math.min(for_min_a, for_min_b, for_min_c, for_min_d);
 
-            if (a === minVal) a -= 10;
-            else if (b === minVal) b -= 10;
-            else if (c === minVal) c -= 10;
-            else d -= 10;
+            if (a === minVal) a -= ROUNDING_STEP;
+            else if (b === minVal) b -= ROUNDING_STEP;
+            else if (c === minVal) c -= ROUNDING_STEP;
+            else d -= ROUNDING_STEP;
         }
 
         // Calculate reaction_id hash
