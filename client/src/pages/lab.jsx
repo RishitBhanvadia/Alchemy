@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, lazy, Suspense } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -7,8 +7,8 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
 
+const Lab3DScene = lazy(() => import('../components/3d-animations/Lab3DScene'));
 
 const Lab = () => {
   const app = useRef();
@@ -137,13 +137,9 @@ const Lab = () => {
   return (
     <div className="lab-page" ref={app}>
       {/* Background 3D Layer */}
-      <div className="lab-3d-background">
-        <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-        </CanvasContainer>
-      </div>
+      <Suspense fallback={<div className="lab-3d-background" />}>
+        <Lab3DScene />
+      </Suspense>
 
       {/* Left Panel: Chemical Rack */}
       <div className="glass-panel chemical-rack">

@@ -1,0 +1,4 @@
+## 2024-05-24 - Lazy load heavy 3D components (`@react-three/fiber`) in React
+**Bottleneck:** The main bundle contained all 3D rendering dependencies (`@react-three/fiber`, `three`, `@react-three/drei`), resulting in a large initial JS payload for users on the `Landing` page.
+**Impact:** Reduced the initial main bundle size (e.g. from ~18KB to ~1KB for Landing script chunk after minification) by splitting 3D dependencies into separate, lazy-loaded chunks (`Landing3DScene`, `Lab3DScene`).
+**Learning:** Due to React/R3F reconciler incompatibilities, we cannot safely lazy-load 3D children inside a statically imported `<Canvas>`. The `<Canvas>` (or `CanvasContainer` wrapper) and its 3D children must be encapsulated in a single component and the entire wrapper component must be lazily imported using `React.lazy()` and `<Suspense>`.
