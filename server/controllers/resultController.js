@@ -29,7 +29,7 @@ exports.calculateResult = async (req, res) => {
         const add = chem_a + chem_b + chem_c + chem_d;
 
         // Normalize if sum < 100
-        if (add < 100) {
+        if (add < 100 && add > 0) {
             chem_a = (chem_a / add) * 100;
             chem_b = (chem_b / add) * 100;
             chem_c = (chem_c / add) * 100;
@@ -43,16 +43,17 @@ exports.calculateResult = async (req, res) => {
 
         // Adjust rounding errors if sum < 100 after rounding
         let final_add = a + b + c + d;
-        if (final_add < 100) {
+        while (final_add < 100 && final_add > 0) {
             const maxVal = Math.max(a, b, c, d);
             if (a === maxVal) a += 10;
             else if (b === maxVal) b += 10;
             else if (c === maxVal) c += 10;
             else d += 10;
+            final_add = a + b + c + d;
         }
 
         // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
+        while (final_add > 100) {
             let for_min_a = (a === 0) ? 1000 : a;
             let for_min_b = (b === 0) ? 1000 : b;
             let for_min_c = (c === 0) ? 1000 : c;
@@ -64,6 +65,7 @@ exports.calculateResult = async (req, res) => {
             else if (b === minVal) b -= 10;
             else if (c === minVal) c -= 10;
             else d -= 10;
+            final_add = a + b + c + d;
         }
 
         // Calculate reaction_id hash
