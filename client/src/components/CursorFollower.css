@@ -4,12 +4,13 @@
     border: 1px solid rgba(0, 243, 255, 0.5);
     border-radius: 50%;
     position: fixed;
-    transform: translate(-50%, -50%);
+    /* Removed translate(-50%, -50%) from here because it's applied in the inline style now */
     pointer-events: none;
     z-index: 9999;
     transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
     transition-timing-function: ease-out;
     mix-blend-mode: screen;
+    will-change: transform;
 }
 
 .cursor-dot {
@@ -18,10 +19,11 @@
     background-color: #00f3ff;
     border-radius: 50%;
     position: fixed;
-    transform: translate(-50%, -50%);
+    /* Removed translate(-50%, -50%) from here because it's applied in the inline style now */
     pointer-events: none;
     z-index: 10000;
     box-shadow: 0 0 10px #00f3ff;
+    will-change: transform;
 }
 
 .cursor-follower.hidden,

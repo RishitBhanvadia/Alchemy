@@ -1,0 +1,3 @@
+## 2024-03-24 - Cursor Follower Re-render Bottleneck
+**Learning:** The `CursorFollower` component in `client/src/components/CursorFollower.jsx` was causing continuous, expensive React re-renders across the entire application because it was tracking mouse `x` and `y` coordinates using `useState` inside a high-frequency `mousemove` event listener.
+**Action:** Replaced `useState` with `useRef` for tracking the cursor DOM nodes and used direct DOM manipulation via `element.style.transform = "translate3d(...)"` to update the cursor position entirely outside of the React render cycle, significantly improving UI framerates and reducing main-thread blocking. Added `will-change: transform` to the CSS to enable GPU acceleration.
