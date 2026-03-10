@@ -15,6 +15,7 @@ const Result = () => {
   // State hooks must be unconditional (at the top)
   const [data, setData] = useState();
   const localCart = JSON.parse(localStorage.getItem('cart'));
+  // eslint-disable-next-line no-unused-vars
   const [cart, setCart] = useState(localCart);
 
   // Redirect if no state (e.g., user refreshed the page)
