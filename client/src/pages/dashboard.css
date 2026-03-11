@@ -19,7 +19,7 @@
     margin-left: 0;
     /* Removed sidebar margin as sidebar is gone */
     z-index: 2;
-    color: var(--text-white);
+    color: var(--text-main);
 }
 
 .dashboard-container {
