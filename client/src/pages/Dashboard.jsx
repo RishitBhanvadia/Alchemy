@@ -54,15 +54,6 @@ const Dashboard = () => {
                         <div className="card-glow"></div>
                     </Link>
 
-                    {/* History/Logs */}
-                    <Link to="/history" className="module-card glass-panel">
-                        <div className="icon-container">
-                            <i className="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                        <h3>HISTORY</h3>
-                        <p>Review past experiment logs.</p>
-                        <div className="card-glow"></div>
-                    </Link>
                 </div>
             </div>
         </div>
