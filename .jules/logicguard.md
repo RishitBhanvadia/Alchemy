@@ -1,0 +1,4 @@
+## 2024-05-18 - Logic Error in Chemistry Normalization
+**Bug:** The logic normalizing chemical concentration inputs incorrectly handles arrays of zeros resulting in NaN, fails to normalize sums greater than 100 resulting in sums upwards of 400, and uses `if` instead of `while` causing rounding errors that left sums unequal to 100.
+**Root Cause:** Normalization check only checks `add < 100`, ignoring when `add > 100` or `add === 0`. Additionally, the final error adjustments apply only one 10 unit adjustment via `if`, instead of adjusting until the sum hits 100 via `while`.
+**Learning:** Always use a loop (`while`) when iteratively adjusting values to meet a target sum constraint to prevent partial corrections. Always guard against divide-by-zero for input sums. Normalize any inputs that do not meet the expected base condition (in this case, sum !== 100).

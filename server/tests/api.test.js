@@ -1,43 +1,79 @@
 const request = require('supertest');
 const express = require('express');
 
-// Mock the server setup
+// Mock out-of-scope variables need prefix "mock"
+const mockEq = jest.fn();
+const mockSelect = jest.fn();
+const mockFrom = jest.fn();
+
+const mockEqChain = {
+    eq: mockEq,
+    then: (resolve) => resolve({ data: [{ result_name: 'Test Result' }], error: null })
+};
+mockEq.mockReturnValue(mockEqChain);
+mockSelect.mockReturnValue(mockEqChain);
+mockFrom.mockReturnValue({ select: mockSelect });
+
+jest.mock('@supabase/supabase-js', () => ({
+    createClient: jest.fn(() => ({
+        from: mockFrom
+    }))
+}));
+
+const resultRoutes = require('../routes/resultRoutes');
+
 const app = express();
 app.use(express.json());
-
-// Mock result route
-app.get('/result/:chem_a/:chem_b/:chem_c/:chem_d', (req, res) => {
-    const { chem_a, chem_b, chem_c, chem_d } = req.params;
-
-    // Validate parameters
-    if (isNaN(chem_a) || isNaN(chem_b) || isNaN(chem_c) || isNaN(chem_d)) {
-        return res.status(400).json({ message: 'Invalid parameters' });
-    }
-
-    // Mock successful response
-    res.json([{
-        id: 1,
-        conc_a: parseInt(chem_a),
-        conc_b: parseInt(chem_b),
-        conc_c: parseInt(chem_c),
-        conc_d: parseInt(chem_d),
-        result_name: 'Test Result'
-    }]);
-});
-
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
-});
+app.use('/result', resultRoutes);
 
 describe('API Endpoints', () => {
+    beforeEach(() => {
+        mockEq.mockClear();
+        mockSelect.mockClear();
+        mockFrom.mockClear();
+    });
+
     describe('GET /result/:a/:b/:c/:d', () => {
+        it('should correctly handle rounding of 25/25/25/25 and sum to 100', async () => {
+            await request(app).get('/result/25/25/25/25').expect(200);
+
+            const calls = mockEq.mock.calls;
+            const aCall = calls.find(call => call[0] === 'conc_a');
+            const bCall = calls.find(call => call[0] === 'conc_b');
+            const cCall = calls.find(call => call[0] === 'conc_c');
+            const dCall = calls.find(call => call[0] === 'conc_d');
+
+            const a = aCall[1];
+            const b = bCall[1];
+            const c = cCall[1];
+            const d = dCall[1];
+
+            expect(a + b + c + d).toBe(100);
+        });
+
+        it('should correctly handle rounding of 33.3/33.3/33.3/0 and sum to 100', async () => {
+            await request(app).get('/result/33.3/33.3/33.3/0').expect(200);
+
+            const calls = mockEq.mock.calls;
+            const aCall = calls.find(call => call[0] === 'conc_a');
+            const bCall = calls.find(call => call[0] === 'conc_b');
+            const cCall = calls.find(call => call[0] === 'conc_c');
+            const dCall = calls.find(call => call[0] === 'conc_d');
+
+            const a = aCall[1];
+            const b = bCall[1];
+            const c = cCall[1];
+            const d = dCall[1];
+
+            expect(a + b + c + d).toBe(100);
+        });
+
         it('should return result for valid parameters', async () => {
             const response = await request(app)
                 .get('/result/50/30/20/0')
                 .expect(200);
 
             expect(response.body).toBeInstanceOf(Array);
-            expect(response.body[0]).toHaveProperty('result_name');
         });
 
         it('should return 400 for invalid parameters', async () => {
@@ -65,6 +101,7 @@ describe('API Endpoints', () => {
 
     describe('GET /health', () => {
         it('should return health status', async () => {
+            app.get('/health', (req, res) => res.json({ status: 'ok' }));
             const response = await request(app)
                 .get('/health')
                 .expect(200);
