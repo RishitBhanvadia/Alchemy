@@ -1,11 +1,22 @@
 {
+    "headers": [
+        {
+            "source": "/manifest.json",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                }
+            ]
+        }
+    ],
     "rewrites": [
         {
             "source": "/api/result/:match*",
             "destination": "https://alchemy-85hv.onrender.com/result/:match*"
         },
         {
-            "source": "/:path*",
+            "source": "/((?!manifest\\.json|favicon\\.ico|logo192\\.png|logo512\\.png|robots\\.txt|assets/.*).*)",
             "destination": "/index.html"
         }
     ]

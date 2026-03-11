@@ -17,6 +17,7 @@ const Organic = lazy(() => import("./pages/organic"));
 const Titration = lazy(() => import("./pages/titration"));
 const Inorganic = lazy(() => import("./pages/inorganic"));
 const History = lazy(() => import("./pages/history"));
+const Profile = lazy(() => import("./pages/Profile"));
 const Success = lazy(() => import("./pages/success"));
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
             <Route path="/organic" element={<Organic />} />
             <Route path="/inorganic" element={<Inorganic />} />
             <Route path="/history" element={<History />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/success" element={<Success />} />
           </Routes>
         </Suspense>

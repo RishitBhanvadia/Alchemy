@@ -39,7 +39,7 @@
 
 .nav-links {
     display: flex;
-    gap: 40px;
+    gap: 30px;
     height: 100%;
 }
 
@@ -52,8 +52,7 @@
     font-size: 0.9rem;
     letter-spacing: 1px;
     transition: all 0.3s ease;
-    cursor: none;
-    /* Custom cursor */
+    cursor: pointer;
     position: relative;
     height: 100%;
 }
@@ -75,39 +74,13 @@
     box-shadow: 0 0 10px #00f3ff;
 }
 
-.dropdown-trigger {
-    cursor: none;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
-    background: rgba(10, 10, 20, 0.9);
-    padding: 10px 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.dropdown-item {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 12px 20px;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-    text-align: center;
-    cursor: none;
-}
-
-.dropdown-item:hover {
-    background: rgba(0, 243, 255, 0.1);
-    color: #fff;
-}
-
 .nav-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
