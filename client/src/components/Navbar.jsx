@@ -30,6 +30,14 @@ const Navbar = () => {
                     LABORATORY
                 </NavLink>
                 <NavLink
+                    to="/lab-3d"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    aria-label="Navigate to 3D Laboratory"
+                    role="menuitem"
+                >
+                    3D LAB
+                </NavLink>
+                <NavLink
                     to="/profile"
                     className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                     aria-label="Navigate to Profile"

@@ -7,8 +7,6 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
-import CanvasContainer from '../components/3d-animations/CanvasContainer';
-import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 
 const Lab = () => {
@@ -22,8 +20,7 @@ const Lab = () => {
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-  // Determine status for 3D Beaker
-  const experimentStatus = animate ? 'loading' : (chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0) ? 'idle' : 'idle';
+
 
   function change_tip() {
     if (chemA > 0) {
@@ -140,14 +137,7 @@ const Lab = () => {
 
   return (
     <div className="lab-page" ref={app}>
-      {/* Background 3D Layer */}
-      <div className="lab-3d-background">
-        <CanvasContainer>
-          <ReactiveBeaker status={experimentStatus} />
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-        </CanvasContainer>
-      </div>
+
 
       {/* Left Panel: Chemical Rack */}
       <div className="glass-panel chemical-rack">
@@ -261,10 +251,7 @@ const Lab = () => {
           <span className="label">System:</span>
           <span className="value neon-text">ONLINE</span>
         </div>
-        {/* Simplified for students as requested (removed Temp/Pressure) */}
-        <div className="note-box">
-          <span className="note-warn">NOTE:</span> All solutions are 1 M
-        </div>
+
       </div>
     </div>
   );

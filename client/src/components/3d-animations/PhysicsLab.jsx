@@ -8,9 +8,9 @@ const PhysicsLab = ({ chemStates, setChemA, setChemB, setChemC, setChemD }) => {
     return (
         <Physics gravity={[0, -9.81, 0]}>
             {/* Shelf (Kinematic or Fixed) */}
-            <RigidBody type="fixed" position={[-4, -1, 0]}>
+            <RigidBody type="fixed" position={[0, -1, 0]}>
                 <mesh>
-                    <boxGeometry args={[4, 0.2, 2]} />
+                    <boxGeometry args={[8, 0.2, 2]} />
                     <meshStandardMaterial color="#333" />
                 </mesh>
             </RigidBody>
@@ -36,25 +36,25 @@ const PhysicsLab = ({ chemStates, setChemA, setChemB, setChemC, setChemD }) => {
 
             {/* Interactive Flasks */}
             <DraggableFlask 
-                position={[-5, 0, 0]} 
+                position={[-3, 0, 0]} 
                 label="HCl" 
                 color="#05B9C4" 
                 onPour={(amt) => setChemA(prev => Math.min(100, prev + amt))} 
             />
             <DraggableFlask 
-                position={[-4, 0, 0]} 
+                position={[-1, 0, 0]} 
                 label="NaCl" 
                 color="#04CE7E" 
                 onPour={(amt) => setChemB(prev => Math.min(100, prev + amt))} 
             />
             <DraggableFlask 
-                position={[-3, 0, 0]} 
+                position={[1, 0, 0]} 
                 label="CuSO4" 
                 color="#FBC2E3" 
                 onPour={(amt) => setChemC(prev => Math.min(100, prev + amt))} 
             />
             <DraggableFlask 
-                position={[-2, 0, 0]} 
+                position={[3, 0, 0]} 
                 label="FeSO4" 
                 color="#DAA520" 
                 onPour={(amt) => setChemD(prev => Math.min(100, prev + amt))} 

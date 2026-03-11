@@ -6,7 +6,7 @@ import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 
-const DraggableFlask = ({ position, label, color, onPour, maxAmount = 100 }) => {
+const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAmount = 100 }, ref) => {
     const api = useRef();
     const [isDragging, setIsDragging] = useState(false);
     const [amount, setAmount] = useState(maxAmount);
@@ -88,7 +88,9 @@ const DraggableFlask = ({ position, label, color, onPour, maxAmount = 100 }) => 
             </group>
         </RigidBody>
     );
-};
+});
+
+DraggableFlask.displayName = 'DraggableFlask';
 
 DraggableFlask.propTypes = {
     position: PropTypes.array,

@@ -1,0 +1,98 @@
+.lab3d-page {
+    min-height: 100vh;
+    padding: 100px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.lab3d-header {
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    padding: 20px;
+}
+
+.lab3d-header p {
+    color: #00f3ff;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+.lab3d-canvas-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    border-radius: 15px;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+    overflow: hidden;
+    cursor: crosshair;
+}
+
+.lab3d-controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+.chem-levels-panel {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+}
+
+.chem-levels-panel h3 {
+    margin-bottom: 15px;
+    color: white;
+    font-weight: 500;
+}
+
+.level-bar-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.level-bar-group label {
+    color: #ccc;
+    width: 100px;
+    font-size: 0.9rem;
+}
+
+.level-bar-container {
+    flex-grow: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.level-bar-fill {
+    height: 100%;
+    transition: width 0.1s ease-out;
+}
+
+.level-bar-group span {
+    color: white;
+    width: 40px;
+    text-align: right;
+    font-family: monospace;
+}
+
+.lab3d-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-width: 300px;
+}

@@ -9,6 +9,7 @@ import "./accessibility.css";
 
 // Lazy load pages for better performance
 const Lab = lazy(() => import("./pages/lab"));
+const Lab3D = lazy(() => import("./pages/Lab3D"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -49,6 +50,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/lab" element={<Lab />} />
+            <Route path="/lab-3d" element={<Lab3D />} />
             <Route path="/result" element={<Result />} />
             <Route path="/titration" element={<Titration />} />
             <Route path="/organic" element={<Organic />} />
