@@ -41,7 +41,7 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText((text) => text.match(/dashboard/i))).toBeInTheDocument();
     });
 
     it('should render module cards', () => {

@@ -1,10 +1,10 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.describe('3D Visual Layer Tests', () => {
 
     test('Landing Page: Molecule Animation & Interaction', async ({ page }) => {
         // 1. Load Page
-        await page.goto('http://localhost:3000/');
+        await page.goto('/');
 
         // 2. Verify Canvas Exists
         const canvas = page.locator('canvas'); // The canvas inside CanvasContainer
@@ -16,7 +16,7 @@ test.describe('3D Visual Layer Tests', () => {
     });
 
     test('Login Page: Holographic Tilt & Input Access', async ({ page }) => {
-        await page.goto('http://localhost:3000/login');
+        await page.goto('/login');
 
         // 1. Verify Tilt Container
         const tiltCard = page.locator('.tilt-card');
@@ -42,7 +42,7 @@ test.describe('3D Visual Layer Tests', () => {
     });
 
     test('Dashboard: Interaction', async ({ page }) => {
-        await page.goto('http://localhost:3000/dashboard');
+        await page.goto('/dashboard');
 
         // 1. Verify interactive elements are clickable
         const experimentCard = page.locator('.module-card').first();
@@ -57,7 +57,7 @@ test.describe('3D Visual Layer Tests', () => {
     });
 
     test('Experiment Page: Reactive Beaker Integration', async ({ page }) => {
-        await page.goto('http://localhost:3000/lab');
+        await page.goto('/lab');
 
         // 1. Verify 3D Beaker canvas exists
         const canvas = page.locator('canvas');
@@ -80,7 +80,7 @@ test.describe('3D Visual Layer Tests', () => {
     });
 
     test('Performance: FPS Check (Basic)', async ({ page }) => {
-        await page.goto('http://localhost:3000/dashboard');
+        await page.goto('/dashboard');
 
         // Evaluate FPS using requestAnimationFrame loop
         const fps = await page.evaluate(async () => {

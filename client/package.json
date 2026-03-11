@@ -11,6 +11,7 @@
     "axios": "^1.4.0",
     "framer-motion": "^12.33.0",
     "gsap": "^3.12.1",
+    "html-encoding-sniffer": "^6.0.0",
     "loglevel": "^1.9.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -99,7 +100,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "file-loader": "^6.2.0",
-    "jsdom": "^28.0.0",
+    "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
     "vite": "^6.1.0",
     "vitest": "^4.0.18"

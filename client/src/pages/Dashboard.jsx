@@ -9,7 +9,7 @@ const Dashboard = () => {
         <div className="dashboard-page scene_element scene_element--fadein">
             <div className="dashboard-container">
                 <div className="dashboard-header">
-                    <h1 className="neon-glow">WELCOME, ADMIN</h1>
+                    <h1 className="neon-glow">Dashboard</h1>
                     <p className="subtitle">Select a module to begin experimentation</p>
                 </div>
 

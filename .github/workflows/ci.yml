@@ -43,14 +43,16 @@ jobs:
       working-directory: ./client
       run: npm test -- --run
     
+    - name: Generate coverage
+      working-directory: ./client
+      run: npm run test:coverage -- --run
+    
     - name: Build client
       working-directory: ./client
       run: npm run build
     
-    - name: Upload coverage reports
+    - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       if: always()
       with:
-        directory: ./client/coverage
-        flags: client
-        name: client-coverage
+        files: ./client/coverage/*.xml

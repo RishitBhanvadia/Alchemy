@@ -6,6 +6,8 @@ import boom from '../assets/boom.gif'
 import logo from '../assets/logo.png'
 import Bubble from '../components/banner'
 import logger from '../utils/logger';
+import { supabase } from '../supabaseClient';
+import { getResult } from '../utils/api';
 import './result.css'
 
 const Result = () => {
@@ -28,19 +30,37 @@ const Result = () => {
   useEffect(() => {
     if (!location.state) return;
 
-    const apiUrl = import.meta.env.VITE_API_URL || "https://alchemy-85hv.onrender.com";
-    fetch(`${apiUrl}/result/${location.state.chemA}/${location.state.chemB}/${location.state.chemC}/${location.state.chemD}`)
+    getResult(location.state.chemA, location.state.chemB, location.state.chemC, location.state.chemD)
       .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server Error: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
+        return response.data;
       })
-      .then(data => {
+      .then(async (data) => {
         if (!data || data.length === 0) {
           logger.warn("No data received from backend");
         }
         setData(data);
+
+        // Save to Supabase History
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user && data && data[0]) {
+            await supabase.from('experiment_results').insert({
+              user_id: user.id,
+              experiment_type: 'lab',
+              chem_a: location.state.chemA,
+              chem_b: location.state.chemB,
+              chem_c: location.state.chemC,
+              chem_d: location.state.chemD,
+              result_name: data[0].product_name,
+              result_formula: data[0].result_formula || data[0].result,
+              score: 100 // Default score for successful completion
+            });
+            logger.info("Experiment saved to history");
+          }
+        } catch (err) {
+          logger.error("Failed to save to history:", err);
+        }
+
         const d = new Date();
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
         const date = d.getDate();
@@ -188,20 +208,20 @@ const Result = () => {
                       {
                         (item.product_name === "") ? <div className="no-product">No Reaction / No Products</div> :
                           <>
-                            <h1 className="product-name neon-glow">{item.product_name}</h1>
-                            <p className="product-desc">{item.product_info}</p>
+                            <h1 className="product-name neon-glow">{item.product_name || "Unknown Product"}</h1>
+                            <p className="product-desc">{item.product_info || "No details available."}</p>
 
                             <div className="info-group">
                               <h4><i className="fa-solid fa-dna"></i> PROPERTIES</h4>
                               <ul>
-                                {item.product_properties.map((p, i) => <li key={i}>{p}</li>)}
+                                {(item.product_properties || []).map((p, i) => <li key={i}>{p}</li>)}
                               </ul>
                             </div>
 
                             <div className="info-group">
                               <h4><i className="fa-solid fa-mortar-pestle"></i> APPLICATIONS</h4>
                               <ul>
-                                {item.product_uses.map((u, i) => <li key={i}>{u}</li>)}
+                                {(item.product_uses || []).map((u, i) => <li key={i}>{u}</li>)}
                               </ul>
                             </div>
                           </>

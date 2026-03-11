@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { supabase } from '../supabaseClient';
+import logger from '../utils/logger';
 
 import CompoundImg from "../components/compoundImg";
 import ExpResult from "./experiment_result";
@@ -25,8 +27,31 @@ const Organic = () => {
     setDatanum(i);
   }
 
-  function checkAns() {
+  async function checkAns() {
     if (uans === '2') {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { error } = await supabase
+            .from('experiment_results')
+            .insert([
+              {
+                user_id: user.id,
+                experiment_type: 'organic',
+                score: 100,
+                details: { result: "Group 2 Detected" }
+              }
+            ]);
+            
+          if (error) {
+             logger.error("Error saving organic result:", error);
+          } else {
+             logger.info("Organic result saved successfully");
+          }
+        }
+      } catch (err) {
+        logger.error("Supabase error:", err);
+      }
       navigate("/success", {
         replace: true,
       });

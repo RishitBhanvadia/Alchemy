@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { supabase } from '../supabaseClient';
+import logger from '../utils/logger';
 
 import InCompoundImg from "../components/InCompundImg"; // Fixed typo in import if needed, but file is InCompundImg.js
 import InExpResult from "../components/InExpResult";
@@ -24,8 +26,31 @@ const Inorganic = () => {
     setDatanum(i);
   }
 
-  function checkAns() {
+  async function checkAns() {
     if (uans.toLowerCase() === 'nitrite') {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { error } = await supabase
+            .from('experiment_results')
+            .insert([
+              {
+                user_id: user.id,
+                experiment_type: 'inorganic',
+                score: 100,
+                details: { result: "Nitrite Detected" }
+              }
+            ]);
+            
+          if (error) {
+             logger.error("Error saving inorganic result:", error);
+          } else {
+             logger.info("Inorganic result saved successfully");
+          }
+        }
+      } catch (err) {
+        logger.error("Supabase error:", err);
+      }
       navigate("/success", {
         replace: true,
       });

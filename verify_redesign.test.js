@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
 
 test('Redesign Verification Tour', async ({ page }) => {
+    test.setTimeout(60000);
     // 1. Visit Login Page
     console.log('Visiting Login Page...');
-    await page.goto('http://localhost:3000/login');
+    await page.goto('http://localhost:5173/login');
     await page.waitForTimeout(1000);
     await page.screenshot({ path: 'verification_screenshots/1_login.png' });
 
@@ -61,6 +62,14 @@ test('Redesign Verification Tour', async ({ page }) => {
     await page.waitForSelector('.result-grid');
     await page.waitForTimeout(3000); // Wait for "processing" or data fetch
     await page.screenshot({ path: 'verification_screenshots/5_result.png' });
+
+    // 8. Verify History Page
+    console.log('Navigating to History...');
+    await page.goto('http://localhost:5173/history');
+    await page.waitForURL('**/history');
+    await page.waitForSelector('.history-table');
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'verification_screenshots/6_history.png' });
 
     console.log('Verification Complete. Check screenshots folder.');
 });

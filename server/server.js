@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
+const titrationRoutes = require('./routes/titrationRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -63,6 +64,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/result', resultRoutes);
+app.use('/titration', titrationRoutes);
 
 const PORT = process.env.PORT || 5000;
 

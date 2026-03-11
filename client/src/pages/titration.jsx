@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient'; // Corrected import based on file search
+import { supabase } from '../supabaseClient';
+import { getTitrationData } from '../utils/api';
 import "./titration.css";
 import Polygon from "../components/Polygon";
 import TitrationSetup from "../components/titration_setup";
@@ -11,18 +12,35 @@ import AB from '../assets/ab.png';
 import logger from '../utils/logger';
 
 const Titration = () => {
-  const all_data = [
-    {
-      "reaction_id": "A",
-      "points": [8, 8.5, 9, 9.5, 10],
-      "color": ["#bf006b", "#bb0062", "#b80063", "#b70061", "#b8006a"]
-    },
-    {
-      "reaction_id": "B",
-      "points": [7.65, 7.9, 8.15, 8.4, 8.65, 8.9, 9.15, 9.4, 9.65, 10],
-      "color": ["#bf0095", "#c2007b", "#c8007d", "#c8008b", "#be0090", "#c80086", "#b90083", "#be007c", "#c00087", "#b10080"]
-    }
-  ];
+  const [all_data, setAllData] = useState([]);
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    const fetchTitrationData = async () => {
+        try {
+            const res = await getTitrationData();
+            const fetchedData = res.data;
+            
+            // Map DB structure to frontend structure if needed
+            // Assuming DB returns array of { reaction_id, points: [], color: [] }
+            setAllData(fetchedData);
+            if(fetchedData.length > 0) setData(fetchedData[0]);
+        } catch (err) {
+            logger.error("Failed to fetch titration data:", err);
+            // Fallback
+            const fallback = [
+                {
+                  "reaction_id": "A",
+                  "points": [8, 8.5, 9, 9.5, 10],
+                  "color": ["#bf006b", "#bb0062", "#b80063", "#b70061", "#b8006a"]
+                }
+            ];
+            setAllData(fallback);
+            setData(fallback[0]);
+        }
+    };
+    fetchTitrationData();
+  }, []);
 
 
 
@@ -37,7 +55,7 @@ const Titration = () => {
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
   const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
-  const [data, setData] = useState(all_data[0]);
+  const [data, setData] = useState(null);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);

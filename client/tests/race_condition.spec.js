@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.describe('Race Condition Reproduction', () => {
     test('Parallel Result Addition to Cart', async ({ context }) => {
@@ -7,8 +7,8 @@ test.describe('Race Condition Reproduction', () => {
         const page2 = await context.newPage();
 
         // Navigate both pages to the lab page
-        await page1.goto('http://localhost:3000/lab');
-        await page2.goto('http://localhost:3000/lab');
+        await page1.goto('/lab');
+        await page2.goto('/lab');
 
         // Clear local storage initially
         await page1.evaluate(() => localStorage.clear());

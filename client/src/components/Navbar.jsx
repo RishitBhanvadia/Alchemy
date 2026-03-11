@@ -56,7 +56,6 @@ const Navbar = () => {
                         await supabase.auth.signOut();
                         window.location.href = '/';
                     }}
-                    style={{ marginLeft: '1rem', background: 'transparent', border: '1px solid #ff0055', color: '#ff0055', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
                 >
                     LOGOUT
                 </button>

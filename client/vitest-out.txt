@@ -1,0 +1,20 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/rishit/OneDrive/Desktop/Project/Alchemistry - Antigravity/Alchemistry-master/client[39m
+
+ [32mΓ£ô[39m src/utils/__tests__/notifications.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [31mΓ¥»[39m src/pages/__tests__/Login.test.jsx [2m([22m[2m0 test[22m[2m)[22m
+ [32mΓ£ô[39m src/utils/__tests__/logger.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mΓ£ô[39m src/components/__tests__/Navbar.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 218[2mms[22m[39m
+ [31mΓ¥»[39m src/pages/__tests__/Dashboard.test.jsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 175[2mms[22m[39m
+[31m     [31m├ù[31m should render dashboard title[39m[32m 121[2mms[22m[39m
+     [32mΓ£ô[39m should render module cards[32m 21[2mms[22m[39m
+     [32mΓ£ô[39m should navigate on module card click[32m 15[2mms[22m[39m
+     [32mΓ£ô[39m should have keyboard navigation on cards[32m 14[2mms[22m[39m
+ [31mΓ¥»[39m tests/visual-layer.spec.js [2m([22m[2m0 test[22m[2m)[22m
+ [31mΓ¥»[39m tests/race_condition.spec.js [2m([22m[2m0 test[22m[2m)[22m
+
+[2m Test Files [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 11:01:17
+[2m   Duration [22m 10.24s[2m (transform 1.31s, setup 8.48s, import 1.13s, tests 412ms, environment 22.76s)[22m
+

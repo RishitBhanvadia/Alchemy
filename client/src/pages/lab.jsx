@@ -8,6 +8,7 @@ import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
+import ReactiveBeaker from '../components/3d-animations/ReactiveBeaker';
 
 
 const Lab = () => {
@@ -20,6 +21,9 @@ const Lab = () => {
   const [chemB, setChemB] = useState(0);
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
+
+  // Determine status for 3D Beaker
+  const experimentStatus = animate ? 'loading' : (chemA > 0 || chemB > 0 || chemC > 0 || chemD > 0) ? 'idle' : 'idle';
 
   function change_tip() {
     if (chemA > 0) {
@@ -139,7 +143,7 @@ const Lab = () => {
       {/* Background 3D Layer */}
       <div className="lab-3d-background">
         <CanvasContainer>
-          {/* Removed ReactiveBeaker based on user feedback to clean up the UI */}
+          <ReactiveBeaker status={experimentStatus} />
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
         </CanvasContainer>

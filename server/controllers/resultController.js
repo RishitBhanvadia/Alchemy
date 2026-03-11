@@ -90,8 +90,18 @@ exports.calculateResult = async (req, res) => {
             return res.status(500).json({ message: "Database Error" });
         }
 
-        // Return data directly (Supabase returns an array, which matches our API response format)
-        res.json(data);
+        // Map Supabase fields to frontend expected fields
+        const mappedData = data.map(item => ({
+            ...item,
+            product_name: item.product_name || item.result_name || "Unknown Product",
+            product_info: item.product_info || item.result_formula || "No details available",
+            product_properties: Array.isArray(item.product_properties) ? item.product_properties : 
+                               Array.isArray(item.characteristics) ? item.characteristics : [],
+            product_uses: Array.isArray(item.product_uses) ? item.product_uses : []
+        }));
+
+        // Return mapped data
+        res.json(mappedData);
 
     } catch (error) {
         console.error("Error in calculateResult:", error);
