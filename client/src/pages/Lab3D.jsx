@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomTestTube from "../components/testtube";
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
 import PhysicsLab from '../components/3d-animations/PhysicsLab';
 import "./Lab3D.css"; // We'll create a dedicated CSS file
@@ -42,7 +41,6 @@ const Lab3D = () => {
             <div className="lab3d-canvas-wrapper">
                 <CanvasContainer camera={{ position: [0, 0, 10], fov: 50 }}>
                     <PhysicsLab
-                        chemStates={{ chemA, chemB, chemC, chemD }}
                         setChemA={setChemA}
                         setChemB={setChemB}
                         setChemC={setChemC}
@@ -58,22 +56,22 @@ const Lab3D = () => {
                 <div className="glass-panel chem-levels-panel">
                     <h3>Chemical Levels</h3>
                     <div className="level-bar-group">
-                        <label>HCl (Clear)</label>
+                        <span className="label-text">HCl (Clear)</span>
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemA}%`, backgroundColor: '#05B9C4' }}></div></div>
                         <span>{Math.round(chemA)}%</span>
                     </div>
                     <div className="level-bar-group">
-                        <label>NaCl (Green)</label>
+                        <span className="label-text">NaCl (Green)</span>
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemB}%`, backgroundColor: '#04CE7E' }}></div></div>
                         <span>{Math.round(chemB)}%</span>
                     </div>
                     <div className="level-bar-group">
-                        <label>CuSO4 (Pink)</label>
+                        <span className="label-text">CuSO4 (Pink)</span>
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemC}%`, backgroundColor: '#FBC2E3' }}></div></div>
                         <span>{Math.round(chemC)}%</span>
                     </div>
                     <div className="level-bar-group">
-                        <label>FeSO4 (Gold)</label>
+                        <span className="label-text">FeSO4 (Gold)</span>
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemD}%`, backgroundColor: '#DAA520' }}></div></div>
                         <span>{Math.round(chemD)}%</span>
                     </div>
