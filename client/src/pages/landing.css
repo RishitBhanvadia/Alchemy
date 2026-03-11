@@ -33,7 +33,7 @@
 
 .landing-subtitle {
     font-size: 1.2rem;
-    color: var(--text-gray);
+    color: var(--text-muted);
     margin-top: 10px;
     margin-bottom: 40px;
     font-weight: 300;
@@ -45,7 +45,7 @@
     font-size: 1.2rem;
     font-weight: 600;
     color: white;
-    background: var(--primary-blue);
+    background: var(--primary-neon);
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -58,7 +58,7 @@
 }
 
 .start-button:hover {
-    background: var(--secondary-purple);
+    background: var(--secondary-neon);
     transform: translateY(-2px);
     box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
 }

@@ -23,7 +23,7 @@
 }
 
 .login-title {
-    color: var(--text-white);
+    color: var(--text-main);
     font-size: 1.8rem;
     margin-bottom: 30px;
     font-weight: 600;
@@ -37,7 +37,7 @@
 
 .input-label {
     display: block;
-    color: var(--text-gray);
+    color: var(--text-muted);
     margin-bottom: 8px;
     font-size: 0.9rem;
     font-weight: 500;
@@ -59,7 +59,7 @@
 
 .login-input:focus {
     outline: none;
-    border-color: var(--primary-blue);
+    border-color: var(--primary-neon);
     background: rgba(255, 255, 255, 0.15);
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
 }
@@ -74,7 +74,7 @@
     margin-top: 10px;
     border: none;
     border-radius: 8px;
-    background: var(--primary-blue);
+    background: var(--primary-neon);
     color: white;
     font-size: 1rem;
     font-weight: 600;
@@ -84,7 +84,7 @@
 }
 
 .login-button:hover {
-    background: var(--secondary-purple);
+    background: var(--secondary-neon);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
