@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import './Navbar.css';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-
     return (
         <nav className="glass-navbar" role="navigation" aria-label="Main navigation">
             <div className="nav-logo">
@@ -31,34 +29,22 @@ const Navbar = () => {
                 >
                     LABORATORY
                 </NavLink>
-
-                <div
-                    className="nav-item dropdown-trigger"
-                    onMouseEnter={() => setDropdownOpen(true)}
-                    onMouseLeave={() => setDropdownOpen(false)}
+                <NavLink
+                    to="/profile"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    aria-label="Navigate to Profile"
                     role="menuitem"
-                    aria-haspopup="true"
-                    aria-expanded={dropdownOpen}
-                    tabIndex={0}
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            setDropdownOpen(!dropdownOpen);
-                        }
-                    }}
                 >
-                    MORE <i className="fa-solid fa-chevron-down"></i>
-
-                    {dropdownOpen && (
-                        <div className="dropdown-menu glass-panel">
-                            <NavLink to="/profile" className="dropdown-item">PROFILE</NavLink>
-                            <NavLink to="/history" className="dropdown-item">HISTORY</NavLink>
-                            <NavLink to="/organic" className="dropdown-item">ORGANIC</NavLink>
-                            <NavLink to="/inorganic" className="dropdown-item">INORGANIC</NavLink>
-                            <NavLink to="/titration" className="dropdown-item">TITRATION</NavLink>
-                        </div>
-                    )}
-                </div>
-
+                    PROFILE
+                </NavLink>
+                <NavLink
+                    to="/history"
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    aria-label="Navigate to History"
+                    role="menuitem"
+                >
+                    HISTORY
+                </NavLink>
             </div>
 
             <div className="nav-profile">
@@ -75,10 +61,8 @@ const Navbar = () => {
                     LOGOUT
                 </button>
             </div>
-        </nav >
+        </nav>
     );
 };
-
-
 
 export default Navbar;
