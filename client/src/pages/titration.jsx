@@ -74,7 +74,7 @@ const Titration = () => {
             }
           ]);
         if (error) logger.error('Error saving result:', error);
-        else setMessage("Result saved to database!");
+        else setMessage(prev => `${prev} Result saved to database!`);
       }
     } catch (e) {
       logger.error("Supabase error:", e);
