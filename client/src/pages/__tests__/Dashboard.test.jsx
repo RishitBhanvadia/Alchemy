@@ -41,7 +41,7 @@ describe('Dashboard Component', () => {
 
     it('should render dashboard title', () => {
         renderDashboard();
-        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/welcome, admin/i)).toBeInTheDocument();
     });
 
     it('should render module cards', () => {
@@ -52,19 +52,11 @@ describe('Dashboard Component', () => {
 
     it('should navigate on module card click', () => {
         renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.click(labCard);
-            expect(mockNavigate).toHaveBeenCalled();
-        }
+        const labCard = screen.getByRole('link', { name: /laboratory/i });
+        fireEvent.click(labCard);
+        // Link navigation is handled by Router, but we can verify the href attribute
+        expect(labCard).toHaveAttribute('href', '/lab');
     });
 
-    it('should have keyboard navigation on cards', () => {
-        renderDashboard();
-        const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-        if (labCard) {
-            fireEvent.keyPress(labCard, { key: 'Enter', code: 'Enter' });
-            expect(mockNavigate).toHaveBeenCalled();
-        }
-    });
+    // Removed keyboard navigation test as it's handled by Link component natively and test was fragile
 });
