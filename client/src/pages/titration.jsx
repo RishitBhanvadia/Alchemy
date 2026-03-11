@@ -55,7 +55,6 @@ const Titration = () => {
   const [add_kmn, setKMN] = useState(false);
   const [swipe, setSwipe] = useState(true);
   const [acid_heigth, setAcid] = useState("M226.348 655.637V682.121C226.348 690.679 226.535 690.688 292.472 690.688C355.57 690.688 354.8 690.675 354.8 682.121V 687.637H226.348Z");
-  const [data, setData] = useState(null);
   const [sColor, SetSColor] = useState('#3accff');
   const [count, setCount] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
