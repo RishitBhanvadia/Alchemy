@@ -1,0 +1,4 @@
+## 2024-05-28 - Virtual Lab Competitor Analysis
+**Market Insight:** Leading virtual lab platforms like Labster and ChemCollective emphasize contextual learning and self-sufficiency, ensuring students have all necessary theory, instructions, and export capabilities within the application itself, rather than relying on external physical materials.
+**Codebase Match:** Alchemistry currently relies on external physical lab manuals for instructions (e.g., "Refer Your Chemistry Lab Manual Page - 51" in inorganic.jsx) and lacks the ability to export the history of completed experiments for grading or review.
+**Opportunity:** By integrating in-app lab instructions and adding a CSV export feature to the history page, Alchemistry can significantly improve its usability as an independent educational tool, aligning it with the standard expectations of modern EdTech platforms.
