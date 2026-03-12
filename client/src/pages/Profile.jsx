@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
@@ -7,6 +7,7 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
+    const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
@@ -25,7 +26,36 @@ const Profile = () => {
         { id: 'organic', name: 'Organic Specialist', icon: '🌿', description: '3 Organic experiments', earned: false },
     ]);
 
-    const calculateStats = useCallback((data) => {
+    useEffect(() => {
+        const fetchUserDataAndStats = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    setUser(user);
+
+                    const { data, error } = await supabase
+                        .from('experiment_results')
+                        .select('*')
+                        .eq('user_id', user.id);
+
+                    if (error) throw error;
+
+                    if (data) {
+                        setExperiments(data);
+                        calculateStats(data);
+                    }
+                }
+            } catch (error) {
+                logger.error("Error fetching profile data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserDataAndStats();
+    }, []);
+
+    const calculateStats = (data) => {
         const total = data.length;
         if (total === 0) return;
 
@@ -46,7 +76,7 @@ const Profile = () => {
         });
 
         // Check badges
-        setBadges(prevBadges => prevBadges.map(badge => {
+        const updatedBadges = badges.map(badge => {
             let earned = false;
             switch (badge.id) {
                 case 'novice': earned = total >= 1; break;
@@ -62,36 +92,10 @@ const Profile = () => {
                 default: earned = false;
             }
             return { ...badge, earned };
-        }));
-    }, []);
+        });
 
-    useEffect(() => {
-        const fetchUserDataAndStats = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    setUser(user);
-
-                    const { data, error } = await supabase
-                        .from('experiment_results')
-                        .select('*')
-                        .eq('user_id', user.id);
-
-                    if (error) throw error;
-
-                    if (data) {
-                        calculateStats(data);
-                    }
-                }
-            } catch (error) {
-                logger.error("Error fetching profile data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserDataAndStats();
-    }, [calculateStats]);
+        setBadges(updatedBadges);
+    };
 
     if (loading) {
         return (

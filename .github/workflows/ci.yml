@@ -45,7 +45,9 @@ jobs:
     
     - name: Generate coverage
       working-directory: ./client
-      run: npm run test:coverage -- --run
+      run: |
+        npm install --no-save @vitest/coverage-v8
+        npm run test:coverage -- --run
     
     - name: Build client
       working-directory: ./client
