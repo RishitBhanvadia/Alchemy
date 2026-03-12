@@ -20,16 +20,8 @@ const Lab3D = () => {
         });
     };
 
-    function onOrNot() {
-        let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemC > 0) sum += 1;
-        if (chemD > 0) sum += 1;
-        return sum >= 2;
-    }
-
-    const isPlayDisabled = !(onOrNot());
+    const hasMinimumChemicals = [chemA, chemB, chemC, chemD].filter(val => val > 0).length >= 2;
+    const isPlayDisabled = !hasMinimumChemicals;
 
     return (
         <div className="lab3d-page">
@@ -87,7 +79,7 @@ const Lab3D = () => {
                     >
                         INITIATE REACTION
                     </button>
-                    {!onOrNot() && <div className="note-warn" style={{ marginTop: '1rem', textAlign: 'center' }}>Mix at least 2 chemicals</div>}
+                    {!hasMinimumChemicals && <div className="note-warn" style={{ marginTop: '1rem', textAlign: 'center' }}>Mix at least 2 chemicals</div>}
                 </div>
             </div>
         </div>
