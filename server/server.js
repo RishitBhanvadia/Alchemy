@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
 const titrationRoutes = require('./routes/titrationRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -39,7 +40,11 @@ app.use(helmet({
 }));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', process.env.FRONTEND_URL],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
 
@@ -63,8 +68,9 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-app.use('/result', resultRoutes);
-app.use('/titration', titrationRoutes);
+app.use('/api/results', resultRoutes);
+app.use('/api/titration', titrationRoutes);
+app.use('/api/ai', aiRoutes);
 
 const PORT = process.env.PORT || 5000;
 

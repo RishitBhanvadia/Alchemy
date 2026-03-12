@@ -4,6 +4,8 @@ import { lazy, Suspense } from 'react';
 import Navbar from "./components/Navbar";
 import CursorFollower from "./components/CursorFollower";
 import ErrorBoundary from "./components/ErrorBoundary";
+import LoadingOverlay from "./components/LoadingOverlay";
+import { LabSkeleton, DashboardSkeleton } from "./components/SkeletonLoader";
 import "./app.css";
 import "./accessibility.css";
 
@@ -20,6 +22,7 @@ const Inorganic = lazy(() => import("./pages/inorganic"));
 const History = lazy(() => import("./pages/history"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Success = lazy(() => import("./pages/success"));
+const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
 
 function App() {
   const location = useLocation();
@@ -32,34 +35,21 @@ function App() {
         {showNavbar && <Navbar />}
         <Toaster />
 
-        <Suspense fallback={
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            background: '#0a0a0a',
-            color: '#00ff88',
-            fontSize: '1.5rem'
-          }}>
-            Loading...
-          </div>
-        }>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/lab" element={<Lab />} />
-            <Route path="/lab-3d" element={<Lab3D />} />
-            <Route path="/result" element={<Result />} />
-            <Route path="/titration" element={<Titration />} />
-            <Route path="/organic" element={<Organic />} />
-            <Route path="/inorganic" element={<Inorganic />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/success" element={<Success />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<Suspense fallback={<LoadingOverlay />}><Landing /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<LoadingOverlay />}><Login /></Suspense>} />
+          <Route path="/dashboard" element={<Suspense fallback={<DashboardSkeleton />}><Dashboard /></Suspense>} />
+          <Route path="/lab" element={<Suspense fallback={<LoadingOverlay />}><Lab /></Suspense>} />
+          <Route path="/lab-3d" element={<Suspense fallback={<LabSkeleton />}><Lab3D /></Suspense>} />
+          <Route path="/result" element={<Suspense fallback={<LoadingOverlay />}><Result /></Suspense>} />
+          <Route path="/titration" element={<Suspense fallback={<LoadingOverlay />}><Titration /></Suspense>} />
+          <Route path="/organic" element={<Suspense fallback={<LoadingOverlay />}><Organic /></Suspense>} />
+          <Route path="/inorganic" element={<Suspense fallback={<LoadingOverlay />}><Inorganic /></Suspense>} />
+          <Route path="/history" element={<Suspense fallback={<LoadingOverlay />}><History /></Suspense>} />
+          <Route path="/profile" element={<Suspense fallback={<LoadingOverlay />}><Profile /></Suspense>} />
+          <Route path="/success" element={<Suspense fallback={<LoadingOverlay />}><Success /></Suspense>} />
+          <Route path="/dashboard/teacher" element={<Suspense fallback={<DashboardSkeleton />}><TeacherDashboard /></Suspense>} />
+        </Routes>
       </div>
     </ErrorBoundary >
   );

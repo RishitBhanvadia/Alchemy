@@ -1,0 +1,24 @@
+﻿[dotenv@17.2.4] injecting env (4) from .env -- tip: ≡ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
+--- Starting Database Validation ---
+Connecting to: https://madcquepligcvwkfycud.supabase.co
+Row 1 (Outcome: Pure Chemical A (No Reaction)): PASS
+Row 2 (Outcome: Pure Chemical B (No Reaction)): PASS
+Row 3 (Outcome: Pure Chemical C (No Reaction)): PASS
+Row 4 (Outcome: Pure Chemical D (No Reaction)): PASS
+Row 5 (Outcome: Neutralisation / Salt Water): PASS
+Row 6 (Outcome: Acidic Salt Solution): PASS
+Row 7 (Outcome: Basic Salt Solution): PASS
+Row 8 (Outcome: Precipitate (White)): PASS
+Row 9 (Outcome: Exothermic Reaction (Heat + Light)): PASS
+Row 10 (Outcome: Gas Evolution (CO2 Bubble)): PASS
+Row 11 (Outcome: Colour Change (Blue -> Green)): PASS
+Row 12 (Outcome: Precipitate (Yellow)): PASS
+Row 13 (Outcome: Complex Equilibrium): PASS
+Row 14 (Outcome: Explosion (Vigorous)): PASS
+Row 15 (Outcome: Multi-phase Reaction): PASS
+
+--- Validation Summary ---
+Total rows checked: 15
+Passed: 15
+Failed: 0
+Result: SUCCESS - Database is valid.

@@ -1,0 +1,60 @@
+.error-boundary-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background: var(--color-bg-primary, #0A0A1A);
+    padding: var(--spacing-lg, 24px);
+    box-sizing: border-box;
+}
+
+.error-card {
+    max-width: 500px;
+    width: 100%;
+    padding: var(--spacing-xl, 48px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md, 16px);
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-sm, 8px);
+}
+
+.error-message {
+    color: var(--color-text-secondary, #9CA3AF);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+.error-actions {
+    display: flex;
+    gap: var(--spacing-md, 16px);
+    width: 100%;
+}
+
+.error-actions .action-button {
+    flex: 1;
+    padding: var(--spacing-md, 16px);
+    font-size: 0.9rem;
+}
+
+.error-stack {
+    margin-top: var(--spacing-xl, 48px);
+    padding: var(--spacing-md, 16px);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm, 8px);
+    color: var(--color-danger, #EF4444);
+    font-size: 0.8rem;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    font-family: monospace;
+    white-space: pre-wrap;
+}

@@ -1,0 +1,25 @@
+STDOUT:
+
+ RUN  v4.0.18 C:/Users/rishit/OneDrive/Desktop/Project/Alchemistry - Antigravity/Alchemistry-master/client
+
+ ❯ src/store/__tests__/labStore.test.js (0 test)
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  02:43:23
+   Duration  645ms (transform 34ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+
+
+
+STDERR:
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/store/__tests__/labStore.test.js [ src/store/__tests__/labStore.test.js ]
+Error: Cannot find module '@testing-library/dom'
+Require stack:
+- C:\Users\rishit\OneDrive\Desktop\Project\Alchemistry - Antigravity\Alchemistry-master\client\node_modules\@testing-library\react\dist\pure.js
+ ❯ Object.<anonymous> node_modules/@testing-library/react/dist/pure.js:46:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

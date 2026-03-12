@@ -1,0 +1,33 @@
+:root {
+  /* Colour Palette */
+  --color-bg-primary: #0A0A1A;
+  --color-bg-secondary: #12122A;
+  --color-bg-card: rgba(255, 255, 255, 0.05);
+  --color-accent-primary: #6366F1;
+  --color-accent-secondary: #8B5CF6;
+  --color-text-primary: #F9FAFB;
+  --color-text-secondary: #9CA3AF;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-blur: blur(16px);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  /* Shadows */
+  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+}

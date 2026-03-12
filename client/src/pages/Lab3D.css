@@ -4,95 +4,402 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: var(--spacing-lg);
+    background: var(--color-bg-primary);
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .lab3d-header {
     width: 100%;
     max-width: 1200px;
     text-align: center;
-    padding: 20px;
+    padding: var(--spacing-lg);
+}
+
+.lab3d-header h2 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.neon-glow {
+    color: var(--color-text-primary);
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.8), 0 0 20px rgba(99, 102, 241, 0.4);
 }
 
 .lab3d-header p {
-    color: #00f3ff;
-    margin-top: 10px;
+    color: var(--color-text-secondary);
     font-size: 1.1rem;
 }
 
 .lab3d-canvas-wrapper {
     width: 100%;
     max-width: 1200px;
-    height: 60vh;
+    height: 55vh;
     min-height: 400px;
     position: relative;
-    border-radius: 15px;
-    background: rgba(10, 10, 15, 0.8);
-    border: 1px solid rgba(0, 243, 255, 0.2);
-    box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+    border-radius: var(--radius-lg);
+    background: rgba(10, 10, 26, 0.6);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glow);
     overflow: hidden;
-    cursor: crosshair;
 }
 
 .lab3d-controls-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
     width: 100%;
     max-width: 1200px;
-    justify-content: space-between;
+    margin-top: var(--spacing-md);
 }
 
 .chem-levels-panel {
-    flex: 1;
-    min-width: 300px;
-    padding: 20px;
+    padding: var(--spacing-lg);
 }
 
 .chem-levels-panel h3 {
-    margin-bottom: 15px;
-    color: white;
-    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-primary);
+    font-size: 1.5rem;
+    text-align: center;
 }
 
-.level-bar-group {
+.slider-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.slider-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    border-left: 6px solid var(--color-accent-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slider-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.slider-card.acid { border-left-color: var(--color-danger); }
+.slider-card.base { border-left-color: var(--color-accent-primary); }
+.slider-card.indicator { border-left-color: var(--color-success); }
+.slider-card.catalyst { border-left-color: var(--color-warning); }
+
+.slider-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-md);
 }
 
-.level-bar-group label {
-    color: #ccc;
-    width: 100px;
+.label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.chem-name {
+    color: var(--color-text-primary);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+}
+
+.chem-formula {
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    font-family: 'Courier New', Courier, monospace;
+    opacity: 0.8;
+}
+
+.chem-value {
+    color: var(--color-text-primary);
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
 }
 
-.level-bar-container {
-    flex-grow: 1;
+/* Custom Slider Styling */
+.chem-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
     height: 8px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-.level-bar-fill {
-    height: 100%;
-    transition: width 0.1s ease-out;
+.chem-slider:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.level-bar-group span {
-    color: white;
-    width: 40px;
-    text-align: right;
-    font-family: monospace;
+.chem-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--chem-thumb-color, var(--color-accent-primary));
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--chem-thumb-color, var(--color-accent-primary));
+    border: 3px solid white;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chem-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.chem-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--chem-thumb-color, var(--color-accent-primary));
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--chem-thumb-color, var(--color-accent-primary));
+    border: 3px solid white;
+    transition: transform 0.2s;
+}
+
+.chem-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
 }
 
 .lab3d-actions {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.action-button {
+    min-width: 240px;
+    padding: 16px 32px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.action-button.active {
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.action-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+.action-button:disabled {
+    background: #333;
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.note-warn {
+    color: var(--color-warning);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Mobile Responsiveness for Lab3D */
+@media (max-width: 1024px) {
+    .lab3d-header h2 {
+        font-size: 2rem;
+    }
+    
+    .lab3d-canvas-wrapper {
+        height: 50vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .lab3d-page {
+        padding-top: 80px;
+    }
+
+    .lab3d-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .lab3d-header p {
+        font-size: 0.9rem;
+    }
+
+    .lab3d-canvas-wrapper {
+        height: 45vh;
+        min-height: 300px;
+        margin-top: 10px;
+    }
+
+    .chem-levels-panel h3 {
+        font-size: 1.2rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .slider-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .slider-card {
+        padding: 12px;
+    }
+
+    .chem-name {
+        font-size: 0.95rem;
+    }
+
+    .action-button {
+        width: 100%;
+        min-width: unset;
+        font-size: 1.1rem;
+        padding: 14px;
+    }
+
+    .ai-hint-tooltip {
+        width: 90%;
+        font-size: 0.85rem;
+        padding: 10px 15px;
+    }
+
+    .ai-toggle-button {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .lab3d-canvas-wrapper {
+        height: 40vh;
+    }
+}
+
+.ai-hint-tooltip {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    max-width: 450px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+    animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.ai-toggle-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.ai-toggle-button:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.7);
+}
+
+
+
+/* Canvas Loader */
+.canvas-loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    min-width: 300px;
+    background: rgba(10, 10, 26, 0.8);
+    gap: var(--spacing-md);
+    color: var(--color-text-secondary);
+}
+
+.canvas-loader .loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--color-accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }

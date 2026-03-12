@@ -32,13 +32,16 @@ const Result = () => {
 
     getResult(location.state.chemA, location.state.chemB, location.state.chemC, location.state.chemD)
       .then(response => {
-        return response.data;
+        const resultData = response.data;
+        const normalizedData = Array.isArray(resultData) ? resultData : [resultData];
+        setData(normalizedData);
+        return normalizedData;
       })
       .then(async (data) => {
         if (!data || data.length === 0) {
           logger.warn("No data received from backend");
         }
-        setData(data);
+        // setData(data); // Already set above
 
         // Save to Supabase History
         try {

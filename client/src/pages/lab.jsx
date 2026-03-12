@@ -132,8 +132,7 @@ const Lab = () => {
 
   const isPlayDisabled = !(onOrNot());
 
-  // Determine status for 3D Beaker
-  // Determine status for 3D Beaker (removed unused experimentStatus)
+
 
   return (
     <div className="lab-page" ref={app}>

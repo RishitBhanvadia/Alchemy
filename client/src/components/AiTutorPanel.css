@@ -1,0 +1,224 @@
+.ai-tutor-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100vh;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid var(--glass-border, rgba(255, 255, 255, 0.15));
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  padding: 24px;
+  color: white;
+}
+
+.ai-tutor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.ai-tutor-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: white;
+}
+
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 24px;
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Custom Scrollbar */
+.chat-history::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+}
+
+.chat-message.student {
+  align-self: flex-end;
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-bottom-right-radius: 2px;
+}
+
+.chat-message.tutor {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom-left-radius: 2px;
+}
+
+.message-role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  opacity: 0.6;
+}
+
+.current-context {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 24px;
+}
+
+.current-context h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.context-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.context-badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.chat-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: none;
+  min-height: 80px;
+  transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.ask-button {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.ask-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.ask-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-toggle-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  z-index: 999;
+  transition: transform 0.2s;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.ai-toggle-button:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+@media (max-width: 480px) {
+  .ai-tutor-panel {
+    width: 100%;
+  }
+}

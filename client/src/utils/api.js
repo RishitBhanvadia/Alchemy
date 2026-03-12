@@ -19,11 +19,11 @@ api.interceptors.response.use(
 );
 
 export const getResult = (chemA, chemB, chemC, chemD) => {
-  return api.get(`/result/${chemA}/${chemB}/${chemC}/${chemD}`);
+  return api.post('/api/results', { chem_a: chemA, chem_b: chemB, chem_c: chemC, chem_d: chemD });
 };
 
 export const getTitrationData = () => {
-  return api.get('/titration');
+  return api.get('/api/titration');
 };
 
 export default api;

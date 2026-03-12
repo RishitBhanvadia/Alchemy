@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import logger from '../utils/logger';
+import './ErrorBoundary.css';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -19,38 +20,34 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    background: '#0a0a0a',
-                    color: '#ff0055',
-                    padding: '20px',
-                    textAlign: 'center'
-                }}>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>
-                        ⚠️ Something went wrong
-                    </h1>
-                    <p style={{ marginBottom: '2rem', color: '#999' }}>
-                        We apologize for the inconvenience. Please try refreshing the page.
-                    </p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        style={{
-                            padding: '12px 24px',
-                            background: '#00ff88',
-                            color: '#0a0a0a',
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            fontWeight: 'bold'
-                        }}
-                    >
-                        Reload Page
-                    </button>
+                <div className="error-boundary-container">
+                    <div className="glass-panel error-card">
+                        <div className="error-icon">⚠️</div>
+                        <h1 className="neon-glow">Something went wrong</h1>
+                        <p className="error-message">
+                            We've encountered an unexpected error in the lab simulation.
+                        </p>
+                        <div className="error-actions">
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="action-button active"
+                            >
+                                RELOAD LAB
+                            </button>
+                            <button
+                                onClick={() => this.setState({ hasError: false })}
+                                className="action-button"
+                                style={{ background: 'rgba(255,255,255,0.1)' }}
+                            >
+                                TRY AGAIN
+                            </button>
+                        </div>
+                        {process.env.NODE_ENV === 'development' && (
+                            <pre className="error-stack">
+                                {this.state.error && this.state.error.toString()}
+                            </pre>
+                        )}
+                    </div>
                 </div>
             );
         }
