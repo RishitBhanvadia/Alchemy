@@ -1,0 +1,5 @@
+## 2024-03-12 - Fix incorrect chemical sum rounding
+
+**Bug:** Chemical concentrations (e.g., 25, 25, 25, 25) that sum exactly to 100 after rounding incorrectly add up to sums like 120 or 110, breaking the combination search in the database by generating incorrect `reaction_id` values.
+**Root Cause:** The logic uses `Math.round(val / 10) * 10` on the individual values. When adjusting for rounding errors that cause the sum to exceed 100, the loop subtracts 10 indiscriminately from a single component until the sum is no longer greater than 100, which can over-subtract or incorrectly subtract without a loop. In the buggy code, it wasn't even a loop, so it only adjusted once, leaving sums over 100 (e.g. 110 or 120) and passing them incorrectly to the database query. Same for `< 100`.
+**Learning:** For normalization processes that must maintain a specific total sum, explicitly adjust values based on the differences caused by rounding errors in a looped distribution over correctly sorted components, ensuring the final invariant (sum === 100) is always met.
