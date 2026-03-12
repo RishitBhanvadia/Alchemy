@@ -62,7 +62,8 @@
     margin-bottom: 15px;
 }
 
-.level-bar-group label {
+.level-bar-group .label-text {
+    display: inline-block;
     color: #ccc;
     width: 100px;
     font-size: 0.9rem;
