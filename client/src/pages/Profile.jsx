@@ -32,14 +32,14 @@ const Profile = () => {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
                     setUser(user);
-                    
+
                     const { data, error } = await supabase
                         .from('experiment_results')
                         .select('*')
                         .eq('user_id', user.id);
 
                     if (error) throw error;
-                    
+
                     if (data) {
                         setExperiments(data);
                         calculateStats(data);
@@ -93,7 +93,7 @@ const Profile = () => {
             }
             return { ...badge, earned };
         });
-        
+
         setBadges(updatedBadges);
     };
 

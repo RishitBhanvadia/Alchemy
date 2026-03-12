@@ -29,11 +29,16 @@ exports.calculateResult = async (req, res) => {
         const add = chem_a + chem_b + chem_c + chem_d;
 
         // Normalize if sum < 100
-        if (add < 100) {
+        if (add > 0 && add < 100) {
             chem_a = (chem_a / add) * 100;
             chem_b = (chem_b / add) * 100;
             chem_c = (chem_c / add) * 100;
             chem_d = (chem_d / add) * 100;
+        } else if (add === 0) {
+            chem_a = 0;
+            chem_b = 0;
+            chem_c = 0;
+            chem_d = 0;
         }
 
         let a = Math.round(chem_a / 10) * 10;
@@ -41,29 +46,50 @@ exports.calculateResult = async (req, res) => {
         let c = Math.round(chem_c / 10) * 10;
         let d = Math.round(chem_d / 10) * 10;
 
-        // Adjust rounding errors if sum < 100 after rounding
         let final_add = a + b + c + d;
-        if (final_add < 100) {
-            const maxVal = Math.max(a, b, c, d);
-            if (a === maxVal) a += 10;
-            else if (b === maxVal) b += 10;
-            else if (c === maxVal) c += 10;
-            else d += 10;
-        }
 
-        // Adjust rounding errors if sum > 100 after rounding
-        if (final_add > 100) {
-            let for_min_a = (a === 0) ? 1000 : a;
-            let for_min_b = (b === 0) ? 1000 : b;
-            let for_min_c = (c === 0) ? 1000 : c;
-            let for_min_d = (d === 0) ? 1000 : d;
+        let diff = final_add - 100;
+        if (diff > 0 && final_add > 0) {
+            let arr = [
+                {name: 'a', rounded: a, original: chem_a},
+                {name: 'b', rounded: b, original: chem_b},
+                {name: 'c', rounded: c, original: chem_c},
+                {name: 'd', rounded: d, original: chem_d}
+            ].sort((x, y) => (y.rounded - y.original) - (x.rounded - x.original));
 
-            const minVal = Math.min(for_min_a, for_min_b, for_min_c, for_min_d);
+            let count = diff / 10;
+            for (let i = 0; count > 0; i = (i + 1) % arr.length) {
+                if (arr[i].rounded > 0) {
+                    arr[i].rounded -= 10;
+                    count--;
+                }
+            }
+            a = arr.find(x => x.name === 'a').rounded;
+            b = arr.find(x => x.name === 'b').rounded;
+            c = arr.find(x => x.name === 'c').rounded;
+            d = arr.find(x => x.name === 'd').rounded;
+        } else if (diff < 0 && final_add > 0) {
+            let arr = [
+                {name: 'a', rounded: a, original: chem_a},
+                {name: 'b', rounded: b, original: chem_b},
+                {name: 'c', rounded: c, original: chem_c},
+                {name: 'd', rounded: d, original: chem_d}
+            ].sort((x, y) => (x.rounded - x.original) - (y.rounded - y.original));
 
-            if (a === minVal) a -= 10;
-            else if (b === minVal) b -= 10;
-            else if (c === minVal) c -= 10;
-            else d -= 10;
+            let count = Math.abs(diff) / 10;
+            let validIndices = arr.map((val, idx) => val.original > 0 ? idx : -1).filter(idx => idx !== -1);
+            if (validIndices.length === 0) validIndices = [0]; // fallback
+
+            let i = 0;
+            while(count > 0) {
+                arr[validIndices[i % validIndices.length]].rounded += 10;
+                count--;
+                i++;
+            }
+            a = arr.find(x => x.name === 'a').rounded;
+            b = arr.find(x => x.name === 'b').rounded;
+            c = arr.find(x => x.name === 'c').rounded;
+            d = arr.find(x => x.name === 'd').rounded;
         }
 
         // Calculate reaction_id hash
