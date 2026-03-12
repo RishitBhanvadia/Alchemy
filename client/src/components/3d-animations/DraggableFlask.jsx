@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useDrag } from '@use-gesture/react';
 import { RigidBody } from '@react-three/rapier';
@@ -8,13 +8,14 @@ import PropTypes from 'prop-types';
 
 const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAmount = 100 }, ref) => {
     const api = useRef();
+    useImperativeHandle(ref, () => api.current);
     const [isDragging, setIsDragging] = useState(false);
     const [amount, setAmount] = useState(maxAmount);
     
     // Pouring logic
     const isPouring = useRef(false);
     
-    const bind = useDrag(({ active, movement: [x, y], timeStamp, event }) => {
+    const bind = useDrag(({ active, movement: [x, y], event }) => {
         if (active) {
             event.stopPropagation();
             setIsDragging(true);

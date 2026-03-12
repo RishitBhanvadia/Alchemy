@@ -6,6 +6,11 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom',
+        server: {
+            deps: {
+                inline: ['@exodus/bytes']
+            }
+        },
         setupFiles: './src/test/setup.js',
         exclude: [
             ...configDefaults.exclude,

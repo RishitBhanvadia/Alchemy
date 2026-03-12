@@ -1,0 +1,4 @@
+## 2024-05-18 - Semantic labels in custom UI widgets
+**Problem:** `<label>` tags were used to describe chemical levels but lacked associated form controls, causing screen-reader ambiguity and accessibility linting errors (`jsx-a11y/label-has-associated-control`).
+**Context:** The Alchemistry 3D Lab uses custom glassmorphism progress bars to show real-time physics data (chemical levels). Using `<label>` for these static text indicators outside of form contexts violates semantic rules and breaks a11y standards.
+**Solution:** Replaced `<label>` tags with `<span className="label-text">` to correctly separate form-control semantics from custom UI labelling. Updated the CSS to target `.label-text` explicitly and used `:not(.label-text)` to preserve specific styling for the right-aligned percentage spans, successfully fixing accessibility without altering the visual design.
