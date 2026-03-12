@@ -6,6 +6,7 @@ import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line no-unused-vars
 const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAmount = 100 }, ref) => {
     const api = useRef();
     const [isDragging, setIsDragging] = useState(false);
@@ -14,7 +15,7 @@ const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAm
     // Pouring logic
     const isPouring = useRef(false);
     
-    const bind = useDrag(({ active, movement: [x, y], timeStamp, event }) => {
+    const bind = useDrag(({ active, movement: [x, y], event }) => {
         if (active) {
             event.stopPropagation();
             setIsDragging(true);

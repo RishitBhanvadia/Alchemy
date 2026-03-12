@@ -4,7 +4,7 @@ import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import DraggableFlask from './DraggableFlask';
 import PropTypes from 'prop-types';
 
-const PhysicsLab = ({ chemStates, setChemA, setChemB, setChemC, setChemD }) => {
+const PhysicsLab = ({ setChemA, setChemB, setChemC, setChemD }) => {
     return (
         <Physics gravity={[0, -9.81, 0]}>
             {/* Shelf (Kinematic or Fixed) */}
@@ -64,7 +64,6 @@ const PhysicsLab = ({ chemStates, setChemA, setChemB, setChemC, setChemD }) => {
 };
 
 PhysicsLab.propTypes = {
-    chemStates: PropTypes.object,
     setChemA: PropTypes.func,
     setChemB: PropTypes.func,
     setChemC: PropTypes.func,

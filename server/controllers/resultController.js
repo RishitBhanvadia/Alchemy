@@ -73,6 +73,8 @@ exports.calculateResult = async (req, res) => {
         if (c !== 0) reaction_id += 100;
         if (d !== 0) reaction_id += 1000;
 
+        console.log(`Querying Supabase: A:${a}, B:${b}, C:${c}, D:${d}, ID:${reaction_id}`);
+
         // Query Supabase
         const { data, error } = await supabase
             .from('results')
@@ -84,7 +86,7 @@ exports.calculateResult = async (req, res) => {
             .eq('reaction_id', reaction_id);
 
         if (error) {
-            console.error("Supabase Query Error occurred.");
+            console.error("Supabase Query Error:", error);
             return res.status(500).json({ message: "Database Error" });
         }
 
@@ -102,7 +104,7 @@ exports.calculateResult = async (req, res) => {
         res.json(mappedData);
 
     } catch (error) {
-        console.error("Error in calculateResult occurred.");
+        console.error("Error in calculateResult:", error);
         res.status(500).json({ message: "Server Error" });
     }
 };
