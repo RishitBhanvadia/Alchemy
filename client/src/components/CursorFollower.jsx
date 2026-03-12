@@ -21,12 +21,14 @@ const CursorFollower = () => {
 
             // Check if hovering over clickable elements
             const target = e.target;
-            const isClickable =
-                target.tagName?.toLowerCase() === 'button' ||
-                target.tagName?.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            let isClickable = false;
+            if (target && target.tagName) {
+                isClickable =
+                    target.tagName.toLowerCase() === 'button' ||
+                    target.tagName.toLowerCase() === 'a' ||
+                    (target.closest && (target.closest('button') || target.closest('a'))) ||
+                    (target.classList && target.classList.contains('clickable'));
+            }
 
             setHovering(!!isClickable);
         };
