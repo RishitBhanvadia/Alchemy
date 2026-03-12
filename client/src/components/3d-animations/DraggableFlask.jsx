@@ -14,7 +14,7 @@ const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAm
     // Pouring logic
     const isPouring = useRef(false);
     
-    const bind = useDrag(({ active, movement: [x, y], timeStamp, event }) => {
+    const bind = useDrag(({ active, movement: [x, y], event }) => {
         if (active) {
             event.stopPropagation();
             setIsDragging(true);
@@ -56,7 +56,11 @@ const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAm
 
     return (
         <RigidBody
-            ref={api}
+            ref={(node) => {
+                api.current = node;
+                if (typeof ref === 'function') ref(node);
+                else if (ref) ref.current = node;
+            }}
             type={isDragging ? "kinematicPosition" : "dynamic"}
             position={position}
             colliders="hull"

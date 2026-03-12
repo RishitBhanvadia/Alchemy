@@ -1,40 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
-        const addEventListeners = () => {
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseenter", onMouseEnter);
-            document.addEventListener("mouseleave", onMouseLeave);
-            document.addEventListener("mousedown", onMouseDown);
-            document.addEventListener("mouseup", onMouseUp);
-        };
-
-        const removeEventListeners = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseenter", onMouseEnter);
-            document.removeEventListener("mouseleave", onMouseLeave);
-            document.removeEventListener("mousedown", onMouseDown);
-            document.removeEventListener("mouseup", onMouseUp);
-        };
-
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (cursorRef.current) {
+                cursorRef.current.style.left = `${e.clientX}px`;
+                cursorRef.current.style.top = `${e.clientY}px`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.left = `${e.clientX}px`;
+                dotRef.current.style.top = `${e.clientY}px`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            let isClickable = false;
+            if (target && target.tagName) {
+                isClickable =
+                    target.tagName.toLowerCase() === 'button' ||
+                    target.tagName.toLowerCase() === 'a' ||
+                    (target.closest && (target.closest('button') || target.closest('a'))) ||
+                    (target.classList && target.classList.contains('clickable'));
+            }
 
             setHovering(!!isClickable);
         };
@@ -55,8 +49,19 @@ const CursorFollower = () => {
             setClicking(false);
         };
 
-        addEventListeners();
-        return () => removeEventListeners();
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseenter", onMouseEnter);
+        document.addEventListener("mouseleave", onMouseLeave);
+        document.addEventListener("mousedown", onMouseDown);
+        document.addEventListener("mouseup", onMouseUp);
+
+        return () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseenter", onMouseEnter);
+            document.removeEventListener("mouseleave", onMouseLeave);
+            document.removeEventListener("mousedown", onMouseDown);
+            document.removeEventListener("mouseup", onMouseUp);
+        };
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
@@ -65,12 +70,12 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
