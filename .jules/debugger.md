@@ -1,0 +1,4 @@
+## 2026-03-12 - Prevent Continuous Re-renders in Custom Cursor
+**Bug:** The custom cursor component (`CursorFollower.jsx`) used `useState` to track the `x` and `y` coordinates of the mouse on `mousemove` events, which caused continuous expensive re-renders across the application on every mouse movement.
+**Root Cause:** Using `useState` on high-frequency events triggers the React component lifecycle repeatedly, which is particularly bad for performance when the state is only used for positioning a DOM element.
+**Learning:** In React components tracking high-frequency events like `mousemove` (e.g., custom cursors), avoid using `useState` as it causes continuous expensive component re-renders. Instead, use `useRef` to directly manipulate the DOM element's style properties (e.g., `style.left` or `style.transform`) to bypass the React render cycle entirely.
