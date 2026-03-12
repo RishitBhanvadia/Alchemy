@@ -7,7 +7,6 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
@@ -41,7 +40,6 @@ const Profile = () => {
                     if (error) throw error;
                     
                     if (data) {
-                        setExperiments(data);
                         calculateStats(data);
                     }
                 }
@@ -53,6 +51,7 @@ const Profile = () => {
         };
 
         fetchUserDataAndStats();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const calculateStats = (data) => {

@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
-import { showSuccess, showError, showInfo } from '../notifications';
+import { showSuccess, showError, showInfo, showLoading, dismissToast } from '../notifications';
 
 vi.mock('react-hot-toast', () => {
     const toastFn = vi.fn(() => ({ id: 'toast-id' }));
     toastFn.success = vi.fn();
     toastFn.error = vi.fn();
-    toastFn.loading = vi.fn();
+    toastFn.loading = vi.fn(() => 'loading-toast-id');
     toastFn.dismiss = vi.fn();
     return { default: toastFn };
 });
@@ -47,5 +47,21 @@ describe('Notification Utility', () => {
         showError('Test');
         const callArgs = toast.error.mock.calls[toast.error.mock.calls.length - 1][1];
         expect(callArgs.style).toBeDefined();
+    });
+
+    it('should call toast.loading and return toast ID', () => {
+        const message = 'Loading...';
+        const toastId = showLoading(message);
+        expect(toast.loading).toHaveBeenCalledWith(message, expect.objectContaining({
+            position: 'top-right',
+            style: expect.any(Object),
+        }));
+        expect(toastId).toBe('loading-toast-id');
+    });
+
+    it('should call toast.dismiss with the correct toast ID', () => {
+        const toastId = 'test-toast-id';
+        dismissToast(toastId);
+        expect(toast.dismiss).toHaveBeenCalledWith(toastId);
     });
 });
