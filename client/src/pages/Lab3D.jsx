@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomTestTube from "../components/testtube";
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
 import PhysicsLab from '../components/3d-animations/PhysicsLab';
 import "./Lab3D.css"; // We'll create a dedicated CSS file
