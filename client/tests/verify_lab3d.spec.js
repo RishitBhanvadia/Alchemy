@@ -24,7 +24,4 @@ test('Verify Lab3D Accessibility Improvements', async ({ page }) => {
     const warningMsg = page.locator('.note-warn');
     await expect(warningMsg).toHaveAttribute('aria-live', 'polite');
     await expect(warningMsg).toHaveText('Mix at least 2 chemicals');
-
-    // Take a screenshot of the chemical levels panel
-    await page.locator('.lab3d-controls-container').screenshot({ path: '/home/jules/verification/lab3d_a11y_verification.png' });
 });

@@ -7,7 +7,7 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
+    const [, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
@@ -25,35 +25,6 @@ const Profile = () => {
         { id: 'titration', name: 'Titration Expert', icon: '💧', description: '3 Titration experiments', earned: false },
         { id: 'organic', name: 'Organic Specialist', icon: '🌿', description: '3 Organic experiments', earned: false },
     ]);
-
-    useEffect(() => {
-        const fetchUserDataAndStats = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    setUser(user);
-                    
-                    const { data, error } = await supabase
-                        .from('experiment_results')
-                        .select('*')
-                        .eq('user_id', user.id);
-
-                    if (error) throw error;
-                    
-                    if (data) {
-                        setExperiments(data);
-                        calculateStats(data);
-                    }
-                }
-            } catch (error) {
-                logger.error("Error fetching profile data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserDataAndStats();
-    }, []);
 
     const calculateStats = (data) => {
         const total = data.length;
@@ -96,6 +67,36 @@ const Profile = () => {
         
         setBadges(updatedBadges);
     };
+
+    useEffect(() => {
+        const fetchUserDataAndStats = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    setUser(user);
+
+                    const { data, error } = await supabase
+                        .from('experiment_results')
+                        .select('*')
+                        .eq('user_id', user.id);
+
+                    if (error) throw error;
+
+                    if (data) {
+                        setExperiments(data);
+                        calculateStats(data);
+                    }
+                }
+            } catch (error) {
+                logger.error("Error fetching profile data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserDataAndStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (loading) {
         return (

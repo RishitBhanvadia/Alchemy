@@ -4,6 +4,7 @@ import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import DraggableFlask from './DraggableFlask';
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line no-unused-vars
 const PhysicsLab = ({ chemStates, setChemA, setChemB, setChemC, setChemD }) => {
     return (
         <Physics gravity={[0, -9.81, 0]}>
