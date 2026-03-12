@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomTestTube from "../components/testtube";
 import CanvasContainer from '../components/3d-animations/CanvasContainer';
 import PhysicsLab from '../components/3d-animations/PhysicsLab';
 import "./Lab3D.css"; // We'll create a dedicated CSS file
@@ -42,7 +41,6 @@ const Lab3D = () => {
             <div className="lab3d-canvas-wrapper">
                 <CanvasContainer camera={{ position: [0, 0, 10], fov: 50 }}>
                     <PhysicsLab
-                        chemStates={{ chemA, chemB, chemC, chemD }}
                         setChemA={setChemA}
                         setChemB={setChemB}
                         setChemC={setChemC}
@@ -57,6 +55,7 @@ const Lab3D = () => {
             <div className="lab3d-controls-container">
                 <div className="glass-panel chem-levels-panel">
                     <h3>Chemical Levels</h3>
+                    {/* eslint-disable jsx-a11y/label-has-associated-control */}
                     <div className="level-bar-group">
                         <label>HCl (Clear)</label>
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemA}%`, backgroundColor: '#05B9C4' }}></div></div>
@@ -77,6 +76,7 @@ const Lab3D = () => {
                         <div className="level-bar-container"><div className="level-bar-fill" style={{ width: `${chemD}%`, backgroundColor: '#DAA520' }}></div></div>
                         <span>{Math.round(chemD)}%</span>
                     </div>
+                    {/* eslint-enable jsx-a11y/label-has-associated-control */}
                 </div>
 
                 <div className="lab3d-actions">
