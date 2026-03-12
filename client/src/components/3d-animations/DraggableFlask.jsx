@@ -7,14 +7,15 @@ import * as THREE from 'three';
 import PropTypes from 'prop-types';
 
 const DraggableFlask = React.forwardRef(({ position, label, color, onPour, maxAmount = 100 }, ref) => {
-    const api = useRef();
+    const internalRef = useRef();
+    const api = ref || internalRef;
     const [isDragging, setIsDragging] = useState(false);
     const [amount, setAmount] = useState(maxAmount);
     
     // Pouring logic
     const isPouring = useRef(false);
     
-    const bind = useDrag(({ active, movement: [x, y], timeStamp, event }) => {
+    const bind = useDrag(({ active, movement: [x, y], event }) => {
         if (active) {
             event.stopPropagation();
             setIsDragging(true);
