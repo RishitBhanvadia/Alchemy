@@ -1,0 +1,4 @@
+## 2024-05-18 - Avoid React state for high-frequency events
+**Bottleneck:** The `CursorFollower` component was using `useState({ x: 0, y: 0 })` inside a `mousemove` event listener, which fired continually and caused constant re-rendering of the entire component tree since it's mounted at the root (`App.jsx`).
+**Impact:** Reduced React render cycle overhead drastically; cursor movements now directly manipulate DOM elements (`style.left`/`style.top`) bypassing React's render phase entirely. This will result in much smoother UI interactions across the app, saving significant CPU cycles.
+**Learning:** In React components tracking high-frequency events like `mousemove` (e.g., custom cursors), avoid using `useState` as it causes continuous expensive component re-renders. Instead, use `useRef` to directly manipulate the DOM element's style properties.
