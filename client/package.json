@@ -72,7 +72,16 @@
             "config",
             "mass",
             "tension",
-            "friction"
+            "friction",
+            "depthWrite",
+            "uColor",
+            "visible",
+            "array",
+            "count",
+            "itemSize",
+            "vertexColors",
+            "sizeAttenuation",
+            "blending"
           ]
         }
       ]
