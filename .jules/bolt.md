@@ -1,0 +1,3 @@
+## 2024-05-24 - Consolidate Multiple Array Iterations into a Single Pass
+**Learning:** In React components like Profile.jsx, running multiple iterations over the same array data (using `reduce`, `map`, and `filter`) to compute various statistics causes redundant O(N) loops. This degrades performance as dataset size grows. Consolidating these operations into a single O(N) `for` loop calculates all derived states efficiently in one pass.
+**Action:** Always scan arrays once using a standard `for` loop or a single `reduce` when extracting multiple metrics, especially for lists of data coming from the backend like experiment results.

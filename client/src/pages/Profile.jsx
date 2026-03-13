@@ -7,7 +7,6 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
@@ -26,42 +25,31 @@ const Profile = () => {
         { id: 'organic', name: 'Organic Specialist', icon: '🌿', description: '3 Organic experiments', earned: false },
     ]);
 
-    useEffect(() => {
-        const fetchUserDataAndStats = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    setUser(user);
-                    
-                    const { data, error } = await supabase
-                        .from('experiment_results')
-                        .select('*')
-                        .eq('user_id', user.id);
-
-                    if (error) throw error;
-                    
-                    if (data) {
-                        setExperiments(data);
-                        calculateStats(data);
-                    }
-                }
-            } catch (error) {
-                logger.error("Error fetching profile data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserDataAndStats();
-    }, []);
-
     const calculateStats = (data) => {
         const total = data.length;
         if (total === 0) return;
 
-        const totalScore = data.reduce((sum, exp) => sum + (exp.score || 0), 0);
+        // ⚡ Bolt Optimisation: Consolidating multiple array iterations (reduce, map, filter)
+        // into a single O(N) pass to improve rendering performance for large datasets.
+        let totalScore = 0;
+        let highest = 0;
+        let titrationCount = 0;
+        let organicCount = 0;
+
+        for (let i = 0; i < total; i++) {
+            const exp = data[i];
+            const score = exp.score || 0;
+            totalScore += score;
+            if (score > highest) highest = score;
+
+            const type = exp.experiment_type?.toLowerCase();
+            if (type) {
+                if (type.includes('titration')) titrationCount++;
+                if (type.includes('organic')) organicCount++;
+            }
+        }
+
         const avg = Math.round(totalScore / total);
-        const highest = Math.max(...data.map(exp => exp.score || 0));
         
         // XP is sum of scores. Level increases every 500 XP.
         const xp = totalScore;
@@ -83,12 +71,8 @@ const Profile = () => {
                 case 'regular': earned = total >= 5; break;
                 case 'master': earned = total >= 10; break;
                 case 'perfect': earned = highest === 100; break;
-                case 'titration': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('titration')).length >= 3; 
-                    break;
-                case 'organic': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('organic')).length >= 3; 
-                    break;
+                case 'titration': earned = titrationCount >= 3; break;
+                case 'organic': earned = organicCount >= 3; break;
                 default: earned = false;
             }
             return { ...badge, earned };
@@ -96,6 +80,36 @@ const Profile = () => {
         
         setBadges(updatedBadges);
     };
+
+    useEffect(() => {
+        const fetchUserDataAndStats = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    setUser(user);
+
+                    const { data, error } = await supabase
+                        .from('experiment_results')
+                        .select('*')
+                        .eq('user_id', user.id);
+
+                    if (error) throw error;
+
+                    if (data) {
+                        calculateStats(data);
+                    }
+                }
+            } catch (error) {
+                logger.error("Error fetching profile data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserDataAndStats();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     if (loading) {
         return (
