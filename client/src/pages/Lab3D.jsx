@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, no-console */
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";

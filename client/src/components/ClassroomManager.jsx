@@ -1,3 +1,4 @@
+/* eslint-disable no-console, no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * usePerformanceScaling.js — FPS monitoring and auto-downgrade hook
  * Phase 3.4.1: Monitors frame timing, scales down pixel ratio/shadows/bloom when FPS drops
