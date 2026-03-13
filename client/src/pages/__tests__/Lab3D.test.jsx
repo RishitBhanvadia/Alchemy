@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Lab3D from '../Lab3D';
 import useLabStore from '../../store/labStore';
 import axios from 'axios';
@@ -23,9 +24,15 @@ vi.mock('../../supabaseClient', () => ({
 
 vi.mock('axios');
 vi.mock('react-hot-toast');
-vi.mock('@react-three/fiber', () => ({
-    Canvas: ({ children }) => <div data-testid="mock-canvas">{children}</div>,
-}));
+vi.mock('@react-three/fiber', () => {
+    const MockCanvas = ({ children }) => <div data-testid="mock-canvas">{children}</div>;
+    MockCanvas.propTypes = {
+        children: PropTypes.node
+    };
+    return {
+        Canvas: MockCanvas
+    };
+});
 
 describe('Lab3D Component', () => {
     beforeEach(() => {
