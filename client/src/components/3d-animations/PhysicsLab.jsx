@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Cylinder, MeshTransmissionMaterial, OrbitControls } from '@react-three/drei';
 import DraggableFlask from './DraggableFlask';

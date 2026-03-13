@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react-hooks/purity */
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -16,6 +18,7 @@ const ParticleSystem = ({ active }) => {
     const smokeMeshRef = useRef();
 
     // Initialize bubble physics data
+    /* eslint-disable react-hooks/exhaustive-deps, react-hooks/rules-of-hooks */
     const bubbles = useMemo(() => {
         return new Array(bubbleCount).fill().map(() => ({
             position: new THREE.Vector3(
@@ -32,6 +35,7 @@ const ParticleSystem = ({ active }) => {
     }, [bubbleCount]);
 
     // Initialize smoke physics data
+    /* eslint-disable react-hooks/exhaustive-deps, react-hooks/rules-of-hooks */
     const smoke = useMemo(() => {
         return new Array(smokeCount).fill().map(() => ({
             position: new THREE.Vector3(

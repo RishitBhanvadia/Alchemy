@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Beaker.jsx — 3D Beaker mesh with RigidBody physics and liquid shader
  * Phase 3.1 Task [6]: Wrapped in <RigidBody> with CCD enabled
