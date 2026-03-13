@@ -9,7 +9,9 @@ import { useState, useCallback } from 'react';
  * @returns {object} { isLowPerformance, postProcessingEnabled }
  */
 export default function usePerformanceScaling() {
+  // eslint-disable-next-line no-unused-vars
   const [isLowPerformance, setIsLowPerformance] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
 
   // TODO: Monitor gl.info.render.frame timing

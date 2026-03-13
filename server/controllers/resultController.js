@@ -37,7 +37,7 @@ exports.calculateResult = async (req, res) => {
         const add = chem_a + chem_b + chem_c + chem_d;
 
         // Normalize if sum < 100
-        if (add < 100) {
+        if (add > 0 && add < 100) {
             chem_a = (chem_a / add) * 100;
             chem_b = (chem_b / add) * 100;
             chem_c = (chem_c / add) * 100;
