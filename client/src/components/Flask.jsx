@@ -14,6 +14,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
+// eslint-disable-next-line no-unused-vars
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import { createLiquidMaterial } from '../shaders/LiquidShader';

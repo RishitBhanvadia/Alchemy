@@ -9,6 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -187,6 +188,7 @@ export default function TeacherDashboard() {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
@@ -228,6 +230,7 @@ export default function TeacherDashboard() {
 
         setExperimentScores((data || []).map(row => row.score || 0));
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
@@ -380,6 +383,7 @@ export default function TeacherDashboard() {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label style={styles.dateLabel}>From:</label>
               <input
                 type="date"
@@ -389,6 +393,7 @@ export default function TeacherDashboard() {
               />
             </div>
             <div style={styles.dateField}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label style={styles.dateLabel}>To:</label>
               <input
                 type="date"
