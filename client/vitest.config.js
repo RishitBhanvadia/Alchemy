@@ -21,5 +21,10 @@ export default defineConfig({
                 '**/dist/**',
             ],
         },
+        server: {
+            deps: {
+                inline: ['@exodus/bytes']
+            }
+        }
     },
 });
