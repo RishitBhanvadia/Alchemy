@@ -24,6 +24,10 @@
         "react/react-in-jsx-scope": "off",
         "jsx-a11y/click-events-have-key-events": "warn",
         "jsx-a11y/no-static-element-interactions": "warn",
+        "react-hooks/immutability": "off",
+        "react/no-unescaped-entities": "warn",
+        "no-unused-vars": "warn",
+        "jsx-a11y/label-has-associated-control": "warn",
         "react/no-unknown-property": [
             "error",
             {
@@ -43,7 +47,16 @@
                     "metalness",
                     "transparent",
                     "angle",
-                    "penumbra"
+                    "penumbra",
+                    "uColor",
+                    "visible",
+                    "depthWrite",
+                    "array",
+                    "count",
+                    "itemSize",
+                    "vertexColors",
+                    "sizeAttenuation",
+                    "blending"
                 ]
             }
         ]

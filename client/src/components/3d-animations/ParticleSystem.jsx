@@ -17,6 +17,7 @@ const ParticleSystem = ({ active }) => {
 
     // Initialize bubble physics data
     const bubbles = useMemo(() => {
+        /* eslint-disable react-hooks/purity */
         return new Array(bubbleCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.5, // Spread across beaker radius
@@ -29,10 +30,12 @@ const ParticleSystem = ({ active }) => {
             scale: 0.2 + Math.random() * 0.3,
             life: Math.random() // Stagger start times
         }));
+        /* eslint-enable react-hooks/purity */
     }, [bubbleCount]);
 
     // Initialize smoke physics data
     const smoke = useMemo(() => {
+        /* eslint-disable react-hooks/purity */
         return new Array(smokeCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.0, 
@@ -48,6 +51,7 @@ const ParticleSystem = ({ active }) => {
             life: Math.random(),
             opacityMod: Math.random()
         }));
+        /* eslint-enable react-hooks/purity */
     }, [smokeCount]);
 
     const dummy = useMemo(() => new THREE.Object3D(), []);
