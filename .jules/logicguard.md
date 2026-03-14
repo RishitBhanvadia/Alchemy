@@ -1,0 +1,4 @@
+## 2023-10-27 - Consolidate O(N) Passes in Profile Stats
+**Bug:** Multiple O(N) array operations (reduce, map, filter) were used in `Profile.jsx` to calculate statistics and badge criteria, which is inefficient. Furthermore, the previous badge checking logic used a `switch` statement that could potentially skip multiple overlapping categories for a single experiment (though `filter` checked the original array, doing so repeatedly is inefficient).
+**Root Cause:** The `calculateStats` method scanned the `data` array multiple times: once for `reduce` to sum scores, once for `map`/`max` to find the highest score, and twice for `filter` to find titration and organic counts.
+**Learning:** Consolidate multiple iterations (reduce, map, filter) into a single O(N) pass to calculate stats and badge counts simultaneously. Use separate 'if' statements for badge criteria to ensure experiments matching multiple categories are correctly counted.
