@@ -232,7 +232,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, gl, homePosition]
+    [dragState, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
