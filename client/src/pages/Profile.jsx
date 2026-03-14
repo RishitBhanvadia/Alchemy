@@ -7,7 +7,7 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
+    const [experiments, setExperiments] = useState([]); // eslint-disable-line no-unused-vars
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,

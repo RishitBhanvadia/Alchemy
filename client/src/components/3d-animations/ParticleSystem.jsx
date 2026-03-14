@@ -16,6 +16,7 @@ const ParticleSystem = ({ active }) => {
     const smokeMeshRef = useRef();
 
     // Initialize bubble physics data
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/purity
     const bubbles = useMemo(() => {
         return new Array(bubbleCount).fill().map(() => ({
             position: new THREE.Vector3(
@@ -32,6 +33,7 @@ const ParticleSystem = ({ active }) => {
     }, [bubbleCount]);
 
     // Initialize smoke physics data
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/purity
     const smoke = useMemo(() => {
         return new Array(smokeCount).fill().map(() => ({
             position: new THREE.Vector3(

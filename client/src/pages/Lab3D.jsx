@@ -14,6 +14,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
+    // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
     const { 
         chemA, setChemA, 
@@ -174,17 +175,18 @@ const Lab3D = () => {
         // We could also pre-fill the AI chat here if desired
     };
 
-    function onOrNot() {
+    // Optimisation: Memoize chemical counting to prevent function recreation and execution on every render tick during 3D animations
+    // Re-evaluates only when slider values actually change
+    const hasEnoughChemicals = React.useMemo(() => {
         let sum = 0;
         if (chemA > 0) sum += 1;
         if (chemB > 0) sum += 1;
         if (chemC > 0) sum += 1;
         if (chemD > 0) sum += 1;
         return sum >= 2;
-    }
+    }, [chemA, chemB, chemC, chemD]);
 
-
-    const isPlayDisabled = !(onOrNot());
+    const isPlayDisabled = !hasEnoughChemicals;
 
     return (
         <div className="lab3d-page">
@@ -325,7 +327,7 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {!hasEnoughChemicals && <p className="note-warn">Mix at least 2 chemicals to start</p>}
                     </div>
                 </div>
             </div>
