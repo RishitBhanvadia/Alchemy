@@ -27,6 +27,13 @@ exports.explainReaction = async (req, res) => {
     try {
         const { chemicals, reaction_outcome, student_question } = req.body;
 
+        if (student_question !== undefined && (typeof student_question !== 'string' || student_question.length > 500)) {
+            return res.status(400).json({ error: 'Invalid student question.' });
+        }
+        if (reaction_outcome !== undefined && (typeof reaction_outcome !== 'string' || reaction_outcome.length > 500)) {
+            return res.status(400).json({ error: 'Invalid reaction outcome.' });
+        }
+
         if (!process.env.GEMINI_API_KEY) {
             return res.status(500).json({ error: 'Gemini API key is not configured on the server.' });
         }
@@ -60,6 +67,16 @@ Ensure the explanation is scientifically accurate but easy to understand.`;
 exports.getHint = async (req, res) => {
     try {
         const { chem_a, chem_b, chem_c, chem_d } = req.query;
+
+        const validateConc = (val) => {
+            if (val === undefined || val === null) return true; // Optional fields
+            const num = Number(val);
+            return !isNaN(num) && num >= 0 && num <= 100;
+        };
+
+        if (!validateConc(chem_a) || !validateConc(chem_b) || !validateConc(chem_c) || !validateConc(chem_d)) {
+            return res.status(400).json({ error: 'Invalid chemical concentrations.' });
+        }
 
         if (!process.env.GEMINI_API_KEY) {
             return res.status(500).json({ error: 'Gemini API key is not configured.' });
