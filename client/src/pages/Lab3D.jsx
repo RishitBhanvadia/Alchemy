@@ -14,6 +14,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
+    // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
     const { 
         chemA, setChemA, 
