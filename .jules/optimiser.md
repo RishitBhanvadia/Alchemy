@@ -1,0 +1,4 @@
+## 2024-05-24 - Optimise array processing in Profile stats calculation
+**Bottleneck:** Calculating statistics in the `Profile` page involved multiple passes over the `data` array (`reduce` for total score, `map` for finding the highest, and multiple `filter`s for checking badges). This leads to O(K*N) operations where K is the number of badge criteria plus two.
+**Impact:** Reduced iteration overhead from multiple O(N) passes to a single O(N) pass, making stat computation scales efficiently with large user datasets (more experiments completed).
+**Learning:** Consolidating multiple array methods (`reduce`, `map`, `filter`) into a single `for` loop significantly improves calculation speed when dealing with large dynamic arrays that determine UI components. Separate `if` checks can cleanly handle multiple conditions inside the loop.
