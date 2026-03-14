@@ -28,6 +28,15 @@
             "error",
             {
                 "ignore": [
+                    "uColor",
+                    "visible",
+                    "depthWrite",
+                    "array",
+                    "count",
+                    "itemSize",
+                    "vertexColors",
+                    "sizeAttenuation",
+                    "blending",
                     "position",
                     "rotation",
                     "args",

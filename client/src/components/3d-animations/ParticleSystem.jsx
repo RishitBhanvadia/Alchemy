@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ const ParticleSystem = ({ active }) => {
     const smokeMeshRef = useRef();
 
     // Initialize bubble physics data
-    const bubbles = useMemo(() => {
+    const [bubbles] = useState(() => {
         return new Array(bubbleCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.5, // Spread across beaker radius
@@ -29,10 +29,10 @@ const ParticleSystem = ({ active }) => {
             scale: 0.2 + Math.random() * 0.3,
             life: Math.random() // Stagger start times
         }));
-    }, [bubbleCount]);
+    });
 
     // Initialize smoke physics data
-    const smoke = useMemo(() => {
+    const [smoke] = useState(() => {
         return new Array(smokeCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.0, 
@@ -48,9 +48,9 @@ const ParticleSystem = ({ active }) => {
             life: Math.random(),
             opacityMod: Math.random()
         }));
-    }, [smokeCount]);
+    });
 
-    const dummy = useMemo(() => new THREE.Object3D(), []);
+    const [dummy] = useState(() => new THREE.Object3D());
 
     useFrame((state, delta) => {
         if (!active) return; // Only animate when reaction is triggered
