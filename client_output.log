@@ -7,3 +7,4 @@
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+7:51:27 AM [vite] (client) hmr update /src/pages/Profile.jsx
