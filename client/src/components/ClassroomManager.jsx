@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
+import logger from '../utils/logger';
 
 const ClassroomManager = () => {
     const [classrooms, setClassrooms] = useState([]);
@@ -21,7 +22,7 @@ const ClassroomManager = () => {
             .eq('teacher_id', user.id);
 
         if (error) {
-            console.error('Error fetching classrooms:', error);
+            logger.error('Error fetching classrooms:', error);
         } else {
             setClassrooms(data);
         }
@@ -38,7 +39,7 @@ const ClassroomManager = () => {
             // Generate a random 6-character code
             const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('classrooms')
                 .insert([
                     { 
