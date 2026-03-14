@@ -9,7 +9,7 @@ export default defineConfig({
         setupFiles: './src/test/setup.js',
         server: {
             deps: {
-                inline: ['@exodus/bytes']
+                inline: ['@exodus/bytes', 'html-encoding-sniffer', 'jsdom']
             }
         },
         exclude: [
