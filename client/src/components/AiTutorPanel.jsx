@@ -87,7 +87,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         >
           <div className="ai-tutor-header">
             <h2>Gemini Flash Tutor</h2>
-            <button className="close-button" onClick={onClose} aria-label="Close AI Tutor">×</button>
+            <button className="close-button" onClick={onClose}>×</button>
           </div>
 
           <div className="current-context">
@@ -110,7 +110,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
           <div className="chat-history">
             {chatHistory.length === 0 ? (
               <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '40px' }}>
-                <p>Hello! I'm your AI Chemistry Tutor.</p>
+                <p>Hello! I&apos;m your AI Chemistry Tutor.</p>
                 <p>Ask me anything about the chemicals or reactions in the lab.</p>
               </div>
             ) : (

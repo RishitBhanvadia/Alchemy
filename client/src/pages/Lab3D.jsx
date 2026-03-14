@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
 import { Canvas } from '@react-three/fiber';
 import "./Lab3D.css";
 import useLabStore from "../store/labStore";
@@ -14,7 +13,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
-    const navigate = useNavigate();
+
     const { 
         chemA, setChemA, 
         chemB, setChemB, 
@@ -335,7 +334,6 @@ const Lab3D = () => {
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
-                aria-label="Open AI Tutor"
             >
                 🤖
             </button>
