@@ -27,10 +27,10 @@ exports.explainReaction = async (req, res) => {
     try {
         const { chemicals, reaction_outcome, student_question } = req.body;
 
-        if (typeof student_question !== 'string' || student_question.length > 500) {
+        if (student_question !== undefined && (typeof student_question !== 'string' || student_question.length > 500)) {
             return res.status(400).json({ error: 'Invalid student question.' });
         }
-        if (typeof reaction_outcome !== 'string' || reaction_outcome.length > 500) {
+        if (reaction_outcome !== undefined && (typeof reaction_outcome !== 'string' || reaction_outcome.length > 500)) {
             return res.status(400).json({ error: 'Invalid reaction outcome.' });
         }
 
@@ -69,6 +69,7 @@ exports.getHint = async (req, res) => {
         const { chem_a, chem_b, chem_c, chem_d } = req.query;
 
         const validateConc = (val) => {
+            if (val === undefined || val === null) return true; // Optional fields
             const num = Number(val);
             return !isNaN(num) && num >= 0 && num <= 100;
         };
