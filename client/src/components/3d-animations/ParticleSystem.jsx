@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ const ParticleSystem = ({ active }) => {
     const smokeMeshRef = useRef();
 
     // Initialize bubble physics data
-    const [bubbles, setBubbles] = useState(() => {
+    const [bubbles] = useState(() => {
         return new Array(bubbleCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.5, // Spread across beaker radius
@@ -31,23 +31,8 @@ const ParticleSystem = ({ active }) => {
         }));
     });
 
-    useEffect(() => {
-        setBubbles(new Array(bubbleCount).fill().map(() => ({
-            position: new THREE.Vector3(
-                (Math.random() - 0.5) * 1.5, // Spread across beaker radius
-                -1.4 + Math.random() * 0.5,  // Start near bottom
-                (Math.random() - 0.5) * 1.5
-            ),
-            velocity: 0.5 + Math.random() * 1.5, // Upward speed
-            wobbleSpeed: 2 + Math.random() * 3,
-            wobbleOffset: Math.random() * Math.PI * 2,
-            scale: 0.2 + Math.random() * 0.3,
-            life: Math.random() // Stagger start times
-        })));
-    }, [bubbleCount]);
-
     // Initialize smoke physics data
-    const [smoke, setSmoke] = useState(() => {
+    const [smoke] = useState(() => {
         return new Array(smokeCount).fill().map(() => ({
             position: new THREE.Vector3(
                 (Math.random() - 0.5) * 1.0, 
@@ -64,24 +49,6 @@ const ParticleSystem = ({ active }) => {
             opacityMod: Math.random()
         }));
     });
-
-    useEffect(() => {
-        setSmoke(new Array(smokeCount).fill().map(() => ({
-            position: new THREE.Vector3(
-                (Math.random() - 0.5) * 1.0,
-                1.0 + Math.random() * 0.5,  // Start near top
-                (Math.random() - 0.5) * 1.0
-            ),
-            velocity: new THREE.Vector3(
-                (Math.random() - 0.5) * 0.8, // Slow outward spread
-                1.0 + Math.random() * 1.0,   // Upward lift
-                (Math.random() - 0.5) * 0.8
-            ),
-            scale: 0.5 + Math.random() * 1.0,
-            life: Math.random(),
-            opacityMod: Math.random()
-        })));
-    }, [smokeCount]);
 
     const dummy = useMemo(() => new THREE.Object3D(), []);
 
