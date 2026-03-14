@@ -18,6 +18,7 @@ vi.mock('../../supabaseClient', () => ({
 }));
 
 vi.mock('@react-three/fiber', () => ({
+    // eslint-disable-next-line react/prop-types
     Canvas: ({ children }) => <div data-testid="mock-canvas">{children}</div>,
 }));
 
