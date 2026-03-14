@@ -21,6 +21,7 @@ const ClassroomManager = () => {
             .eq('teacher_id', user.id);
 
         if (error) {
+            // eslint-disable-next-line no-console
             console.error('Error fetching classrooms:', error);
         } else {
             setClassrooms(data);

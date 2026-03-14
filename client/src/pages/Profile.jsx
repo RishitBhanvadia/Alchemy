@@ -54,6 +54,7 @@ const Profile = () => {
         };
 
         fetchUserDataAndStats();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const calculateStats = (data) => {
