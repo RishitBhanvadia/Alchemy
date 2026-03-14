@@ -97,6 +97,7 @@ PhysicsLab.propTypes = {
     setChemC: PropTypes.func,
     setChemD: PropTypes.func,
     isReacting: PropTypes.bool,
+    lockedChems: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PhysicsLab;

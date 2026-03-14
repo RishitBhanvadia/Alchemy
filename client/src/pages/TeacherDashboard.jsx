@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -22,6 +22,7 @@ import { supabase } from '../supabaseClient';
 import { useLabStore } from '../store/labStore';
 import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
+import logger from '../utils/logger';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -187,7 +188,7 @@ export default function TeacherDashboard() {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
-        console.error('Failed to fetch students:', err);
+        logger.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
         setLoading(false);
@@ -228,7 +229,7 @@ export default function TeacherDashboard() {
 
         setExperimentScores((data || []).map(row => row.score || 0));
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        logger.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
       }
@@ -380,6 +381,7 @@ export default function TeacherDashboard() {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label style={styles.dateLabel}>From:</label>
               <input
                 type="date"
@@ -389,6 +391,7 @@ export default function TeacherDashboard() {
               />
             </div>
             <div style={styles.dateField}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label style={styles.dateLabel}>To:</label>
               <input
                 type="date"
