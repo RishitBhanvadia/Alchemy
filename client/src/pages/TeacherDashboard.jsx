@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -380,7 +380,7 @@ export default function TeacherDashboard() {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <span style={{...styles.dateLabel, display: "inline-block"}}>From:</span>
               <input
                 type="date"
                 style={styles.dateInput}
@@ -389,7 +389,7 @@ export default function TeacherDashboard() {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <span style={{...styles.dateLabel, display: "inline-block"}}>To:</span>
               <input
                 type="date"
                 style={styles.dateInput}

@@ -38,7 +38,7 @@ const ClassroomManager = () => {
             // Generate a random 6-character code
             const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('classrooms')
                 .insert([
                     { 
