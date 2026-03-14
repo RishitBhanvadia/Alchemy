@@ -7,7 +7,6 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    // eslint-disable-next-line no-unused-vars
     const [experiments, setExperiments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
@@ -54,30 +53,15 @@ const Profile = () => {
         };
 
         fetchUserDataAndStats();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const calculateStats = (data) => {
         const total = data.length;
         if (total === 0) return;
 
-        let totalScore = 0;
-        let highest = 0;
-        let titrationCount = 0;
-        let organicCount = 0;
-
-        for (let i = 0; i < total; i++) {
-            const exp = data[i];
-            const score = exp.score || 0;
-            totalScore += score;
-            if (score > highest) highest = score;
-
-            const type = exp.experiment_type?.toLowerCase() || '';
-            if (type.includes('titration')) titrationCount++;
-            if (type.includes('organic')) organicCount++;
-        }
-
+        const totalScore = data.reduce((sum, exp) => sum + (exp.score || 0), 0);
         const avg = Math.round(totalScore / total);
+        const highest = Math.max(...data.map(exp => exp.score || 0));
         
         // XP is sum of scores. Level increases every 500 XP.
         const xp = totalScore;
@@ -94,12 +78,19 @@ const Profile = () => {
         // Check badges
         const updatedBadges = badges.map(badge => {
             let earned = false;
-            if (badge.id === 'novice') earned = total >= 1;
-            else if (badge.id === 'regular') earned = total >= 5;
-            else if (badge.id === 'master') earned = total >= 10;
-            else if (badge.id === 'perfect') earned = highest === 100;
-            else if (badge.id === 'titration') earned = titrationCount >= 3;
-            else if (badge.id === 'organic') earned = organicCount >= 3;
+            switch (badge.id) {
+                case 'novice': earned = total >= 1; break;
+                case 'regular': earned = total >= 5; break;
+                case 'master': earned = total >= 10; break;
+                case 'perfect': earned = highest === 100; break;
+                case 'titration':
+                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('titration')).length >= 3;
+                    break;
+                case 'organic':
+                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('organic')).length >= 3;
+                    break;
+                default: earned = false;
+            }
             return { ...badge, earned };
         });
         
