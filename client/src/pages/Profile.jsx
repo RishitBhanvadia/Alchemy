@@ -83,11 +83,11 @@ const Profile = () => {
                 case 'regular': earned = total >= 5; break;
                 case 'master': earned = total >= 10; break;
                 case 'perfect': earned = highest === 100; break;
-                case 'titration': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('titration')).length >= 3; 
+                case 'titration':
+                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('titration')).length >= 3;
                     break;
-                case 'organic': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('organic')).length >= 3; 
+                case 'organic':
+                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('organic')).length >= 3;
                     break;
                 default: earned = false;
             }
