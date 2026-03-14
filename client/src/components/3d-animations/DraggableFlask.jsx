@@ -95,7 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        document.body.style.cursor = 'grab';
+        document.body.style.cursor = '';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
@@ -149,11 +149,27 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const liquidHeight = 1.3 * (amount / maxAmount);
     const liquidY = -0.65 + (0.65 * (amount / maxAmount));
 
+    const handlePointerEnter = useCallback((e) => {
+        e.stopPropagation();
+        if (!dragActive.current) {
+            document.body.style.cursor = 'grab';
+        }
+    }, []);
+
+    const handlePointerLeave = useCallback((e) => {
+        e.stopPropagation();
+        if (!dragActive.current) {
+            document.body.style.cursor = '';
+        }
+        handlePointerUp(e);
+    }, [handlePointerUp]);
+
     const eventHandlers = {
         onPointerDown: handlePointerDown,
         onPointerMove: handlePointerMove,
         onPointerUp: handlePointerUp,
-        onPointerLeave: handlePointerUp,
+        onPointerEnter: handlePointerEnter,
+        onPointerLeave: handlePointerLeave,
     };
 
     return (
