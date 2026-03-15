@@ -2,15 +2,22 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
+import PropTypes from 'prop-types';
 
 // Mock navigate
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
+    const PropTypesMock = await import('prop-types');
+    const MockLink = ({ to, children, ...props }) => <a href={to} {...props}>{children}</a>;
+    MockLink.propTypes = {
+        to: PropTypesMock.default.string.isRequired,
+        children: PropTypesMock.default.node.isRequired
+    };
     return {
         ...actual,
         useNavigate: () => mockNavigate,
-        Link: ({ to, children, ...props }) => <a href={to} {...props}>{children}</a>
+        Link: MockLink
     };
 });
 
