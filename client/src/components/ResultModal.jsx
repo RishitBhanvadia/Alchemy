@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import './ResultModal.css';
 
 /**
@@ -84,6 +85,20 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
       </motion.div>
     </AnimatePresence>
   );
+};
+
+ResultModal.propTypes = {
+  isOpen: PropTypes.bool,
+  result: PropTypes.shape({
+    outcome: PropTypes.string,
+    result_formula: PropTypes.string,
+    product_info: PropTypes.string,
+    product_name: PropTypes.string,
+    result: PropTypes.string
+  }),
+  onReset: PropTypes.func,
+  onClose: PropTypes.func,
+  onAskAI: PropTypes.func
 };
 
 export default ResultModal;
