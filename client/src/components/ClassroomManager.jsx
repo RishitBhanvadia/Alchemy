@@ -44,6 +44,7 @@ const ClassroomManager = () => {
                 classCode += chars[array[i] % chars.length];
             }
 
+            // eslint-disable-next-line no-unused-vars
             const { data, error } = await supabase
                 .from('classrooms')
                 .insert([
