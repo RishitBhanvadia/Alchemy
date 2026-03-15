@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
@@ -58,7 +59,20 @@ const History = () => {
                             <p className="neon-text blink">LOADING ARCHIVES...</p>
                         </div>
                     ) : experiments.length === 0 ? (
-                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                        <div className="empty-state-container">
+                            <div className="empty-icon-wrapper">
+                                <i className="fa-solid fa-flask empty-icon"></i>
+                            </div>
+                            <h3 className="empty-title">No Experiments Yet</h3>
+                            <p className="empty-description">
+                                Your laboratory logs are currently empty. Start your first experiment to see results here!
+                            </p>
+                            <div className="empty-actions">
+                                <Link to="/dashboard" className="action-button empty-action-btn">
+                                    GO TO DASHBOARD
+                                </Link>
+                            </div>
+                        </div>
                     ) : (
                         <div className="table-wrapper">
                             <table className="history-table">
