@@ -1,0 +1,4 @@
+## 2024-03-15 - Testing React Testing Library Case Mismatch and jsx-a11y Form Validation
+**Bug:** A React Testing Library case failed because `screen.getByText(/laboratory/i)` was looking for 'laboratory' text, but the `Navbar` component outputs '3D LAB'. Also, the ESLint `jsx-a11y/label-has-associated-control` rule was violated because form `<label>` elements did not have `htmlFor` attributes matching their corresponding `<input>` element `id`s.
+**Root Cause:** Hard-coded mock text strings in tests misaligned with the actual copy implemented in the navigation system. Secondarily, HTML tags lacked correct association attributes.
+**Learning:** Always use direct text matching from actual component renders or abstract labels into constants/enums when possible. Verify that form inputs have IDs and labels use the `htmlFor` attribute targeting those IDs to satisfy accessibility linters.
