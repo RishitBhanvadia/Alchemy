@@ -43,7 +43,14 @@
                     "metalness",
                     "transparent",
                     "angle",
-                    "penumbra"
+                    "penumbra",
+                    "array",
+                    "count",
+                    "itemSize",
+                    "vertexColors",
+                    "sizeAttenuation",
+                    "depthWrite",
+                    "blending"
                 ]
             }
         ]
