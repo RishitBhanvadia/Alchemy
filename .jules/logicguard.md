@@ -1,0 +1,4 @@
+## 2024-05-15 - [Incorrect Single Adjust instead of Loop in Math Rounding Error Logic]
+**Bug:** Mathematical rounding error adjustment for normalizing 4 variables to exactly 100 ran only a single time using `if` instead of running iteratively until it converged to the target of exactly 100.
+**Root Cause:** Used single `if` block logic when trying to adjust rounding errors recursively. For example, if all 4 are rounded to 30, it sums to 120. A single `if` condition subtraction of 10 drops it to 110. It needed an iterative `while` block.
+**Learning:** For mathematical logic intended to match an exact target using bounded incremental steps, you must use a loop (`while`) to iterate over the adjustments until the exact target is correctly reached, instead of single-pass logic (`if`).
