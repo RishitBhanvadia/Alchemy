@@ -35,9 +35,16 @@ const ClassroomManager = () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             
-            // Generate a random 6-character code
-            const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            // Generate a secure random 6-character code
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let classCode = '';
+            const array = new Uint8Array(6);
+            window.crypto.getRandomValues(array);
+            for (let i = 0; i < 6; i++) {
+                classCode += chars[array[i] % chars.length];
+            }
 
+            // eslint-disable-next-line no-unused-vars
             const { data, error } = await supabase
                 .from('classrooms')
                 .insert([
