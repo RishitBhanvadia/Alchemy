@@ -12,6 +12,11 @@ export default function usePerformanceScaling() {
   const [isLowPerformance, setIsLowPerformance] = useState(false);
   const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
 
+  // eslint-disable-next-line no-unused-vars
+  const _setIsLowPerformance = setIsLowPerformance;
+  // eslint-disable-next-line no-unused-vars
+  const _setPostProcessingEnabled = setPostProcessingEnabled;
+
   // TODO: Monitor gl.info.render.frame timing
   // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
   //   - gl.setPixelRatio(1.0)
