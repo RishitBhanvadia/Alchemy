@@ -1,0 +1,4 @@
+## 2023-10-24 - Testing Supabase Data Fetching with UI State
+**Gap:** The critical user history page was entirely untested, leaving data fetching, state management (loading vs loaded vs empty), and conditional rendering logic without validation.
+**Learning:** Successfully testing complex data-dependent UI requires comprehensive mocking of multiple Supabase chained methods, as well as checking the various UI states depending on data permutations.
+**Pattern:** Mock nested Supabase query chains (like `.from().select().eq().order()`) using `vi.fn().mockReturnValue` and utilize `@testing-library/react`'s `waitFor` to assert conditional rendering changes as promises resolve.
