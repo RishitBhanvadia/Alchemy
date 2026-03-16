@@ -1,0 +1,3 @@
+## 2026-03-16 - Prevent Nested Interactive Elements
+**Learning:** Found `<button>` tags nested inside React Router `<NavLink>` components in the Sidebar, which creates invalid HTML (interactive elements nested inside other interactive elements). This confuses screen readers and breaks keyboard navigation predictability.
+**Action:** When creating visually styled buttons that are actually just links, use generic elements like `<span>` or `<div>` inside the anchor/NavLink rather than actual `<button>` tags. Maintain existing styling classes on the new tags, and apply `aria-label`s to the parent anchor instead.
