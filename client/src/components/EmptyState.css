@@ -1,0 +1,45 @@
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #F9FAFB;
+  margin: 0 0 8px 0;
+}
+
+.empty-state-description {
+  font-size: 1rem;
+  color: #9CA3AF;
+  margin: 0 0 24px 0;
+  max-width: 400px;
+}
+
+.empty-state-action {
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.empty-state-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}

@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -19,9 +19,11 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
-import { useLabStore } from '../store/labStore';
+import useAuthStore from '../store/authStore';
 import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
+import SkeletonBlock from '../components/SkeletonBlock';
+import EmptyState from '../components/EmptyState';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -90,9 +92,10 @@ const EXPERIMENT_OPTIONS = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function TeacherDashboard() {
+export default function TeacherDashboard({ analytics = false }) {
   const navigate = useNavigate();
-  const role = useLabStore((s) => s.role);
+  const profile = useAuthStore(state => state.profile);
+  const role = profile?.role;
 
   // State
   const [students, setStudents] = useState([]);
@@ -112,9 +115,18 @@ export default function TeacherDashboard() {
   });
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
 
-  // ─── Route Guard ──────────────────────────────────────────────────
+  // Scroll to analytics section if navigated from analytics route
   useEffect(() => {
-    if (role !== 'teacher') {
+    if (analytics) {
+      const analyticsSection = document.getElementById('analytics-section');
+      if (analyticsSection) {
+        analyticsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [analytics]);
+
+  useEffect(() => {
+    if (role !== 'teacher' && role !== 'admin') {
       navigate('/', { replace: true });
     }
   }, [role, navigate]);
@@ -163,7 +175,7 @@ export default function TeacherDashboard() {
             student_id,
             joined_at,
             last_active_at,
-            profiles:student_id (
+            profiles!student_id (
               display_name,
               role
             )
@@ -172,16 +184,48 @@ export default function TeacherDashboard() {
 
         if (studentError) throw studentError;
 
-        // Map to flat student objects with mock progress data
-        // (In production, this would join with a user_progress table)
-        const mapped = (studentData || []).map((row) => ({
-          id: row.student_id,
-          display_name: row.profiles?.display_name || 'Unknown Student',
-          total_xp: Math.floor(Math.random() * 5000), // Mock data
-          badges_earned: Math.floor(Math.random() * 10),
-          experiments_completed: Math.floor(Math.random() * 20),
-          last_active: row.last_active_at || row.joined_at || null,
-        }));
+        // Collect all student IDs
+        const studentIds = (studentData || []).map(r => r.student_id);
+        
+        // OPTIMIZATION: Fetch all experiment counts in ONE query instead of N+1
+        let expDataByStudent = {};
+        if (studentIds.length > 0) {
+          const { data: allExpData } = await supabase
+            .from('experiment_logs')
+            .select('student_id, outcome_label')
+            .in('student_id', studentIds);
+          
+          // Group by student_id
+          if (allExpData) {
+            allExpData.forEach(exp => {
+              if (!expDataByStudent[exp.student_id]) {
+                expDataByStudent[exp.student_id] = { count: 0, outcomes: new Set() };
+              }
+              expDataByStudent[exp.student_id].count++;
+              if (exp.outcome_label) {
+                expDataByStudent[exp.student_id].outcomes.add(exp.outcome_label);
+              }
+            });
+          }
+        }
+
+        // Map to flat student objects with real progress data
+        const mapped = (studentData || []).map((row) => {
+          const expData = expDataByStudent[row.student_id] || { count: 0, outcomes: new Set() };
+          const expCount = expData.count;
+          
+          // Calculate XP: 50 per experiment
+          const xpFromExperiments = expCount * 50;
+          
+          return {
+            id: row.student_id,
+            display_name: row.profiles?.display_name || 'Unknown Student',
+            total_xp: xpFromExperiments,
+            badges_earned: Math.floor(expCount / 5), // 1 badge per 5 experiments
+            experiments_completed: expCount,
+            last_active: row.last_active_at || row.joined_at || null,
+          };
+        });
 
         // Deduplicate by student ID
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
@@ -194,7 +238,7 @@ export default function TeacherDashboard() {
       }
     }
 
-    if (role === 'teacher') {
+    if (role === 'teacher' || role === 'admin') {
       fetchStudents();
     }
   }, [role]);
@@ -209,11 +253,50 @@ export default function TeacherDashboard() {
 
       try {
         setLoading(true);
-        // Fetch scores from experiment_results table
+
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Get teacher's classrooms
+        const { data: classrooms, error: classError } = await supabase
+          .from('classrooms')
+          .select('id')
+          .eq('teacher_id', user.id);
+
+        if (classError || !classrooms || classrooms.length === 0) {
+          setExperimentScores([]);
+          setLoading(false);
+          return;
+        }
+
+        const classroomIds = classrooms.map(c => c.id);
+
+        // Get students in those classrooms
+        const { data: studentData, error: studentError } = await supabase
+          .from('classroom_students')
+          .select('student_id')
+          .in('classroom_id', classroomIds);
+
+        if (studentError || !studentData || studentData.length === 0) {
+          setExperimentScores([]);
+          setLoading(false);
+          return;
+        }
+
+        const studentIds = studentData.map(s => s.student_id);
+
+        // Fetch experiment counts for students in teacher's classrooms
         let query = supabase
-          .from('experiment_results')
-          .select('score, created_at')
-          .eq('experiment_type', selectedExperiment);
+          .from('experiment_logs')
+          .select('created_at, experiment_type')
+          .in('student_id', studentIds);
+
+        // Only filter by experiment type if one is selected
+        if (selectedExperiment) {
+          // Handle case-insensitive match and different format variations
+          query = query.ilike('experiment_type', `%${selectedExperiment}%`);
+        }
 
         if (startDate) {
           query = query.gte('created_at', `${startDate}T00:00:00Z`);
@@ -224,9 +307,24 @@ export default function TeacherDashboard() {
 
         const { data, error: scoresError } = await query;
 
-        if (scoresError) throw scoresError;
+        if (scoresError) {
+          console.error('Scores query error:', scoresError);
+          // Fallback: try without experiment type filter
+          if (selectedExperiment) {
+            const fallbackQuery = supabase
+              .from('experiment_logs')
+              .select('created_at, experiment_type')
+              .in('student_id', studentIds);
+            
+            const { data: fallbackData } = await fallbackQuery;
+            setExperimentScores((fallbackData || []).map(() => 1)); // Count each experiment as 1
+            setLoading(false);
+            return;
+          }
+        }
 
-        setExperimentScores((data || []).map(row => row.score || 0));
+        // Since experiment_logs doesn't have scores, use 1 for each experiment
+        setExperimentScores((data || []).map(() => 1));
       } catch (err) {
         console.error('Failed to fetch scores:', err);
       } finally {
@@ -249,22 +347,23 @@ export default function TeacherDashboard() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  // ─── Don't render if not teacher ──────────────────────────────────
-  if (role !== 'teacher') return null;
+  // ─── Don't render if not authorized ──────────────────────────────
+  if (role !== 'teacher' && role !== 'admin') return null;
 
   return (
     <div style={styles.page}>
       <div style={styles.header}>
         <h1 style={styles.title}>
-          <span style={styles.titleIcon}>🎓</span>
-          Teacher Dashboard
+          <span style={styles.titleIcon} aria-hidden="true">{role === 'admin' ? '🛡️' : '🎓'}</span>
+          {role === 'admin' ? 'Admin Dashboard' : 'Teacher Dashboard'}
         </h1>
         <p style={styles.subtitle}>
           Manage your classrooms and track student progress
         </p>
       </div>
 
-      <ClassroomManager />
+      <main aria-label="Teacher dashboard content">
+        <ClassroomManager />
 
       {/* Error State */}
       {error && (
@@ -282,16 +381,30 @@ export default function TeacherDashboard() {
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
-        <div style={styles.studentCount}>
+        <div style={styles.studentCount} className="studentCount">
           {students.length} student{students.length !== 1 ? 's' : ''}
         </div>
       </div>
 
       {/* Loading State */}
       {loading ? (
-        <div style={styles.loadingState}>
-          <div style={styles.spinner} />
-          <p>Loading student data...</p>
+        <div style={styles.tableContainer}>
+          {[1, 2, 3].map((i) => (
+            <div key={i} style={styles.skeletonRow}>
+              <SkeletonBlock width="150px" height="20px" />
+              <SkeletonBlock width="80px" height="20px" />
+              <SkeletonBlock width="100px" height="20px" />
+              <SkeletonBlock width="60px" height="20px" />
+            </div>
+          ))}
+        </div>
+      ) : students.length === 0 ? (
+        <div style={styles.emptyState}>
+          <EmptyState
+            icon="👨‍🎓"
+            title="No students yet"
+            description="Students will appear here after joining your classroom with a join code."
+          />
         </div>
       ) : isMobile ? (
         /* ── Mobile Card View ── */
@@ -363,9 +476,9 @@ export default function TeacherDashboard() {
       )}
 
       {/* ── Analytics Section ── */}
-      <div style={styles.analyticsSection}>
+      <section id="analytics-section" aria-labelledby="analytics-title" style={styles.analyticsSection}>
         <div style={styles.analyticsHeader}>
-          <h2 style={styles.analyticsTitle}>📈 Score Analytics</h2>
+          <h2 id="analytics-title" style={styles.analyticsTitle}>📈 Score Analytics</h2>
           <select
             style={styles.experimentSelect}
             value={selectedExperiment}
@@ -405,8 +518,16 @@ export default function TeacherDashboard() {
           experimentName={
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
           }
+          noDataMessage={
+            !selectedExperiment 
+              ? "Select an experiment type above to see score distribution."
+              : experimentScores.length === 0 
+                ? "No students have completed this experiment yet."
+                : undefined
+          }
         />
-      </div>
+      </section>
+      </main>
     </div>
   );
 }
@@ -475,6 +596,13 @@ const styles = {
     justifyContent: 'center',
     padding: '4rem',
     color: '#888',
+  },
+  skeletonRow: {
+    display: 'grid',
+    gridTemplateColumns: '150px 80px 100px 60px',
+    gap: '16px',
+    padding: '16px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
   },
   spinner: {
     width: '40px',
@@ -567,6 +695,7 @@ const styles = {
     color: '#666',
     background: 'rgba(26, 26, 46, 0.5)',
     borderRadius: '12px',
+    marginBottom: '2rem',
   },
   // Analytics section
   analyticsSection: {
@@ -611,14 +740,15 @@ const styles = {
     textTransform: 'uppercase',
   },
   dateInput: {
-    background: 'rgba(255, 255, 255, 0.05)',
+    background: 'rgba(255, 255, 255, 0.1)',
     border: '1px solid rgba(255, 255, 255, 0.2)',
     borderRadius: '8px',
     padding: '0.4rem 0.6rem',
-    color: '#fff',
+    color: '#F9FAFB',
     fontSize: '0.9rem',
     outline: 'none',
     colorScheme: 'dark',
+    fontFamily: 'inherit',
   },
 };
 

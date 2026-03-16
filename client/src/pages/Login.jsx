@@ -1,73 +1,102 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { supabase } from '../supabaseClient';
-import HolographicLogin from '../components/3d-animations/HolographicLogin';
-import logger from '../utils/logger';
-import { showError, showSuccess } from '../utils/notifications';
+import { motion, AnimatePresence } from 'framer-motion';
+import LoginForm from '../components/auth/LoginForm';
+import SignUpForm from '../components/auth/SignUpForm';
 import './login.css';
-import logo from '../assets/logo.png';
 
 const Login = () => {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [activeTab, setActiveTab] = useState('login'); // 'login' or 'signup'
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
 
-            if (error) throw error;
-            logger.info('User logged in successfully', { userId: data.user?.id });
-            showSuccess('Login successful! Welcome back.');
-            navigate('/dashboard');
-        } catch (error) {
-            logger.error('Login failed', { error: error.message });
-            showError(error.error_description || error.message || 'Login failed. Please try again.');
-        }
-    };
+  const tabContentVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.3 }
+    },
+    exit: { 
+      opacity: 0, 
+      x: -20,
+      transition: { duration: 0.3 }
+    }
+  };
 
-    return (
-        <div className="login-page">
-            <HolographicLogin>
-                <img src={logo} alt="Logo" style={{ height: '60px', marginBottom: '10px' }} />
-                <h2 className="login-title">STUDENT LOGIN</h2>
-                <form onSubmit={handleLogin}>
-                    <div className="input-group">
-                        <label className="input-label" htmlFor="email">Email Address</label>
-                        <input
-                            id="email"
-                            type="email"
-                            className="login-input"
-                            placeholder="student@university.edu"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="input-group">
-                        <label className="input-label" htmlFor="password">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            className="login-input"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="login-button">ACCESS LAB</button>
-                </form>
-            </HolographicLogin>
+  return (
+    <div className="login-container">
+      {/* Background blobs */}
+      <div className="bg-blob blob-1" aria-hidden="true"></div>
+      <div className="bg-blob blob-2" aria-hidden="true"></div>
+
+      <motion.div 
+        className="auth-card"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        role="main"
+        aria-label="Authentication form"
+      >
+        <div className="logo-section">
+          <h1 className="logo-text">
+            <span aria-hidden="true">⚗️</span> Alchemistry
+          </h1>
+          <p className="logo-tagline">The Virtual Chemistry Lab</p>
         </div>
-    );
+
+        <div className="tabs-container">
+          <button 
+            className={`tab-btn ${activeTab === 'login' ? 'active' : ''}`}
+            onClick={() => setActiveTab('login')}
+          >
+            Log In
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'signup' ? 'active' : ''}`}
+            onClick={() => setActiveTab('signup')}
+          >
+            Sign Up
+          </button>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {activeTab === 'login' ? (
+            <motion.div
+              key="login"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={tabContentVariants}
+            >
+              <LoginForm />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="signup"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={tabContentVariants}
+            >
+              <SignUpForm onTabSwitch={setActiveTab} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <p className="footer-text">
+          By signing up you agree to our <a href="#" className="footer-link">Terms of Service</a>
+        </p>
+      </motion.div>
+    </div>
+  );
 };
 
-
-
 export default Login;
+

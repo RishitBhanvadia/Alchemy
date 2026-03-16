@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLabStore from '../store/labStore';
-import axios from 'axios';
+import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
 
 const AiTutorPanel = ({ isOpen, onClose }) => {
@@ -9,12 +9,13 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
   
-  const { 
-    chatHistory, 
-    addChatMessage, 
-    chemA, chemB, chemC, chemD,
-    lastReactionResult
-  } = useLabStore();
+  const chatHistory = useLabStore(state => state.chatHistory);
+  const addChatMessage = useLabStore(state => state.addChatMessage);
+  const chemA = useLabStore(state => state.chemA);
+  const chemB = useLabStore(state => state.chemB);
+  const chemC = useLabStore(state => state.chemC);
+  const chemD = useLabStore(state => state.chemC);
+  const lastReactionResult = useLabStore(state => state.reactionResult);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -55,7 +56,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         student_question: currentQuestion
       };
 
-      const res = await axios.post('/api/ai/explain', payload);
+      const res = await apiClient.post('/ai/explain', payload);
       
       if (res.data && res.data.explanation) {
         addChatMessage('tutor', res.data.explanation);

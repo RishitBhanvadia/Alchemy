@@ -30,82 +30,111 @@ const Result = () => {
   useEffect(() => {
     if (!location.state) return;
 
-    getResult(location.state.chemA, location.state.chemB, location.state.chemC, location.state.chemD)
-      .then(response => {
-        const resultData = response.data;
-        const normalizedData = Array.isArray(resultData) ? resultData : [resultData];
-        setData(normalizedData);
-        return normalizedData;
-      })
-      .then(async (data) => {
-        if (!data || data.length === 0) {
-          logger.warn("No data received from backend");
-        }
-        // setData(data); // Already set above
+    let isMounted = true;
 
-        // Save to Supabase History
-        try {
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user && data && data[0]) {
+    const fetchResult = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        const userId = user?.id || null;
+        
+        const response = await getResult(
+          location.state.chemA, 
+          location.state.chemB, 
+          location.state.chemC, 
+          location.state.chemD,
+          userId
+        );
+        
+        const resultData = response.data;
+        // Normalize API response to match expected format
+        const normalizedData = Array.isArray(resultData) ? resultData : [resultData];
+        const normalized = normalizedData.map(item => ({
+          ...item,
+          // Map new API field names to old expected names
+          result: item.outcome_label || item.result,
+          product_name: item.product_formula || item.product_name || '',
+          product_info: item.ai_tutor_context || item.product_info || '',
+          solid_color: item.state_change?.includes('Solid Color') ? '#888' : '',
+          gas: item.state_change?.includes('Gas') ? 'Yes' : 'None',
+          solid: item.state_change?.includes('Precipitate') ? 'Yes' : 'None',
+          product_properties: [],
+          product_uses: []
+        }));
+        
+        // Only update state if component is still mounted
+        if (isMounted) {
+          setData(normalized);
+        }
+
+        if (!normalized || normalized.length === 0) {
+          logger.warn("No data received from backend");
+          return;
+        }
+
+        // Save to experiment_results table for scores/analytics
+        if (user && normalized[0]) {
+          try {
             await supabase.from('experiment_results').insert({
               user_id: user.id,
-              experiment_type: 'lab',
+              experiment_type: 'inorganic',
               chem_a: location.state.chemA,
               chem_b: location.state.chemB,
               chem_c: location.state.chemC,
               chem_d: location.state.chemD,
-              result_name: data[0].product_name,
-              result_formula: data[0].result_formula || data[0].result,
-              score: 100 // Default score for successful completion
+              result_name: normalized[0].product_formula || normalized[0].outcome_label,
+              result_formula: normalized[0].product_formula,
+              score: 100
             });
-            logger.info("Experiment saved to history");
+            logger.info("Experiment saved to experiment_results");
+          } catch (err) {
+            logger.error("Failed to save to experiment_results:", err);
           }
-        } catch (err) {
-          logger.error("Failed to save to history:", err);
         }
 
+        // Update localStorage cart (for local history display)
         const d = new Date();
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-        const date = d.getDate();
-        const month = months[d.getMonth()];
-        const year = d.getFullYear();
-        const hr = d.getHours();
-        const min = d.getMinutes();
         const rdx = {
-          "date": date + " " + month + " " + year,
-          "time": hr + ":" + min,
+          "date": d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear(),
+          "time": d.getHours() + ":" + d.getMinutes(),
           "conc_a": location.state.chemA,
           "conc_b": location.state.chemB,
           "conc_c": location.state.chemC,
           "conc_d": location.state.chemD,
-          "color": (data && data[0]) ? data[0].color : "#ffffff",
-          "main": (data && data[0]) ? data[0].product_name : "Unknown"
+          "color": normalized[0]?.color || "#ffffff",
+          "main": normalized[0]?.product_formula || normalized[0]?.outcome_label || "Unknown"
         };
 
-        // Fix for race condition: Read the latest cart from localStorage before updating.
-        // This ensures updates from other tabs or rapid changes are not lost.
-        // Also update localStorage immediately to minimize the race window.
         const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
         const newCart = [...currentCart, rdx];
-
         localStorage.setItem('cart', JSON.stringify(newCart));
-        setCart(newCart);
-      })
-      .catch(error => {
+        
+        if (isMounted) {
+          setCart(newCart);
+        }
+      } catch (error) {
         logger.error("Fetch error:", error);
-        setData([{
-          color: "#ff0000",
-          result: `Error: ${error.message}`,
-          solid_color: "#000",
-          gas_color: "#000",
-          gas: "None",
-          solid: "None",
-          product_name: "Error",
-          product_info: `Debug Info: ${error.message}`,
-          product_properties: [],
-          product_uses: []
-        }]);
-      });
+        if (isMounted) {
+          setData([{
+            color: "#ff0000",
+            result: `Error: ${error.message}`,
+            solid_color: "#000",
+            gas_color: "#000",
+            gas: "None",
+            solid: "None",
+            product_name: "Error",
+            product_info: `Debug Info: ${error.message}`,
+            product_properties: [],
+            product_uses: []
+          }]);
+        }
+      }
+    };
+
+    fetchResult();
+    
+    // Cleanup: prevent setState on unmounted component
+    return () => { isMounted = false; };
   }, [location.state]);
 
   // Cart persistence hook

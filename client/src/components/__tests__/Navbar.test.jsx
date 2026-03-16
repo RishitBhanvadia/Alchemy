@@ -1,7 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Navbar from '../Navbar';
+
+// Mock useAuthStore - return undefined profile to show teacher view (default)
+vi.mock('../store/authStore', () => ({
+    __esModule: true,
+    default: vi.fn(() => ({
+        profile: undefined,
+        logout: vi.fn(),
+    })),
+}));
 
 // Mock supabase
 vi.mock('../../supabaseClient', () => ({
@@ -12,7 +20,13 @@ vi.mock('../../supabaseClient', () => ({
     },
 }));
 
+import Navbar from '../Navbar';
+
 describe('Navbar Component', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
     const renderNavbar = () => {
         return render(
             <BrowserRouter>
@@ -21,10 +35,10 @@ describe('Navbar Component', () => {
         );
     };
 
-    it('should render navigation links', () => {
+    it('should render navigation links for teacher (default)', () => {
         renderNavbar();
         expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-        expect(screen.getByText(/laboratory/i)).toBeInTheDocument();
+        expect(screen.getByText(/analytics/i)).toBeInTheDocument();
     });
 
     it('should render logout button', () => {

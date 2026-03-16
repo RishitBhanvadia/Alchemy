@@ -1,0 +1,61 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation "Main navigation" [ref=e4]:
+    - generic [ref=e5]:
+      - img "Alchemistry Logo" [ref=e6]
+      - generic [ref=e7]: ALCHEMISTRY
+    - generic [ref=e8]:
+      - menubar [ref=e9]:
+        - menuitem "Navigate to Teacher Dashboard" [ref=e10] [cursor=pointer]: DASHBOARD
+        - menuitem "Navigate to Analytics" [ref=e11] [cursor=pointer]: ANALYTICS
+        - menuitem "Navigate to Profile" [ref=e12] [cursor=pointer]: PROFILE
+        - menuitem "Navigate to History" [ref=e13] [cursor=pointer]: HISTORY
+      - generic [ref=e14]:
+        - generic [ref=e15]: AT
+        - button "LOGOUT" [ref=e16] [cursor=pointer]
+  - status [ref=e22]: Could not find the 'join_code' column of 'classrooms' in the schema cache
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - heading "Teacher Dashboard" [level=1] [ref=e25]:
+        - generic [ref=e26]: 🎓
+        - text: Teacher Dashboard
+      - paragraph [ref=e27]: Manage your classrooms and track student progress
+    - main "Teacher dashboard content" [ref=e28]:
+      - generic [ref=e29]:
+        - heading "Classroom Management" [level=2] [ref=e30]
+        - generic [ref=e31]:
+          - textbox "Class Name (e.g. Physics 101)" [ref=e32]: Auto Class 1773693217982
+          - button "+ Create Class" [active] [ref=e33] [cursor=pointer]
+        - generic [ref=e35]:
+          - generic [ref=e36]: 🏫
+          - heading "No classrooms created yet" [level=3] [ref=e37]
+          - paragraph [ref=e38]: Create your first classroom to start managing students.
+      - generic [ref=e39]: ⚠️ Could not find the table 'public.classroom_students' in the schema cache
+      - generic [ref=e40]:
+        - textbox "🔍 Search students..." [ref=e41]
+        - generic [ref=e42]: 0 students
+      - generic [ref=e44]:
+        - generic [ref=e45]: 👨‍🎓
+        - heading "No students yet" [level=3] [ref=e46]
+        - paragraph [ref=e47]: Students will appear here after joining your classroom with a join code.
+      - region "📈 Score Analytics" [ref=e48]:
+        - generic [ref=e49]:
+          - heading "📈 Score Analytics" [level=2] [ref=e50]
+          - combobox [ref=e51] [cursor=pointer]:
+            - option "Select an experiment..." [selected]
+            - option "Acid-Base Titration"
+            - option "Inorganic Reactions"
+            - option "Organic Chemistry"
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - generic [ref=e54]: "From:"
+              - textbox [ref=e55]: 2026-02-14
+            - generic [ref=e56]:
+              - generic [ref=e57]: "To:"
+              - textbox [ref=e58]: 2026-03-16
+        - generic [ref=e59]:
+          - generic [ref=e60]: 📊
+          - paragraph [ref=e61]: Select an experiment type above to see score distribution.
+```

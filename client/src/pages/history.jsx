@@ -1,45 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient';
-import logo from '../assets/logo.png';
-import logger from '../utils/logger';
+import useHistoryStore from "../store/historyStore";
+import EmptyState from "../components/EmptyState";
+import SkeletonBlock from "../components/SkeletonBlock";
 import "./history.css";
 
 const History = () => {
-    const [experiments, setExperiments] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    
+    const logs = useHistoryStore(state => state.logs);
+    const loading = useHistoryStore(state => state.loading);
+    const fetch = useHistoryStore(state => state.fetch);
 
-    // Fetch data from Supabase "experiment_results"
     useEffect(() => {
-        const fetchHistory = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    const { data, error } = await supabase
-                        .from('experiment_results')
-                        .select('*')
-                        .eq('user_id', user.id)
-                        .order('created_at', { ascending: false });
+        fetch();
+    }, [fetch]);
 
-                    if (error) throw error;
-                    setExperiments(data || []);
-                }
-            } catch (error) {
-                logger.error("Error fetching history:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHistory();
-    }, []);
-
-    // Function to format date
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-GB', {
-            day: 'numeric', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-        });
+        const date = new Date(dateString);
+        const now = new Date();
+        const isToday = date.toDateString() === now.toDateString();
+        const isYesterday = new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
+        
+        const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        
+        if (isToday) {
+            return `Today at ${time}`;
+        }
+        if (isYesterday) {
+            return `Yesterday at ${time}`;
+        }
+        
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        }) + ` at ${time}`;
+    };
+
+    const getChemicalBadges = (exp) => {
+        const badges = [];
+        if (exp.chem_a > 0) badges.push({ chem: 'HCl', color: '#EF4444' });
+        if (exp.chem_b > 0) badges.push({ chem: 'NaOH', color: '#6366F1' });
+        if (exp.chem_i > 0) badges.push({ chem: 'BTB', color: '#10B981' });
+        if (exp.chem_c > 0) badges.push({ chem: 'MnO₂', color: '#F59E0B' });
+        return badges;
     };
 
     return (
@@ -49,45 +55,63 @@ const History = () => {
             <div className="history-container">
                 <h1 className="neon-glow page-title">EXPERIMENT LOGS</h1>
 
-                <div className="glass-panel history-panel">
+                <main className="glass-panel history-panel" aria-label="Experiment history">
                     {loading ? (
                         <div className="loading-container">
-                            <div className="logo-spinner">
-                                <img src={logo} alt="Loading..." className="loading-logo-img" />
-                            </div>
-                            <p className="neon-text blink">LOADING ARCHIVES...</p>
+                            {[1, 2, 3].map(i => (
+                                <div key={i} style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <SkeletonBlock width="200px" height="20px" />
+                                    <div style={{ marginTop: '10px' }}>
+                                        <SkeletonBlock width="80px" height="16px" />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ) : experiments.length === 0 ? (
-                        <div className="empty-state">No experiments recorded yet. Go to the Lab or Titration to start!</div>
+                    ) : logs.length === 0 ? (
+                        <EmptyState
+                            icon="⚗️"
+                            title="Your experiment log is empty"
+                            description="Complete an experiment in the Lab to see your results here."
+                            actionLabel="Go to Lab →"
+                            onAction={() => navigate('/student/lab')}
+                        />
                     ) : (
                         <div className="table-wrapper">
                             <table className="history-table">
                                 <thead>
                                     <tr>
+                                        <th>Outcome</th>
                                         <th>Date & Time</th>
                                         <th>Type</th>
-                                        <th>Score</th>
-                                        <th>Details</th>
+                                        <th>Chemicals</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {experiments.map((exp) => (
+                                    {logs.map((exp) => (
                                         <tr key={exp.id}>
-                                            <td>{formatDate(exp.created_at)}</td>
-                                            <td className="type-cell">{exp.experiment_type}</td>
                                             <td>
-                                                <span className={`score-badge ${exp.score >= 90 ? 'high' : exp.score >= 70 ? 'med' : 'low'}`}>
-                                                    {exp.score}/100
-                                                </span>
+                                                <div className="outcome-cell">
+                                                    <span 
+                                                        className="outcome-dot" 
+                                                        style={{ backgroundColor: exp.color || '#6366F1' }}
+                                                    ></span>
+                                                    <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
+                                                </div>
                                             </td>
-                                            <td className="details-cell">
-                                                {exp.details ? (
-                                                    Object.entries(exp.details).map(([key, value]) => (
-                                                        <span key={key} style={{ marginRight: '10px', display: 'inline-block' }}>
-                                                            <strong style={{ color: '#aaa', textTransform: 'capitalize' }}>{key.replace('_', ' ')}:</strong> {value}
-                                                        </span>
-                                                    ))
-                                                ) : "N/A"}
+                                            <td className="date-cell">{formatDate(exp.created_at)}</td>
+                                            <td className="type-cell">
+                                                <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
+                                            </td>
+                                            <td className="chemicals-cell">
+                                                {getChemicalBadges(exp).map((badge, idx) => (
+                                                    <span 
+                                                        key={idx} 
+                                                        className="chem-badge"
+                                                        style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
+                                                    >
+                                                        {badge.chem}
+                                                    </span>
+                                                ))}
                                             </td>
                                         </tr>
                                     ))}
@@ -95,7 +119,7 @@ const History = () => {
                             </table>
                         </div>
                     )}
-                </div>
+                </main>
             </div>
         </div>
     );

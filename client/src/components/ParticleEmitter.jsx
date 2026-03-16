@@ -13,7 +13,7 @@
  */
 import React, { useRef, useMemo, useCallback, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Color, AdditiveBlending } from 'three';
 import PropTypes from 'prop-types';
 // GSAP will be loaded dynamically when needed
 
@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 const PARTICLE_CONFIG = {
   H2: {
     count: 200,
-    color: new THREE.Color('#ffffff'),
+    color: new Color('#ffffff'),
     opacity: 0.7,
     size: 0.06,
     lifetime: 2.0,
@@ -34,7 +34,7 @@ const PARTICLE_CONFIG = {
   },
   CO2: {
     count: 150,
-    color: new THREE.Color('#888888'),
+    color: new Color('#888888'),
     opacity: 0.6,
     size: 0.08,
     lifetime: 2.0,
@@ -289,7 +289,7 @@ export default function ParticleEmitter({
         size={config.size}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
       />
     </points>
   );

@@ -14,7 +14,7 @@
  */
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { useThree } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Vector3, Vector2, Raycaster, Plane, MathUtils } from 'three';
 
 /**
  * @typedef {Object} LabPhysicsConfig
@@ -46,12 +46,12 @@ export default function useLabPhysics(config = {}) {
   const isHovering = dragState === 'hovering';
 
   // ─── Refs ─────────────────────────────────────────────────────────────
-  const currentPosition = useRef(new THREE.Vector3(...homePosition));
-  const dragOffset = useRef(new THREE.Vector3());
+  const currentPosition = useRef(new Vector3(...homePosition));
+  const dragOffset = useRef(new Vector3());
   const isPouring = useRef(false);
   const isTilted = useRef(false);
-  const velocity = useRef(new THREE.Vector2(0, 0));
-  const lastPosition = useRef(new THREE.Vector3(...homePosition));
+  const velocity = useRef(new Vector2(0, 0));
+  const lastPosition = useRef(new Vector3(...homePosition));
   const lockedObjectId = useRef(null);
 
   // ─── Three.js utilities ───────────────────────────────────────────────
@@ -59,14 +59,14 @@ export default function useLabPhysics(config = {}) {
 
   // Invisible drag plane (XY plane at z=0)
   const dragPlane = useMemo(
-    () => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
+    () => new Plane(new Vector3(0, 0, 1), 0),
     []
   );
-  const planeIntersection = useRef(new THREE.Vector3());
+  const planeIntersection = useRef(new Vector3());
 
   // Target position as Vector3 for distance calculations
   const targetVec3 = useMemo(
-    () => new THREE.Vector3(...targetPosition),
+    () => new Vector3(...targetPosition),
     [targetPosition]
   );
 
@@ -142,7 +142,7 @@ export default function useLabPhysics(config = {}) {
       gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
-      const raycaster = e.raycaster || new THREE.Raycaster();
+      const raycaster = e.raycaster || new Raycaster();
       const mouse = e.pointer || _getMouseFromEvent(e, gl);
 
       raycaster.setFromCamera(mouse, camera);
@@ -178,7 +178,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       // Raycaster projection onto drag plane
-      const raycaster = e.raycaster || new THREE.Raycaster();
+      const raycaster = e.raycaster || new Raycaster();
       const mouse = e.pointer || _getMouseFromEvent(e, gl);
 
       raycaster.setFromCamera(mouse, camera);
@@ -264,12 +264,12 @@ export default function useLabPhysics(config = {}) {
         (currentPosition.current.x - lastPosition.current.x) / d;
       const velZ =
         (currentPosition.current.z - lastPosition.current.z) / d;
-      velocity.current.x = THREE.MathUtils.lerp(
+      velocity.current.x = MathUtils.lerp(
         velocity.current.x,
         velX * 0.05,
         0.1
       );
-      velocity.current.y = THREE.MathUtils.lerp(
+      velocity.current.y = MathUtils.lerp(
         velocity.current.y,
         velZ * 0.05,
         0.1
@@ -281,7 +281,7 @@ export default function useLabPhysics(config = {}) {
 
       // Apply tilt rotation when pouring
       const targetRotZ = isTilted.current ? tiltAngle : 0;
-      groupRef.rotation.z = THREE.MathUtils.lerp(
+      groupRef.rotation.z = MathUtils.lerp(
         groupRef.rotation.z,
         targetRotZ,
         tiltLerpSpeed
@@ -338,7 +338,7 @@ export default function useLabPhysics(config = {}) {
  */
 function _getMouseFromEvent(e, gl) {
   const rect = gl.domElement.getBoundingClientRect();
-  return new THREE.Vector2(
+  return new Vector2(
     ((e.clientX - rect.left) / rect.width) * 2 - 1,
     -((e.clientY - rect.top) / rect.height) * 2 + 1
   );

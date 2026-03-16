@@ -2,6 +2,8 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 // Use environment variables for credentials
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
@@ -14,6 +16,33 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
 
+function classifyRegime(conc_a, conc_b) {
+    const acidBaseSum = conc_a + conc_b;
+    if (acidBaseSum > 0) {
+        const ratio = conc_a / acidBaseSum;
+        if (ratio > 0.65) return 'ACID_DOMINANT';
+        if (ratio < 0.35) return 'BASE_DOMINANT';
+        return 'NEUTRAL';
+    }
+    return 'NONE';
+}
+
+function deriveThermalEffect(result) {
+    if (!result) return 'neutral';
+    const r = result.toLowerCase();
+    if (r.includes('exothermic') || r.includes('heat') || r.includes('light')) return 'exothermic';
+    if (r.includes('endothermic') || r.includes('cold')) return 'endothermic';
+    if (r.includes('cl2') || r.includes('chlorine')) return 'exothermic';
+    return 'neutral';
+}
+
+function determineDanger(result, gas) {
+    if (!result) return false;
+    const r = result.toLowerCase();
+    const dangerous = ['cl2', 'chlorine', 'explosion', 'vigorous', 'hcl', 'hazard', 'conc.'];
+    return dangerous.some(d => r.includes(d)) || (gas && r.includes('gas'));
+}
+
 const migrate = async () => {
     try {
         const dataPath = path.join(__dirname, '../data/results.json');
@@ -22,42 +51,42 @@ const migrate = async () => {
 
         console.log(`Read ${localData.length} records from JSON.`);
 
-        // Transform data to match Supabase schema
-        // Specifically parsing stringified arrays in 'product_properties' and 'product_uses'
-        const formattedData = localData.map(item => {
+        // Get unique reaction_id + regime combinations from JSON
+        const uniqueRecords = new Map();
+        
+        for (const item of localData) {
+            const key = `${item.reaction_id}`;
+            if (!uniqueRecords.has(key)) {
+                const regime = classifyRegime(item.conc_a, item.conc_b);
+                const thermalEffect = deriveThermalEffect(item.result);
+                const isDangerous = determineDanger(item.result, item.gas);
+                
+                // Build state_change from solid/gas
+                const stateChanges = [];
+                if (item.solid) stateChanges.push('Precipitate');
+                if (item.gas) stateChanges.push('Gas Evolution');
+                
+                uniqueRecords.set(key, {
+                    reaction_id: item.reaction_id,
+                    regime: regime,
+                    outcome_label: item.result || 'No Reaction',
+                    product_formula: item.product_name || '',
+                    color: item.color || '#ffffff',
+                    state_change: stateChanges.length > 0 ? stateChanges.join(', ') : 'None',
+                    thermal_effect: thermalEffect,
+                    ai_tutor_context: item.product_info || item.result || '',
+                    is_dangerous: isDangerous
+                });
+            }
+        }
 
-            const parseArrayField = (field) => {
-                if (typeof field === 'string') {
-                    try {
-                        const validJson = field.replace(/'/g, '"');
-                        return JSON.parse(validJson);
-                    } catch (e) {
-                        // Fallback for simple comma separated list or just return empty
-                        return [];
-                    }
-                }
-                return field || [];
-            };
+        const formattedData = Array.from(uniqueRecords.values());
+        console.log(`Transformed to ${formattedData.length} unique reaction records.`);
+        console.log('Sample record:', JSON.stringify(formattedData[0], null, 2));
 
-            return {
-                reaction_id: item.reaction_id,
-                conc_a: item.conc_a,
-                conc_b: item.conc_b,
-                conc_c: item.conc_c,
-                conc_d: item.conc_d,
-                color: item.color,
-                solid: item.solid,
-                solid_color: item.solid_color,
-                gas: item.gas,
-                gas_color: item.gas_color,
-                smell: item.smell || "", // Handle potential missing fields
-                result: item.result,
-                product_name: item.product_name,
-                product_info: item.product_info,
-                product_properties: parseArrayField(item.product_properties),
-                product_uses: parseArrayField(item.product_uses)
-            };
-        });
+        // Delete existing records that we'll replace
+        const reactionIds = formattedData.map(r => r.reaction_id);
+        await supabase.from('results').delete().in('reaction_id', reactionIds);
 
         const { data, error } = await supabase
             .from('results')

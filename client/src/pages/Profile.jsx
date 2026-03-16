@@ -1,111 +1,82 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient';
-import logo from '../assets/logo.png';
-import logger from '../utils/logger';
+import useAuthStore from "../store/authStore";
+import useProfileStore from "../store/profileStore";
+import SkeletonBlock from "../components/SkeletonBlock";
 import "./profile.css";
 
-const Profile = () => {
-    const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({
-        totalExperiments: 0,
-        averageScore: 0,
-        totalXP: 0,
-        masteryLevel: 1,
-        highestScore: 0
-    });
+const BADGE_DEFINITIONS = [
+    { id: 'novice', name: 'Novice Chemist', icon: '🧪', description: 'First experiment completed' },
+    { id: 'regular', name: 'Lab Regular', icon: '🥼', description: '10 experiments completed' },
+    { id: 'master', name: 'Master Researcher', icon: '🧬', description: '25 experiments completed' },
+    { id: 'perfect', name: 'Perfectionist', icon: '⭐', description: 'Scored 100 on an experiment' },
+    { id: 'titration', name: 'Titration Expert', icon: '💧', description: '5 Titration experiments' },
+    { id: 'organic', name: 'Organic Specialist', icon: '🌿', description: '5 Organic experiments' },
+];
 
-    const [badges, setBadges] = useState([
-        { id: 'novice', name: 'Novice Chemist', icon: '🧪', description: 'First experiment completed', earned: false },
-        { id: 'regular', name: 'Lab Regular', icon: '🥼', description: '5 experiments completed', earned: false },
-        { id: 'master', name: 'Master Researcher', icon: '🧬', description: '10 experiments completed', earned: false },
-        { id: 'perfect', name: 'Perfectionist', icon: '⭐', description: 'Scored 100 on an experiment', earned: false },
-        { id: 'titration', name: 'Titration Expert', icon: '💧', description: '3 Titration experiments', earned: false },
-        { id: 'organic', name: 'Organic Specialist', icon: '🌿', description: '3 Organic experiments', earned: false },
-    ]);
+const Profile = () => {
+    const profile = useAuthStore(state => state.profile);
+    const stats = useProfileStore(state => state.stats);
+    const achievements = useProfileStore(state => state.achievements);
+    const loading = useProfileStore(state => state.loading);
+    const fetch = useProfileStore(state => state.fetch);
 
     useEffect(() => {
-        const fetchUserDataAndStats = async () => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    setUser(user);
-                    
-                    const { data, error } = await supabase
-                        .from('experiment_results')
-                        .select('*')
-                        .eq('user_id', user.id);
+        fetch();
+    }, [fetch]);
 
-                    if (error) throw error;
-                    
-                    if (data) {
-                        setExperiments(data);
-                        calculateStats(data);
-                    }
-                }
-            } catch (error) {
-                logger.error("Error fetching profile data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const getFirstName = () => {
+        const name = profile?.display_name || profile?.full_name || 'Scientist';
+        return name.split(' ')[0] || 'Scientist';
+    };
 
-        fetchUserDataAndStats();
-    }, []);
+    const getMasteryLevel = () => {
+        if (!stats) return 1;
+        return Math.floor(stats.total_xp / 500) + 1;
+    };
 
-    const calculateStats = (data) => {
-        const total = data.length;
-        if (total === 0) return;
+    const getXpProgress = () => {
+        if (!stats) return 0;
+        return (stats.total_xp % 500) / 5;
+    };
 
-        const totalScore = data.reduce((sum, exp) => sum + (exp.score || 0), 0);
-        const avg = Math.round(totalScore / total);
-        const highest = Math.max(...data.map(exp => exp.score || 0));
-        
-        // XP is sum of scores. Level increases every 500 XP.
-        const xp = totalScore;
-        const level = Math.floor(xp / 500) + 1;
-
-        setStats({
-            totalExperiments: total,
-            averageScore: avg,
-            totalXP: xp,
-            masteryLevel: level,
-            highestScore: highest
-        });
-
-        // Check badges
-        const updatedBadges = badges.map(badge => {
-            let earned = false;
-            switch (badge.id) {
-                case 'novice': earned = total >= 1; break;
-                case 'regular': earned = total >= 5; break;
-                case 'master': earned = total >= 10; break;
-                case 'perfect': earned = highest === 100; break;
-                case 'titration': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('titration')).length >= 3; 
-                    break;
-                case 'organic': 
-                    earned = data.filter(e => e.experiment_type?.toLowerCase().includes('organic')).length >= 3; 
-                    break;
-                default: earned = false;
-            }
-            return { ...badge, earned };
-        });
-        
-        setBadges(updatedBadges);
+    const getBadges = () => {
+        return BADGE_DEFINITIONS.map(badge => ({
+            ...badge,
+            earned: achievements.includes(badge.id)
+        }));
     };
 
     if (loading) {
         return (
             <div className="profile-page">
                 <Navbar />
-                <div className="loading-container">
-                    <div className="logo-spinner">
-                        <img src={logo} alt="Loading..." style={{ width: '80px' }} />
+                <div className="profile-container">
+                    <h1 className="page-title neon-glow">USER PROFILE</h1>
+                    
+                    <div className="profile-grid">
+                        <aside className="profile-sidebar">
+                            <div className="glass-panel user-info">
+                                <div className="avatar-container">
+                                    <SkeletonBlock width="120px" height="120px" borderRadius="50%" />
+                                </div>
+                                <SkeletonBlock width="60%" height="20px" />
+                                <SkeletonBlock width="80%" height="14px" />
+                            </div>
+                        </aside>
+
+                        <main className="profile-content">
+                            <div className="stats-grid">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="stat-card">
+                                        <SkeletonBlock width="40px" height="40px" borderRadius="50%" />
+                                        <SkeletonBlock width="60px" height="32px" />
+                                        <SkeletonBlock width="80px" height="14px" />
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
                     </div>
-                    <p className="neon-text blink">DECODING PROFILE...</p>
                 </div>
             </div>
         );
@@ -122,14 +93,14 @@ const Profile = () => {
                     <aside className="profile-sidebar">
                         <div className="glass-panel user-info">
                             <div className="avatar-container">
-                                {user?.email?.charAt(0).toUpperCase()}
+                                {profile?.email?.charAt(0).toUpperCase() || '?'}
                             </div>
-                            <h3>{user?.email?.split('@')[0]}</h3>
-                            <p className="user-email">{user?.email}</p>
+                            <h3>{getFirstName()}</h3>
+                            <p className="user-email">{profile?.email}</p>
                             
                             <div className="mastery-level">
                                 <span className="level-label">Mastery Rank</span>
-                                <span className="level-number">Lvl {stats.masteryLevel}</span>
+                                <span className="level-number">Lvl {getMasteryLevel()}</span>
                                 <div className="xp-bar-container" style={{ 
                                     width: '100%', 
                                     height: '8px', 
@@ -139,35 +110,39 @@ const Profile = () => {
                                     overflow: 'hidden'
                                 }}>
                                     <div className="xp-progress" style={{ 
-                                        width: `${(stats.totalXP % 500) / 5}%`, 
+                                        width: `${getXpProgress()}%`, 
                                         height: '100%', 
-                                        background: '#00ff88',
-                                        boxShadow: '0 0 10px #00ff88'
+                                        background: '#6366F1',
+                                        boxShadow: '0 0 10px #6366F1'
                                     }}></div>
                                 </div>
                                 <p style={{ fontSize: '0.7rem', marginTop: '5px', color: '#888' }}>
-                                    {stats.totalXP % 500} / 500 XP to next level
+                                    {stats ? stats.total_xp % 500 : 0} / 500 XP to next level
                                 </p>
                             </div>
                         </div>
                     </aside>
 
-                    <main className="profile-content">
+                    <main className="profile-content" aria-label="User statistics and achievements">
                         <div className="stats-grid">
                             <div className="stat-card">
-                                <span className="stat-value">{stats.totalExperiments}</span>
+                                <span className="stat-icon" aria-hidden="true">🧪</span>
+                                <span className="stat-value">{stats?.total_experiments || 0}</span>
                                 <span className="stat-label">Experiments</span>
                             </div>
                             <div className="stat-card">
-                                <span className="stat-value">{stats.averageScore}%</span>
+                                <span className="stat-icon" aria-hidden="true">🎯</span>
+                                <span className="stat-value">{stats?.avg_accuracy || 0}%</span>
                                 <span className="stat-label">Avg. Accuracy</span>
                             </div>
                             <div className="stat-card">
-                                <span className="stat-value">{stats.highestScore}%</span>
+                                <span className="stat-icon" aria-hidden="true">⭐</span>
+                                <span className="stat-value">{stats?.best_score || 0}%</span>
                                 <span className="stat-label">Best Score</span>
                             </div>
                             <div className="stat-card">
-                                <span className="stat-value">{stats.totalXP}</span>
+                                <span className="stat-icon" aria-hidden="true">⚡</span>
+                                <span className="stat-value">{stats?.total_xp || 0}</span>
                                 <span className="stat-label">Total XP</span>
                             </div>
                         </div>
@@ -175,9 +150,17 @@ const Profile = () => {
                         <div className="glass-panel badges-section">
                             <h2>ACHIEVEMENTS</h2>
                             <div className="badges-grid">
-                                {badges.map(badge => (
-                                    <div key={badge.id} className={`badge-item ${badge.earned ? 'earned' : ''}`} title={badge.description}>
-                                        <div className="badge-icon">{badge.icon}</div>
+                                {getBadges().map(badge => (
+                                    <div 
+                                        key={badge.id} 
+                                        className={`badge-item ${badge.earned ? 'earned' : ''}`}
+                                        title={badge.description}
+                                        role="img"
+                                        aria-label={badge.earned ? `${badge.name}: ${badge.description}` : `Locked: ${badge.name}`}
+                                    >
+                                        <div className="badge-icon" aria-hidden="true">
+                                            {badge.earned ? badge.icon : '🔒'}
+                                        </div>
                                         <span className="badge-name">{badge.name}</span>
                                     </div>
                                 ))}

@@ -5,7 +5,7 @@ export default defineConfig({
     plugins: [react()],
     server: {
         proxy: {
-            '/api': { // Adjust this if your API calls don't start with /api but strictly rely on the root
+            '/api': {
                 target: 'http://localhost:5000',
                 changeOrigin: true,
                 secure: false,
@@ -14,5 +14,29 @@ export default defineConfig({
     },
     build: {
         outDir: 'build',
+        target: 'es2020',
+        minify: 'esbuild',
+        sourcemap: false,
+        cssCodeSplit: true,
+        chunkSizeWarningLimit: 500,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+                    'vendor-state': ['zustand', 'axios'],
+                    'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+                    'vendor-physics': ['@react-three/rapier'],
+                    'vendor-charts': ['recharts', '@tanstack/react-table'],
+                    'vendor-animation': ['framer-motion', 'gsap', '@use-gesture/react'],
+                },
+                assetFileNames: 'assets/[name]-[hash][extname]',
+                chunkFileNames: 'chunks/[name]-[hash].js',
+                entryFileNames: '[name]-[hash].js',
+            },
+        },
+    },
+    optimizeDeps: {
+        include: ['react', 'react-dom', 'zustand', 'axios'],
+        exclude: ['@react-three/rapier'],
     },
 });

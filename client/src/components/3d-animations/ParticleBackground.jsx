@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Object3D } from 'three';
 
 const ParticleBackground = ({ count = 100 }) => {
     const meshRef = useRef();
@@ -20,7 +20,7 @@ const ParticleBackground = ({ count = 100 }) => {
         return temp;
     }, [count]);
 
-    const dummy = useMemo(() => new THREE.Object3D(), []);
+    const dummy = useMemo(() => new Object3D(), []);
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();

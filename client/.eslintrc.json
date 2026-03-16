@@ -24,12 +24,14 @@
         "react/react-in-jsx-scope": "off",
         "jsx-a11y/click-events-have-key-events": "warn",
         "jsx-a11y/no-static-element-interactions": "warn",
+        "react-hooks/purity": "off",
         "react/no-unknown-property": [
             "error",
             {
                 "ignore": [
                     "position",
                     "rotation",
+                    "scale",
                     "args",
                     "attach",
                     "object",
@@ -43,7 +45,22 @@
                     "metalness",
                     "transparent",
                     "angle",
-                    "penumbra"
+                    "penumbra",
+                    "visible",
+                    "uColor",
+                    "uTime",
+                    "uProgress",
+                    "renderOrder",
+                    "userData",
+                    "frustumCulled",
+                    "array",
+                    "count",
+                    "itemSize",
+                    "vertexColors",
+                    "sizeAttenuation",
+                    "depthWrite",
+                    "blending",
+                    "depthTest"
                 ]
             }
         ]

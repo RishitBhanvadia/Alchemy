@@ -10,6 +10,7 @@ export default defineConfig({
     use: {
         baseURL: 'http://localhost:5173', // Adjust this to your vite dev server URL if needed
         trace: 'on-first-retry',
+        screenshot: 'only-on-failure',
     },
     projects: [
         {

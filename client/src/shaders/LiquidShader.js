@@ -15,7 +15,7 @@
  * - uWaveFrequency (float): Wave frequency
  * - uTilt (vec2): Tilt/slosh velocity for dynamic surface deformation
  */
-import * as THREE from 'three';
+import { ShaderMaterial, Color, Vector2, DoubleSide } from 'three';
 
 // ─── Vertex Shader ────────────────────────────────────────────────────────────
 const vertexShader = /* glsl */ `
@@ -165,21 +165,21 @@ export function createLiquidMaterial(
     mixRatio = 0.0,
   } = options;
 
-  return new THREE.ShaderMaterial({
+  return new ShaderMaterial({
     uniforms: {
-      uColorA: { value: new THREE.Color(colorA) },
-      uColorB: { value: new THREE.Color(colorB) },
+      uColorA: { value: new Color(colorA) },
+      uColorB: { value: new Color(colorB) },
       uFillLevel: { value: fillLevel },
       uTime: { value: 0.0 },
       uMixRatio: { value: mixRatio },
       uWaveAmplitude: { value: waveAmplitude },
       uWaveFrequency: { value: waveFrequency },
-      uTilt: { value: new THREE.Vector2(0, 0) },
+      uTilt: { value: new Vector2(0, 0) },
     },
     vertexShader,
     fragmentShader,
     transparent: true,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     depthWrite: false,
   });
 }

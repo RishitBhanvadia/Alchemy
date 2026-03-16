@@ -14,6 +14,7 @@ const Lab = () => {
 
   const [animate, setAnimate] = useState(false);
   const [tcolor, SetTColor] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [chemA, setChemA] = useState(0);
   const [chemB, setChemB] = useState(0);
@@ -110,15 +111,22 @@ const Lab = () => {
   };
 
   const useHandlePlayClick = () => {
+    // Prevent double-clicks
+    if (isLoading) return;
+    
+    setIsLoading(true);
     SetTColor("");
-    // document.getElementsByClassName('video-game-button')[0].classList.add('cclick'); // Logic removed as button style changed
     setAnimate(true);
+    
+    // Capture values at click time to avoid stale closure
+    const snapshot = { chemA, chemB, chemC, chemD };
+    
     setTimeout(() => {
       navigate("/result", {
         replace: true,
-        state: { chemA, chemB, chemC, chemD },
+        state: snapshot, // Use captured snapshot, not current state
       });
-    }, 1500); // Increased delay to show animation
+    }, 1500);
   };
 
   function onOrNot() {
@@ -235,11 +243,11 @@ const Lab = () => {
         </div>
 
         <button
-          className={`action-button ${!isPlayDisabled ? 'active' : ''}`}
-          disabled={isPlayDisabled}
+          className={`action-button ${!isPlayDisabled && !isLoading ? 'active' : ''}`}
+          disabled={isPlayDisabled || isLoading}
           onClick={useHandlePlayClick}
         >
-          {!animate ? 'INITIATE REACTION' : 'PROCESSING...'}
+          {!isLoading ? 'INITIATE REACTION' : 'PROCESSING...'}
         </button>
       </div>
 

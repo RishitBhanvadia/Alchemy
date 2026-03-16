@@ -1,10 +1,8 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
 import { Canvas } from '@react-three/fiber';
 import "./Lab3D.css";
 import useLabStore from "../store/labStore";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
@@ -14,21 +12,26 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
-    const navigate = useNavigate();
-    const { 
-        chemA, setChemA, 
-        chemB, setChemB, 
-        chemC, setChemC, 
-        chemD, setChemD,
-        setLastReactionResult,
-        currentHint, setCurrentHint
-    } = useLabStore();
-    const [isReacting, setIsReacting] = useState(false);
     const [isAiOpen, setIsAiOpen] = useState(false);
     const [isResultOpen, setIsResultOpen] = useState(false);
-    const [reactionResult, setReactionResult] = useState(null);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [lockedChems, setLockedChems] = useState([]);
+
+    const chemA = useLabStore(state => state.chemA);
+    const chemB = useLabStore(state => state.chemB);
+    const chemI = useLabStore(state => state.chemI);
+    const chemC = useLabStore(state => state.chemC);
+    const setChemA = useLabStore(state => state.setChemA);
+    const setChemB = useLabStore(state => state.setChemB);
+    const setChemI = useLabStore(state => state.setChemI);
+    const setChemC = useLabStore(state => state.setChemC);
+    const reactionState = useLabStore(state => state.reactionState);
+    const reactionResult = useLabStore(state => state.reactionResult);
+    const currentHint = useLabStore(state => state.currentHint);
+    const setCurrentHint = useLabStore(state => state.setCurrentHint);
+    const initiateReaction = useLabStore(state => state.initiateReaction);
+    const setReactionState = useLabStore(state => state.setReactionState);
+    const reset = useLabStore(state => state.reset);
 
     // Fetch Classroom Restrictions
     useEffect(() => {
@@ -92,79 +95,65 @@ const Lab3D = () => {
 
     // AI Hint Debounce Logic
     useEffect(() => {
-        // Don't fetch hints while a reaction is in progress
-        if (isReacting) return;
+        if (reactionState === 'loading') return;
 
-        // If no chemicals are selected, clear hint
-        if (chemA === 0 && chemB === 0 && chemC === 0 && chemD === 0) {
+        if (chemA === 0 && chemB === 0 && chemI === 0 && chemC === 0) {
             setCurrentHint(null);
             return;
         }
 
         const timer = setTimeout(async () => {
             try {
-                const res = await axios.get('/api/ai/hint', {
-                    params: {
-                        chem_a: Math.round(chemA),
-                        chem_b: Math.round(chemB),
-                        chem_c: Math.round(chemC),
-                        chem_d: Math.round(chemD)
-                    }
+                const res = await fetch('/api/ai/hint', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                setCurrentHint(res.data.hint);
+                const data = await res.json();
+                if (data.hint) {
+                    setCurrentHint(data.hint);
+                }
             } catch (error) {
                 console.error("Failed to fetch AI hint:", error);
             }
-        }, 800); // 800ms debounce to be safe with rate limits
+        }, 800);
 
         return () => clearTimeout(timer);
-    }, [chemA, chemB, chemC, chemD, isReacting, setCurrentHint]);
+    }, [chemA, chemB, chemI, chemC, reactionState, setCurrentHint]);
 
     const handlePlayClick = async () => {
-        setIsReacting(true);
-        setCurrentHint(null); // Clear hint when reaction starts
+        if (reactionState === 'loading') return;
+        
+        setCurrentHint(null);
         setIsResultOpen(false);
-        setReactionResult(null);
         
         try {
-            // Get current user from Supabase
-            const { data: { user } } = await supabase.auth.getUser();
-
-            const payload = {
-                chem_a: Math.round(chemA),
-                chem_b: Math.round(chemB),
-                chem_c: Math.round(chemC),
-                chem_d: Math.round(chemD),
-                student_id: user?.id || null,
-                experiment_type: 'inorganic'
-            };
-
-            // Initiate reaction API call
-            const res = await axios.post('/api/results', payload);
+            const result = await initiateReaction();
             
-            if (res.status === 200) {
-                // Store result in Zustand for global access
-                setLastReactionResult(res.data);
-                setReactionResult(res.data);
-                
-                // Allow user to watch the 3D reaction (bubbles/smoke) for a few seconds
+            if (result) {
                 setTimeout(() => {
                     setIsResultOpen(true);
-                    setIsReacting(false);
+                    toast.dismiss();
                     toast.success("Reaction complete!");
-                }, 4000); // Wait for 3D animations to finish
+                }, 4000);
             }
         } catch (error) {
             console.error("Reaction failed:", error);
-            toast.error(error.response?.data?.error || 'Reaction failed. Please try again.');
-            setIsReacting(false);
+            toast.dismiss();
+            
+            let userMessage = 'Something went wrong. Please try again.';
+            if (error.response?.data?.error) {
+                userMessage = error.response.data.error;
+            } else if (error.code === 'NETWORK_ERROR' || error.message?.includes('Network')) {
+                userMessage = 'Network error. Please check your connection and try again.';
+            }
+            
+            toast.error(userMessage);
         }
     };
 
     const handleResetLab = () => {
-        useLabStore.getState().resetLab();
+        reset();
         setIsResultOpen(false);
-        setReactionResult(null);
         toast.success("Lab reset complete.");
     };
 
@@ -178,8 +167,8 @@ const Lab3D = () => {
         let sum = 0;
         if (chemA > 0) sum += 1;
         if (chemB > 0) sum += 1;
+        if (chemI > 0) sum += 1;
         if (chemC > 0) sum += 1;
-        if (chemD > 0) sum += 1;
         return sum >= 2;
     }
 
@@ -194,8 +183,8 @@ const Lab3D = () => {
             </div>
 
             {/* Dedicated 3D Canvas Area — no OrbitControls to avoid event conflicts */}
-            <div className="lab3d-canvas-wrapper">
-                {currentHint && !isReacting && (
+            <main className="lab3d-canvas-wrapper" aria-label="3D Chemistry Laboratory">
+                {currentHint && reactionState !== 'loading' && (
                     <div className="ai-hint-tooltip">
                         <span className="hint-icon">💡</span>
                         <span className="hint-text">{currentHint}</span>
@@ -211,20 +200,46 @@ const Lab3D = () => {
                     }>
                         <Canvas
                             camera={{ position: [0, 2, 12], fov: 45 }}
-                            style={{ background: 'transparent' }}
-                            gl={{ antialias: true, alpha: true }}
+                            style={{ background: '#0A0A1A' }}
+                            dpr={[1, Math.min(window.devicePixelRatio, 2)]}
+                            gl={{ antialias: true, alpha: false }}
                         >
                             <PhysicsLab
                                 setChemA={setChemA}
                                 setChemB={setChemB}
+                                setChemI={setChemI}
                                 setChemC={setChemC}
-                                setChemD={setChemD}
-                                isReacting={isReacting}
+                                reactionStateIsLoading={reactionState === 'loading'}
                                 lockedChems={lockedChems}
+                                reactionResult={reactionResult}
+                                chemA={chemA}
+                                chemB={chemB}
+                                chemI={chemI}
+                                chemC={chemC}
                             />
                         </Canvas>
                     </Suspense>
                 </ErrorBoundary>
+            </main>
+
+            {/* Screen reader alternative for 3D scene */}
+            <div 
+                className="sr-only" 
+                aria-live="polite" 
+                aria-label="3D Laboratory status"
+            >
+                {reactionState === 'idle' && 'Chemistry lab ready. Adjust chemical concentrations using the sliders below, then press Initiate Reaction.'}
+                {reactionState === 'loading' && 'Reaction in progress. Please wait.'}
+                {reactionState === 'success' && reactionResult && `Reaction complete. Result: ${reactionResult.outcome_label}. ${reactionResult.product_formula || ''}`}
+                {reactionState === 'error' && 'Reaction failed. Please try again.'}
+            </div>
+
+            {/* Keyboard instructions for 3D navigation */}
+            <div 
+                className="keyboard-instructions" 
+                aria-hidden="true"
+            >
+                <span>Use arrow keys or WASD to rotate view</span>
             </div>
 
             {isInitialLoading && <LoadingOverlay message="Initialising Alchemistry Lab..." />}
@@ -249,8 +264,8 @@ const Lab3D = () => {
                                 value={chemA} 
                                 onChange={(e) => setChemA(Number(e.target.value))}
                                 className="chem-slider"
-                                disabled={isReacting}
-                                style={{ '--chem-thumb-color': '#EF4444' }} // Red for Acid
+                                disabled={reactionState === 'loading'}
+                                style={{ '--chem-thumb-color': '#EF4444' }}
                             />
                         </div>
 
@@ -268,7 +283,7 @@ const Lab3D = () => {
                                 value={chemB} 
                                 onChange={(e) => setChemB(Number(e.target.value))}
                                 className="chem-slider"
-                                disabled={isReacting}
+                                disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#6366F1' }} // Blue for Base
                             />
                         </div>
@@ -276,8 +291,27 @@ const Lab3D = () => {
                         <div className="slider-card indicator">
                             <div className="slider-header">
                                 <div className="label-group">
-                                    <span className="chem-name">Phenolphthalein</span>
-                                    <span className="chem-formula">C₂₀H₁₄O₄</span>
+                                    <span className="chem-name">Bromothymol Blue</span>
+                                    <span className="chem-formula">BTB</span>
+                                </div>
+                                <span className="chem-value">{Math.round(chemI)}%</span>
+                            </div>
+                            <input 
+                                type="range" 
+                                min="0" max="100" 
+                                value={chemI} 
+                                onChange={(e) => setChemI(Number(e.target.value))}
+                                className="chem-slider"
+                                disabled={reactionState === 'loading'}
+                                style={{ '--chem-thumb-color': '#10B981' }} // Green for Indicator
+                            />
+                        </div>
+
+                        <div className="slider-card catalyst">
+                            <div className="slider-header">
+                                <div className="label-group">
+                                    <span className="chem-name">Manganese Dioxide</span>
+                                    <span className="chem-formula">MnO₂</span>
                                 </div>
                                 <span className="chem-value">{Math.round(chemC)}%</span>
                             </div>
@@ -287,26 +321,7 @@ const Lab3D = () => {
                                 value={chemC} 
                                 onChange={(e) => setChemC(Number(e.target.value))}
                                 className="chem-slider"
-                                disabled={isReacting}
-                                style={{ '--chem-thumb-color': '#10B981' }} // Green for Indicator
-                            />
-                        </div>
-
-                        <div className="slider-card catalyst">
-                            <div className="slider-header">
-                                <div className="label-group">
-                                    <span className="chem-name">Iron(III) Chloride</span>
-                                    <span className="chem-formula">FeCl₃</span>
-                                </div>
-                                <span className="chem-value">{Math.round(chemD)}%</span>
-                            </div>
-                            <input 
-                                type="range" 
-                                min="0" max="100" 
-                                value={chemD} 
-                                onChange={(e) => setChemD(Number(e.target.value))}
-                                className="chem-slider"
-                                disabled={isReacting}
+                                disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#F59E0B' }} // Orange for Catalyst
                             />
                         </div>
@@ -314,11 +329,11 @@ const Lab3D = () => {
 
                     <div className="lab3d-actions">
                         <button
-                            className={`action-button ${!isPlayDisabled && !isReacting ? 'active' : ''} ${isReacting ? 'loading' : ''}`}
-                            disabled={isPlayDisabled || isReacting}
+                            className={`action-button ${!isPlayDisabled && !reactionState === 'loading' ? 'active' : ''} ${reactionState === 'loading' ? 'loading' : ''}`}
+                            disabled={isPlayDisabled || reactionState === 'loading'}
                             onClick={handlePlayClick}
                         >
-                            {isReacting ? (
+                            {reactionState === 'loading' ? (
                                 <>
                                     <span className="loading-spinner"></span>
                                     <span>REACTING...</span>

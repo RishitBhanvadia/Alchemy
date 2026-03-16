@@ -18,8 +18,11 @@ describe('labStore', () => {
       pixelRatioScale: null,
       role: 'student',
       currentAssignments: [],
-      activeChemicals: { reactantA: null, reactantB: null },
-      lastReactionResult: null,
+      chemA: 0,
+      chemB: 0,
+      chemI: 0,
+      chemC: 0,
+      reactionResult: null,
     });
   });
 
@@ -163,44 +166,42 @@ describe('labStore', () => {
     });
   });
 
-  describe('Reaction state slice', () => {
-    it('setActiveChemicals updates both reactants', () => {
-      useLabStore.getState().setActiveChemicals('HCl', 'NaOH');
-      const { activeChemicals } = useLabStore.getState();
-      expect(activeChemicals.reactantA).toBe('HCl');
-      expect(activeChemicals.reactantB).toBe('NaOH');
+  describe('Reaction slice', () => {
+    it('setActiveChemicals updates chemicals', () => {
+      useLabStore.getState().setChemA(10);
+      useLabStore.getState().setChemB(20);
+      expect(useLabStore.getState().chemA).toBe(10);
+      expect(useLabStore.getState().chemB).toBe(20);
     });
 
-    it('setLastReactionResult stores reaction data', () => {
-      const result = { product_name: 'NaCl + H2O', deltaH: -57.1 };
-      useLabStore.getState().setLastReactionResult(result);
-      expect(useLabStore.getState().lastReactionResult).toEqual(result);
+    it('setReactionResult updates reactionResult', () => {
+      const result = { success: true };
+      useLabStore.getState().setReactionResult(result);
+      expect(useLabStore.getState().reactionResult).toBe(result);
     });
   });
 
   describe('resetLab', () => {
-    it('resets temperature, deltaH, chemicals, and reaction result to defaults', () => {
-      // Set various non-default values
+    it('resets lab-specific state but keeps core properties', () => {
       useLabStore.getState().setTemperature(100);
-      useLabStore.getState().setDeltaH(-57.1);
-      useLabStore.getState().setActiveChemicals('HCl', 'NaOH');
-      useLabStore.getState().setLastReactionResult({ product: 'NaCl' });
+      useLabStore.getState().setDeltaH(50);
+      useLabStore.getState().setChemA(5);
+      useLabStore.getState().setReactionResult({ success: true });
 
-      // Reset
-      useLabStore.getState().resetLab();
+      useLabStore.getState().reset();
 
       const state = useLabStore.getState();
       expect(state.temperature).toBe(25);
       expect(state.deltaH).toBeNull();
-      expect(state.activeChemicals).toEqual({ reactantA: null, reactantB: null });
-      expect(state.lastReactionResult).toBeNull();
+      expect(state.chemA).toBe(0);
+      expect(state.reactionResult).toBeNull();
     });
 
-    it('does NOT reset role or assignments on resetLab', () => {
+    it('does NOT reset role or assignments on reset', () => {
       useLabStore.getState().setRole('teacher');
       useLabStore.getState().setCurrentAssignments([{ id: '1' }]);
 
-      useLabStore.getState().resetLab();
+      useLabStore.getState().reset();
 
       expect(useLabStore.getState().role).toBe('teacher');
       expect(useLabStore.getState().currentAssignments).toHaveLength(1);

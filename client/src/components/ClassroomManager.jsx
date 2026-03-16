@@ -1,65 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
+import useClassroomStore from '../store/classroomStore';
+import EmptyState from './EmptyState';
 
 const ClassroomManager = () => {
-    const [classrooms, setClassrooms] = useState([]);
+    const classrooms = useClassroomStore(state => state.classrooms);
+    const loading = useClassroomStore(state => state.loading);
+    const fetchTeacherClassrooms = useClassroomStore(state => state.fetchTeacherClassrooms);
+    const createClassroom = useClassroomStore(state => state.createClassroom);
+    
     const [newClassName, setNewClassName] = useState('');
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchClassrooms();
-    }, []);
-
-    const fetchClassrooms = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        const { data, error } = await supabase
-            .from('classrooms')
-            .select('*')
-            .eq('teacher_id', user.id);
-
-        if (error) {
-            console.error('Error fetching classrooms:', error);
-        } else {
-            setClassrooms(data);
-        }
-    };
+        fetchTeacherClassrooms();
+    }, [fetchTeacherClassrooms]);
 
     const handleCreateClassroom = async (e) => {
         e.preventDefault();
-        if (!newClassName.trim()) return;
+        if (!newClassName.trim() || loading) return;
 
-        setLoading(true);
-        try {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            // Generate a random 6-character code
-            const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-
-            const { data, error } = await supabase
-                .from('classrooms')
-                .insert([
-                    { 
-                        class_name: newClassName, 
-                        teacher_id: user.id,
-                        class_code: classCode,
-                        locked_chemicals: []
-                    }
-                ])
-                .select();
-
-            if (error) throw error;
-
+        const result = await createClassroom(newClassName);
+        
+        if (result.error) {
+            toast.error(result.error);
+        } else {
             toast.success(`Classroom "${newClassName}" created!`);
             setNewClassName('');
-            fetchClassrooms();
-        } catch (error) {
-            toast.error(error.message);
-        } finally {
-            setLoading(false);
         }
+    };
+
+    const copyToClipboard = (code) => {
+        navigator.clipboard.writeText(code);
+        toast.success('Join code copied!');
     };
 
     const toggleChemicalLock = async (classId, chemKey, currentLocked) => {
@@ -79,7 +52,7 @@ const ClassroomManager = () => {
             toast.error("Failed to update chemical locks");
         } else {
             toast.success(newLocked.includes(chemKey) ? `${chemKey} Locked` : `${chemKey} Unlocked`);
-            fetchClassrooms();
+            fetchTeacherClassrooms();
         }
     };
 
@@ -97,19 +70,33 @@ const ClassroomManager = () => {
                     disabled={loading}
                 />
                 <button type="submit" style={styles.button} disabled={loading}>
-                    {loading ? 'Creating...' : 'Create Class'}
+                    {loading ? 'Creating...' : '+ Create Class'}
                 </button>
             </form>
 
             <div style={styles.classList}>
                 {classrooms.length === 0 ? (
-                    <p style={styles.empty}>No classrooms created yet.</p>
+                    <EmptyState
+                        icon="🏫"
+                        title="No classrooms created yet"
+                        description="Create your first classroom to start managing students."
+                    />
                 ) : (
                     classrooms.map(cls => (
                         <div key={cls.id} style={styles.classCard}>
                             <div style={styles.classHeader}>
-                                <h3>{cls.class_name}</h3>
-                                <span style={styles.code}>CODE: {cls.class_code}</span>
+                                <h3 style={styles.className}>{cls.class_name}</h3>
+                                <div style={styles.codeContainer}>
+                                    <span style={styles.codeLabel}>CODE:</span>
+                                    <span style={styles.code}>{cls.join_code}</span>
+                                    <button 
+                                        onClick={() => copyToClipboard(cls.join_code)}
+                                        style={styles.copyButton}
+                                        title="Copy code"
+                                    >
+                                        📋
+                                    </button>
+                                </div>
                             </div>
                             
                             <div style={styles.chemControls}>
@@ -196,14 +183,44 @@ const styles = {
         marginBottom: '1rem',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         paddingBottom: '0.5rem',
+        flexWrap: 'wrap',
+        gap: '8px',
+    },
+    className: {
+        margin: 0,
+        color: '#F9FAFB',
+        fontWeight: 600,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        maxWidth: '150px',
+    },
+    codeContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+    },
+    codeLabel: {
+        fontSize: '0.7rem',
+        color: '#9CA3AF',
     },
     code: {
-        fontSize: '0.8rem',
-        background: '#1e1e3f',
-        padding: '0.2rem 0.5rem',
+        fontSize: '0.85rem',
+        background: '#6366F1',
+        padding: '4px 8px',
         borderRadius: '4px',
-        color: '#9CA3AF',
+        color: '#fff',
         fontWeight: 'bold',
+        fontFamily: 'monospace',
+    },
+    copyButton: {
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '0.9rem',
+        padding: '4px',
+        opacity: 0.7,
+        transition: 'opacity 0.2s',
     },
     label: {
         fontSize: '0.85rem',
@@ -224,12 +241,6 @@ const styles = {
         cursor: 'pointer',
         transition: 'all 0.2s',
     },
-    empty: {
-        color: '#666',
-        textAlign: 'center',
-        gridColumn: '1 / -1',
-        padding: '2rem',
-    }
 };
 
 export default ClassroomManager;

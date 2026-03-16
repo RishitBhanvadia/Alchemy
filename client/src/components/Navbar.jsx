@@ -4,10 +4,28 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/logo.png';
 
+import useAuthStore from '../store/authStore';
+
 const Navbar = () => {
+    const profile = useAuthStore(state => state.profile);
+    const logout = useAuthStore(state => state.logout);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const handleLogout = async () => {
+        await logout();
+        window.location.href = '/login';
+    };
+
+    const getInitials = (name) => {
+        if (!name) return '??';
+        const parts = name.split(' ').filter(Boolean);
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+        return name.substring(0, 2).toUpperCase();
+    };
 
     return (
         <nav className={`glass-navbar ${isMenuOpen ? 'menu-open' : ''}`} role="navigation" aria-label="Main navigation">
@@ -28,24 +46,49 @@ const Navbar = () => {
 
             <div className={`nav-content ${isMenuOpen ? 'show' : ''}`}>
                 <div className="nav-links" role="menubar">
-                    <NavLink
-                        to="/dashboard"
-                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                        onClick={() => setIsMenuOpen(false)}
-                        aria-label="Navigate to Dashboard"
-                        role="menuitem"
-                    >
-                        DASHBOARD
-                    </NavLink>
-                    <NavLink
-                        to="/lab-3d"
-                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                        onClick={() => setIsMenuOpen(false)}
-                        aria-label="Navigate to 3D Laboratory"
-                        role="menuitem"
-                    >
-                        3D LAB
-                    </NavLink>
+                    {profile?.role === 'student' ? (
+                        <>
+                            <NavLink
+                                to="/student"
+                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                                aria-label="Navigate to Dashboard"
+                                role="menuitem"
+                            >
+                                DASHBOARD
+                            </NavLink>
+                            <NavLink
+                                to="/student/lab"
+                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                                aria-label="Navigate to Laboratory"
+                                role="menuitem"
+                            >
+                                3D LAB
+                            </NavLink>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink
+                                to="/teacher"
+                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                                aria-label="Navigate to Teacher Dashboard"
+                                role="menuitem"
+                            >
+                                DASHBOARD
+                            </NavLink>
+                            <NavLink
+                                to="/teacher/analytics"
+                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                                aria-label="Navigate to Analytics"
+                                role="menuitem"
+                            >
+                                ANALYTICS
+                            </NavLink>
+                        </>
+                    )}
                     <NavLink
                         to="/profile"
                         className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
@@ -67,14 +110,10 @@ const Navbar = () => {
                 </div>
 
                 <div className="nav-profile">
-                    <div className="profile-icon">ADM</div>
+                    <div className="profile-icon">{getInitials(profile?.display_name || profile?.full_name)}</div>
                     <button
                         className="logout-button"
-                        onClick={async () => {
-                            const { supabase } = await import('../supabaseClient');
-                            await supabase.auth.signOut();
-                            window.location.href = '/';
-                        }}
+                        onClick={handleLogout}
                     >
                         LOGOUT
                     </button>

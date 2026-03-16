@@ -1,49 +1,100 @@
 require('dotenv').config();
+const validateEnv = require('./config/validateEnv');
+validateEnv(); // exits process if any required var is missing
+
 const express = require('express');
 const bodyParser = require("body-parser");
 const resultRoutes = require('./routes/resultRoutes');
 const titrationRoutes = require('./routes/titrationRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const experimentRoutes = require('./routes/experimentRoutes');
+const classroomRoutes = require('./routes/classroomRoutes');
+const teacherRoutes = require('./routes/teacherRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 
 const app = express();
+app.set('trust proxy', 1); // trust first proxy for rate limiting behind reverse proxies
+const logger = require('./utils/logger');
 const rateLimit = require('express-rate-limit');
 
 // Rate Limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: { code: 'RATE_LIMITED', message: 'Too many requests. Please slow down.' } }
 });
 
-// Apply the rate limiting middleware to all requests
-app.use(limiter);
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait 15 minutes.' } }
+});
+
+const aiLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 30,
+    message: { success: false, error: { code: 'RATE_LIMITED', message: 'AI rate limit reached. Please wait before asking more questions.' } }
+});
+
+app.use('/api', generalLimiter);
 
 // Security Headers with Helmet
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
+            scriptSrc: [
+                "'self'",
+                "'unsafe-inline'",
+                "'unsafe-eval'",
+            ],
             styleSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "blob:"],
+            connectSrc: [
+                "'self'",
+                "https://*.supabase.co",
+                "wss://*.supabase.co",
+                "https://generativelanguage.googleapis.com",
+            ],
+            workerSrc: ["'self'", "blob:"],
+            wasmSrc: ["'self'", "blob:"],
         },
     },
-    hsts: {
-        maxAge: 31536000,
-        includeSubDomains: true,
-        preload: true
-    }
+    frameguard: { action: 'deny' },
+    noSniff: true,
+    hsts: process.env.NODE_ENV === 'production'
+        ? { maxAge: 31536000, includeSubDomains: true, preload: true }
+        : false,
+    hidePoweredBy: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 
-// Middleware
+// CORS Configuration
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000',
+];
+if (process.env.FRONTEND_URL) {
+    const urls = process.env.FRONTEND_URL.split(',').map(url => url.trim());
+    allowedOrigins.push(...urls);
+}
 app.use(cors({
-    origin: ['http://localhost:5173', process.env.FRONTEND_URL],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        callback(new Error(`CORS policy: origin ${origin} not allowed`));
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    maxAge: 86400,
 }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
@@ -53,7 +104,12 @@ app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+        logger.info(`${req.method} ${req.url} ${res.statusCode} ${duration}ms`, {
+            method: req.method,
+            url: req.url,
+            status: res.statusCode,
+            duration,
+        });
     });
     next();
 });
@@ -67,16 +123,62 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date() });
 });
 
+const { requireAuth, requireRole } = require('./middleware/authMiddleware');
+
 // Routes
-app.use('/api/results', resultRoutes);
-app.use('/api/titration', titrationRoutes);
-app.use('/api/ai', aiRoutes);
+
+// Authenticated routes
+app.use('/api/results', requireAuth, resultRoutes);
+app.use('/api/titration', requireAuth, titrationRoutes);
+app.use('/api/ai', requireAuth, aiRoutes);
+app.use('/api/experiments', requireAuth, experimentRoutes);
+
+// Role-specific routes
+app.use('/api/classroom', requireAuth, requireRole('teacher'), classroomRoutes);
+app.use('/api/teacher', requireAuth, requireRole('teacher'), teacherRoutes);
+app.use('/api/student', requireAuth, requireRole('student'), experimentRoutes);
+app.use('/api/auth', requireAuth, profileRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  logger.error('Unhandled Error', {
+    path: req.path,
+    method: req.method,
+    error: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+  });
+
+  if (res.headersSent) return next(err);
+
+  res.status(err.status || 500).json({
+    success: false,
+    error: {
+      code: 'INTERNAL_ERROR',
+      message: 'An unexpected error occurred.',
+    }
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Connected to server on port ${PORT}`);
-    console.log("Environment Check:");
-    console.log("- Supabase URL exists:", !!process.env.SUPABASE_URL);
-    console.log("- Supabase Key exists:", !!process.env.SUPABASE_KEY);
+const server = app.listen(PORT, '0.0.0.0', () => {
+    logger.info(`Server running on port ${PORT}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received. Closing server gracefully...');
+  server.close(() => {
+    logger.info('Server closed.');
+    process.exit(0);
+  });
+  // Force close after 10 seconds
+  setTimeout(() => process.exit(1), 10000);
+});
+
+process.on('SIGINT', () => process.emit('SIGTERM'));
+
+// Handle unhandled Promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection', { reason: reason?.toString() });
 });

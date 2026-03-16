@@ -58,14 +58,22 @@ function computeDistribution(scores) {
   return { data, average };
 }
 
-export default function StudentAnalyticsChart({ scores = [], experimentName = '' }) {
+const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', noDataMessage }) => {
   const { data, average } = useMemo(() => computeDistribution(scores), [scores]);
 
-  if (!experimentName) {
+  const showNoDataMessage = noDataMessage || (
+    !experimentName 
+      ? "Select an experiment type above to see score distribution."
+      : scores.length === 0 
+        ? "No students have completed this experiment yet."
+        : null
+  );
+
+  if (showNoDataMessage) {
     return (
       <div className="student-analytics-chart" style={styles.emptyState}>
         <div style={styles.emptyIcon}>📊</div>
-        <p style={styles.emptyText}>Select an experiment to view score distribution</p>
+        <p style={styles.emptyText}>{showNoDataMessage}</p>
       </div>
     );
   }
@@ -145,12 +153,14 @@ export default function StudentAnalyticsChart({ scores = [], experimentName = ''
       </ResponsiveContainer>
     </div>
   );
-}
+});
 
 StudentAnalyticsChart.propTypes = {
   scores: PropTypes.arrayOf(PropTypes.number),
   experimentName: PropTypes.string,
 };
+
+export default StudentAnalyticsChart;
 
 // ─── Inline Styles ──────────────────────────────────────────────────────────
 

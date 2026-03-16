@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
-import * as THREE from 'three';
+import { Vector3, Vector2, Raycaster, Plane, Color, MathUtils } from 'three';
 import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
 import { LiquidMaterial } from './LiquidShaderMaterial';
@@ -19,38 +19,38 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     // Detect mobile for segments optimisation
     const isMobile = window.innerWidth < 768;
     const segments = isMobile ? 16 : 32;
-    const currentPos = useRef(new THREE.Vector3(...position));
+    const currentPos = useRef(new Vector3(...position));
     const isPouring = useRef(false);
     const isTilted = useRef(false);
     const dragActive = useRef(false);
     
     // Shader refs
     const liquidMatRef = useRef();
-    const velocityTracker = useRef(new THREE.Vector2());
-    const lastPos = useRef(new THREE.Vector3(...position));
+    const velocityTracker = useRef(new Vector2());
+    const lastPos = useRef(new Vector3(...position));
 
     const { camera, gl } = useThree();
-    const plane = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
-    const intersection = useRef(new THREE.Vector3());
-    const offset = useRef(new THREE.Vector3());
+    const plane = useRef(new Plane(new Vector3(0, 0, 1), 0));
+    const intersection = useRef(new Vector3());
+    const offset = useRef(new Vector3());
 
     const handlePointerDown = useCallback((e) => {
         if (locked) {
             toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
             return;
         }
-        // Prevent event propagation and OrbitControls (if any)
         e.stopPropagation();
         
+        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
-        const raycaster = e.raycaster || new THREE.Raycaster();
+        const raycaster = e.raycaster || new Raycaster();
         const rect = gl.domElement.getBoundingClientRect();
         
         // Use R3F's normalized mouse coordinates if available, else derive from event
-        const mouse = e.pointer || new THREE.Vector2(
+        const mouse = e.pointer || new Vector2(
             ((e.clientX - rect.left) / rect.width) * 2 - 1,
             -((e.clientY - rect.top) / rect.height) * 2 + 1
         );
@@ -61,19 +61,19 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl]);
+    }, [camera, gl, label, locked]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
         e.stopPropagation();
 
         const rect = gl.domElement.getBoundingClientRect();
-        const mouse = e.pointer || new THREE.Vector2(
+        const mouse = e.pointer || new Vector2(
             ((e.clientX - rect.left) / rect.width) * 2 - 1,
             -((e.clientY - rect.top) / rect.height) * 2 + 1
         );
 
-        const raycaster = e.raycaster || new THREE.Raycaster();
+        const raycaster = e.raycaster || new Raycaster();
         raycaster.setFromCamera(mouse, camera);
         raycaster.ray.intersectPlane(plane.current, intersection.current);
 
@@ -95,6 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
+        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
@@ -106,7 +107,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [position, gl]);
+    }, [gl, position]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
@@ -129,14 +130,14 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         const velZ = (currentPos.current.z - lastPos.current.z) / d;
         
         // Dampen velocity to track tilt
-        velocityTracker.current.x = THREE.MathUtils.lerp(velocityTracker.current.x, velX * 0.05, 0.1);
-        velocityTracker.current.y = THREE.MathUtils.lerp(velocityTracker.current.y, velZ * 0.05, 0.1);
+        velocityTracker.current.x = MathUtils.lerp(velocityTracker.current.x, velX * 0.05, 0.1);
+        velocityTracker.current.y = MathUtils.lerp(velocityTracker.current.y, velZ * 0.05, 0.1);
         lastPos.current.copy(currentPos.current);
 
         if (groupRef.current) {
             groupRef.current.position.lerp(currentPos.current, 0.2);
             const targetRot = isTilted.current ? Math.PI / 3.5 : 0;
-            groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRot, 0.15);
+            groupRef.current.rotation.z = MathUtils.lerp(groupRef.current.rotation.z, targetRot, 0.15);
         }
 
         // Update Shader Material
@@ -180,9 +181,10 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             {amount > 0 && (
                 <mesh position={[0, liquidY, 0]} scale={[1, liquidHeight, 1]} {...eventHandlers}>
                     <cylinderGeometry args={[0.45, 0.45, 1, segments, 8]} />
+                    {/* eslint-disable-next-line react/no-unknown-property */}
                     <liquidMaterial 
                         ref={liquidMatRef}
-                        uColor={new THREE.Color(color)} 
+                        uColor={new Color(color)} 
                         transparent 
                     />
                 </mesh>
@@ -202,6 +204,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             </Text>
 
             {/* Invisible expanded hit area */}
+            {/* eslint-disable-next-line react/no-unknown-property */}
             <mesh visible={false} {...eventHandlers}>
                 <cylinderGeometry args={[0.8, 0.8, 2, 16]} />
                 <meshBasicMaterial transparent opacity={0} />
@@ -215,7 +218,8 @@ DraggableFlask.propTypes = {
     label: PropTypes.string,
     color: PropTypes.string,
     onPour: PropTypes.func,
-    maxAmount: PropTypes.number
+    maxAmount: PropTypes.number,
+    locked: PropTypes.bool
 };
 
 export default DraggableFlask;

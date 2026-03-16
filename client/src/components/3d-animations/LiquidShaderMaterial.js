@@ -1,5 +1,5 @@
 import { shaderMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+import { Color, Vector2 } from 'three';
 
 /**
  * LiquidShaderMaterial - A custom shader material for fluid dynamics inside the flasks.
@@ -13,9 +13,9 @@ import * as THREE from 'three';
 export const LiquidMaterial = shaderMaterial(
     {
         uTime: 0,
-        uColor: new THREE.Color('#00f3ff'),
+        uColor: new Color('#00f3ff'),
         uFillAmount: 1.0, 
-        uTilt: new THREE.Vector2(0, 0)
+        uTilt: new Vector2(0, 0)
     },
     // VERTEX SHADER
     `

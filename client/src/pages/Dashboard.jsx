@@ -22,7 +22,7 @@ const Dashboard = () => {
             const { data: className, error: classError } = await supabase
                 .from('classrooms')
                 .select('id, class_name')
-                .eq('class_code', joinCode.toUpperCase())
+                .eq('join_code', joinCode.toUpperCase())
                 .single();
 
             if (classError || !className) throw new Error("Invalid class code");
@@ -66,7 +66,7 @@ const Dashboard = () => {
                     <p className="subtitle">Select a module to begin experimentation</p>
                 </div>
 
-                <div className="module-grid">
+                <main className="module-grid" aria-label="Experiment modules">
                     {/* Experiment Module */}
                     <Link to="/lab" className="module-card glass-panel">
                         <div className="icon-container">
@@ -116,13 +116,16 @@ const Dashboard = () => {
                         <p>Join your teacher's session.</p>
                         
                         <form onSubmit={handleJoinClassroom} className="join-form">
+                            <label htmlFor="join-code" className="sr-only">Classroom join code</label>
                             <input 
+                                id="join-code"
                                 type="text"
                                 placeholder="Enter Code"
                                 value={joinCode}
                                 onChange={(e) => setJoinCode(e.target.value)}
                                 maxLength={6}
                                 disabled={loading}
+                                aria-label="Enter 6-character classroom join code"
                             />
                             <button type="submit" disabled={loading || joinCode.length < 6}>
                                 {loading ? '...' : 'JOIN'}
@@ -131,7 +134,7 @@ const Dashboard = () => {
                         <div className="card-glow"></div>
                     </div>
 
-                </div>
+                </main>
             </div>
         </div>
     );

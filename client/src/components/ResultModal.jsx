@@ -15,19 +15,23 @@ import './ResultModal.css';
 const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
   if (!isOpen || !result) return null;
 
-  const { outcome, result_formula, product_info, product_name } = result;
+  const { 
+    outcome_label, 
+    product_formula, 
+    color, 
+    state_change, 
+    thermal_effect, 
+    is_dangerous 
+  } = result;
 
-  // Determine safety level for badges
-  const getSafetyLevel = (outcomeStr) => {
-    const dangerKeywords = ['Explosion', 'Vigorous', 'Danger', 'Toxic'];
-    const cautionKeywords = ['Precipitate', 'Gas', 'Heat', 'Change'];
-    
-    if (dangerKeywords.some(kw => outcomeStr?.includes(kw))) return 'danger';
-    if (cautionKeywords.some(kw => outcomeStr?.includes(kw))) return 'caution';
-    return 'safe';
-  };
+  const dangerBadge = is_dangerous
+    ? { label: '⚠️ DANGEROUS', className: 'badge-danger' }
+    : { label: '✅ SAFE', className: 'badge-safe' };
 
-  const safetyLevel = getSafetyLevel(outcome || product_name);
+  const thermalIcon = thermal_effect?.includes('Exothermic') ? '🔥' : thermal_effect?.includes('Endothermic') ? '❄️' : '💧';
+  const stateIcon = state_change?.includes('Gas') ? '💨' 
+    : state_change?.includes('Precipitate') ? '🌧️' 
+    : state_change?.includes('Colour') ? '🎨' : '💧';
 
   return (
     <AnimatePresence>
@@ -40,29 +44,42 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
       >
         <motion.div 
           className="result-modal-content"
-          initial={{ scale: 0.8, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.8, opacity: 0, y: 20 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          initial={{ scale: 0.98, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.98, opacity: 0 }}
+          transition={{ duration: 0.3 }}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="result-modal-header">
             <h2 className="neon-glow">Reaction Complete</h2>
-            <div className={`result-badge badge-${safetyLevel}`}>
-              {safetyLevel === 'danger' ? '⚠️ Dangerous' : safetyLevel === 'caution' ? '⚡ Caution' : '✅ Safe'}
+            <div className={`result-badge ${dangerBadge.className}`}>
+              {dangerBadge.label}
             </div>
           </div>
 
           <div className="result-modal-body">
-            <h3 className="outcome-name">{outcome || product_name}</h3>
-            <p className="outcome-description">
-              {product_info || "The chemicals have interacted to produce this result. Observe the physical changes in the beaker."}
-            </p>
+            <h3 className="outcome-name">{outcome_label}</h3>
+            
+            <div className="result-stats">
+              {thermal_effect && (
+                <div className="stat-item" title="Thermal Effect">
+                  <span className="stat-icon">{thermalIcon}</span>
+                  <span className="stat-text">{thermal_effect}</span>
+                </div>
+              )}
+              {state_change && (
+                <div className="stat-item" title="State Change">
+                  <span className="stat-icon">{stateIcon}</span>
+                  <span className="stat-text">{state_change}</span>
+                </div>
+              )}
+            </div>
 
-            {(result_formula || result.result) && (
+            {product_formula && (
               <div className="formula-box">
-                <span className="formula-label">Chemical Equation</span>
-                <span className="formula-text">{result_formula || result.result}</span>
+                <span className="formula-label">Chemical Result</span>
+                <span className="formula-text">{product_formula}</span>
+                {color && <div className="color-preview" style={{ backgroundColor: color.toLowerCase().replace(/fading to/, '').trim() }} title={`Observed Color: ${color}`}></div>}
               </div>
             )}
           </div>

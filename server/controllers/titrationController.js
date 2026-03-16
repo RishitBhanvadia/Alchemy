@@ -1,24 +1,24 @@
 const { createClient } = require('@supabase/supabase-js');
+const { success, error } = require('../utils/response');
 
-// Initialize Supabase Client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 exports.getTitrationData = async (req, res) => {
     try {
-        const { data, error } = await supabase
+        const { data, error: dbError } = await supabase
             .from('titration_data')
             .select('*');
 
-        if (error) {
-            console.error("Supabase Query Error:", error);
-            return res.status(500).json({ message: "Database Error" });
+        if (dbError) {
+            console.error('[getTitrationData] Supabase error:', dbError.message);
+            return error(res, 'INTERNAL_ERROR', 'Failed to fetch titration data.', 500);
         }
 
-        res.json(data);
-    } catch (error) {
-        console.error("Error in getTitrationData:", error);
-        res.status(500).json({ message: "Server Error" });
+        return success(res, { titration_data: data || [] });
+    } catch (err) {
+        console.error('[getTitrationData]', err.message);
+        return error(res, 'INTERNAL_ERROR', 'An unexpected error occurred.', 500);
     }
 };

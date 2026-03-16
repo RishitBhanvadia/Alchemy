@@ -1,20 +1,20 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+import { Color } from 'three';
 import PropTypes from 'prop-types';
 
 const ReactiveBeaker = ({ status }) => {
     const liquidRef = useRef();
     const { liquidColor, waveHeight } = React.useMemo(() => {
         if (status === 'success') {
-            return { liquidColor: new THREE.Color('#00ff00'), waveHeight: 0.05 }; // Green
+            return { liquidColor: new Color('#00ff00'), waveHeight: 0.05 }; // Green
         } else if (status === 'failed') {
-            return { liquidColor: new THREE.Color('#ff0000'), waveHeight: 0.3 }; // Red
+            return { liquidColor: new Color('#ff0000'), waveHeight: 0.3 }; // Red
         } else if (status === 'loading') {
-            return { liquidColor: new THREE.Color('#00aaff'), waveHeight: 0.2 }; // Blue
+            return { liquidColor: new Color('#00aaff'), waveHeight: 0.2 }; // Blue
         } else {
-            return { liquidColor: new THREE.Color('#cccccc'), waveHeight: 0 }; // Neutral
+            return { liquidColor: new Color('#cccccc'), waveHeight: 0 }; // Neutral
         }
     }, [status]);
 

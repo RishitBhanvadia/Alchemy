@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const aiController = require('../controllers/aiController');
+const { validate } = require('../middleware/validate');
 
-// All AI routes are protected by the AI-specific rate limiter
-router.post('/explain', aiController.aiRateLimiter, aiController.explainReaction);
+router.post('/explain', aiController.aiRateLimiter, validate('aiExplain'), aiController.explainReaction);
 router.get('/hint', aiController.hintRateLimiter, aiController.getHint);
-
 
 module.exports = router;
 
