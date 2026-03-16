@@ -61,7 +61,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl]);
+    }, [camera, gl, label, locked]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -106,7 +106,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [position, gl]);
+    }, [position]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
