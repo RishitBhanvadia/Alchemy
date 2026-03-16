@@ -1,0 +1,4 @@
+## 2024-10-25 - Logic bug in chemical mixing concentration calculations
+**Bug:** When mixing multiple chemicals, rounding errors could cause the final sum of concentrations to be >100 or <100 (e.g., mixing equal parts of 4 chemicals gives 4*25%, which rounds to 30%, totalling 120%). The adjustment code correctly identified the need to add/subtract to fix rounding errors but mistakenly used an `if` statement, applying the correction only *once*. It also had a division by zero bug if the user mixed 0 of all chemicals.
+**Root Cause:** The logic to adjust for rounding errors assumed a single 10% step would always be sufficient, overlooking cases where multiple adjustments were necessary. Normalization logic was missing a zero check.
+**Learning:** When adjusting a numeric sum to hit an exact target using bounded incremental steps, use an iterative loop (e.g., `while`) rather than a single-pass conditional (`if`) to ensure the mathematical target is fully reached.
