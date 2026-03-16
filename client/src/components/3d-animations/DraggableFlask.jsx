@@ -42,7 +42,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         // Prevent event propagation and OrbitControls (if any)
         e.stopPropagation();
         
-        gl.domElement.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -61,7 +61,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl]);
+    }, [camera, gl, locked, label]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -95,7 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        gl.domElement.style.cursor = 'grab';
+        document.body.style.cursor = '';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
