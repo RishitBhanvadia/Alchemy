@@ -1,0 +1,4 @@
+## 2026-03-16 - Add tests for join classroom flow
+**Gap:** The 'Join Classroom' form on the Dashboard was largely untested, particularly around the complex Supabase interaction (checking login, finding classroom, verifying membership, joining) and form validation.
+**Learning:** Validating asynchronous form submissions interacting with Supabase requires comprehensively mocking the chained methods. It is crucial to mock `.from().select().eq().single()` correctly and use `waitFor` to assert state transitions properly.
+**Pattern:** Use `vi.mock` for the `supabaseClient`, implement chained object returns for Supabase methods (e.g., `eq: vi.fn().mockReturnThis()`), and use `fireEvent.change` combined with `@testing-library/react`'s `waitFor` to verify API calls and UI state updates like loading indications and toast notifications.
