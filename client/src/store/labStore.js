@@ -110,15 +110,29 @@ export const useLabStore = create((set, get) => ({
       set({ reactionResult: res.data, reactionState: 'success' });
 
       if (user?.id) {
-        await supabase.from('experiment_logs').insert({
-          student_id: user.id,
-          chem_a: payload.chem_a,
-          chem_b: payload.chem_b,
-          chem_i: payload.chem_i,
-          chem_c: payload.chem_c,
-          experiment_type: 'inorganic',
-          outcome_label: res.data.outcome_label,
-        });
+        // Idempotency check: prevent duplicate logs within 5 seconds for the same reaction
+        const fiveSecondsAgo = new Date(Date.now() - 5000).toISOString();
+        const { data: recentLog } = await supabase
+          .from('experiment_logs')
+          .select('id')
+          .eq('student_id', user.id)
+          .eq('reaction_id', res.data.reaction_id)
+          .gte('ran_at', fiveSecondsAgo)
+          .maybeSingle();
+
+        if (!recentLog) {
+          await supabase.from('experiment_logs').insert({
+            student_id: user.id,
+            chem_a: payload.chem_a,
+            chem_b: payload.chem_b,
+            chem_i: payload.chem_i,
+            chem_c: payload.chem_c,
+            reaction_id: res.data.reaction_id,
+            outcome_label: res.data.outcome_label,
+            module: 'lab',
+            ran_at: new Date().toISOString()
+          });
+        }
 
         if (typeof useHistoryStore !== 'undefined') {
           useHistoryStore.getState().refresh();

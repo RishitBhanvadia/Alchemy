@@ -38,6 +38,7 @@ const Login = () => {
 
       <motion.div 
         className="auth-card"
+        data-testid="auth-card"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -54,6 +55,7 @@ const Login = () => {
         <div className="tabs-container">
           <button 
             className={`tab-btn ${activeTab === 'login' ? 'active' : ''}`}
+            data-testid="login-tab"
             onClick={() => setActiveTab('login')}
           >
             Log In

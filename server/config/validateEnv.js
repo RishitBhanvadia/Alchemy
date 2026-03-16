@@ -1,7 +1,7 @@
 // server/config/validateEnv.js
 const required = [
   'SUPABASE_URL',
-  'SUPABASE_SERVICE_KEY',
+  'SUPABASE_SERVICE_ROLE_KEY',
   'GEMINI_API_KEY',
 ];
 

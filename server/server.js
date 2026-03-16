@@ -76,6 +76,7 @@ app.use(helmet({
 // CORS Configuration
 const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:4173',
     'http://localhost:3000',
     'http://localhost:5000',
     'http://127.0.0.1:5173',
@@ -86,16 +87,15 @@ if (process.env.FRONTEND_URL) {
     allowedOrigins.push(...urls);
 }
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
-        callback(new Error(`CORS policy: origin ${origin} not allowed`));
-    },
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     maxAge: 86400,
 }));
+
+// Handle preflight OPTIONS requests explicitly
+app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
 

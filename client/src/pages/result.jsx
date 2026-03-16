@@ -95,6 +95,7 @@ const Result = () => {
         const d = new Date();
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
         const rdx = {
+          "id": crypto.randomUUID(), // Add unique ID to each entry
           "date": d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear(),
           "time": d.getHours() + ":" + d.getMinutes(),
           "conc_a": location.state.chemA,
@@ -105,12 +106,21 @@ const Result = () => {
           "main": normalized[0]?.product_formula || normalized[0]?.outcome_label || "Unknown"
         };
 
-        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const newCart = [...currentCart, rdx];
-        localStorage.setItem('cart', JSON.stringify(newCart));
+        // Fix race condition: always read latest value before writing
+        const updateCartAtomically = () => {
+            const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Check if this specific result (rdx.id) is already in cart to avoid double-adding if state re-rendered
+            if (currentCart.some(item => item.id === rdx.id)) return currentCart;
+            
+            const newCart = [...currentCart, rdx];
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            return newCart;
+        };
+
+        const finalCart = updateCartAtomically();
         
         if (isMounted) {
-          setCart(newCart);
+          setCart(finalCart);
         }
       } catch (error) {
         logger.error("Fetch error:", error);

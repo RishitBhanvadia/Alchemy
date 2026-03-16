@@ -244,6 +244,7 @@ const Lab = () => {
 
         <button
           className={`action-button ${!isPlayDisabled && !isLoading ? 'active' : ''}`}
+          data-testid="initiate-reaction-btn"
           disabled={isPlayDisabled || isLoading}
           onClick={useHandlePlayClick}
         >

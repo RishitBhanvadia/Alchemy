@@ -87,6 +87,7 @@ const LoginForm = () => {
           id="email"
           name="email"
           className={`auth-input ${touched.email && errors.email ? 'input-error' : ''}`}
+          data-testid="email-input"
           placeholder="Enter your email"
           value={formData.email}
           onChange={handleChange}
@@ -105,6 +106,7 @@ const LoginForm = () => {
           id="password"
           name="password"
           className={`auth-input ${touched.password && errors.password ? 'input-error' : ''}`}
+          data-testid="password-input"
           placeholder="••••••••"
           value={formData.password}
           onChange={handleChange}
@@ -117,7 +119,7 @@ const LoginForm = () => {
         )}
         <a href="#" className="forgot-password">Forgot password?</a>
       </div>
-      <button type="submit" className="submit-btn" disabled={loading}>
+      <button type="submit" className="submit-btn" data-testid="login-submit-btn" disabled={loading}>
         {loading ? (
           <>
             <span className="btn-spinner"></span>

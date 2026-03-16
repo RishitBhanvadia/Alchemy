@@ -106,7 +106,7 @@ const StudentDashboard = () => {
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                     >
-                        <h1 className="welcome-text">
+                        <h1 className="welcome-text" data-testid="welcome-text">
                             Welcome back, <span className="highlight">{getFirstName()}</span> 👋
                         </h1>
                         <p className="subtitle">Ready to experiment today?</p>
@@ -136,6 +136,7 @@ const StudentDashboard = () => {
                                     <motion.div
                                         key={module.id}
                                         className="module-card glass-card"
+                                        data-testid={`module-card-${module.id}`}
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.1 * idx }}

@@ -64,12 +64,13 @@ const ClassroomManager = () => {
                 <input 
                     type="text" 
                     placeholder="Class Name (e.g. Physics 101)" 
+                    data-testid="classroom-name-input"
                     value={newClassName}
                     onChange={(e) => setNewClassName(e.target.value)}
                     style={styles.input}
                     disabled={loading}
                 />
-                <button type="submit" style={styles.button} disabled={loading}>
+                <button type="submit" style={styles.button} data-testid="create-classroom-btn" disabled={loading}>
                     {loading ? 'Creating...' : '+ Create Class'}
                 </button>
             </form>
@@ -88,7 +89,7 @@ const ClassroomManager = () => {
                                 <h3 style={styles.className}>{cls.class_name}</h3>
                                 <div style={styles.codeContainer}>
                                     <span style={styles.codeLabel}>CODE:</span>
-                                    <span style={styles.code}>{cls.join_code}</span>
+                                    <span style={styles.code} className="code" data-testid="join-code">{cls.join_code}</span>
                                     <button 
                                         onClick={() => copyToClipboard(cls.join_code)}
                                         style={styles.copyButton}

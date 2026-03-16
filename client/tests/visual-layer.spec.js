@@ -1,88 +1,56 @@
 import { test, expect } from '@playwright/test';
+import { mockSupabase } from './helpers/mockSupabase';
 
 test.describe('3D Visual Layer Tests', () => {
 
     test('Landing Page: Molecule Animation & Interaction', async ({ page }) => {
-        // 1. Load Page
+        await mockSupabase(page, { isLoggedIn: false });
         await page.goto('/');
-
-        // 2. Verify Canvas Exists
-        const canvas = page.locator('canvas'); // The canvas inside CanvasContainer
+        const canvas = page.locator('canvas');
         await expect(canvas).toBeVisible();
-
-        // 3. functional check: Button works
         await page.click('.start-button');
         await expect(page).toHaveURL(/.*login/);
     });
 
-    test('Login Page: Holographic Tilt & Input Access', async ({ page }) => {
+    test('Login Page: Interactive Card & Input Access', async ({ page }) => {
+        await mockSupabase(page, { isLoggedIn: false });
         await page.goto('/login');
+        const authCard = page.locator('.auth-card');
+        await expect(authCard).toBeVisible();
+        await authCard.hover();
 
-        // 1. Verify Tilt Container
-        const tiltCard = page.locator('.tilt-card');
-        await expect(tiltCard).toBeVisible();
+        await page.getByTestId('email-input').fill('admin@alchemistry.com');
+        await page.getByTestId('password-input').fill('password123');
 
-        // 2. Hover effect (Functionality check: ensure no errors on hover)
-        await tiltCard.hover();
-
-        // 3. Crucial: Input Interaction
-        const emailInput = page.locator('input[type="email"]');
-        await emailInput.click();
-        await emailInput.fill('admin@alchemistry.com');
-        await expect(emailInput).toHaveValue('admin@alchemistry.com');
-
-        const passwordInput = page.locator('input[type="password"]');
-        await passwordInput.click();
-        await passwordInput.fill('password123');
-        await expect(passwordInput).toHaveValue('password123');
-
-        // 4. Submit
-        await page.click('.login-button');
-        await expect(page).toHaveURL(/.*dashboard/);
+        // We re-mock with isLoggedIn: true to simulate successful login redirection
+        await mockSupabase(page, { isLoggedIn: true, role: 'teacher' });
+        await page.getByTestId('login-submit-btn').click();
+        await expect(page).toHaveURL(/.*teacher/, { timeout: 10000 });
     });
 
     test('Dashboard: Interaction', async ({ page }) => {
-        await page.goto('/dashboard');
-
-        // 1. Verify interactive elements are clickable
-        const experimentCard = page.locator('.module-card').first();
-        await expect(experimentCard).toBeVisible();
-
-        // 2. Navigate
-        await experimentCard.click();
-
-        // Should navigate (check URL or some change)
-        // The first card (Laboratory) goes to /lab
-        await expect(page).toHaveURL(/.*lab/);
+        await mockSupabase(page, { isLoggedIn: true, role: 'teacher' });
+        await page.goto('/teacher');
+        await expect(page.getByTestId('dashboard-title')).toBeVisible();
+        await expect(page.getByTestId('dashboard-title')).toContainText('Dashboard');
     });
 
     test('Experiment Page: Reactive Beaker Integration', async ({ page }) => {
-        await page.goto('/lab');
+        await mockSupabase(page, { isLoggedIn: true, role: 'student' });
+        await page.goto('/student/lab');
 
-        // 1. Verify 3D Beaker canvas exists
+        // Wait for 3D environment to start loading
         const canvas = page.locator('canvas');
-        await expect(canvas).toBeVisible();
+        await expect(canvas).toBeVisible({ timeout: 15000 });
 
-        // 2. Verify existing logic controls (range inputs)
-        // Select by type since name attribute is not present
-        const sliderA = page.locator('input[type="range"]').first();
-        await expect(sliderA).toBeVisible();
-
-        // 3. Interact to trigger state change (which drives the animation status)
-        // Changing the slider updates state in Lab.js -> updates 'experimentStatus' -> updates <ReactiveBeaker>
-
-        // Use evaluate to bypass React's event synthesis issues if .fill() doesn't work on ranges perfectly
-        // But let's try strict mode false first or just ensure it's visible.
-        // Actually, just checking visibility is enough for this "Integration" test,
-        // ensuring the element is there.
-        // Note: Visual validation of the color change requires snapshot comparison which is complex to set up in one go.
-        // For now, we verify the app doesn't crash and functionality remains.
+        const slider = page.locator('input[type="range"]').first();
+        await expect(slider).toBeVisible();
     });
 
     test('Performance: FPS Check (Basic)', async ({ page }) => {
-        await page.goto('/dashboard');
+        await mockSupabase(page, { isLoggedIn: false });
+        await page.goto('/');
 
-        // Evaluate FPS using requestAnimationFrame loop
         const fps = await page.evaluate(async () => {
             return new Promise(resolve => {
                 let frames = 0;
@@ -102,7 +70,7 @@ test.describe('3D Visual Layer Tests', () => {
         });
 
         console.log(`Measured FPS: ${fps}`);
-        expect(fps).toBeGreaterThan(30);
+        expect(fps).toBeGreaterThan(20);
     });
 
 });

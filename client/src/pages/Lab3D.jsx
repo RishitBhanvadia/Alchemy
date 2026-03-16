@@ -15,6 +15,7 @@ const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
     const [isResultOpen, setIsResultOpen] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [lockedChems, setLockedChems] = useState([]);
 
     const chemA = useLabStore(state => state.chemA);
@@ -121,23 +122,39 @@ const Lab3D = () => {
     }, [chemA, chemB, chemI, chemC, reactionState, setCurrentHint]);
 
     const handlePlayClick = async () => {
-        if (reactionState === 'loading') return;
+        if (isLoading || reactionState === 'loading') return;
         
+        // Capture snapshot for consistency
+        const snapshot = {
+            chem_a: chemA,
+            chem_b: chemB,
+            chem_i: chemI,
+            chem_c: chemC,
+        };
+
         setCurrentHint(null);
         setIsResultOpen(false);
+        setIsLoading(true);
         
         try {
             const result = await initiateReaction();
             
             if (result) {
+                // Log experiment to experiment_logs explicitly if needed, 
+                // but initiateReaction already does it. 
+                // We'll keep the store's logic but ensure isLoading is managed here.
                 setTimeout(() => {
                     setIsResultOpen(true);
                     toast.dismiss();
                     toast.success("Reaction complete!");
+                    setIsLoading(false);
                 }, 4000);
+            } else {
+                setIsLoading(false);
             }
         } catch (error) {
             console.error("Reaction failed:", error);
+            setIsLoading(false);
             toast.dismiss();
             
             let userMessage = 'Something went wrong. Please try again.';
@@ -329,11 +346,12 @@ const Lab3D = () => {
 
                     <div className="lab3d-actions">
                         <button
-                            className={`action-button ${!isPlayDisabled && !reactionState === 'loading' ? 'active' : ''} ${reactionState === 'loading' ? 'loading' : ''}`}
-                            disabled={isPlayDisabled || reactionState === 'loading'}
+                            className={`action-button ${!isPlayDisabled && !isLoading && reactionState !== 'loading' ? 'active' : ''} ${isLoading || reactionState === 'loading' ? 'loading' : ''}`}
+                            data-testid="initiate-reaction-btn"
+                            disabled={isPlayDisabled || isLoading || reactionState === 'loading'}
                             onClick={handlePlayClick}
                         >
-                            {reactionState === 'loading' ? (
+                            {isLoading || reactionState === 'loading' ? (
                                 <>
                                     <span className="loading-spinner"></span>
                                     <span>REACTING...</span>

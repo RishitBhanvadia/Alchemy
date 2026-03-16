@@ -1,166 +1,100 @@
-// server/controllers/resultController.js
-const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
-const { computeReactionId, PRESENCE_THRESHOLD } = require('../utils/reactionHash');
-const { classifyRegime } = require('../utils/regimeClassifier');
 
-function deriveThermalEffect(result, gas, solid) {
-  if (!result) return 'neutral';
-  const r = result.toLowerCase();
-  if (r.includes('exothermic') || r.includes('heat') || r.includes('light')) return 'exothermic';
-  if (r.includes('endothermic') || r.includes('cold')) return 'endothermic';
-  if (gas && r.includes('cl2')) return 'exothermic';
-  return 'neutral';
+function computeReactionId(a, b, i, c) {
+  const THRESHOLD = 10;
+  let id = 0;
+  if (a >= THRESHOLD) id += 1;
+  if (b >= THRESHOLD) id += 10;
+  if (i >= THRESHOLD) id += 100;
+  if (c >= THRESHOLD) id += 1000;
+  return id;
 }
 
-function determineDanger(result, gas) {
-  if (!result) return false;
-  const r = result.toLowerCase();
-  const dangerous = ['cl2', 'chlorine', 'explosion', 'vigorous', 'hcl', 'hazard'];
-  return dangerous.some(d => r.includes(d)) || (gas && r.includes('gas'));
+function normalise(a, b, i, c) {
+  const total = Number(a) + Number(b) + Number(i) + Number(c);
+  if (total === 0) return null;
+  const na = Math.round((a / total) * 100);
+  const nb = Math.round((b / total) * 100);
+  const ni = Math.round((i / total) * 100);
+  const nc = 100 - na - nb - ni;
+  return [na, nb, ni, Math.max(0, nc)];
 }
 
-function calculateScore(chemA, chemB, chemI, chemC, outcomeLabel) {
-  const hasOutcome = outcomeLabel && outcomeLabel !== 'Unknown Reaction' && outcomeLabel !== 'No reaction';
-  const concentrationBalance = 100 - Math.max(chemA, chemB, chemI, chemC);
-  const numChemicals = [chemA, chemB, chemI, chemC].filter(c => c > 0).length;
-  
-  const score = 
-    (hasOutcome ? 40 : 0) +
-    Math.round((concentrationBalance / 100) * 30) +
-    (numChemicals >= 2 ? 30 : 0);
-  
-  return Math.min(100, Math.max(0, score));
+function classifyRegime(a, b) {
+  const total = a + b;
+  if (total === 0) return 'NEUTRAL';
+  const ratio = a / total;
+  if (ratio > 0.65) return 'ACID_DOMINANT';
+  if (ratio < 0.35) return 'BASE_DOMINANT';
+  return 'NEUTRAL';
 }
-
-const validateConcentration = (val) => {
-  const n = Number(val);
-  return !isNaN(n) && n >= 0 && n <= 100;
-};
 
 exports.calculateResult = async (req, res) => {
   try {
-    let { chem_a = 0, chem_b = 0, chem_c = 0, chem_d = 0, chem_i, student_id } = req.body;
-    
-    if (!validateConcentration(chem_a) || !validateConcentration(chem_b) || 
-        !validateConcentration(chem_c) || !validateConcentration(chem_d)) {
-      return error(res, 'VALIDATION_ERROR', 'Invalid concentration values. Must be numbers between 0 and 100.', 400);
-    }
-    
-    if (student_id && typeof student_id !== 'string') {
-      return error(res, 'VALIDATION_ERROR', 'Invalid student_id format.', 400);
-    }
-    
-    // Support both chem_i (new lab) and chem_d (old lab) for indicator
-    chem_i = chem_i || chem_d || 0;
+    // Parse input — accept both naming conventions
+    const chem_a = Number(req.body.chem_a ?? req.body.chemA ?? 0);
+    const chem_b = Number(req.body.chem_b ?? req.body.chemB ?? 0);
+    const chem_i = Number(req.body.chem_i ?? req.body.chemI ?? 0);
+    const chem_c = Number(req.body.chem_c ?? req.body.chemC ?? 0);
 
-    // Step 1: Normalise to sum = 100
-    const total = chem_a + chem_b + chem_i + chem_c;
-    if (total === 0) return error(res, 'VALIDATION_ERROR', 'All chemicals are at 0%.', 400);
-    
-    // Round to integers
-    let na = Math.round((chem_a / total) * 100);
-    let nb = Math.round((chem_b / total) * 100);
-    let ni = Math.round((chem_i / total) * 100);
-    let nc = 100 - na - nb - ni; // Last one gets the remainder to guarantee sum = 100
-
-    // Handle edge case where rounding causes negative value due to cumulative rounding
-    if (nc < 0) {
-      const deficit = Math.abs(nc);
-      const values = [
-        { key: 'na', val: na },
-        { key: 'nb', val: nb },
-        { key: 'ni', val: ni }
-      ];
-      // Subtract deficit from the largest value
-      const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
-      if (maxEntry.key === 'na') na = Math.max(0, na - deficit);
-      else if (maxEntry.key === 'nb') nb = Math.max(0, nb - deficit);
-      else ni = Math.max(0, ni - deficit);
-      nc = 0;
+    // Validate
+    if ([chem_a, chem_b, chem_i, chem_c].some(n => isNaN(n) || n < 0 || n > 100)) {
+      return res.status(400).json({
+        error: 'Invalid concentration values. Each must be a number between 0 and 100.'
+      });
     }
 
-    // Clamp all values to valid range
-    chem_a = Math.max(0, Math.min(100, na));
-    chem_b = Math.max(0, Math.min(100, nb));
-    chem_i = Math.max(0, Math.min(100, ni));
-    chem_c = Math.max(0, Math.min(100, nc));
+    // Normalise
+    const normalised = normalise(chem_a, chem_b, chem_i, chem_c);
+    if (!normalised) {
+      return res.status(400).json({ error: 'All chemicals are at 0%.' });
+    }
+    const [na, nb, ni, nc] = normalised;
 
-    // Step 2: Compute reaction_id using fuzzy threshold
-    const reaction_id = computeReactionId(chem_a, chem_b, chem_i, chem_c);
-    if (reaction_id === 0) return error(res, 'VALIDATION_ERROR', 'No active chemicals detected above threshold.', 400);
+    // Compute lookup keys
+    const reaction_id = computeReactionId(na, nb, ni, nc);
+    const regime = classifyRegime(na, nb);
 
-    // Step 3: Classify regime for response (handles all chemical dominances)
-    const regime = classifyRegime(chem_a, chem_b, chem_i, chem_c);
-
-    // Step 4: Query by reaction_id
-    // Note: regime filtering disabled until schema is updated
+    // Query — try exact regime match first
     let { data, error } = await supabase
       .from('results')
       .select('*')
       .eq('reaction_id', reaction_id)
-      .limit(1)
-      .single();
+      .eq('regime', regime)
+      .maybeSingle(); // use maybeSingle — returns null instead of error if no row found
+
+    // Fallback — try any regime for this reaction_id
+    if (!data) {
+      const fallback = await supabase
+        .from('results')
+        .select('*')
+        .eq('reaction_id', reaction_id)
+        .limit(1)
+        .maybeSingle();
+      data = fallback.data;
+    }
 
     if (!data) {
-      return error(res, 'NOT_FOUND', `No reaction found for combination ID ${reaction_id}.`, 404);
+      return res.status(404).json({
+        error: `No reaction found for combination ID ${reaction_id} (regime: ${regime}).`
+      });
     }
 
-    // Transform fields to match expected API response format
-    const stateChange = [];
-    if (data.solid) stateChange.push('Precipitate');
-    if (data.gas) stateChange.push('Gas Evolution');
-    if (data.solid && data.solid_color) stateChange.push(`Solid Color: ${data.solid_color}`);
-    
-    const thermalEffect = deriveThermalEffect(data.result, data.gas, data.solid);
-    const isDangerous = determineDanger(data.result, data.gas);
-    const score = calculateScore(chem_a, chem_b, chem_i, chem_c, data.result);
-
-    // Optional Step 5: Log experiment if student_id is provided
-    // Also log if we have student_id from the new parameter extraction above
-    const targetStudentId = student_id || req.body.student_id;
-    if (targetStudentId) {
-      try {
-        const experimentType = req.body.experiment_type || 'inorganic';
-
-        const { error: logError } = await supabase
-          .from('experiment_results')
-          .insert({
-            user_id: targetStudentId,
-            experiment_type: experimentType,
-            score: score,
-            reaction_id: reaction_id.toString(),
-            outcome_label: data.result,
-            chem_a: chem_a,
-            chem_b: chem_b,
-            chem_i: chem_i,
-            chem_c: chem_c,
-            created_at: new Date().toISOString()
-          });
-
-        if (logError) {
-          console.error('Failed to log experiment result:', logError.message);
-        }
-      } catch (logError) {
-        console.error('Failed to log experiment:', logError.message);
-      }
-    }
-
-    return success(res, {
+    // Return result
+    return res.status(200).json({
       reaction_id,
-      regime: regime || 'NONE',
-      outcome_label: data.result || 'Unknown Reaction',
-      product_formula: data.product_name || '',
-      color: data.color || '#ffffff',
-      state_change: stateChange.length > 0 ? stateChange.join(', ') : 'No visible change',
-      thermal_effect: thermalEffect,
-      ai_tutor_context: data.product_info || data.result || '',
-      is_dangerous: isDangerous,
-      score: score,
+      regime,
+      outcome_label:    data.outcome_label,
+      product_formula:  data.product_formula  || '',
+      color:            data.color            || 'Colourless',
+      state_change:     data.state_change     || 'None',
+      thermal_effect:   data.thermal_effect   || 'None',
+      ai_tutor_context: data.ai_tutor_context || '',
+      is_dangerous:     data.is_dangerous     || false,
     });
 
   } catch (err) {
-    console.error('[resultController.calculateResult]', err.message);
-    return error(res, 'INTERNAL_ERROR', 'An unexpected error occurred. Please try again.', 500);
+    console.error('[resultController.calculateResult] Unexpected error:', err.message);
+    return res.status(500).json({ error: 'Server error during reaction calculation.' });
   }
 };

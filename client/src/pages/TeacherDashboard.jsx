@@ -353,7 +353,7 @@ export default function TeacherDashboard({ analytics = false }) {
   return (
     <div style={styles.page}>
       <div style={styles.header}>
-        <h1 style={styles.title}>
+        <h1 style={styles.title} data-testid="dashboard-title">
           <span style={styles.titleIcon} aria-hidden="true">{role === 'admin' ? '🛡️' : '🎓'}</span>
           {role === 'admin' ? 'Admin Dashboard' : 'Teacher Dashboard'}
         </h1>
