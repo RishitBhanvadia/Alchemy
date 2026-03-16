@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import { supabase } from '../supabaseClient';
 import logo from '../assets/logo.png';
@@ -7,8 +7,7 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
-    const [loading, setLoading] = useState(true);
+        const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
         averageScore: 0,
@@ -41,8 +40,7 @@ const Profile = () => {
                     if (error) throw error;
                     
                     if (data) {
-                        setExperiments(data);
-                        calculateStats(data);
+                                                calculateStats(data);
                     }
                 }
             } catch (error) {
@@ -53,9 +51,9 @@ const Profile = () => {
         };
 
         fetchUserDataAndStats();
-    }, []);
+    }, [calculateStats]);
 
-    const calculateStats = (data) => {
+    const calculateStats = useCallback((data) => {
         const total = data.length;
         if (total === 0) return;
 
@@ -95,7 +93,7 @@ const Profile = () => {
         });
         
         setBadges(updatedBadges);
-    };
+    }, [badges]);
 
     if (loading) {
         return (
