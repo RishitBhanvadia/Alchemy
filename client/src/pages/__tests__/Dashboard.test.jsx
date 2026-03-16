@@ -4,14 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 import { toast } from 'react-hot-toast';
 
-const { mockGetUser, mockFrom, mockSelect, mockEq, mockSingle, mockInsert } = vi.hoisted(() => {
+const { mockGetUser, mockFrom, mockSingle, mockInsert } = vi.hoisted(() => {
     const mockSingle = vi.fn();
-    const mockEq = vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-             single: mockSingle
-        }),
-        single: mockSingle
-    });
     // It's possible we need to return 'this' for eq chaining correctly
     // Since mockEq needs to have .eq() return itself or an object with .single
     const eqChain = {

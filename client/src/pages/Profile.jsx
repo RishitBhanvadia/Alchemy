@@ -7,8 +7,7 @@ import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const [experiments, setExperiments] = useState([]);
-    const [loading, setLoading] = useState(true);
+        const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalExperiments: 0,
         averageScore: 0,
@@ -41,7 +40,7 @@ const Profile = () => {
                     if (error) throw error;
                     
                     if (data) {
-                        setExperiments(data);
+
                         calculateStats(data);
                     }
                 }
