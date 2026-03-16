@@ -42,7 +42,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         // Prevent event propagation and OrbitControls (if any)
         e.stopPropagation();
         
-        gl.domElement.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -95,7 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        gl.domElement.style.cursor = 'grab';
+        document.body.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
