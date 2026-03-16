@@ -35,10 +35,13 @@ const ClassroomManager = () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             
-            // Generate a random 6-character code
-            const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            // Generate a secure, random 6-character code
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const array = new Uint8Array(6);
+            window.crypto.getRandomValues(array);
+            const classCode = Array.from(array, byte => chars[byte % chars.length]).join('');
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('classrooms')
                 .insert([
                     { 
