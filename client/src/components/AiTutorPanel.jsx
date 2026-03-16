@@ -110,7 +110,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
           <div className="chat-history">
             {chatHistory.length === 0 ? (
               <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '40px' }}>
-                <p>Hello! I'm your AI Chemistry Tutor.</p>
+                <p>Hello! I&apos;m your AI Chemistry Tutor.</p>
                 <p>Ask me anything about the chemicals or reactions in the lab.</p>
               </div>
             ) : (
@@ -158,6 +158,12 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+import PropTypes from 'prop-types';
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func
 };
 
 export default AiTutorPanel;
