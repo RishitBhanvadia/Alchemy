@@ -43,7 +43,7 @@
                     "metalness",
                     "transparent",
                     "angle",
-                    "penumbra"
+                    "penumbra", "uColor", "visible", "depthWrite", "array", "count", "itemSize", "vertexColors", "sizeAttenuation", "blending"
                 ]
             }
         ]

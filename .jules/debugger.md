@@ -1,0 +1,4 @@
+## 2024-03-16 - Math.random() in useMemo triggering react-hooks/purity
+**Bug:** The ParticleSystem component was crashing with a `react-hooks/purity` error because `Math.random()` was called inside `useMemo`.
+**Root Cause:** `Math.random` is an impure function. Calling an impure function inside `useMemo` produces unstable results that update unpredictably when the component re-renders. ESLint's `react-hooks/purity` rule prevents this because components and hooks must be idempotent.
+**Learning:** When needing to initialize random data for a component that shouldn't change on re-renders, replace `useMemo` with `useState` and pass a lazy initializer function (e.g. `const [data] = useState(() => {...Math.random()...})`). Do not use `useEffect` to synchronously set this state on mount as it triggers `react-hooks/set-state-in-effect` errors and cascading renders.
