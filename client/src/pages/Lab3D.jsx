@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
 import { Canvas } from '@react-three/fiber';
 import "./Lab3D.css";
 import useLabStore from "../store/labStore";
@@ -14,8 +13,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
-    const navigate = useNavigate();
-    const { 
+        const {
         chemA, setChemA, 
         chemB, setChemB, 
         chemC, setChemC, 
@@ -57,6 +55,7 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error fetching classroom restrictions:", error);
             }
         };
@@ -113,6 +112,7 @@ const Lab3D = () => {
                 });
                 setCurrentHint(res.data.hint);
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Failed to fetch AI hint:", error);
             }
         }, 800); // 800ms debounce to be safe with rate limits
@@ -155,6 +155,7 @@ const Lab3D = () => {
                 }, 4000); // Wait for 3D animations to finish
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Reaction failed:", error);
             toast.error(error.response?.data?.error || 'Reaction failed. Please try again.');
             setIsReacting(false);

@@ -42,7 +42,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         // Prevent event propagation and OrbitControls (if any)
         e.stopPropagation();
         
-        gl.domElement.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -61,7 +61,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl]);
+    }, [camera, locked, label, gl.domElement]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -95,7 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        gl.domElement.style.cursor = 'grab';
+        document.body.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
@@ -106,7 +106,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [position, gl]);
+    }, [position]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
@@ -180,9 +180,11 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             {amount > 0 && (
                 <mesh position={[0, liquidY, 0]} scale={[1, liquidHeight, 1]} {...eventHandlers}>
                     <cylinderGeometry args={[0.45, 0.45, 1, segments, 8]} />
+                    {/* eslint-disable-next-line react/no-unknown-property */}
                     <liquidMaterial 
                         ref={liquidMatRef}
-                        uColor={new THREE.Color(color)} 
+                        /* eslint-disable-next-line react/no-unknown-property */
+                        uColor={new THREE.Color(color)}
                         transparent 
                     />
                 </mesh>
@@ -202,6 +204,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             </Text>
 
             {/* Invisible expanded hit area */}
+            {/* eslint-disable-next-line react/no-unknown-property */}
             <mesh visible={false} {...eventHandlers}>
                 <cylinderGeometry args={[0.8, 0.8, 2, 16]} />
                 <meshBasicMaterial transparent opacity={0} />
@@ -215,7 +218,8 @@ DraggableFlask.propTypes = {
     label: PropTypes.string,
     color: PropTypes.string,
     onPour: PropTypes.func,
-    maxAmount: PropTypes.number
+    maxAmount: PropTypes.number,
+    locked: PropTypes.bool
 };
 
 export default DraggableFlask;

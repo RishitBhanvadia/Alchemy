@@ -99,4 +99,5 @@ PhysicsLab.propTypes = {
     isReacting: PropTypes.bool,
 };
 
+PhysicsLab.propTypes = { setLastReactionResult: PropTypes.func, lockedChems: PropTypes.array };
 export default PhysicsLab;
