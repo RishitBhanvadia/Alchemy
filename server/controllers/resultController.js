@@ -3,6 +3,7 @@ const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const { computeReactionId, PRESENCE_THRESHOLD } = require('../utils/reactionHash');
 const { classifyRegime } = require('../utils/regimeClassifier');
+const { validateConcentration } = require('../utils/validateConcentration');
 
 function deriveThermalEffect(result, gas, solid) {
   if (!result) return 'neutral';
@@ -32,11 +33,6 @@ function calculateScore(chemA, chemB, chemI, chemC, outcomeLabel) {
   
   return Math.min(100, Math.max(0, score));
 }
-
-const validateConcentration = (val) => {
-  const n = Number(val);
-  return !isNaN(n) && n >= 0 && n <= 100;
-};
 
 exports.calculateResult = async (req, res) => {
   try {
