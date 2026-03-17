@@ -479,7 +479,7 @@ export default function TeacherDashboard({ analytics = false }) {
       <section id="analytics-section" aria-labelledby="analytics-title" style={styles.analyticsSection}>
         <div style={styles.analyticsHeader}>
           <h2 id="analytics-title" style={styles.analyticsTitle}>📈 Score Analytics</h2>
-          <select
+          <select id="exportType"
             style={styles.experimentSelect}
             value={selectedExperiment}
             onChange={(e) => setSelectedExperiment(e.target.value)}
@@ -493,8 +493,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="startDate" style={styles.dateLabel}>From:</label>
               <input
+                id="startDate"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +503,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="endDate" style={styles.dateLabel}>To:</label>
               <input
+                id="endDate"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
