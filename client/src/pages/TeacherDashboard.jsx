@@ -231,7 +231,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
-        console.error('Failed to fetch students:', err);
+        // console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
         setLoading(false);
@@ -308,7 +308,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const { data, error: scoresError } = await query;
 
         if (scoresError) {
-          console.error('Scores query error:', scoresError);
+          // console.error('Scores query error:', scoresError);
           // Fallback: try without experiment type filter
           if (selectedExperiment) {
             const fallbackQuery = supabase
@@ -326,7 +326,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Since experiment_logs doesn't have scores, use 1 for each experiment
         setExperimentScores((data || []).map(() => 1));
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        // console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
       }

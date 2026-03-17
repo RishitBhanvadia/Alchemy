@@ -59,7 +59,7 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
-                console.error("Error fetching classroom restrictions:", error);
+                // console.error("Error fetching classroom restrictions:", error);
             }
         };
 
@@ -112,7 +112,7 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
-                console.error("Failed to fetch AI hint:", error);
+                // console.error("Failed to fetch AI hint:", error);
             }
         }, 800);
 
@@ -136,7 +136,7 @@ const Lab3D = () => {
                 }, 4000);
             }
         } catch (error) {
-            console.error("Reaction failed:", error);
+            // console.error("Reaction failed:", error);
             toast.dismiss();
             
             let userMessage = 'Something went wrong. Please try again.';

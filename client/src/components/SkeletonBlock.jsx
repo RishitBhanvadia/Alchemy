@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SkeletonBlock.css';
 
 const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', className = '' }) => {
@@ -12,6 +13,11 @@ const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', 
       }}
     />
   );
+};
+
+SkeletonText.propTypes = {
+  lines: PropTypes.number,
+  className: PropTypes.string
 };
 
 export const SkeletonText = ({ lines = 3, className = '' }) => {

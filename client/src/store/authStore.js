@@ -122,7 +122,7 @@ try {
   useProfileStore = require('./profileStore').default;
   useClassroomStore = require('./classroomStore').default;
 } catch (e) {
-  console.warn('Store imports deferred - stores may not be initialized yet');
+  // console.warn('Store imports deferred - stores may not be initialized yet');
 }
 
 export default useAuthStore;
