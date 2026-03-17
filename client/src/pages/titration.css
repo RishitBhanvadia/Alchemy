@@ -189,9 +189,11 @@
     cursor: not-allowed;
 }
 
+.error-message {
     border-left: 3px solid #ff4d4d;
     font-size: 0.9rem;
     color: #ddd;
+    padding-left: 10px;
 }
 
 @keyframes shake {
