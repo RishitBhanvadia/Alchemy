@@ -167,7 +167,7 @@ try {
   useHistoryStore = require('./historyStore').default;
   useProfileStore = require('./profileStore').default;
 } catch (e) {
-  console.warn('Store imports deferred');
+  // console.warn('Store imports deferred');
 }
 
 export default useLabStore;
