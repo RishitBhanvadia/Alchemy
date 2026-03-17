@@ -1,8 +1,11 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key';
+const rawUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : undefined;
+const rawKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : undefined;
+
+const supabaseUrl = rawUrl || 'https://placeholder.supabase.co';
+const supabaseKey = rawKey || 'placeholder-key';
 
 if (supabaseUrl === 'https://placeholder.supabase.co' || supabaseKey === 'placeholder-key') {
     console.error(
@@ -11,4 +14,8 @@ if (supabaseUrl === 'https://placeholder.supabase.co' || supabaseKey === 'placeh
     );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// In case the variables evaluate to a string "undefined" or an empty string "", we provide an absolute fallback here:
+export const supabase = createClient(
+  (!supabaseUrl || supabaseUrl === 'undefined') ? 'https://placeholder.supabase.co' : supabaseUrl,
+  (!supabaseKey || supabaseKey === 'undefined') ? 'placeholder-key' : supabaseKey
+);

@@ -10,6 +10,9 @@ if (supabaseUrl === 'https://placeholder.supabase.co' || supabaseKey === 'placeh
   console.error('Missing Supabase credentials in environment variables.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const finalUrl = (!supabaseUrl || supabaseUrl === 'undefined') ? 'https://placeholder.supabase.co' : supabaseUrl;
+const finalKey = (!supabaseKey || supabaseKey === 'undefined') ? 'placeholder-key' : supabaseKey;
+
+const supabase = createClient(finalUrl, finalKey);
 
 module.exports = supabase;
