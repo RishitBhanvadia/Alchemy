@@ -1,0 +1,11 @@
+--- client/src/pages/TeacherDashboard.jsx
++++ client/src/pages/TeacherDashboard.jsx
+@@ -504,7 +504,7 @@
+             </div>
+             <div style={styles.dateField}>
+               <label style={styles.dateLabel} htmlFor="endDate">To:</label>
+-              <input id="startDate"
++              <input id="endDate"
+                 type="date"
+                 style={styles.dateInput}
+                 value={endDate}
