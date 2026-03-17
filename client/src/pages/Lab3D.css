@@ -258,10 +258,34 @@
     to { transform: rotate(360deg); }
 }
 
-.note-warn {
-    color: var(--color-warning);
+.reaction-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 20px;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    margin-top: 4px;
+}
+
+.reaction-status-badge.waiting {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--color-warning);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.reaction-status-badge.ready {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+}
+
+.status-icon {
+    font-size: 1.1rem;
 }
 
 /* Mobile Responsiveness for Lab3D */

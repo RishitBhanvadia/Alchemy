@@ -163,17 +163,17 @@ const Lab3D = () => {
         // We could also pre-fill the AI chat here if desired
     };
 
-    function onOrNot() {
-        let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
-        return sum >= 2;
+    function getActiveChemCount() {
+        let count = 0;
+        if (chemA > 0) count += 1;
+        if (chemB > 0) count += 1;
+        if (chemI > 0) count += 1;
+        if (chemC > 0) count += 1;
+        return count;
     }
 
-
-    const isPlayDisabled = !(onOrNot());
+    const activeCount = getActiveChemCount();
+    const isPlayDisabled = activeCount < 2;
 
     return (
         <div className="lab3d-page">
@@ -329,9 +329,10 @@ const Lab3D = () => {
 
                     <div className="lab3d-actions">
                         <button
-                            className={`action-button ${!isPlayDisabled && !reactionState === 'loading' ? 'active' : ''} ${reactionState === 'loading' ? 'loading' : ''}`}
+                            className={`action-button ${!isPlayDisabled && reactionState !== 'loading' ? 'active' : ''} ${reactionState === 'loading' ? 'loading' : ''}`}
                             disabled={isPlayDisabled || reactionState === 'loading'}
                             onClick={handlePlayClick}
+                            aria-describedby="reaction-status"
                         >
                             {reactionState === 'loading' ? (
                                 <>
@@ -340,7 +341,23 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {reactionState !== 'loading' && (
+                            <div
+                                id="reaction-status"
+                                className={`reaction-status-badge ${activeCount >= 2 ? 'ready' : 'waiting'}`}
+                                aria-live="polite"
+                            >
+                                {activeCount === 0 && (
+                                    <><span className="status-icon">🧪</span> <span>Add chemicals to begin</span></>
+                                )}
+                                {activeCount === 1 && (
+                                    <><span className="status-icon">⚠️</span> <span>Add 1 more chemical to react</span></>
+                                )}
+                                {activeCount >= 2 && (
+                                    <><span className="status-icon">✨</span> <span>Ready to react</span></>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
