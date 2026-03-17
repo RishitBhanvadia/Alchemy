@@ -84,10 +84,34 @@ export default async function handler(req, res) {
     const total = chem_a + chem_b + chem_i + chem_c;
     if (total === 0) return res.status(400).json({ error: 'All chemicals are at 0%.' });
 
-    chem_a = Math.round((chem_a / total) * 100);
-    chem_b = Math.round((chem_b / total) * 100);
-    chem_i = Math.round((chem_i / total) * 100);
-    chem_c = 100 - chem_a - chem_b - chem_i;
+    let na = Math.round((chem_a / total) * 100);
+    let nb = Math.round((chem_b / total) * 100);
+    let ni = Math.round((chem_i / total) * 100);
+    let nc = 100 - na - nb - ni;
+
+    // Handle edge case where rounding causes negative value due to cumulative rounding
+    if (nc < 0) {
+      let deficit = Math.abs(nc);
+      while (deficit > 0) {
+        const values = [
+          { key: 'na', val: na },
+          { key: 'nb', val: nb },
+          { key: 'ni', val: ni }
+        ];
+        // Subtract 1 from the largest value iteratively
+        const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
+        if (maxEntry.key === 'na') na = Math.max(0, na - 1);
+        else if (maxEntry.key === 'nb') nb = Math.max(0, nb - 1);
+        else ni = Math.max(0, ni - 1);
+        nc++;
+        deficit--;
+      }
+    }
+
+    chem_a = Math.max(0, Math.min(100, na));
+    chem_b = Math.max(0, Math.min(100, nb));
+    chem_i = Math.max(0, Math.min(100, ni));
+    chem_c = Math.max(0, Math.min(100, nc));
 
     const reaction_id = computeReactionId(chem_a, chem_b, chem_i, chem_c);
     if (reaction_id === 0) return res.status(400).json({ error: 'No active chemicals detected above threshold.' });

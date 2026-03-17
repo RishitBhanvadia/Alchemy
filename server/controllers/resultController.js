@@ -66,18 +66,21 @@ exports.calculateResult = async (req, res) => {
 
     // Handle edge case where rounding causes negative value due to cumulative rounding
     if (nc < 0) {
-      const deficit = Math.abs(nc);
-      const values = [
-        { key: 'na', val: na },
-        { key: 'nb', val: nb },
-        { key: 'ni', val: ni }
-      ];
-      // Subtract deficit from the largest value
-      const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
-      if (maxEntry.key === 'na') na = Math.max(0, na - deficit);
-      else if (maxEntry.key === 'nb') nb = Math.max(0, nb - deficit);
-      else ni = Math.max(0, ni - deficit);
-      nc = 0;
+      let deficit = Math.abs(nc);
+      while (deficit > 0) {
+        const values = [
+          { key: 'na', val: na },
+          { key: 'nb', val: nb },
+          { key: 'ni', val: ni }
+        ];
+        // Subtract 1 from the largest value iteratively
+        const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
+        if (maxEntry.key === 'na') na = Math.max(0, na - 1);
+        else if (maxEntry.key === 'nb') nb = Math.max(0, nb - 1);
+        else ni = Math.max(0, ni - 1);
+        nc++;
+        deficit--;
+      }
     }
 
     // Clamp all values to valid range

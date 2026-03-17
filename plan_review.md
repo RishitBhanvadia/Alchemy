@@ -1,0 +1,4 @@
+1. Issue: Both `server/controllers/resultController.js` and `client/api/results.js` calculate chemical concentrations out of 100%. Due to cumulative rounding, `chem_c` (calculated as `100 - na - nb - ni`) can become negative. The server attempts to fix this by subtracting the entire deficit from a single component, which can lead to unbalanced adjustments (e.g. `na` drops by 2 instead of `na` dropping by 1 and `nb` dropping by 1). The client has NO fix for this and passes negative values to `computeReactionId`.
+2. Fix: Implement an iterative loop to adjust the `deficit` step-by-step from the maximum components in both `server/controllers/resultController.js` and `client/api/results.js`.
+3. Test: Write a failing unit test in both `server/tests/resultController.test.js` and `client/src/utils/__tests__/results.test.js` to verify `nc` < 0 edge cases are correctly distributed. Run tests, verify they pass after the fix.
+4. Pre-commit check.
