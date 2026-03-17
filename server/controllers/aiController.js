@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const rateLimit = require('express-rate-limit');
 const { success, error } = require('../utils/response');
+const { validateConcentration } = require('../utils/validateConcentration');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -71,12 +72,6 @@ exports.getHint = async (req, res) => {
         if (!process.env.GEMINI_API_KEY) {
             return error(res, 'INTERNAL_ERROR', 'Gemini API key is not configured.', 500);
         }
-
-        const validateConcentration = (val) => {
-            if (val === undefined || val === null || val === '') return true;
-            const n = Number(val);
-            return !isNaN(n) && n >= 0 && n <= 100;
-        };
 
         if (!validateConcentration(chem_a) || !validateConcentration(chem_b) || 
             !validateConcentration(chem_c) || !validateConcentration(chem_d)) {
