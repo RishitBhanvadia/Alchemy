@@ -11,4 +11,5 @@ if (!supabaseUrl || !supabaseKey) {
     );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Fallback to dummy values to prevent crash during test environments
+export const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseKey || 'placeholder');
