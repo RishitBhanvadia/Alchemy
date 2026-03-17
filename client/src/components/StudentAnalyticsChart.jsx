@@ -58,7 +58,7 @@ function computeDistribution(scores) {
   return { data, average };
 }
 
-const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', noDataMessage }) => {
+const StudentAnalyticsChart = React.memo(function StudentAnalyticsChart({ scores = [], experimentName = '', noDataMessage }) {
   const { data, average } = useMemo(() => computeDistribution(scores), [scores]);
 
   const showNoDataMessage = noDataMessage || (
