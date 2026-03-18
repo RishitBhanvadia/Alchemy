@@ -19,6 +19,9 @@
         "node": true
     },
     "rules": {
+    "react/prop-types": "off",
+    "no-console": "off",
+    "react/no-unescaped-entities": "off",
         "no-console": "warn",
         "react/prop-types": "warn",
         "react/react-in-jsx-scope": "off",
