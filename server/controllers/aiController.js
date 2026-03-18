@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const rateLimit = require('express-rate-limit');
 const { success, error } = require('../utils/response');
+const { validateConcentration } = require('../utils/validation');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -72,14 +73,9 @@ exports.getHint = async (req, res) => {
             return error(res, 'INTERNAL_ERROR', 'Gemini API key is not configured.', 500);
         }
 
-        const validateConcentration = (val) => {
-            if (val === undefined || val === null || val === '') return true;
-            const n = Number(val);
-            return !isNaN(n) && n >= 0 && n <= 100;
-        };
-
-        if (!validateConcentration(chem_a) || !validateConcentration(chem_b) || 
-            !validateConcentration(chem_c) || !validateConcentration(chem_d)) {
+        const opts = { allowEmpty: true };
+        if (!validateConcentration(chem_a, opts) || !validateConcentration(chem_b, opts) ||
+            !validateConcentration(chem_c, opts) || !validateConcentration(chem_d, opts)) {
             return error(res, 'VALIDATION_ERROR', 'Invalid concentration values. Must be numbers between 0 and 100.', 400);
         }
 
