@@ -58,7 +58,7 @@ function computeDistribution(scores) {
   return { data, average };
 }
 
-const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', noDataMessage }) => {
+const StudentAnalyticsChart = React.memo(function StudentAnalyticsChart({ scores = [], experimentName = '', noDataMessage }) {
   const { data, average } = useMemo(() => computeDistribution(scores), [scores]);
 
   const showNoDataMessage = noDataMessage || (
@@ -153,18 +153,14 @@ const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', no
       </ResponsiveContainer>
     </div>
   );
-};
-StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
-export default StudentAnalyticsChart;);
-StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
-export default StudentAnalyticsChart;
+});
 
 StudentAnalyticsChart.propTypes = {
   scores: PropTypes.arrayOf(PropTypes.number),
   experimentName: PropTypes.string,
 };
 
-export default StudentAnalyticsChart;
+
 
 // ─── Inline Styles ──────────────────────────────────────────────────────────
 
@@ -230,3 +226,6 @@ const styles = {
     fontSize: '0.95rem',
   },
 };
+
+StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
+export default StudentAnalyticsChart;
