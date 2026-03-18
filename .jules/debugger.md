@@ -6,3 +6,7 @@
 **Bug:** The GitHub Actions CI pipeline failed due to extensive ESLint warnings configured to exit as errors, including unused variables, missing display names for memoized components, accessibility issues with anchor links, and unescaped HTML entities.
 **Root Cause:** The pipeline configuration treated certain JSX formatting warnings as fatal. Also, some side effects and hook properties were left unfinished.
 **Learning:** Always verify local lint runs using `npm run lint` and resolve unused properties prior to committing. Utilize dynamic HTML entity conversion (`&apos;`) and properly tag interactive anchor styles with semantic HTML buttons (`<button type="button">`) to prevent automated accessibility failures in strict CI environments.
+## 2024-05-25 - Fix Vitest ERR_REQUIRE_ESM Pool Worker Crash
+**Bug:** Running `npm test` via Vitest failed during CI with `[vitest-pool]: Failed to start forks worker`, which reported `require() of ES Module @exodus/bytes/encoding-lite.js from html-encoding-sniffer not supported`.
+**Root Cause:** A sub-dependency chain (`jsdom` -> `html-encoding-sniffer` -> `@exodus/bytes`) mixed ESM and CJS imports, causing Node.js 18+ module resolution to crash the Vitest fork worker before tests could run.
+**Learning:** Configure Vitest to transpile or inline specific problematic dependencies by adding the package name to `server.deps.inline` in `vitest.config.js`.
