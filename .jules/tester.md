@@ -1,0 +1,4 @@
+## 2026-03-18 - Zustand Store Test Isolation & Supabase Mocking
+**Gap:** Potential for state leakage between individual tests when unit testing Zustand stores, and difficulties mocking complex Supabase chained methods in Vitest.
+**Learning:** Zustand stores retain state between tests, which can cause subsequent tests to fail or behave unpredictably due to dirty state. When mocking Supabase methods like `.from().select().eq().single()`, relying on inline mock declarations can lead to initialization errors or false test assertions.
+**Pattern:** Ensure you reset the store's state in a `beforeEach` block using `useStore.setState({...defaults})`. For mocking Supabase chained methods, use `vi.hoisted()` to declare the mock functions (e.g., `mockFrom`, `mockEq`, `mockSingle`) and extract them as constants inside the `vi.mock()` factory block, configuring them with `mockReturnThis()` where appropriate to enable chainable syntax.
