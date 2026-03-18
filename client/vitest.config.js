@@ -13,7 +13,7 @@ export default defineConfig({
         ],
         server: {
             deps: {
-                inline: ['@exodus/bytes']
+                inline: [/@exodus\/bytes/]
             }
         },
         coverage: {
