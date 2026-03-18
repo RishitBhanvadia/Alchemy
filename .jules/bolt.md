@@ -1,0 +1,3 @@
+## 2026-03-18 - Avoid useState for High-Frequency Events (CursorFollower)
+**Learning:** Using `useState` to track high-frequency events like `mousemove` causes continuous re-rendering of the component tree, drastically hurting performance. Tracking mouse coordinates with `useState` resulted in 60+ renders per second when the user was just moving the mouse.
+**Action:** Use `useRef` to maintain references to the target DOM elements and directly mutate their `style` properties (e.g., `elementRef.current.style.left = ...`) inside the event listener. This avoids triggering React's render cycle completely while keeping the visual update smooth.
