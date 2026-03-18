@@ -1,0 +1,4 @@
+## 2024-05-20 - Fix incorrect regime classification short-circuit logic
+**Bug:** `classifyRegime` in `server/utils/regimeClassifier.js` returned `NEUTRAL` (or `ACID_DOMINANT`/`BASE_DOMINANT`) and short-circuited when any trace amount of acid or base was present, preventing `CATALYST_DOMINANT` and `INDICATOR_DOMINANT` classifications.
+**Root Cause:** The `if (acidBaseSum > 0)` block was at the top of the function and eagerly returned, ignoring the subsequent checks for catalyst and indicator dominance which only require `acidBaseSum < 20`.
+**Learning:** For classification logic, evaluate independent high-priority categories (like catalyst or indicator dominance, which have explicit constraints like `< 20` for other elements) before broad catch-all conditions (like `sum > 0`) that might shadow them.
