@@ -493,18 +493,20 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="startDate" style={styles.dateLabel}>From:</label>
               <input
                 type="date"
+                id="startDate"
                 style={styles.dateInput}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="endDate" style={styles.dateLabel}>To:</label>
               <input
                 type="date"
+                id="endDate"
                 style={styles.dateInput}
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}

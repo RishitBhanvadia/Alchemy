@@ -153,7 +153,11 @@ const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', no
       </ResponsiveContainer>
     </div>
   );
-});
+};
+StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
+export default StudentAnalyticsChart;);
+StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
+export default StudentAnalyticsChart;
 
 StudentAnalyticsChart.propTypes = {
   scores: PropTypes.arrayOf(PropTypes.number),
