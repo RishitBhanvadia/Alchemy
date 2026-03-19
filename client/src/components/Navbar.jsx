@@ -7,8 +7,8 @@ import logo from '../assets/logo.png';
 import useAuthStore from '../store/authStore';
 
 const Navbar = () => {
-    const profile = useAuthStore(state => state.profile);
-    const logout = useAuthStore(state => state.logout);
+    const profile = useAuthStore((state) => state.profile);
+    const logout = useAuthStore((state) => state.logout);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -28,14 +28,18 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`glass-navbar ${isMenuOpen ? 'menu-open' : ''}`} role="navigation" aria-label="Main navigation">
+        <nav
+            className={`glass-navbar ${isMenuOpen ? 'menu-open' : ''}`}
+            role="navigation"
+            aria-label="Main navigation"
+        >
             <div className="nav-logo">
                 <img src={logo} alt="Alchemistry Logo" />
                 <span className="logo-text neon-glow">ALCHEMISTRY</span>
             </div>
 
-            <button 
-                className={`mobile-menu-toggle ${isMenuOpen ? 'open' : ''}`} 
+            <button
+                className={`mobile-menu-toggle ${isMenuOpen ? 'open' : ''}`}
                 onClick={toggleMenu}
                 aria-label="Toggle navigation menu"
             >
@@ -110,11 +114,10 @@ const Navbar = () => {
                 </div>
 
                 <div className="nav-profile">
-                    <div className="profile-icon">{getInitials(profile?.display_name || profile?.full_name)}</div>
-                    <button
-                        className="logout-button"
-                        onClick={handleLogout}
-                    >
+                    <div className="profile-icon">
+                        {getInitials(profile?.display_name || profile?.full_name)}
+                    </div>
+                    <button className="logout-button" onClick={handleLogout}>
                         LOGOUT
                     </button>
                 </div>

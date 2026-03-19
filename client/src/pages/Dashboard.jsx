@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { supabase } from "../supabaseClient";
-import { toast } from "react-hot-toast";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import { toast } from 'react-hot-toast';
 
-import "./dashboard.css";
+import './dashboard.css';
 
 const Dashboard = () => {
-    const [joinCode, setJoinCode] = useState("");
+    const [joinCode, setJoinCode] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleJoinClassroom = async (e) => {
@@ -15,8 +15,10 @@ const Dashboard = () => {
 
         setLoading(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) throw new Error("Please log in first");
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+            if (!user) throw new Error('Please log in first');
 
             // Find classroom by code
             const { data: className, error: classError } = await supabase
@@ -25,7 +27,7 @@ const Dashboard = () => {
                 .eq('join_code', joinCode.toUpperCase())
                 .single();
 
-            if (classError || !className) throw new Error("Invalid class code");
+            if (classError || !className) throw new Error('Invalid class code');
 
             // Check if already in classroom
             const { data: existing } = await supabase
@@ -36,22 +38,20 @@ const Dashboard = () => {
                 .single();
 
             if (existing) {
-                toast("You are already in this classroom");
-                setJoinCode("");
+                toast('You are already in this classroom');
+                setJoinCode('');
                 return;
             }
 
             // Join classroom
             const { error: joinError } = await supabase
                 .from('classroom_students')
-                .insert([
-                    { classroom_id: className.id, student_id: user.id }
-                ]);
+                .insert([{ classroom_id: className.id, student_id: user.id }]);
 
             if (joinError) throw joinError;
 
             toast.success(`Joined ${className.class_name}!`);
-            setJoinCode("");
+            setJoinCode('');
         } catch (error) {
             toast.error(error.message);
         } finally {
@@ -114,10 +114,12 @@ const Dashboard = () => {
                         </div>
                         <h3>CLASSROOM</h3>
                         <p>Join your teacher's session.</p>
-                        
+
                         <form onSubmit={handleJoinClassroom} className="join-form">
-                            <label htmlFor="join-code" className="sr-only">Classroom join code</label>
-                            <input 
+                            <label htmlFor="join-code" className="sr-only">
+                                Classroom join code
+                            </label>
+                            <input
                                 id="join-code"
                                 type="text"
                                 placeholder="Enter Code"
@@ -133,13 +135,10 @@ const Dashboard = () => {
                         </form>
                         <div className="card-glow"></div>
                     </div>
-
                 </main>
             </div>
         </div>
     );
 };
-
-
 
 export default Dashboard;

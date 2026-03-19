@@ -3,7 +3,7 @@ import { Color, Vector2 } from 'three';
 
 /**
  * LiquidShaderMaterial - A custom shader material for fluid dynamics inside the flasks.
- * 
+ *
  * Uniforms:
  * - uTime: For continuous wave animation (passed from useFrame).
  * - uColor: Base color of the chemical.
@@ -14,8 +14,8 @@ export const LiquidMaterial = shaderMaterial(
     {
         uTime: 0,
         uColor: new Color('#00f3ff'),
-        uFillAmount: 1.0, 
-        uTilt: new Vector2(0, 0)
+        uFillAmount: 1.0,
+        uTilt: new Vector2(0, 0),
     },
     // VERTEX SHADER
     `

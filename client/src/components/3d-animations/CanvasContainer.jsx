@@ -5,7 +5,17 @@ import PropTypes from 'prop-types';
 
 const CanvasContainer = ({ children, style, ...props }) => {
     return (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', ...style }}>
+        <div
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+                ...style,
+            }}
+        >
             <Canvas {...props} style={{ pointerEvents: 'auto', background: 'transparent' }}>
                 {children}
             </Canvas>
@@ -15,7 +25,7 @@ const CanvasContainer = ({ children, style, ...props }) => {
 
 CanvasContainer.propTypes = {
     children: PropTypes.node,
-    style: PropTypes.object
+    style: PropTypes.object,
 };
 
 export default CanvasContainer;

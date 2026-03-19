@@ -178,7 +178,6 @@
     }
 }
 
-
 /* Arrows */
 .arrow_1 {
     position: absolute;
@@ -213,7 +212,6 @@
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
-
 
 @keyframes point {
     0% {

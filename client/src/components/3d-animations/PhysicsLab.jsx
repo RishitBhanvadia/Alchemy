@@ -11,39 +11,41 @@ import { createLiquidMaterial } from '../../shaders/LiquidShader';
 const BEAKER_HEIGHT = 3;
 const BEAKER_RADIUS = 1.2;
 
-const PhysicsLab = ({ 
-    setChemA, 
-    setChemB, 
-    setChemI, 
-    setChemC, 
-    isReacting, 
+const PhysicsLab = ({
+    setChemA,
+    setChemB,
+    setChemI,
+    setChemC,
+    isReacting,
     lockedChems = [],
     reactionResult,
     chemA,
     chemB,
     chemI,
-    chemC
+    chemC,
 }) => {
-    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-    
+    const [isMobile, setIsMobile] = useState(
+        () => typeof window !== 'undefined' && window.innerWidth < 768
+    );
+
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    
+
     const totalConcentration = (chemA + chemB + chemI + chemC) / 400;
     const fillLevel = Math.min(totalConcentration, 1);
     const liquidHeight = BEAKER_HEIGHT * fillLevel * 0.85;
-    const liquidY = -(BEAKER_HEIGHT / 2) + (liquidHeight / 2) + 0.1;
+    const liquidY = -(BEAKER_HEIGHT / 2) + liquidHeight / 2 + 0.1;
 
     const targetColor = useRef(new Color('#E8F4FD'));
     const currentColor = useRef(new Color('#E8F4FD'));
     const liquidMatRef = useRef();
     const dynamicLightRef = useRef();
 
-    const reactionColor = reactionResult?.color 
-        ? getReactionColour(reactionResult.color) 
+    const reactionColor = reactionResult?.color
+        ? getReactionColour(reactionResult.color)
         : '#E8F4FD';
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const PhysicsLab = ({
 
     useFrame((state) => {
         currentColor.current.lerp(targetColor.current, 0.03);
-        
+
         if (liquidMatRef.current) {
             liquidMatRef.current.uniforms.uTime.value = state.clock.elapsedTime;
             liquidMatRef.current.uniforms.uColorA.value.copy(currentColor.current);
@@ -78,10 +80,10 @@ const PhysicsLab = ({
 
     return (
         <>
-            <OrbitControls 
-                makeDefault 
-                enablePan={false} 
-                minDistance={5} 
+            <OrbitControls
+                makeDefault
+                enablePan={false}
+                minDistance={5}
                 maxDistance={20}
                 maxPolarAngle={Math.PI / 2}
                 minPolarAngle={Math.PI / 6}
@@ -93,10 +95,10 @@ const PhysicsLab = ({
             <hemisphereLight args={['#b1e1ff', '#444444', 0.6]} />
             <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow={!isMobile} />
             <pointLight position={[-5, 5, 3]} intensity={0.5} color="#00f3ff" />
-            <pointLight 
+            <pointLight
                 ref={dynamicLightRef}
-                position={[0, 1, 2]} 
-                intensity={0.6} 
+                position={[0, 1, 2]}
+                intensity={0.6}
                 color={reactionColor}
             />
 
@@ -111,20 +113,19 @@ const PhysicsLab = ({
             </mesh>
 
             <group position={[0, 0.5, 0]}>
-                <ParticleSystem 
-                    active={isReacting} 
-                    config={particleConfig}
-                />
-                
+                <ParticleSystem active={isReacting} config={particleConfig} />
+
                 {fillLevel > 0.02 && (
                     <mesh position={[0, liquidY, 0]}>
-                        <cylinderGeometry args={[
-                            BEAKER_RADIUS * 0.88, 
-                            BEAKER_RADIUS * 0.88, 
-                            liquidHeight, 
-                            isMobile ? 16 : 32, 
-                            8
-                        ]} />
+                        <cylinderGeometry
+                            args={[
+                                BEAKER_RADIUS * 0.88,
+                                BEAKER_RADIUS * 0.88,
+                                liquidHeight,
+                                isMobile ? 16 : 32,
+                                8,
+                            ]}
+                        />
                         <primitive
                             ref={liquidMatRef}
                             object={createLiquidMaterial(
@@ -137,7 +138,17 @@ const PhysicsLab = ({
                     </mesh>
                 )}
 
-                <Cylinder args={[BEAKER_RADIUS, BEAKER_RADIUS, BEAKER_HEIGHT, isMobile ? 16 : 32, 1, true]} position={[0, 0, 0]}>
+                <Cylinder
+                    args={[
+                        BEAKER_RADIUS,
+                        BEAKER_RADIUS,
+                        BEAKER_HEIGHT,
+                        isMobile ? 16 : 32,
+                        1,
+                        true,
+                    ]}
+                    position={[0, 0, 0]}
+                >
                     <MeshTransmissionMaterial
                         thickness={0.15}
                         roughness={0}
@@ -148,7 +159,10 @@ const PhysicsLab = ({
                         color="#aaeeff"
                     />
                 </Cylinder>
-                <Cylinder args={[BEAKER_RADIUS, BEAKER_RADIUS, 0.1, isMobile ? 16 : 32]} position={[0, -BEAKER_HEIGHT / 2, 0]}>
+                <Cylinder
+                    args={[BEAKER_RADIUS, BEAKER_RADIUS, 0.1, isMobile ? 16 : 32]}
+                    position={[0, -BEAKER_HEIGHT / 2, 0]}
+                >
                     <meshStandardMaterial color="#ddeeff" transparent opacity={0.4} />
                 </Cylinder>
             </group>
@@ -157,28 +171,28 @@ const PhysicsLab = ({
                 position={[-4, 0, 0]}
                 label="HCl"
                 color="#EF4444"
-                onPour={(amt) => setChemA(prev => Math.min(100, prev + amt))}
+                onPour={(amt) => setChemA((prev) => Math.min(100, prev + amt))}
                 locked={lockedChems.includes('HCl')}
             />
             <DraggableFlask
                 position={[-2, 0, 0]}
                 label="NaOH"
                 color="#6366F1"
-                onPour={(amt) => setChemB(prev => Math.min(100, prev + amt))}
+                onPour={(amt) => setChemB((prev) => Math.min(100, prev + amt))}
                 locked={lockedChems.includes('NaOH')}
             />
             <DraggableFlask
                 position={[2, 0, 0]}
                 label="BTB"
                 color="#10B981"
-                onPour={(amt) => setChemI(prev => Math.min(100, prev + amt))}
+                onPour={(amt) => setChemI((prev) => Math.min(100, prev + amt))}
                 locked={lockedChems.includes('BTB')}
             />
             <DraggableFlask
                 position={[4, 0, 0]}
                 label="MnO₂"
                 color="#3D2B1F"
-                onPour={(amt) => setChemC(prev => Math.min(100, prev + amt))}
+                onPour={(amt) => setChemC((prev) => Math.min(100, prev + amt))}
                 locked={lockedChems.includes('MnO2') || lockedChems.includes('MnO₂')}
             />
         </>

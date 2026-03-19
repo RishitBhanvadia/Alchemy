@@ -52,7 +52,7 @@
     text-align: left;
     padding: 15px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    color: #6366F1;
+    color: #6366f1;
     font-family: 'Outfit', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -66,7 +66,7 @@
 
 .history-table tr:hover {
     background: rgba(99, 102, 241, 0.05);
-    border-left: 3px solid #6366F1;
+    border-left: 3px solid #6366f1;
 }
 
 .type-cell {
@@ -76,7 +76,7 @@
 
 .type-badge {
     background: rgba(99, 102, 241, 0.2);
-    color: #6366F1;
+    color: #6366f1;
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 0.8rem;
@@ -98,11 +98,11 @@
 
 .outcome-label {
     font-weight: 600;
-    color: #F9FAFB;
+    color: #f9fafb;
 }
 
 .date-cell {
-    color: #9CA3AF;
+    color: #9ca3af;
     font-size: 0.9rem;
 }
 

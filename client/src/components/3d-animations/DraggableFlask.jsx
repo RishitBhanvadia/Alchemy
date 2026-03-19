@@ -12,10 +12,17 @@ extend({ LiquidMaterial });
  * DraggableFlask — A 3D flask that can be clicked and dragged using R3F-native
  * pointer events. Attach events to the Mesh level for better raycasting reliability.
  */
-const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount = 100, locked = false }) => {
+const DraggableFlask = ({
+    position = [0, 0, 0],
+    label,
+    color,
+    onPour,
+    maxAmount = 100,
+    locked = false,
+}) => {
     const groupRef = useRef();
     const [amount, setAmount] = useState(maxAmount);
-    
+
     // Detect mobile for segments optimisation
     const isMobile = window.innerWidth < 768;
     const segments = isMobile ? 16 : 32;
@@ -23,7 +30,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const isPouring = useRef(false);
     const isTilted = useRef(false);
     const dragActive = useRef(false);
-    
+
     // Shader refs
     const liquidMatRef = useRef();
     const velocityTracker = useRef(new Vector2());
@@ -34,87 +41,104 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const intersection = useRef(new Vector3());
     const offset = useRef(new Vector3());
 
-    const handlePointerDown = useCallback((e) => {
-        if (locked) {
-            toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
-            return;
-        }
-        e.stopPropagation();
-        
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grabbing';
-        dragActive.current = true;
+    const handlePointerDown = useCallback(
+        (e) => {
+            if (locked) {
+                toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
+                return;
+            }
+            e.stopPropagation();
 
-        // Calculate intersection on the XY plane
-        const raycaster = e.raycaster || new Raycaster();
-        const rect = gl.domElement.getBoundingClientRect();
-        
-        // Use R3F's normalized mouse coordinates if available, else derive from event
-        const mouse = e.pointer || new Vector2(
-            ((e.clientX - rect.left) / rect.width) * 2 - 1,
-            -((e.clientY - rect.top) / rect.height) * 2 + 1
-        );
-        
-        raycaster.setFromCamera(mouse, camera);
-        raycaster.ray.intersectPlane(plane.current, intersection.current);
-        offset.current.copy(intersection.current).sub(currentPos.current);
+            // eslint-disable-next-line react-hooks/immutability
+            gl.domElement.style.cursor = 'grabbing';
+            dragActive.current = true;
 
-        // Standard pointer capture for off-mesh dragging
-        e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl, label, locked]);
+            // Calculate intersection on the XY plane
+            const raycaster = e.raycaster || new Raycaster();
+            const rect = gl.domElement.getBoundingClientRect();
 
-    const handlePointerMove = useCallback((e) => {
-        if (!dragActive.current) return;
-        e.stopPropagation();
+            // Use R3F's normalized mouse coordinates if available, else derive from event
+            const mouse =
+                e.pointer ||
+                new Vector2(
+                    ((e.clientX - rect.left) / rect.width) * 2 - 1,
+                    -((e.clientY - rect.top) / rect.height) * 2 + 1
+                );
 
-        const rect = gl.domElement.getBoundingClientRect();
-        const mouse = e.pointer || new Vector2(
-            ((e.clientX - rect.left) / rect.width) * 2 - 1,
-            -((e.clientY - rect.top) / rect.height) * 2 + 1
-        );
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(plane.current, intersection.current);
+            offset.current.copy(intersection.current).sub(currentPos.current);
 
-        const raycaster = e.raycaster || new Raycaster();
-        raycaster.setFromCamera(mouse, camera);
-        raycaster.ray.intersectPlane(plane.current, intersection.current);
+            // Standard pointer capture for off-mesh dragging
+            e.target.setPointerCapture(e.pointerId);
+        },
+        [camera, gl, label, locked]
+    );
 
-        const newPos = intersection.current.clone().sub(offset.current);
-        newPos.z = position[2]; // Keep aligned to original Z
-        currentPos.current.copy(newPos);
+    const handlePointerMove = useCallback(
+        (e) => {
+            if (!dragActive.current) return;
+            e.stopPropagation();
 
-        // Pouring logic: if near center (x=0) and high (y>1.5)
-        if (Math.abs(newPos.x) < 2.5 && newPos.y > 1.2) {
-            isPouring.current = true;
-            isTilted.current = true;
-        } else {
+            const rect = gl.domElement.getBoundingClientRect();
+            const mouse =
+                e.pointer ||
+                new Vector2(
+                    ((e.clientX - rect.left) / rect.width) * 2 - 1,
+                    -((e.clientY - rect.top) / rect.height) * 2 + 1
+                );
+
+            const raycaster = e.raycaster || new Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(plane.current, intersection.current);
+
+            const newPos = intersection.current.clone().sub(offset.current);
+            newPos.z = position[2]; // Keep aligned to original Z
+            currentPos.current.copy(newPos);
+
+            // Pouring logic: if near center (x=0) and high (y>1.5)
+            if (Math.abs(newPos.x) < 2.5 && newPos.y > 1.2) {
+                isPouring.current = true;
+                isTilted.current = true;
+            } else {
+                isPouring.current = false;
+                isTilted.current = false;
+            }
+        },
+        [camera, gl, position]
+    );
+
+    const handlePointerUp = useCallback(
+        (e) => {
+            if (!dragActive.current) return;
+            e.stopPropagation();
+
+            // eslint-disable-next-line react-hooks/immutability
+            gl.domElement.style.cursor = 'grab';
+            dragActive.current = false;
             isPouring.current = false;
             isTilted.current = false;
-        }
-    }, [camera, gl, position]);
 
-    const handlePointerUp = useCallback((e) => {
-        if (!dragActive.current) return;
-        e.stopPropagation();
+            // Reset position
+            currentPos.current.set(...position);
 
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grab';
-        dragActive.current = false;
-        isPouring.current = false;
-        isTilted.current = false;
-
-        // Reset position
-        currentPos.current.set(...position);
-
-        if (e.target && e.target.releasePointerCapture) {
-            try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
-        }
-    }, [gl, position]);
+            if (e.target && e.target.releasePointerCapture) {
+                try {
+                    e.target.releasePointerCapture(e.pointerId);
+                } catch (_) {
+                    /* ignored */
+                }
+            }
+        },
+        [gl, position]
+    );
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
         // Performance optimization: throttle physics/logic to ~30fps on mobile
         if (isMobile) {
             lastUpdate.current += delta;
-            if (lastUpdate.current < 1/30) return;
+            if (lastUpdate.current < 1 / 30) return;
             lastUpdate.current = 0;
         }
 
@@ -128,7 +152,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         const d = delta || 0.016;
         const velX = (currentPos.current.x - lastPos.current.x) / d;
         const velZ = (currentPos.current.z - lastPos.current.z) / d;
-        
+
         // Dampen velocity to track tilt
         velocityTracker.current.x = MathUtils.lerp(velocityTracker.current.x, velX * 0.05, 0.1);
         velocityTracker.current.y = MathUtils.lerp(velocityTracker.current.y, velZ * 0.05, 0.1);
@@ -137,7 +161,11 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (groupRef.current) {
             groupRef.current.position.lerp(currentPos.current, 0.2);
             const targetRot = isTilted.current ? Math.PI / 3.5 : 0;
-            groupRef.current.rotation.z = MathUtils.lerp(groupRef.current.rotation.z, targetRot, 0.15);
+            groupRef.current.rotation.z = MathUtils.lerp(
+                groupRef.current.rotation.z,
+                targetRot,
+                0.15
+            );
         }
 
         // Update Shader Material
@@ -148,7 +176,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     });
 
     const liquidHeight = 1.3 * (amount / maxAmount);
-    const liquidY = -0.65 + (0.65 * (amount / maxAmount));
+    const liquidY = -0.65 + 0.65 * (amount / maxAmount);
 
     const eventHandlers = {
         onPointerDown: handlePointerDown,
@@ -182,11 +210,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
                 <mesh position={[0, liquidY, 0]} scale={[1, liquidHeight, 1]} {...eventHandlers}>
                     <cylinderGeometry args={[0.45, 0.45, 1, segments, 8]} />
                     {/* eslint-disable-next-line react/no-unknown-property */}
-                    <liquidMaterial 
-                        ref={liquidMatRef}
-                        uColor={new Color(color)} 
-                        transparent 
-                    />
+                    <liquidMaterial ref={liquidMatRef} uColor={new Color(color)} transparent />
                 </mesh>
             )}
 
@@ -194,7 +218,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             <Text
                 position={[0, 0, 0.55]}
                 fontSize={0.3}
-                color={locked ? "#ff6666" : "white"}
+                color={locked ? '#ff6666' : 'white'}
                 fontWeight="bold"
                 outlineWidth={0.03}
                 outlineColor="black"
@@ -219,7 +243,7 @@ DraggableFlask.propTypes = {
     color: PropTypes.string,
     onPour: PropTypes.func,
     maxAmount: PropTypes.number,
-    locked: PropTypes.bool
+    locked: PropTypes.bool,
 };
 
 export default DraggableFlask;

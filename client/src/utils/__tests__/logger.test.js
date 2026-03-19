@@ -10,7 +10,7 @@ vi.mock('loglevel', () => {
             info: vi.fn(),
             warn: vi.fn(),
             error: vi.fn(),
-        }
+        },
     };
 });
 

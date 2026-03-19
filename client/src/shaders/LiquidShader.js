@@ -154,34 +154,30 @@ const fragmentShader = /* glsl */ `
  * @returns {THREE.ShaderMaterial}
  */
 export function createLiquidMaterial(
-  colorA = '#ffffff',
-  colorB = '#ff69b4',
-  fillLevel = 0.5,
-  options = {}
+    colorA = '#ffffff',
+    colorB = '#ff69b4',
+    fillLevel = 0.5,
+    options = {}
 ) {
-  const {
-    waveAmplitude = 0.04,
-    waveFrequency = 6.0,
-    mixRatio = 0.0,
-  } = options;
+    const { waveAmplitude = 0.04, waveFrequency = 6.0, mixRatio = 0.0 } = options;
 
-  return new ShaderMaterial({
-    uniforms: {
-      uColorA: { value: new Color(colorA) },
-      uColorB: { value: new Color(colorB) },
-      uFillLevel: { value: fillLevel },
-      uTime: { value: 0.0 },
-      uMixRatio: { value: mixRatio },
-      uWaveAmplitude: { value: waveAmplitude },
-      uWaveFrequency: { value: waveFrequency },
-      uTilt: { value: new Vector2(0, 0) },
-    },
-    vertexShader,
-    fragmentShader,
-    transparent: true,
-    side: DoubleSide,
-    depthWrite: false,
-  });
+    return new ShaderMaterial({
+        uniforms: {
+            uColorA: { value: new Color(colorA) },
+            uColorB: { value: new Color(colorB) },
+            uFillLevel: { value: fillLevel },
+            uTime: { value: 0.0 },
+            uMixRatio: { value: mixRatio },
+            uWaveAmplitude: { value: waveAmplitude },
+            uWaveFrequency: { value: waveFrequency },
+            uTilt: { value: new Vector2(0, 0) },
+        },
+        vertexShader,
+        fragmentShader,
+        transparent: true,
+        side: DoubleSide,
+        depthWrite: false,
+    });
 }
 
 /**
@@ -194,32 +190,31 @@ export function createLiquidMaterial(
  * @returns {function} Cancel function to abort the transition
  */
 export function animateColorTransition(material, targetMixRatio = 1.0, duration = 1.2) {
-  if (!material || !material.uniforms) return () => {};
+    if (!material || !material.uniforms) return () => {};
 
-  const startRatio = material.uniforms.uMixRatio.value;
-  const startTime = performance.now();
-  let cancelled = false;
+    const startRatio = material.uniforms.uMixRatio.value;
+    const startTime = performance.now();
+    let cancelled = false;
 
-  function update() {
-    if (cancelled) return;
+    function update() {
+        if (cancelled) return;
 
-    const elapsed = (performance.now() - startTime) / 1000;
-    const progress = Math.min(elapsed / duration, 1.0);
+        const elapsed = (performance.now() - startTime) / 1000;
+        const progress = Math.min(elapsed / duration, 1.0);
 
-    // Linear interpolation per PRD spec
-    material.uniforms.uMixRatio.value =
-      startRatio + (targetMixRatio - startRatio) * progress;
+        // Linear interpolation per PRD spec
+        material.uniforms.uMixRatio.value = startRatio + (targetMixRatio - startRatio) * progress;
 
-    if (progress < 1.0) {
-      requestAnimationFrame(update);
+        if (progress < 1.0) {
+            requestAnimationFrame(update);
+        }
     }
-  }
 
-  requestAnimationFrame(update);
+    requestAnimationFrame(update);
 
-  return () => {
-    cancelled = true;
-  };
+    return () => {
+        cancelled = true;
+    };
 }
 
 export default { createLiquidMaterial, animateColorTransition };

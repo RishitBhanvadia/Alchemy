@@ -2,9 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './LoadingOverlay.css';
 
-const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
+const LoadingOverlay = ({ message = 'Connecting to Lab...' }) => {
     return (
-        <motion.div 
+        <motion.div
             className="loading-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -15,27 +15,27 @@ const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
                     <div className="liquid"></div>
                 </div>
                 <motion.h2
-                    animate={{ 
+                    animate={{
                         opacity: [0.5, 1, 0.5],
                     }}
-                    transition={{ 
-                        duration: 2, 
+                    transition={{
+                        duration: 2,
                         repeat: Infinity,
-                        ease: "easeInOut" 
+                        ease: 'easeInOut',
                     }}
                 >
                     {message}
                 </motion.h2>
                 <div className="loading-bar-container">
-                    <motion.div 
+                    <motion.div
                         className="loading-bar"
-                        animate={{ 
-                            width: ["0%", "100%"] 
+                        animate={{
+                            width: ['0%', '100%'],
                         }}
-                        transition={{ 
-                            duration: 3, 
+                        transition={{
+                            duration: 3,
                             repeat: Infinity,
-                            ease: "linear"
+                            ease: 'linear',
                         }}
                     />
                 </div>

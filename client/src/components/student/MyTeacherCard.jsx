@@ -22,7 +22,12 @@ const MyTeacherCard = ({ classroom }) => {
 
     const getInitials = (name) => {
         if (!name) return '?';
-        return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        return name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase()
+            .substring(0, 2);
     };
 
     return (
@@ -32,21 +37,31 @@ const MyTeacherCard = ({ classroom }) => {
             animate={{ opacity: 1, y: 0 }}
             style={{ borderLeft: '4px solid #6366F1' }}
         >
-            <div className="teacher-profile" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                <div className="avatar-initial" style={{ 
-                    width: '40px', 
-                    height: '40px', 
-                    borderRadius: '50%', 
-                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    fontSize: '0.9rem'
-                }}>
+            <div
+                className="teacher-profile"
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
+            >
+                <div
+                    className="avatar-initial"
+                    style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold',
+                        color: 'white',
+                        fontSize: '0.9rem',
+                    }}
+                >
                     {teacher?.avatar_url ? (
-                        <img src={teacher.avatar_url} alt={teacher.display_name} style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+                        <img
+                            src={teacher.avatar_url}
+                            alt={teacher.display_name}
+                            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+                        />
                     ) : (
                         <span>{getInitials(teacher?.display_name)}</span>
                     )}
@@ -59,7 +74,9 @@ const MyTeacherCard = ({ classroom }) => {
                 </div>
             </div>
             <div className="class-section">
-                <p style={{ color: '#9CA3AF', fontSize: '0.75rem', margin: '0 0 4px 0' }}>CLASSROOM</p>
+                <p style={{ color: '#9CA3AF', fontSize: '0.75rem', margin: '0 0 4px 0' }}>
+                    CLASSROOM
+                </p>
                 <p style={{ color: '#F9FAFB', fontWeight: 600, margin: 0 }}>{class_name}</p>
             </div>
         </motion.div>

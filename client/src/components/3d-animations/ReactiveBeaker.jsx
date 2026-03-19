@@ -28,7 +28,9 @@ const ReactiveBeaker = ({ status }) => {
     });
 
     return (
-        <group position={[3, 0, 0]}> {/* Positioned to the right side of the screen */}
+        <group position={[3, 0, 0]}>
+            {' '}
+            {/* Positioned to the right side of the screen */}
             {/* Glass Beaker */}
             <Cylinder args={[1, 1, 3, 32, 1, true]}>
                 <MeshTransmissionMaterial
@@ -40,12 +42,10 @@ const ReactiveBeaker = ({ status }) => {
                     backside
                 />
             </Cylinder>
-
             {/* Liquid */}
             <Cylinder ref={liquidRef} args={[0.9, 0.9, 1.5, 32]} position={[0, -0.7, 0]}>
                 <meshStandardMaterial color={liquidColor} transparent opacity={0.8} />
             </Cylinder>
-
             {/* Beaker Bottom */}
             <Cylinder args={[1, 1, 0.1, 32]} position={[0, -1.5, 0]}>
                 <MeshTransmissionMaterial
@@ -56,7 +56,6 @@ const ReactiveBeaker = ({ status }) => {
                     chromaticAberration={0.1}
                 />
             </Cylinder>
-
             <ambientLight intensity={0.5} />
             <pointLight position={[5, 5, 5]} intensity={1} />
         </group>
@@ -64,7 +63,7 @@ const ReactiveBeaker = ({ status }) => {
 };
 
 ReactiveBeaker.propTypes = {
-    status: PropTypes.string
+    status: PropTypes.string,
 };
 
 export default ReactiveBeaker;

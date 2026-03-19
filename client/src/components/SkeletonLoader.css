@@ -1,12 +1,11 @@
-
 :root {
-  --skeleton-bg: rgba(255, 255, 255, 0.05);
-  --skeleton-shimmer: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+    --skeleton-bg: rgba(255, 255, 255, 0.05);
+    --skeleton-shimmer: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
 }
 
 .skeleton-container {
@@ -17,7 +16,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    background: #0A0A1A;
+    background: #0a0a1a;
 }
 
 .skeleton-item {
@@ -28,7 +27,7 @@
 }
 
 .skeleton-item::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -39,8 +38,12 @@
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 /* Lab Skeleton */

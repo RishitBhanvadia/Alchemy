@@ -16,25 +16,34 @@ describe('Notification Utility', () => {
     it('should call toast.success with correct message', () => {
         const message = 'Success message';
         showSuccess(message);
-        expect(toast.success).toHaveBeenCalledWith(message, expect.objectContaining({
-            duration: 4000,
-        }));
+        expect(toast.success).toHaveBeenCalledWith(
+            message,
+            expect.objectContaining({
+                duration: 4000,
+            })
+        );
     });
 
     it('should call toast.error with correct message', () => {
         const message = 'Error message';
         showError(message);
-        expect(toast.error).toHaveBeenCalledWith(message, expect.objectContaining({
-            duration: 5000,
-        }));
+        expect(toast.error).toHaveBeenCalledWith(
+            message,
+            expect.objectContaining({
+                duration: 5000,
+            })
+        );
     });
 
     it('should call toast with correct message for info', () => {
         const message = 'Info message';
         showInfo(message);
-        expect(toast).toHaveBeenCalledWith(message, expect.objectContaining({
-            duration: 4000,
-        }));
+        expect(toast).toHaveBeenCalledWith(
+            message,
+            expect.objectContaining({
+                duration: 4000,
+            })
+        );
     });
 
     it('should apply custom styling to success toast', () => {

@@ -9,19 +9,19 @@ const CursorFollower = () => {
 
     useEffect(() => {
         const addEventListeners = () => {
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseenter", onMouseEnter);
-            document.addEventListener("mouseleave", onMouseLeave);
-            document.addEventListener("mousedown", onMouseDown);
-            document.addEventListener("mouseup", onMouseUp);
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseenter', onMouseEnter);
+            document.addEventListener('mouseleave', onMouseLeave);
+            document.addEventListener('mousedown', onMouseDown);
+            document.addEventListener('mouseup', onMouseUp);
         };
 
         const removeEventListeners = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseenter", onMouseEnter);
-            document.removeEventListener("mouseleave", onMouseLeave);
-            document.removeEventListener("mousedown", onMouseDown);
-            document.removeEventListener("mouseup", onMouseUp);
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseenter', onMouseEnter);
+            document.removeEventListener('mouseleave', onMouseLeave);
+            document.removeEventListener('mousedown', onMouseDown);
+            document.removeEventListener('mouseup', onMouseUp);
         };
 
         const onMouseMove = (e) => {
