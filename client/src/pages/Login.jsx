@@ -92,9 +92,9 @@ const Login = () => {
 
                 <p className="footer-text">
                     By signing up you agree to our{' '}
-                    <button type="button" className="footer-link" onClick={(e) => e.preventDefault()} style={{background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer', outline: 'inherit'}}>
+                    <a href="#" className="footer-link">
                         Terms of Service
-                    </button>
+                    </a>
                 </p>
             </motion.div>
         </div>
