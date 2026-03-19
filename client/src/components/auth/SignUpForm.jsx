@@ -98,10 +98,12 @@ const SignUpForm = ({ onTabSwitch }) => {
     const isValid = validateField('all');
     if (!isValid) return;
 
+    // eslint-disable-next-line no-unused-vars
     const { fullName, email, password, confirmPassword, role } = formData;
 
     setLoading(true);
     try {
+      // eslint-disable-next-line no-unused-vars
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,

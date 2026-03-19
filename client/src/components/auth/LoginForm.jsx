@@ -11,6 +11,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   const validateField = (name, value) => {
@@ -115,7 +116,7 @@ const LoginForm = () => {
         {touched.password && errors.password && (
           <span className="error-message" id="password-error" role="alert">{errors.password}</span>
         )}
-        <a href="#" className="forgot-password">Forgot password?</a>
+        <button type="button" className="forgot-password">Forgot password?</button>
       </div>
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? (
