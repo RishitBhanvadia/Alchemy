@@ -30,7 +30,6 @@ const Lab3D = () => {
     const currentHint = useLabStore((state) => state.currentHint);
     const setCurrentHint = useLabStore((state) => state.setCurrentHint);
     const initiateReaction = useLabStore((state) => state.initiateReaction);
-    const setReactionState = useLabStore((state) => state.setReactionState);
     const reset = useLabStore((state) => state.reset);
 
     // Fetch Classroom Restrictions
