@@ -62,25 +62,27 @@ a:focus-visible {
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
     /* Disable all CSS animations */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
     }
-    
+
     /* Specific overrides for key animations */
     .bg-blob {
         animation: none !important;
     }
-    
+
     .neon-glow {
         text-shadow: none !important;
     }
-    
+
     .action-button.active {
         animation: none !important;
     }
-    
+
     .presence-dot {
         animation: none !important;
     }

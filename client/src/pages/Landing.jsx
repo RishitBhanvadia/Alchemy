@@ -17,7 +17,11 @@ const Landing = () => {
             </CanvasContainer>
 
             <div className="landing-content">
-                <img src={logo} alt="Alchemistry Logo" style={{ height: '120px', marginBottom: '20px' }} />
+                <img
+                    src={logo}
+                    alt="Alchemistry Logo"
+                    style={{ height: '120px', marginBottom: '20px' }}
+                />
                 <h1 className="landing-title">ALCHEMISTRY</h1>
                 <p className="landing-subtitle">Experience the Magic of Digital Chemistry</p>
                 <button className="start-button" onClick={() => navigate('/login')}>

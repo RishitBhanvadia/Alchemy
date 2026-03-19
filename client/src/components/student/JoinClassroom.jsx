@@ -10,7 +10,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
     const handleJoin = async (e) => {
         e.preventDefault();
         if (!code.trim()) return toast.error('Please enter a join code.');
-        
+
         setLoading(true);
         try {
             // 1. Look up classroom by code - use maybeSingle instead of single to avoid throwing
@@ -30,12 +30,10 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             }
 
             // 2. Create membership
-            const { error: joinError } = await supabase
-                .from('classroom_students')
-                .insert({
-                    classroom_id: classroom.id,
-                    student_id: profileId
-                });
+            const { error: joinError } = await supabase.from('classroom_students').insert({
+                classroom_id: classroom.id,
+                student_id: profileId,
+            });
 
             if (joinError) {
                 if (joinError.code === '23505') {
@@ -56,14 +54,17 @@ const JoinClassroom = ({ onJoined, profileId }) => {
     };
 
     return (
-        <motion.div 
+        <motion.div
             className="glass-card join-classroom-card"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
         >
             <h3 style={{ marginBottom: '16px', color: '#F9FAFB' }}>Join a Classroom</h3>
-            <form onSubmit={handleJoin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <form
+                onSubmit={handleJoin}
+                style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+            >
                 <input
                     type="text"
                     placeholder="ENTER CLASS CODE (e.g. XK9P2)"
@@ -80,11 +81,11 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                         textAlign: 'center',
                         textTransform: 'uppercase',
                         letterSpacing: '2px',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
                     }}
                 />
-                <button 
-                    type="submit" 
+                <button
+                    type="submit"
                     className="join-btn"
                     disabled={loading}
                     style={{
@@ -95,7 +96,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                         color: 'white',
                         fontWeight: 'bold',
                         cursor: 'pointer',
-                        transition: 'all 0.3s ease'
+                        transition: 'all 0.3s ease',
                     }}
                 >
                     {loading ? 'JOINING...' : 'JOIN CLASSROOM'}

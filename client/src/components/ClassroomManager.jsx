@@ -5,11 +5,11 @@ import useClassroomStore from '../store/classroomStore';
 import EmptyState from './EmptyState';
 
 const ClassroomManager = () => {
-    const classrooms = useClassroomStore(state => state.classrooms);
-    const loading = useClassroomStore(state => state.loading);
-    const fetchTeacherClassrooms = useClassroomStore(state => state.fetchTeacherClassrooms);
-    const createClassroom = useClassroomStore(state => state.createClassroom);
-    
+    const classrooms = useClassroomStore((state) => state.classrooms);
+    const loading = useClassroomStore((state) => state.loading);
+    const fetchTeacherClassrooms = useClassroomStore((state) => state.fetchTeacherClassrooms);
+    const createClassroom = useClassroomStore((state) => state.createClassroom);
+
     const [newClassName, setNewClassName] = useState('');
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const ClassroomManager = () => {
         if (!newClassName.trim() || loading) return;
 
         const result = await createClassroom(newClassName);
-        
+
         if (result.error) {
             toast.error(result.error);
         } else {
@@ -38,7 +38,7 @@ const ClassroomManager = () => {
     const toggleChemicalLock = async (classId, chemKey, currentLocked) => {
         let newLocked = [...currentLocked];
         if (newLocked.includes(chemKey)) {
-            newLocked = newLocked.filter(k => k !== chemKey);
+            newLocked = newLocked.filter((k) => k !== chemKey);
         } else {
             newLocked.push(chemKey);
         }
@@ -49,9 +49,11 @@ const ClassroomManager = () => {
             .eq('id', classId);
 
         if (error) {
-            toast.error("Failed to update chemical locks");
+            toast.error('Failed to update chemical locks');
         } else {
-            toast.success(newLocked.includes(chemKey) ? `${chemKey} Locked` : `${chemKey} Unlocked`);
+            toast.success(
+                newLocked.includes(chemKey) ? `${chemKey} Locked` : `${chemKey} Unlocked`
+            );
             fetchTeacherClassrooms();
         }
     };
@@ -59,11 +61,11 @@ const ClassroomManager = () => {
     return (
         <div className="classroom-manager glass-panel" style={styles.container}>
             <h2 style={styles.title}>Classroom Management</h2>
-            
+
             <form onSubmit={handleCreateClassroom} style={styles.form}>
-                <input 
-                    type="text" 
-                    placeholder="Class Name (e.g. Physics 101)" 
+                <input
+                    type="text"
+                    placeholder="Class Name (e.g. Physics 101)"
                     value={newClassName}
                     onChange={(e) => setNewClassName(e.target.value)}
                     style={styles.input}
@@ -82,14 +84,14 @@ const ClassroomManager = () => {
                         description="Create your first classroom to start managing students."
                     />
                 ) : (
-                    classrooms.map(cls => (
+                    classrooms.map((cls) => (
                         <div key={cls.id} style={styles.classCard}>
                             <div style={styles.classHeader}>
                                 <h3 style={styles.className}>{cls.class_name}</h3>
                                 <div style={styles.codeContainer}>
                                     <span style={styles.codeLabel}>CODE:</span>
                                     <span style={styles.code}>{cls.join_code}</span>
-                                    <button 
+                                    <button
                                         onClick={() => copyToClipboard(cls.join_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
@@ -98,25 +100,38 @@ const ClassroomManager = () => {
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div style={styles.chemControls}>
                                 <p style={styles.label}>Lock Chemicals for Students:</p>
                                 <div style={styles.chemButtons}>
-                                    {['HCl', 'NaOH', 'Ph', 'FeCl3'].map(chem => (
-                                        <button 
+                                    {['HCl', 'NaOH', 'Ph', 'FeCl3'].map((chem) => (
+                                        <button
                                             key={chem}
-                                            onClick={() => toggleChemicalLock(cls.id, chem, cls.locked_chemicals || [])}
+                                            onClick={() =>
+                                                toggleChemicalLock(
+                                                    cls.id,
+                                                    chem,
+                                                    cls.locked_chemicals || []
+                                                )
+                                            }
                                             style={{
                                                 ...styles.chemBtn,
-                                                background: (cls.locked_chemicals || []).includes(chem) 
-                                                    ? 'rgba(239, 68, 68, 0.3)' 
+                                                background: (cls.locked_chemicals || []).includes(
+                                                    chem
+                                                )
+                                                    ? 'rgba(239, 68, 68, 0.3)'
                                                     : 'rgba(16, 185, 129, 0.2)',
-                                                borderColor: (cls.locked_chemicals || []).includes(chem) 
-                                                    ? '#EF4444' 
-                                                    : '#10B981'
+                                                borderColor: (cls.locked_chemicals || []).includes(
+                                                    chem
+                                                )
+                                                    ? '#EF4444'
+                                                    : '#10B981',
                                             }}
                                         >
-                                            {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
+                                            {(cls.locked_chemicals || []).includes(chem)
+                                                ? '🔒'
+                                                : '🔓'}{' '}
+                                            {chem}
                                         </button>
                                     ))}
                                 </div>

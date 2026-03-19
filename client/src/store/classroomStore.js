@@ -2,120 +2,128 @@ import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 
 const useClassroomStore = create((set, get) => ({
-  membership: null,
-  classrooms: [],
-  loading: false,
-  lastFetched: null,
+    membership: null,
+    classrooms: [],
+    loading: false,
+    lastFetched: null,
 
-  fetchStudentMembership: async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      set({ membership: null, loading: false });
-      return;
-    }
+    fetchStudentMembership: async () => {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+            set({ membership: null, loading: false });
+            return;
+        }
 
-    set({ loading: true });
+        set({ loading: true });
 
-    const { data, error } = await supabase
-      .from('classroom_students')
-      .select('*, classroom:classrooms(*, teacher:profiles!teacher_id(display_name, avatar_url))')
-      .eq('student_id', user.id)
-      .maybeSingle();
+        const { data, error } = await supabase
+            .from('classroom_students')
+            .select(
+                '*, classroom:classrooms(*, teacher:profiles!teacher_id(display_name, avatar_url))'
+            )
+            .eq('student_id', user.id)
+            .maybeSingle();
 
-    if (error) {
-      console.error('Error fetching membership:', error);
-      set({ membership: null, loading: false });
-    } else {
-      set({ membership: data || null, loading: false, lastFetched: Date.now() });
-    }
-  },
+        if (error) {
+            console.error('Error fetching membership:', error);
+            set({ membership: null, loading: false });
+        } else {
+            set({ membership: data || null, loading: false, lastFetched: Date.now() });
+        }
+    },
 
-  fetchTeacherClassrooms: async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      set({ classrooms: [], loading: false });
-      return;
-    }
+    fetchTeacherClassrooms: async () => {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+            set({ classrooms: [], loading: false });
+            return;
+        }
 
-    const now = Date.now();
-    if (get().lastFetched && now - get().lastFetched < 30000) {
-      return;
-    }
+        const now = Date.now();
+        if (get().lastFetched && now - get().lastFetched < 30000) {
+            return;
+        }
 
-    set({ loading: true });
+        set({ loading: true });
 
-    const { data, error } = await supabase
-      .from('classrooms')
-      .select('*, memberships:classroom_students(count)')
-      .eq('teacher_id', user.id)
-      .order('created_at', { ascending: false });
+        const { data, error } = await supabase
+            .from('classrooms')
+            .select('*, memberships:classroom_students(count)')
+            .eq('teacher_id', user.id)
+            .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching classrooms:', error);
-      set({ classrooms: [], loading: false });
-    } else {
-      set({ classrooms: data || [], loading: false, lastFetched: now });
-    }
-  },
+        if (error) {
+            console.error('Error fetching classrooms:', error);
+            set({ classrooms: [], loading: false });
+        } else {
+            set({ classrooms: data || [], loading: false, lastFetched: now });
+        }
+    },
 
-  joinClassroom: async (code) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { error: 'Not logged in' };
+    joinClassroom: async (code) => {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return { error: 'Not logged in' };
 
-    const { data: classroom, error: classError } = await supabase
-      .from('classrooms')
-      .select('id, class_name')
-      .eq('join_code', code.toUpperCase())
-      .single();
+        const { data: classroom, error: classError } = await supabase
+            .from('classrooms')
+            .select('id, class_name')
+            .eq('join_code', code.toUpperCase())
+            .single();
 
-    if (classError || !classroom) {
-      return { error: 'Invalid code' };
-    }
+        if (classError || !classroom) {
+            return { error: 'Invalid code' };
+        }
 
-    const { error: joinError } = await supabase
-      .from('classroom_students')
-      .insert({
-        classroom_id: classroom.id,
-        student_id: user.id
-      });
+        const { error: joinError } = await supabase.from('classroom_students').insert({
+            classroom_id: classroom.id,
+            student_id: user.id,
+        });
 
-    if (joinError?.code === '23505') {
-      return { error: 'Already a member' };
-    }
-    if (joinError) {
-      return { error: joinError.message };
-    }
+        if (joinError?.code === '23505') {
+            return { error: 'Already a member' };
+        }
+        if (joinError) {
+            return { error: joinError.message };
+        }
 
-    await get().fetchStudentMembership();
-    return { success: true, classroomName: classroom.class_name };
-  },
+        await get().fetchStudentMembership();
+        return { success: true, classroomName: classroom.class_name };
+    },
 
-  createClassroom: async (name) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { error: 'Not authenticated' };
+    createClassroom: async (name) => {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return { error: 'Not authenticated' };
 
-    const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    const { data, error } = await supabase
-      .from('classrooms')
-      .insert({
-        class_name: name,
-        teacher_id: user.id,
-        join_code: classCode,
-        locked_chemicals: []
-      })
-      .select()
-      .single();
+        const { data, error } = await supabase
+            .from('classrooms')
+            .insert({
+                class_name: name,
+                teacher_id: user.id,
+                join_code: classCode,
+                locked_chemicals: [],
+            })
+            .select()
+            .single();
 
-    if (error) {
-      return { error: error.message };
-    }
+        if (error) {
+            return { error: error.message };
+        }
 
-    await get().fetchTeacherClassrooms();
-    return { success: true, classroom: data };
-  },
+        await get().fetchTeacherClassrooms();
+        return { success: true, classroom: data };
+    },
 
-  reset: () => set({ membership: null, classrooms: [], loading: false, lastFetched: null }),
+    reset: () => set({ membership: null, classrooms: [], loading: false, lastFetched: null }),
 }));
 
 export default useClassroomStore;

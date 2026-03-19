@@ -9,18 +9,18 @@ import { useLabStore } from '../store/labStore';
  * @returns {object} { temperature, setTemperature, thermalState }
  */
 export default function useTemperature() {
-  const temperature = useLabStore((state) => state.temperature);
-  const setTemperature = useLabStore((state) => state.setTemperature);
-  const deltaH = useLabStore((state) => state.deltaH);
+    const temperature = useLabStore((state) => state.temperature);
+    const setTemperature = useLabStore((state) => state.setTemperature);
+    const deltaH = useLabStore((state) => state.deltaH);
 
-  // Derive thermal state from deltaH
-  let thermalState = 'neutral';
-  if (deltaH !== null && deltaH < 0) thermalState = 'exothermic';
-  if (deltaH !== null && deltaH > 0) thermalState = 'endothermic';
+    // Derive thermal state from deltaH
+    let thermalState = 'neutral';
+    if (deltaH !== null && deltaH < 0) thermalState = 'exothermic';
+    if (deltaH !== null && deltaH > 0) thermalState = 'endothermic';
 
-  return {
-    temperature,
-    setTemperature,
-    thermalState,
-  };
+    return {
+        temperature,
+        setTemperature,
+        thermalState,
+    };
 }

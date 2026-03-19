@@ -18,7 +18,11 @@ const ParticleSystem = ({ active, config }) => {
 
     const bubbleColor = isExothermic ? new Color('#FF6B35') : new Color('#ffffff');
     const smokeColor = isGas ? new Color('#cccccc') : new Color('#bbddbb');
-    const heatColor = isExothermic ? new Color('#FF6B35') : (isEndothermic ? new Color('#60A5FA') : new Color('#ffffff'));
+    const heatColor = isExothermic
+        ? new Color('#FF6B35')
+        : isEndothermic
+          ? new Color('#60A5FA')
+          : new Color('#ffffff');
 
     const bubbles = useMemo(() => {
         return new Array(bubbleCount).fill().map(() => ({
@@ -31,7 +35,7 @@ const ParticleSystem = ({ active, config }) => {
             wobbleSpeed: 2 + Math.random() * 3,
             wobbleOffset: Math.random() * Math.PI * 2,
             scale: 0.2 + Math.random() * 0.3,
-            life: Math.random()
+            life: Math.random(),
         }));
     }, [bubbleCount]);
 
@@ -49,7 +53,7 @@ const ParticleSystem = ({ active, config }) => {
             ),
             scale: 0.5 + Math.random() * 1.0,
             life: Math.random(),
-            opacityMod: Math.random()
+            opacityMod: Math.random(),
         }));
     }, [smokeCount]);
 
@@ -63,7 +67,7 @@ const ParticleSystem = ({ active, config }) => {
             velocity: 0.3 + Math.random() * 0.5,
             scale: 0.1 + Math.random() * 0.15,
             life: Math.random(),
-            wobbleOffset: Math.random() * Math.PI * 2
+            wobbleOffset: Math.random() * Math.PI * 2,
         }));
     }, [heatCount]);
 
@@ -81,10 +85,11 @@ const ParticleSystem = ({ active, config }) => {
         if (shouldShowBubbles && bubbleMeshRef.current) {
             bubbles.forEach((bubble, i) => {
                 bubble.position.y += bubble.velocity * delta;
-                
+
                 const wobbleX = Math.sin(time * bubble.wobbleSpeed + bubble.wobbleOffset) * 0.05;
-                const wobbleZ = Math.cos(time * bubble.wobbleSpeed * 0.8 + bubble.wobbleOffset) * 0.05;
-                
+                const wobbleZ =
+                    Math.cos(time * bubble.wobbleSpeed * 0.8 + bubble.wobbleOffset) * 0.05;
+
                 if (bubble.position.y > 0.8) {
                     bubble.position.y = -1.4;
                     bubble.position.x = (Math.random() - 0.5) * 1.2;
@@ -128,10 +133,10 @@ const ParticleSystem = ({ active, config }) => {
         if (shouldShowHeat && heatMeshRef.current) {
             heatParticles.forEach((particle, i) => {
                 particle.position.y += particle.velocity * delta;
-                
+
                 const wobbleX = Math.sin(time * 3 + particle.wobbleOffset) * 0.03;
                 const wobbleZ = Math.cos(time * 2.5 + particle.wobbleOffset) * 0.03;
-                
+
                 particle.life += delta * 0.4;
 
                 if (particle.position.y > 1.2 || particle.life > 1.0) {
@@ -162,12 +167,12 @@ const ParticleSystem = ({ active, config }) => {
             {(isGas || isExothermic || !config) && (
                 <instancedMesh ref={bubbleMeshRef} args={[null, null, bubbleCount]}>
                     <sphereGeometry args={[0.1, 12, 12]} />
-                    <meshStandardMaterial 
-                        color={bubbleColor} 
-                        transparent 
-                        opacity={0.6} 
-                        roughness={0.1} 
-                        metalness={0.8} 
+                    <meshStandardMaterial
+                        color={bubbleColor}
+                        transparent
+                        opacity={0.6}
+                        roughness={0.1}
+                        metalness={0.8}
                     />
                 </instancedMesh>
             )}
@@ -175,10 +180,10 @@ const ParticleSystem = ({ active, config }) => {
             {isGas && (
                 <instancedMesh ref={smokeMeshRef} args={[null, null, smokeCount]}>
                     <sphereGeometry args={[0.2, 8, 8]} />
-                    <meshStandardMaterial 
-                        color={smokeColor} 
-                        transparent 
-                        opacity={0.2} 
+                    <meshStandardMaterial
+                        color={smokeColor}
+                        transparent
+                        opacity={0.2}
                         depthWrite={false}
                     />
                 </instancedMesh>
@@ -187,10 +192,10 @@ const ParticleSystem = ({ active, config }) => {
             {isExothermic && (
                 <instancedMesh ref={heatMeshRef} args={[null, null, heatCount]}>
                     <sphereGeometry args={[0.08, 8, 8]} />
-                    <meshStandardMaterial 
-                        color={heatColor} 
-                        transparent 
-                        opacity={0.5} 
+                    <meshStandardMaterial
+                        color={heatColor}
+                        transparent
+                        opacity={0.5}
                         depthWrite={false}
                     />
                 </instancedMesh>

@@ -2,77 +2,79 @@
 @import './styles/tokens.css';
 
 :root {
-  /* Deep Blue / Neon Theme */
-  --bg-gradient: radial-gradient(circle at center, #1a1f35 0%, #050510 100%);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    /* Deep Blue / Neon Theme */
+    --bg-gradient: radial-gradient(circle at center, #1a1f35 0%, #050510 100%);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 
-  --primary-neon: #00f3ff;
-  --secondary-neon: #bc13fe;
-  --text-main: #ffffff;
-  --text-muted: #94a3b8;
+    --primary-neon: #00f3ff;
+    --secondary-neon: #bc13fe;
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
 
-  --font-main: 'Outfit', sans-serif;
+    --font-main: 'Outfit', sans-serif;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-main);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: var(--bg-gradient);
-  color: var(--text-main);
-  overflow-x: hidden;
-  cursor: none;
-  /* Hide default cursor for custom one */
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    overflow-x: hidden;
+    cursor: none;
+    /* Hide default cursor for custom one */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050510;
+    background: #050510;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+    background: #334155;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-neon);
+    background: var(--primary-neon);
 }
 
 /* Utility Classes */
 .glass-panel {
-  background: rgba(20, 20, 30, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  border-radius: 16px;
+    background: rgba(20, 20, 30, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
 }
 
 .text-gradient {
-  background: linear-gradient(to right, var(--primary-neon), var(--secondary-neon));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+    background: linear-gradient(to right, var(--primary-neon), var(--secondary-neon));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .neon-glow {
-  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+    text-shadow:
+        0 0 10px rgba(0, 243, 255, 0.5),
+        0 0 20px rgba(0, 243, 255, 0.3);
 }
 
 button {
-  cursor: none;
-  /* Ensure buttons also don't show default cursor if we want full immersion */
+    cursor: none;
+    /* Ensure buttons also don't show default cursor if we want full immersion */
 }

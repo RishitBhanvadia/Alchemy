@@ -1,22 +1,23 @@
-.succes_page{
+.succes_page {
     display: flex;
 }
 
-.correct_gif, .success_text{
+.correct_gif,
+.success_text {
     text-align: center;
 }
 
-.success_text{
+.success_text {
     font-size: 30px;
     font-weight: 600;
     padding-top: 50px;
 }
 
-.success_space{
+.success_space {
     text-align: center;
 }
 
-.success_space > button{
+.success_space > button {
     border: none;
     background-color: gold;
     padding: 10px 21px;
@@ -29,6 +30,6 @@
     z-index: 5;
 }
 
-.correct_gif > img{
+.correct_gif > img {
     height: 320px;
 }

@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import useHistoryStore from "../store/historyStore";
-import EmptyState from "../components/EmptyState";
-import SkeletonBlock from "../components/SkeletonBlock";
-import "./history.css";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import useHistoryStore from '../store/historyStore';
+import EmptyState from '../components/EmptyState';
+import SkeletonBlock from '../components/SkeletonBlock';
+import './history.css';
 
 const History = () => {
     const navigate = useNavigate();
-    
-    const logs = useHistoryStore(state => state.logs);
-    const loading = useHistoryStore(state => state.loading);
-    const fetch = useHistoryStore(state => state.fetch);
+
+    const logs = useHistoryStore((state) => state.logs);
+    const loading = useHistoryStore((state) => state.loading);
+    const fetch = useHistoryStore((state) => state.fetch);
 
     useEffect(() => {
         fetch();
@@ -21,22 +21,25 @@ const History = () => {
         const date = new Date(dateString);
         const now = new Date();
         const isToday = date.toDateString() === now.toDateString();
-        const isYesterday = new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
-        
+        const isYesterday =
+            new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
+
         const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-        
+
         if (isToday) {
             return `Today at ${time}`;
         }
         if (isYesterday) {
             return `Yesterday at ${time}`;
         }
-        
-        return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        }) + ` at ${time}`;
+
+        return (
+            date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+            }) + ` at ${time}`
+        );
     };
 
     const getChemicalBadges = (exp) => {
@@ -58,8 +61,14 @@ const History = () => {
                 <main className="glass-panel history-panel" aria-label="Experiment history">
                     {loading ? (
                         <div className="loading-container">
-                            {[1, 2, 3].map(i => (
-                                <div key={i} style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            {[1, 2, 3].map((i) => (
+                                <div
+                                    key={i}
+                                    style={{
+                                        padding: '20px',
+                                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                    }}
+                                >
                                     <SkeletonBlock width="200px" height="20px" />
                                     <div style={{ marginTop: '10px' }}>
                                         <SkeletonBlock width="80px" height="16px" />
@@ -91,23 +100,34 @@ const History = () => {
                                         <tr key={exp.id}>
                                             <td>
                                                 <div className="outcome-cell">
-                                                    <span 
-                                                        className="outcome-dot" 
-                                                        style={{ backgroundColor: exp.color || '#6366F1' }}
+                                                    <span
+                                                        className="outcome-dot"
+                                                        style={{
+                                                            backgroundColor: exp.color || '#6366F1',
+                                                        }}
                                                     ></span>
-                                                    <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
+                                                    <span className="outcome-label">
+                                                        {exp.outcome_label || 'Mixing Chemicals...'}
+                                                    </span>
                                                 </div>
                                             </td>
-                                            <td className="date-cell">{formatDate(exp.created_at)}</td>
+                                            <td className="date-cell">
+                                                {formatDate(exp.created_at)}
+                                            </td>
                                             <td className="type-cell">
-                                                <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
+                                                <span className="type-badge">
+                                                    {exp.experiment_type || 'Lab Experiment'}
+                                                </span>
                                             </td>
                                             <td className="chemicals-cell">
                                                 {getChemicalBadges(exp).map((badge, idx) => (
-                                                    <span 
-                                                        key={idx} 
+                                                    <span
+                                                        key={idx}
                                                         className="chem-badge"
-                                                        style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
+                                                        style={{
+                                                            backgroundColor: `${badge.color}20`,
+                                                            borderColor: badge.color,
+                                                        }}
                                                     >
                                                         {badge.chem}
                                                     </span>

@@ -101,12 +101,11 @@
 }
 
 .shake-error {
-    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     border-color: #ff4d4d;
 }
 
 @keyframes shake {
-
     10%,
     90% {
         transform: translate3d(-1px, 0, 0);
@@ -211,7 +210,6 @@
     }
 }
 
-
 /* Arrows */
 /* 
    We need to position these to connect the center to the info boxes.
@@ -261,7 +259,6 @@
     opacity: 0;
     animation: point 1s linear forwards 200ms;
 }
-
 
 @keyframes point {
     0% {

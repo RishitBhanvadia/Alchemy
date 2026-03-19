@@ -9,23 +9,23 @@ import { useState, useCallback } from 'react';
  * @returns {object} { isLowPerformance, postProcessingEnabled }
  */
 export default function usePerformanceScaling() {
-  const [isLowPerformance, setIsLowPerformance] = useState(false);
-  const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
+    const [isLowPerformance, setIsLowPerformance] = useState(false);
+    const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
 
-  // TODO: Monitor gl.info.render.frame timing
-  // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
-  //   - gl.setPixelRatio(1.0)
-  //   - Disable Bloom/EffectComposer
-  //   - Disable shadows
-  // TODO: Re-enable if FPS > 45 for 10 consecutive frames (hysteresis)
+    // TODO: Monitor gl.info.render.frame timing
+    // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
+    //   - gl.setPixelRatio(1.0)
+    //   - Disable Bloom/EffectComposer
+    //   - Disable shadows
+    // TODO: Re-enable if FPS > 45 for 10 consecutive frames (hysteresis)
 
-  const checkPerformance = useCallback(() => {
-    // Placeholder — will be wired into useFrame
-  }, []);
+    const checkPerformance = useCallback(() => {
+        // Placeholder — will be wired into useFrame
+    }, []);
 
-  return {
-    isLowPerformance,
-    postProcessingEnabled,
-    checkPerformance,
-  };
+    return {
+        isLowPerformance,
+        postProcessingEnabled,
+        checkPerformance,
+    };
 }

@@ -31,7 +31,9 @@
 
 .neon-glow {
     color: var(--color-text-primary);
-    text-shadow: 0 0 10px rgba(99, 102, 241, 0.8), 0 0 20px rgba(99, 102, 241, 0.4);
+    text-shadow:
+        0 0 10px rgba(99, 102, 241, 0.8),
+        0 0 20px rgba(99, 102, 241, 0.4);
 }
 
 .lab3d-header p {
@@ -92,10 +94,18 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.slider-card.acid { border-left-color: var(--color-danger); }
-.slider-card.base { border-left-color: var(--color-accent-primary); }
-.slider-card.indicator { border-left-color: var(--color-success); }
-.slider-card.catalyst { border-left-color: var(--color-warning); }
+.slider-card.acid {
+    border-left-color: var(--color-danger);
+}
+.slider-card.base {
+    border-left-color: var(--color-accent-primary);
+}
+.slider-card.indicator {
+    border-left-color: var(--color-success);
+}
+.slider-card.catalyst {
+    border-left-color: var(--color-warning);
+}
 
 .slider-header {
     display: flex;
@@ -240,9 +250,15 @@
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
 }
 
 .loading-spinner {
@@ -255,7 +271,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .note-warn {
@@ -269,7 +287,7 @@
     .lab3d-header h2 {
         font-size: 2rem;
     }
-    
+
     .lab3d-canvas-wrapper {
         height: 50vh;
     }
@@ -361,8 +379,14 @@
 }
 
 @keyframes slideDown {
-    from { opacity: 0; transform: translate(-50%, -20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
 
 .ai-toggle-button {
@@ -389,8 +413,6 @@
     transform: scale(1.1) rotate(5deg);
     box-shadow: 0 6px 25px rgba(99, 102, 241, 0.7);
 }
-
-
 
 /* Canvas Loader */
 .canvas-loader {

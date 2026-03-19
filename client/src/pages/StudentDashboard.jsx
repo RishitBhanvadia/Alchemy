@@ -12,45 +12,45 @@ import EmptyState from '../components/EmptyState';
 import './StudentDashboard.css';
 
 const MODULE_CARDS = [
-  {
-    id: 'laboratory',
-    icon: '🧪',
-    name: 'Laboratory',
-    description: 'Run chemical reactions and observe results',
-    route: '/student/lab'
-  },
-  {
-    id: 'titration',
-    icon: '💧',
-    name: 'Titration',
-    description: 'Precise acid-base analysis',
-    route: '/titration'
-  },
-  {
-    id: 'organic',
-    icon: '🌿',
-    name: 'Organic Chemistry',
-    description: 'Carbon compounds and reactions',
-    route: '/organic'
-  },
-  {
-    id: 'inorganic',
-    icon: '⚗️',
-    name: 'Inorganic Chemistry',
-    description: 'Elements and compounds',
-    route: '/inorganic'
-  }
+    {
+        id: 'laboratory',
+        icon: '🧪',
+        name: 'Laboratory',
+        description: 'Run chemical reactions and observe results',
+        route: '/student/lab',
+    },
+    {
+        id: 'titration',
+        icon: '💧',
+        name: 'Titration',
+        description: 'Precise acid-base analysis',
+        route: '/titration',
+    },
+    {
+        id: 'organic',
+        icon: '🌿',
+        name: 'Organic Chemistry',
+        description: 'Carbon compounds and reactions',
+        route: '/organic',
+    },
+    {
+        id: 'inorganic',
+        icon: '⚗️',
+        name: 'Inorganic Chemistry',
+        description: 'Elements and compounds',
+        route: '/inorganic',
+    },
 ];
 
 const StudentDashboard = () => {
-    const profile = useAuthStore(state => state.profile);
-    const membership = useClassroomStore(state => state.membership);
-    const fetchStudentMembership = useClassroomStore(state => state.fetchStudentMembership);
-    const loading = useClassroomStore(state => state.loading);
-    
-    const logs = useHistoryStore(state => state.logs);
-    const fetchHistory = useHistoryStore(state => state.fetch);
-    
+    const profile = useAuthStore((state) => state.profile);
+    const membership = useClassroomStore((state) => state.membership);
+    const fetchStudentMembership = useClassroomStore((state) => state.fetchStudentMembership);
+    const loading = useClassroomStore((state) => state.loading);
+
+    const logs = useHistoryStore((state) => state.logs);
+    const fetchHistory = useHistoryStore((state) => state.fetch);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,11 +64,16 @@ const StudentDashboard = () => {
         const date = new Date(dateStr);
         const now = new Date();
         const isToday = date.toDateString() === now.toDateString();
-        
+
         if (isToday) {
             return `Today at ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
         }
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+        });
     };
 
     const getFirstName = () => {
@@ -94,7 +99,7 @@ const StudentDashboard = () => {
     const recentExperiments = logs.slice(0, 3);
 
     return (
-        <motion.div 
+        <motion.div
             className="student-dashboard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -102,10 +107,7 @@ const StudentDashboard = () => {
         >
             <div className="dashboard-content">
                 <header className="dashboard-header">
-                    <motion.div
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                    >
+                    <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
                         <h1 className="welcome-text">
                             Welcome back, <span className="highlight">{getFirstName()}</span> 👋
                         </h1>
@@ -119,11 +121,14 @@ const StudentDashboard = () => {
                             <h2 className="section-label">MY CLASS</h2>
                             <MyTeacherCard classroom={membership?.classroom} />
                         </section>
-                        
+
                         {!membership && (
                             <section className="dashboard-section">
                                 <h2 className="section-label">JOIN CLASS</h2>
-                                <JoinClassroom profileId={profile?.id} onJoined={handleJoinSuccess} />
+                                <JoinClassroom
+                                    profileId={profile?.id}
+                                    onJoined={handleJoinSuccess}
+                                />
                             </section>
                         )}
                     </div>
@@ -153,14 +158,16 @@ const StudentDashboard = () => {
                         <section className="dashboard-section">
                             <div className="section-header">
                                 <h2 className="section-label">RECENT EXPERIMENTS</h2>
-                                <Link to="/history" className="text-link">Full History →</Link>
+                                <Link to="/history" className="text-link">
+                                    Full History →
+                                </Link>
                             </div>
-                            
+
                             <div className="glass-card history-preview">
                                 {recentExperiments.length > 0 ? (
                                     <div className="mini-log-list">
                                         {recentExperiments.map((exp, idx) => (
-                                            <motion.div 
+                                            <motion.div
                                                 key={exp.id}
                                                 className="mini-log-item"
                                                 initial={{ x: 20, opacity: 0 }}
@@ -171,10 +178,16 @@ const StudentDashboard = () => {
                                                     {exp.outcome_label ? '✨' : '⚗️'}
                                                 </div>
                                                 <div className="log-details">
-                                                    <h4>{exp.outcome_label || 'Mixing Chemicals...'}</h4>
-                                                    <span className="timestamp">{formatDate(exp.created_at)}</span>
+                                                    <h4>
+                                                        {exp.outcome_label || 'Mixing Chemicals...'}
+                                                    </h4>
+                                                    <span className="timestamp">
+                                                        {formatDate(exp.created_at)}
+                                                    </span>
                                                 </div>
-                                                <div className={`status-dot ${exp.outcome_label ? 'success' : 'neutral'}`}></div>
+                                                <div
+                                                    className={`status-dot ${exp.outcome_label ? 'success' : 'neutral'}`}
+                                                ></div>
                                             </motion.div>
                                         ))}
                                     </div>
