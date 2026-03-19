@@ -30,11 +30,11 @@ const CursorFollower = () => {
             // Check if hovering over clickable elements
             const target = e.target;
             const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                target?.tagName?.toLowerCase() === 'button' ||
+                target?.tagName?.toLowerCase() === 'a' ||
+                target?.closest?.('button') ||
+                target?.closest?.('a') ||
+                target?.classList?.contains('clickable');
 
             setHovering(!!isClickable);
         };
