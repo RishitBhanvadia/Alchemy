@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    // Replace position state with refs to avoid re-renders on every mouse move
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,16 +28,22 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // Directly mutate style to avoid excessive re-renders and use transform for better performance
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            }
 
-            // Check if hovering over clickable elements
+            // Check if hovering over clickable elements safely using optional chaining
             const target = e.target;
             const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                target?.tagName?.toLowerCase() === 'button' ||
+                target?.tagName?.toLowerCase() === 'a' ||
+                target?.closest?.('button') ||
+                target?.closest?.('a') ||
+                target?.classList?.contains('clickable');
 
             setHovering(!!isClickable);
         };
@@ -65,12 +74,14 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ transform: `translate(0px, 0px)` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ transform: `translate(0px, 0px)` }}
             />
         </>
     );
