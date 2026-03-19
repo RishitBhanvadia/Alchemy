@@ -12,3 +12,4 @@
 5:48:08 PM [vite] (client) hmr update /src/components/CursorFollower.jsx
 5:58:34 PM [vite] (client) hmr update /src/components/ErrorBoundary.jsx
 6:03:06 PM [vite] (client) hmr update /src/App.jsx, /src/components/Navbar.jsx, /src/utils/roleGuard.jsx
+6:19:41 PM [vite] (client) hmr update /src/components/LoadingOverlay.jsx
