@@ -153,6 +153,11 @@
   margin-top: 8px;
   text-decoration: none;
   transition: color 0.2s;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
 }
 
 .forgot-password:hover {
@@ -246,6 +251,12 @@
 .footer-link {
   color: #6366f1;
   text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 @media (max-width: 480px) {

@@ -113,7 +113,7 @@ const LoginForm = () => {
         {touched.password && errors.password && (
           <span className="error-message" id="password-error" role="alert">{errors.password}</span>
         )}
-        <button type="button" className="forgot-password-btn">Forgot password?</button>
+        <button type="button" className="forgot-password">Forgot password?</button>
       </div>
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? (
