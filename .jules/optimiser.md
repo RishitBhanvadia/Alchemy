@@ -1,0 +1,4 @@
+## 2026-03-20 - Optimise mousemove re-renders for CursorFollower
+**Bottleneck:** The `CursorFollower` component triggered React state updates `setPosition({ x: e.clientX, y: e.clientY })` on every single `mousemove` event, causing excessive React renders and potential layout thrashing during mouse movements.
+**Impact:** Significantly reduced React render cycles on mouse movement by completely eliminating state-driven coordinate updates. This provides smoother 60FPS cursor tracking without locking the React main thread.
+**Learning:** For high-frequency events like `mousemove` that drive simple visual changes (like an element's position), tracking coordinates with React `useState` introduces significant overhead due to constant re-renders. Bypassing React's render cycle by using `useRef` to store DOM element references and directly mutating their `style.transform` property using hardware-accelerated CSS (like `translate3d`) is a much more performant pattern.
