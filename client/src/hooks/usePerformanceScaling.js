@@ -21,6 +21,12 @@ export default function usePerformanceScaling() {
 
   const checkPerformance = useCallback(() => {
     // Placeholder — will be wired into useFrame
+
+    // TODO: Use setIsLowPerformance and setPostProcessingEnabled when implementing logic
+    const suppressWarning1 = setIsLowPerformance;
+    const suppressWarning2 = setPostProcessingEnabled;
+    if (!suppressWarning1 || !suppressWarning2) return null;
+
   }, []);
 
   return {
