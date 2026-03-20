@@ -95,17 +95,12 @@ exports.calculateResult = async (req, res) => {
 
     // Step 4: Query by reaction_id
     // Note: regime filtering disabled until schema is updated
-    let { data, error: dbError } = await supabase
+    let { data, error } = await supabase
       .from('results')
       .select('*')
       .eq('reaction_id', reaction_id)
       .limit(1)
       .single();
-
-    if (dbError) {
-      console.error('[resultController.calculateResult] Database error:', dbError.message);
-      return error(res, 'INTERNAL_ERROR', 'An error occurred while retrieving the reaction.', 500);
-    }
 
     if (!data) {
       return error(res, 'NOT_FOUND', `No reaction found for combination ID ${reaction_id}.`, 404);
