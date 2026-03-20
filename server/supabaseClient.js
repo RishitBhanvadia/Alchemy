@@ -11,7 +11,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 // Ensure the URL is valid during CI where dummy values might be injected
-const finalUrl = supabaseUrl.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co';
+const finalUrl = supabaseUrl?.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co';
 
 const supabase = createClient(finalUrl, supabaseKey);
 

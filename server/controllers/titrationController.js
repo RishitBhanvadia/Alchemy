@@ -1,9 +1,11 @@
 const { createClient } = require('@supabase/supabase-js');
 const { success, error } = require('../utils/response');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const finalUrl = supabaseUrl?.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || 'placeholder-key';
+
+const supabase = createClient(finalUrl, supabaseKey);
 
 exports.getTitrationData = async (req, res) => {
     try {

@@ -26,6 +26,9 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
+            // ⚡ Bolt Performance Optimization: Mutate DOM transforms directly
+            // instead of using React state to prevent layout thrashing and
+            // continuous re-renders on high-frequency mousemove events.
             if (cursorRef.current && dotRef.current) {
                 const transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
                 cursorRef.current.style.transform = transform;
