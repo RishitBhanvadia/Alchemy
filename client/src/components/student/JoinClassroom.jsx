@@ -6,10 +6,16 @@ import { motion } from 'framer-motion';
 const JoinClassroom = ({ onJoined, profileId }) => {
     const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleJoin = async (e) => {
         e.preventDefault();
-        if (!code.trim()) return toast.error('Please enter a join code.');
+        setError('');
+
+        if (!code.trim()) {
+            setError('Please enter a join code.');
+            return;
+        }
         
         setLoading(true);
         try {
@@ -26,7 +32,8 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             }
 
             if (!classroom) {
-                return toast.error('Invalid join code. Please check with your teacher.');
+                setError('Invalid join code. Please check with your teacher.');
+                return;
             }
 
             // 2. Create membership
@@ -39,17 +46,19 @@ const JoinClassroom = ({ onJoined, profileId }) => {
 
             if (joinError) {
                 if (joinError.code === '23505') {
-                    return toast.error('You are already a member of this classroom.');
+                    setError('You are already a member of this classroom.');
+                    return;
                 }
                 throw joinError;
             }
 
             toast.success(`Successfully joined ${classroom.class_name}!`);
             setCode('');
+            setError('');
             if (onJoined) onJoined();
         } catch (err) {
             console.error('Error joining classroom:', err);
-            toast.error('Failed to join classroom. Please try again.');
+            setError('Failed to join classroom. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -68,12 +77,16 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                     type="text"
                     placeholder="ENTER CLASS CODE (e.g. XK9P2)"
                     value={code}
-                    onChange={(e) => setCode(e.target.value.toUpperCase())}
+                    onChange={(e) => {
+                        setCode(e.target.value.toUpperCase());
+                        if (error) setError('');
+                    }}
                     className="glass-input"
                     maxLength={10}
+                    aria-describedby={error ? "join-error" : undefined}
                     style={{
                         background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        border: error ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)',
                         borderRadius: '8px',
                         padding: '12px',
                         color: 'white',
@@ -83,6 +96,11 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                         fontWeight: 'bold'
                     }}
                 />
+                {error && (
+                    <p id="join-error" style={{ color: '#ef4444', fontSize: '0.8rem', margin: '0 0 4px 0' }}>
+                        {error}
+                    </p>
+                )}
                 <button 
                     type="submit" 
                     className="join-btn"
