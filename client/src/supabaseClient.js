@@ -11,4 +11,7 @@ if (!supabaseUrl || !supabaseKey) {
     );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+const finalUrl = supabaseUrl?.startsWith('http') ? supabaseUrl : 'https://placeholder.supabase.co';
+const finalKey = supabaseKey || 'placeholder-key';
+
+export const supabase = createClient(finalUrl, finalKey);
