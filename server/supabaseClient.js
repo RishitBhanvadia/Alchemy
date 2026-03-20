@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseUrl = process.env.SUPABASE_URL?.startsWith('http') ? process.env.SUPABASE_URL : 'https://placeholder.supabase.co';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key';
 
 if (supabaseUrl === 'https://placeholder.supabase.co' || supabaseKey === 'placeholder-key') {
