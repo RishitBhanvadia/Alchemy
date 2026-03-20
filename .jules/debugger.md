@@ -1,0 +1,4 @@
+## 2024-05-24 - Pure State Updaters in Timers
+**Bug:** Side-effects inside interval callbacks or during `setCount` updates led to race conditions, inefficient re-rendering, and timing issues with React's dependency array in `client/src/pages/titration.jsx`.
+**Root Cause:** The `setAcid` hook invocation was placed directly inside `setInterval` alongside `setCount`. Because it relied on the current `count` value (rather than a pure previous state), the timer closure captured stale state while repeatedly resetting the interval upon `count` changes in the `useEffect` dependency array.
+**Learning:** Always keep `setState` functional updates pure. Side-effects (like derived state updates or `clearInterval` calls) must be decoupled from timer internals and extracted into distinct `useEffect` hooks that explicitly depend on the updated state variable.
