@@ -1,3 +1,0 @@
-## 2026-03-20 - Optimize React high-frequency events with useRef
-**Learning:** Using `useState` to track coordinates for high-frequency events like `mousemove` causes excessive component re-renders and layout thrashing. Furthermore, accessing `e.target.tagName` without optional chaining on global mouse events can cause `TypeError` crashes if the target is a non-element node (like text) or null.
-**Action:** Use `useRef` to hold element references and directly mutate their `style.transform` property (e.g., `translate(x, y)`) instead of updating state to manipulate `style.left` and `style.top`. Always use optional chaining (`?.`) when accessing DOM properties on `e.target` for global mouse events.
