@@ -91,7 +91,7 @@ const Login = () => {
         </AnimatePresence>
 
         <p className="footer-text">
-          By signing up you agree to our <a href="#" className="footer-link">Terms of Service</a>
+          By signing up you agree to our <button type="button" className="footer-link" style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', color: 'inherit', padding: 0 }} onClick={(e) => e.preventDefault()}>Terms of Service</button>
         </p>
       </motion.div>
     </div>
