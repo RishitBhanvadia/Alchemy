@@ -3,10 +3,13 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_key';
+const envUrl = process.env.SUPABASE_URL;
+const envKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+const supabaseUrl = envUrl || 'https://placeholder.supabase.co';
+const supabaseKey = envKey || 'placeholder_key';
+
+if (!envUrl || !envKey) {
   console.error('Missing Supabase credentials in environment variables.');
 }
 

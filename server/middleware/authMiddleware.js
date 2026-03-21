@@ -1,9 +1,12 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || 'placeholder_key'
-);
+const envUrl = process.env.SUPABASE_URL;
+const envKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+
+const supabaseUrl = envUrl || 'https://placeholder.supabase.co';
+const supabaseKey = envKey || 'placeholder_key';
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const unauthorized = (res, message = 'Unauthorised — no token.') => {
   return res.status(401).json({ success: false, error: { code: 'UNAUTHORISED', message } });
