@@ -1,0 +1,4 @@
+## 2024-05-24 - Elevate Empty States with Glassmorphism
+**Problem:** Basic, unstyled empty states cause UX friction by looking out-of-place or broken, especially when the rest of the app uses a heavily stylized "glassmorphism" aesthetic with glowing effects and dark gradients.
+**Context:** The `EmptyState` component is used in critical areas like the `History` and `StudentDashboard` pages. A basic column layout with a text icon felt disconnected from the immersive "Virtual Chemistry Lab" theme, diminishing the app's perceived quality when users haven't completed tasks yet.
+**Solution:** Wrapping the `EmptyState` in a responsive "glass-card" style (`rgba(255, 255, 255, 0.05)`, backdrop blur, subtle borders) and adding a glowing wrapper for the icon integrates it perfectly into the design system. This transforms a functional "no data" message into a visually consistent, engaging part of the user journey that clearly points to the next action.
