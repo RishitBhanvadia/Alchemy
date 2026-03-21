@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
+// ⚡ Bolt: Optimize cursor follower to prevent excessive React re-renders.
+// The component tracks coordinates via mousemove (60+ times per second).
+// Using useState for coordinates causes React to re-render the entire component
+// on every frame. We optimize this by maintaining refs to the DOM nodes and
+// applying positioning directly to avoid React's render lifecycle.
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,35 +32,34 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // Apply coordinates directly to the DOM nodes using left/top
+            // instead of triggering a React re-render with state. This avoids
+            // overwriting any CSS transform properties used for centering.
+            if (cursorRef.current) {
+                cursorRef.current.style.left = `${e.clientX}px`;
+                cursorRef.current.style.top = `${e.clientY}px`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.left = `${e.clientX}px`;
+                dotRef.current.style.top = `${e.clientY}px`;
+            }
 
-            // Check if hovering over clickable elements
+            // Check if hovering over clickable elements safely
             const target = e.target;
             const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                target?.tagName?.toLowerCase() === 'button' ||
+                target?.tagName?.toLowerCase() === 'a' ||
+                target?.closest?.('button') ||
+                target?.closest?.('a') ||
+                target?.classList?.contains('clickable');
 
             setHovering(!!isClickable);
         };
 
-        const onMouseEnter = () => {
-            setHidden(false);
-        };
-
-        const onMouseLeave = () => {
-            setHidden(true);
-        };
-
-        const onMouseDown = () => {
-            setClicking(true);
-        };
-
-        const onMouseUp = () => {
-            setClicking(false);
-        };
+        const onMouseEnter = () => setHidden(false);
+        const onMouseLeave = () => setHidden(true);
+        const onMouseDown = () => setClicking(true);
+        const onMouseUp = () => setClicking(false);
 
         addEventListeners();
         return () => removeEventListeners();
@@ -65,12 +71,12 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
