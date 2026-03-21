@@ -226,5 +226,3 @@ const styles = {
     fontSize: '0.95rem',
   },
 };
-
-StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';

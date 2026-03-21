@@ -1,4 +1,0 @@
-## 2024-03-01 - Avoid shadowing global handlers in destructuring
-**Bug:** The server crashed with `TypeError: error is not a function` when looking up a reaction.
-**Root Cause:** A global error handler imported as `const { error } = require('../utils/response');` was being shadowed by a local destructuring assignment `let { data, error } = await supabase...`. When `error` was invoked as a function, it instead referenced the Supabase error object (which was null), causing a `TypeError`.
-**Learning:** Always use aliasing when destructuring variables that share names with global imports (e.g., `let { data, error: dbError } = await supabase...`). Remember to thoroughly update all subsequent usages of the destructured variable in the block to reference the new alias to prevent swallowed errors.
