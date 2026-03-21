@@ -17,7 +17,9 @@ const EmptyState = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="empty-state-icon">{icon}</div>
+      <div className="empty-state-icon-wrapper">
+        <div className="empty-state-icon" aria-hidden="true">{icon}</div>
+      </div>
       <h3 className="empty-state-title">{title}</h3>
       <p className="empty-state-description">{description}</p>
       {actionLabel && onAction && (
