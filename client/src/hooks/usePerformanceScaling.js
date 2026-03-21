@@ -12,6 +12,10 @@ export default function usePerformanceScaling() {
   const [isLowPerformance, setIsLowPerformance] = useState(false);
   const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
 
+  // Ensure setters are used or return them
+  const enableLowPerformance = useCallback(() => setIsLowPerformance(true), []);
+  const disablePostProcessing = useCallback(() => setPostProcessingEnabled(false), []);
+
   // TODO: Monitor gl.info.render.frame timing
   // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
   //   - gl.setPixelRatio(1.0)
@@ -26,6 +30,8 @@ export default function usePerformanceScaling() {
   return {
     isLowPerformance,
     postProcessingEnabled,
+    enableLowPerformance,
+    disablePostProcessing,
     checkPerformance,
   };
 }
