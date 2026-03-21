@@ -40,15 +40,11 @@ const validateConcentration = (val) => {
 
 exports.calculateResult = async (req, res) => {
   try {
-    let { chem_a = 0, chem_b = 0, chem_c = 0, chem_d = 0, chem_i, student_id } = req.body;
+    let { chem_a = 0, chem_b = 0, chem_c = 0, chem_d = 0, chem_i } = req.body;
     
     if (!validateConcentration(chem_a) || !validateConcentration(chem_b) || 
         !validateConcentration(chem_c) || !validateConcentration(chem_d)) {
       return error(res, 'VALIDATION_ERROR', 'Invalid concentration values. Must be numbers between 0 and 100.', 400);
-    }
-    
-    if (student_id && typeof student_id !== 'string') {
-      return error(res, 'VALIDATION_ERROR', 'Invalid student_id format.', 400);
     }
     
     // Support both chem_i (new lab) and chem_d (old lab) for indicator
@@ -118,7 +114,7 @@ exports.calculateResult = async (req, res) => {
 
     // Optional Step 5: Log experiment if student_id is provided
     // Also log if we have student_id from the new parameter extraction above
-    const targetStudentId = student_id || req.body.student_id;
+    const targetStudentId = req.user?.id;
     if (targetStudentId) {
       try {
         const experimentType = req.body.experiment_type || 'inorganic';
