@@ -4,6 +4,11 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [react()],
     test: {
+        server: {
+            deps: {
+                inline: [/@exodus\/bytes/],
+            },
+        },
         globals: true,
         environment: 'jsdom',
         setupFiles: './src/test/setup.js',
