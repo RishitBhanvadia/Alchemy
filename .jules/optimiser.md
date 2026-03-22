@@ -1,0 +1,4 @@
+## 2024-03-22 - Prevent Infinite Re-Renders in High-Frequency Events
+**Bottleneck:** The custom cursor component (`CursorFollower.jsx`) was using `useState` to track the mouse coordinates on `mousemove`. Since `mousemove` fires incredibly frequently, this caused continuous state updates and entire component re-renders on the main thread, wasting CPU cycles and leading to frame drops.
+**Impact:** Eliminates constant React re-renders while the user is simply moving the mouse. This will measurably improve the app's responsiveness and overall interaction smoothness.
+**Learning:** For high-frequency DOM events that dictate purely visual updates (like custom cursors or scroll followers), we should bypass React's standard state-driven render cycle. Using `useRef` to maintain a reference to the DOM element and directly mutating its `.style` properties (like `left` and `top`) offers significantly better performance.
