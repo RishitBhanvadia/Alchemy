@@ -6,7 +6,7 @@ export default defineConfig({
     test: {
         server: {
             deps: {
-                inline: [/@exodus\/bytes/]
+                inline: [/@exodus\/bytes/, /html-encoding-sniffer/]
             }
         },
         globals: true,
