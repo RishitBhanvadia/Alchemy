@@ -493,8 +493,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label style={styles.dateLabel} htmlFor="filter-from">From:</label>
               <input
+                id="filter-from"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +503,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label style={styles.dateLabel} htmlFor="filter-to">To:</label>
               <input
+                id="filter-to"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
