@@ -1,0 +1,4 @@
+## 2024-05-24 - Fix Insecure Direct Object Reference (IDOR) in Result Logger
+**Vulnerability:** The `/api/results` endpoint was vulnerable to Insecure Direct Object Reference (IDOR). It extracted `student_id` directly from `req.body` and used it to log an experiment result in the database using the Supabase Service Role Key (which bypasses Row Level Security).
+**Learning:** Even if a route is protected by an authentication middleware (e.g. `requireAuth`), allowing the client to explicitly supply an ID representing the actor (like `student_id`) without verifying it matches the authenticated user (`req.user.id`) creates a critical vulnerability.
+**Prevention:** Always use the authenticated user object attached to the request (`req.user.id`) to determine the identity of the actor for write operations, rather than trusting identity parameters sent in the request body.
