@@ -113,7 +113,7 @@ const Dashboard = () => {
                             <i className="fa-solid fa-users-rectangle"></i>
                         </div>
                         <h3>CLASSROOM</h3>
-                        <p>Join your teacher&apos;s session.</p>
+                        <p>Join your teacher's session.</p>
                         
                         <form onSubmit={handleJoinClassroom} className="join-form">
                             <label htmlFor="join-code" className="sr-only">Classroom join code</label>

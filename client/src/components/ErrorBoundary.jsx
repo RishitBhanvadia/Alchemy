@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
                         <div className="error-icon">⚠️</div>
                         <h1 className="neon-glow">Something went wrong</h1>
                         <p className="error-message">
-                            We&apos;ve encountered an unexpected error in the lab simulation.
+                            We've encountered an unexpected error in the lab simulation.
                         </p>
                         <div className="error-actions">
                             <button
