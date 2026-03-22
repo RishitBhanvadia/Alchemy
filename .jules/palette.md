@@ -1,0 +1,3 @@
+## 2024-05-24 - Icon-only buttons lack accessible names
+**Learning:** Found multiple instances of icon-only buttons (like those in the sidebar navigation or the generic '×' close button in the tutor panel) lacking `aria-label`s or hidden text, causing screen readers to read the icon class name or skip the element entirely, and leaving sighted users without context if they don't recognise the icon.
+**Action:** Always provide an `aria-label` combined with `title` for visual tooltips on icon-only buttons, and use `aria-hidden="true"` on the interior `<i>` or `<svg>` elements to prevent redundant announcements by screen readers.

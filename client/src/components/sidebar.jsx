@@ -40,8 +40,10 @@ const Sidebar = () => {
             <button
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
+              aria-label="General Lab"
+              title="General Lab"
             >
-              <i className="fa-solid fa-flask"></i>
+              <i className="fa-solid fa-flask" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -57,8 +59,10 @@ const Sidebar = () => {
             <button
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
+              aria-label="Titration Lab"
+              title="Titration Lab"
             >
-              <i className="fa-solid fa-flask-vial"></i>
+              <i className="fa-solid fa-flask-vial" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -74,8 +78,10 @@ const Sidebar = () => {
             <button
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
+              aria-label="Organic Chemistry"
+              title="Organic Chemistry"
             >
-              <i className="fa-solid fa-user-plus"></i>
+              <i className="fa-solid fa-user-plus" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -91,8 +97,10 @@ const Sidebar = () => {
             <button
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
+              aria-label="Inorganic Chemistry"
+              title="Inorganic Chemistry"
             >
-              <i className="fa-solid fa-user-minus"></i>
+              <i className="fa-solid fa-user-minus" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
@@ -108,8 +116,10 @@ const Sidebar = () => {
             <button
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
+              aria-label="History"
+              title="History"
             >
-              <i className="fa-solid fa-clock-rotate-left"></i>
+              <i className="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
             </button>
           </div>
         </NavLink>
