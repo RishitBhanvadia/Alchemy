@@ -21,6 +21,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
+import EmptyState from './EmptyState';
 
 // Score bucket labels
 const BUCKET_LABELS = [
@@ -71,10 +72,12 @@ const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', no
 
   if (showNoDataMessage) {
     return (
-      <div className="student-analytics-chart" style={styles.emptyState}>
-        <div style={styles.emptyIcon}>📊</div>
-        <p style={styles.emptyText}>{showNoDataMessage}</p>
-      </div>
+      <EmptyState
+        icon="📊"
+        title="No Score Data"
+        description={showNoDataMessage}
+        variant="inline"
+      />
     );
   }
 
@@ -155,9 +158,12 @@ const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', no
   );
 });
 
+StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
+
 StudentAnalyticsChart.propTypes = {
   scores: PropTypes.arrayOf(PropTypes.number),
   experimentName: PropTypes.string,
+  noDataMessage: PropTypes.string,
 };
 
 export default StudentAnalyticsChart;
@@ -208,21 +214,5 @@ const styles = {
     color: '#00f3ff',
     fontSize: '1.2rem',
     fontWeight: 'bold',
-  },
-  emptyState: {
-    background: 'rgba(26, 26, 46, 0.6)',
-    borderRadius: '12px',
-    padding: '3rem',
-    textAlign: 'center',
-    border: '1px dashed rgba(255, 255, 255, 0.15)',
-  },
-  emptyIcon: {
-    fontSize: '3rem',
-    marginBottom: '1rem',
-    opacity: 0.5,
-  },
-  emptyText: {
-    color: '#888',
-    fontSize: '0.95rem',
   },
 };

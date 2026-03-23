@@ -399,18 +399,17 @@ export default function TeacherDashboard({ analytics = false }) {
           ))}
         </div>
       ) : students.length === 0 ? (
-        <div style={styles.emptyState}>
-          <EmptyState
-            icon="👨‍🎓"
-            title="No students yet"
-            description="Students will appear here after joining your classroom with a join code."
-          />
-        </div>
+        <EmptyState
+          icon="👨‍🎓"
+          title="No students yet"
+          description="Students will appear here after joining your classroom with a join code."
+          variant="glass"
+        />
       ) : isMobile ? (
         /* ── Mobile Card View ── */
         <div style={styles.cardList}>
           {table.getRowModel().rows.length === 0 ? (
-            <div style={styles.emptyState}>No students found</div>
+            <EmptyState icon="🔍" title="No students found" description="Try a different search term." variant="card" />
           ) : (
             table.getRowModel().rows.map((row) => (
               <div key={row.id} style={styles.card}>
@@ -493,8 +492,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="analytics-from" style={styles.dateLabel}>From:</label>
               <input
+                id="analytics-from"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +502,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="analytics-to" style={styles.dateLabel}>To:</label>
               <input
+                id="analytics-to"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
@@ -688,14 +689,6 @@ const styles = {
     color: '#ddd',
     fontSize: '0.9rem',
     fontWeight: 500,
-  },
-  emptyState: {
-    padding: '3rem',
-    textAlign: 'center',
-    color: '#666',
-    background: 'rgba(26, 26, 46, 0.5)',
-    borderRadius: '12px',
-    marginBottom: '2rem',
   },
   // Analytics section
   analyticsSection: {
