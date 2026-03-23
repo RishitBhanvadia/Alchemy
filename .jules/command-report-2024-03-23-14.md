@@ -108,6 +108,9 @@ THE PROBLEM
 
 During server startup (or test execution), `process.env.SUPABASE_URL` and `process.env.SUPABASE_SERVICE_ROLE_KEY` are undefined. The code does not use fallback placeholder strings, causing `createClient` to throw a fatal `supabaseKey is required.` error, failing the CI `build-server` step.
 
+**Blocked by:** This failure blocks everything else because the build fails.
+**Fix Prompt:** [See below]
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EXACT ERROR OUTPUT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -219,6 +222,8 @@ END OF FIX PROMPT
 ═══════════════════════════════════════════════════════
 
 ### Fix Prompt #2 — 16 Lint errors in Client [🟡 MEDIUM]
+
+**Resolve after:** Fix #1 is merged
 
 ═══════════════════════════════════════════════════════
 JULES FIX PROMPT
