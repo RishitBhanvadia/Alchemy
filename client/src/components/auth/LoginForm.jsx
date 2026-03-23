@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +10,6 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({});
-  const navigate = useNavigate();
 
   const validateField = (name, value) => {
     if (name === 'email') {
@@ -115,7 +113,7 @@ const LoginForm = () => {
         {touched.password && errors.password && (
           <span className="error-message" id="password-error" role="alert">{errors.password}</span>
         )}
-        <a href="#" className="forgot-password">Forgot password?</a>
+        <button type="button" className="forgot-password" onClick={(e) => e.preventDefault()} style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit'}}>Forgot password?</button>
       </div>
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? (

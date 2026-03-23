@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [hidden, setHidden] = useState(false);
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -25,7 +23,17 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // ⚡ Bolt: Performance optimization
+            // Direct DOM manipulation via refs bypasses the React render cycle entirely.
+            // Using useState for mouse coordinates previously caused a full component re-render
+            // on every single pixel of mouse movement, starving the main thread.
+            // Expected Impact: Reduces unnecessary component re-renders from ~60/sec to 0 during mouse movement.
+            if (cursorRef.current && dotRef.current) {
+                cursorRef.current.style.left = `${e.clientX}px`;
+                cursorRef.current.style.top = `${e.clientY}px`;
+                dotRef.current.style.left = `${e.clientX}px`;
+                dotRef.current.style.top = `${e.clientY}px`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -36,41 +44,56 @@ const CursorFollower = () => {
                 target.closest('a') ||
                 target.classList.contains('clickable');
 
-            setHovering(!!isClickable);
+            if (cursorRef.current && dotRef.current) {
+                if (isClickable) {
+                    cursorRef.current.classList.add('hovering');
+                    dotRef.current.classList.add('hovering');
+                } else {
+                    cursorRef.current.classList.remove('hovering');
+                    dotRef.current.classList.remove('hovering');
+                }
+            }
         };
 
         const onMouseEnter = () => {
-            setHidden(false);
+            if (cursorRef.current && dotRef.current) {
+                cursorRef.current.classList.remove('hidden');
+                dotRef.current.classList.remove('hidden');
+            }
         };
 
         const onMouseLeave = () => {
-            setHidden(true);
+            if (cursorRef.current && dotRef.current) {
+                cursorRef.current.classList.add('hidden');
+                dotRef.current.classList.add('hidden');
+            }
         };
 
         const onMouseDown = () => {
-            setClicking(true);
+            if (cursorRef.current) {
+                cursorRef.current.classList.add('clicking');
+            }
         };
 
         const onMouseUp = () => {
-            setClicking(false);
+            if (cursorRef.current) {
+                cursorRef.current.classList.remove('clicking');
+            }
         };
 
         addEventListeners();
         return () => removeEventListeners();
     }, []);
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
-
     return (
         <>
             <div
-                className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                ref={cursorRef}
+                className="cursor-follower"
             />
             <div
-                className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                ref={dotRef}
+                className="cursor-dot"
             />
         </>
     );
