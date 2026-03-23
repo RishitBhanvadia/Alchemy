@@ -253,12 +253,13 @@ const Lab3D = () => {
                         <div className="slider-card acid">
                             <div className="slider-header">
                                 <div className="label-group">
-                                    <span className="chem-name">Hydrochloric Acid</span>
+                                    <label htmlFor="hcl-slider" className="chem-name">Hydrochloric Acid</label>
                                     <span className="chem-formula">HCl</span>
                                 </div>
                                 <span className="chem-value">{Math.round(chemA)}%</span>
                             </div>
                             <input 
+                                id="hcl-slider"
                                 type="range" 
                                 min="0" max="100" 
                                 value={chemA} 
@@ -272,12 +273,13 @@ const Lab3D = () => {
                         <div className="slider-card base">
                             <div className="slider-header">
                                 <div className="label-group">
-                                    <span className="chem-name">Sodium Hydroxide</span>
+                                    <label htmlFor="naoh-slider" className="chem-name">Sodium Hydroxide</label>
                                     <span className="chem-formula">NaOH</span>
                                 </div>
                                 <span className="chem-value">{Math.round(chemB)}%</span>
                             </div>
                             <input 
+                                id="naoh-slider"
                                 type="range" 
                                 min="0" max="100" 
                                 value={chemB} 
@@ -291,12 +293,13 @@ const Lab3D = () => {
                         <div className="slider-card indicator">
                             <div className="slider-header">
                                 <div className="label-group">
-                                    <span className="chem-name">Bromothymol Blue</span>
+                                    <label htmlFor="btb-slider" className="chem-name">Bromothymol Blue</label>
                                     <span className="chem-formula">BTB</span>
                                 </div>
                                 <span className="chem-value">{Math.round(chemI)}%</span>
                             </div>
                             <input 
+                                id="btb-slider"
                                 type="range" 
                                 min="0" max="100" 
                                 value={chemI} 
@@ -310,12 +313,13 @@ const Lab3D = () => {
                         <div className="slider-card catalyst">
                             <div className="slider-header">
                                 <div className="label-group">
-                                    <span className="chem-name">Manganese Dioxide</span>
+                                    <label htmlFor="mno2-slider" className="chem-name">Manganese Dioxide</label>
                                     <span className="chem-formula">MnO₂</span>
                                 </div>
                                 <span className="chem-value">{Math.round(chemC)}%</span>
                             </div>
                             <input 
+                                id="mno2-slider"
                                 type="range" 
                                 min="0" max="100" 
                                 value={chemC} 
@@ -350,6 +354,7 @@ const Lab3D = () => {
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
+                aria-label="Ask AI Tutor"
             >
                 🤖
             </button>
