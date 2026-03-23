@@ -1,0 +1,4 @@
+## 2025-02-13 - [Fix Math Rounding Logic and Scope Shadowing Error in calculateResult]
+**Bug:** The server crashed with a `TypeError: error is not a function` when handling 0% inputs due to overlapping variable scope, and the reaction logic incorrectly distributed remainder percentage points to chemicals with a 0% input.
+**Root Cause:** A destructured `error` variable from a Supabase call shadowed a globally imported utility function named `error`. Additionally, the formula `nc = 100 - na - nb - ni` forced the remainder of percentage rounding onto `chem_c` blindly, even if `chem_c` was originally `0`.
+**Learning:** In Node.js controllers, avoid shadowing globally imported helper functions with locally destructured variables in the same block. For math rounding constraints summing to 100%, distribute the discrepancy to the largest *non-zero* original value to prevent zero inputs from mutating into non-zero inputs.
