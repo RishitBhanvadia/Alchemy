@@ -61,23 +61,32 @@ exports.calculateResult = async (req, res) => {
     // Round to integers
     let na = Math.round((chem_a / total) * 100);
     let nb = Math.round((chem_b / total) * 100);
+    let nc = Math.round((chem_c / total) * 100);
     let ni = Math.round((chem_i / total) * 100);
-    let nc = 100 - na - nb - ni; // Last one gets the remainder to guarantee sum = 100
 
-    // Handle edge case where rounding causes negative value due to cumulative rounding
-    if (nc < 0) {
-      const deficit = Math.abs(nc);
+    let sum = na + nb + nc + ni;
+
+    if (sum !== 100) {
+      let diff = 100 - sum;
+
       const values = [
-        { key: 'na', val: na },
-        { key: 'nb', val: nb },
-        { key: 'ni', val: ni }
+        { key: 'na', val: na, orig: chem_a },
+        { key: 'nb', val: nb, orig: chem_b },
+        { key: 'nc', val: nc, orig: chem_c },
+        { key: 'ni', val: ni, orig: chem_i }
       ];
-      // Subtract deficit from the largest value
-      const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
-      if (maxEntry.key === 'na') na = Math.max(0, na - deficit);
-      else if (maxEntry.key === 'nb') nb = Math.max(0, nb - deficit);
-      else ni = Math.max(0, ni - deficit);
-      nc = 0;
+
+      // Only distribute difference to non-zero values to avoid setting 0 inputs to non-zero
+      const nonZeroValues = values.filter(v => v.orig > 0);
+
+      if (nonZeroValues.length > 0) {
+        // distribute diff to the largest non-zero value
+        const maxEntry = nonZeroValues.reduce((max, curr) => curr.val > max.val ? curr : max, nonZeroValues[0]);
+        if (maxEntry.key === 'na') na += diff;
+        else if (maxEntry.key === 'nb') nb += diff;
+        else if (maxEntry.key === 'nc') nc += diff;
+        else ni += diff;
+      }
     }
 
     // Clamp all values to valid range
@@ -95,14 +104,14 @@ exports.calculateResult = async (req, res) => {
 
     // Step 4: Query by reaction_id
     // Note: regime filtering disabled until schema is updated
-    let { data, error } = await supabase
+    let { data, error: dbError } = await supabase
       .from('results')
       .select('*')
       .eq('reaction_id', reaction_id)
       .limit(1)
       .single();
 
-    if (!data) {
+    if (dbError || !data) {
       return error(res, 'NOT_FOUND', `No reaction found for combination ID ${reaction_id}.`, 404);
     }
 
