@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    // ⚡ Optimiser: Track coordinates with refs instead of state to prevent re-renders
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,7 +28,15 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            // ⚡ Optimiser: Directly mutate DOM node styles instead of triggering React state
+            if (cursorRef.current) {
+                cursorRef.current.style.left = `${e.clientX}px`;
+                cursorRef.current.style.top = `${e.clientY}px`;
+            }
+            if (dotRef.current) {
+                dotRef.current.style.left = `${e.clientX}px`;
+                dotRef.current.style.top = `${e.clientY}px`;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -65,12 +76,13 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                // Initial style will be overridden by mousemove event listener
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
