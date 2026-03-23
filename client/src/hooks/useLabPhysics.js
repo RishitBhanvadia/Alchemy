@@ -107,7 +107,7 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer entering an object (hover start).
    */
   const onPointerEnter = useCallback(
-    (e) => {
+    () => {
       if (dragState === 'idle') {
         setDragState('hovering');
         gl.domElement.style.cursor = 'grab';
@@ -120,7 +120,7 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer leaving an object (hover end).
    */
   const onPointerLeave = useCallback(
-    (e) => {
+    () => {
       if (dragState === 'hovering') {
         setDragState('idle');
         gl.domElement.style.cursor = 'default';
@@ -160,7 +160,7 @@ export default function useLabPhysics(config = {}) {
       if (e.target && e.target.setPointerCapture) {
         try {
           e.target.setPointerCapture(e.pointerId);
-        } catch (_) {
+        } catch {
           /* ignore capture errors */
         }
       }
@@ -223,7 +223,7 @@ export default function useLabPhysics(config = {}) {
       if (e.target && e.target.releasePointerCapture) {
         try {
           e.target.releasePointerCapture(e.pointerId);
-        } catch (_) {
+        } catch {
           /* ignore */
         }
       }
