@@ -58,26 +58,34 @@ exports.calculateResult = async (req, res) => {
     const total = chem_a + chem_b + chem_i + chem_c;
     if (total === 0) return error(res, 'VALIDATION_ERROR', 'All chemicals are at 0%.', 400);
     
-    // Round to integers
+    // Round to integers naturally first
     let na = Math.round((chem_a / total) * 100);
     let nb = Math.round((chem_b / total) * 100);
     let ni = Math.round((chem_i / total) * 100);
-    let nc = 100 - na - nb - ni; // Last one gets the remainder to guarantee sum = 100
+    let nc = Math.round((chem_c / total) * 100);
 
-    // Handle edge case where rounding causes negative value due to cumulative rounding
-    if (nc < 0) {
-      const deficit = Math.abs(nc);
+    const sum = na + nb + ni + nc;
+    if (sum !== 100) {
+      const diff = 100 - sum; // Positive if deficit (need to add), negative if surplus (need to subtract)
+
       const values = [
-        { key: 'na', val: na },
-        { key: 'nb', val: nb },
-        { key: 'ni', val: ni }
+        { key: 'na', val: na, orig: chem_a },
+        { key: 'nb', val: nb, orig: chem_b },
+        { key: 'ni', val: ni, orig: chem_i },
+        { key: 'nc', val: nc, orig: chem_c }
       ];
-      // Subtract deficit from the largest value
-      const maxEntry = values.reduce((max, curr) => curr.val > max.val ? curr : max, values[0]);
-      if (maxEntry.key === 'na') na = Math.max(0, na - deficit);
-      else if (maxEntry.key === 'nb') nb = Math.max(0, nb - deficit);
-      else ni = Math.max(0, ni - deficit);
-      nc = 0;
+
+      // Find the largest value that actually had some initial concentration
+      const eligibleValues = values.filter(v => v.orig > 0);
+      if (eligibleValues.length > 0) {
+        // Distribute rounding difference to the largest non-zero value
+        const maxEntry = eligibleValues.reduce((max, curr) => curr.val > max.val ? curr : max, eligibleValues[0]);
+
+        if (maxEntry.key === 'na') na += diff;
+        else if (maxEntry.key === 'nb') nb += diff;
+        else if (maxEntry.key === 'ni') ni += diff;
+        else nc += diff;
+      }
     }
 
     // Clamp all values to valid range

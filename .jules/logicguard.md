@@ -1,0 +1,4 @@
+## 2024-05-24 - Result Controller Rounding Deficit Fix
+**Bug:** When concentrations are supplied to the `calculateResult` endpoint, cumulative rounding across multiple components (e.g. 3 components each with 33%) can lead to a remainder. Previously, this remainder (`100 - na - nb - ni`) was always added to `chem_c` (`nc`), even if `chem_c` originally had a 0% input. This caused `chem_c` to incorrectly receive a 1% concentration.
+**Root Cause:** Hardcoded assignment of the deficit to the final chemical instead of correctly determining where to distribute the fractional deficit/surplus. The mathematical remainder must never be assigned to a chemical that wasn't included in the reaction.
+**Learning:** For normalization functions where all values must sum to a target, any cumulative rounding discrepancy must be distributed to elements that are already active/present (the largest ones), preventing artificial insertion of inactive elements.
