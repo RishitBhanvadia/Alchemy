@@ -74,6 +74,7 @@ const History = () => {
                             description="Complete an experiment in the Lab to see your results here."
                             actionLabel="Go to Lab →"
                             onAction={() => navigate('/student/lab')}
+                            variant="glass"
                         />
                     ) : (
                         <div className="table-wrapper">

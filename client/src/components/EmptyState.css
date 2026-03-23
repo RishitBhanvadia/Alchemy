@@ -3,35 +3,68 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
   text-align: center;
+  width: 100%;
+}
+
+/* Variants */
+.empty-state-container.variant-glass {
+  padding: 60px 20px;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  backdrop-filter: var(--glass-blur, blur(16px));
+  -webkit-backdrop-filter: var(--glass-blur, blur(16px));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 16px);
+}
+
+.empty-state-container.variant-card {
+  padding: 40px 20px;
+  background: var(--color-bg-card, rgba(26, 26, 46, 0.5));
+  border-radius: var(--radius-md, 12px);
+}
+
+.empty-state-container.variant-inline {
+  padding: 30px 10px;
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm, 8px);
 }
 
 .empty-state-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  margin-bottom: 16px;
   opacity: 0.8;
 }
 
+.variant-inline .empty-state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
 .empty-state-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #F9FAFB;
+  color: var(--color-text-primary, #F9FAFB);
   margin: 0 0 8px 0;
 }
 
 .empty-state-description {
-  font-size: 1rem;
-  color: #9CA3AF;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary, #9CA3AF);
   margin: 0 0 24px 0;
   max-width: 400px;
+  line-height: 1.5;
+}
+
+.variant-inline .empty-state-description {
+  margin: 0 0 16px 0;
 }
 
 .empty-state-action {
-  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  background: linear-gradient(135deg, var(--color-accent-primary, #6366F1), var(--color-accent-secondary, #8B5CF6));
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm, 8px);
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: 600;
@@ -41,5 +74,5 @@
 
 .empty-state-action:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: var(--shadow-glow, 0 8px 20px rgba(99, 102, 241, 0.4));
 }

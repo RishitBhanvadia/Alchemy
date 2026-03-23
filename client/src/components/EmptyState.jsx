@@ -8,11 +8,12 @@ const EmptyState = ({
   description = 'There is nothing to display at the moment.',
   actionLabel = '',
   onAction = null,
-  className = ''
+  className = '',
+  variant = 'glass' // 'glass', 'inline', 'card'
 }) => {
   return (
     <motion.div 
-      className={`empty-state-container ${className}`}
+      className={`empty-state-container variant-${variant} ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
