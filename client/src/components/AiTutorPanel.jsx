@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
+import PropTypes from 'prop-types';
 import './AiTutorPanel.css';
 
 const AiTutorPanel = ({ isOpen, onClose }) => {
@@ -61,8 +62,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       if (res.data && res.data.explanation) {
         addChatMessage('tutor', res.data.explanation);
       }
-    } catch (error) {
-      console.error('AI Tutorial error:', error);
+    } catch {
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
@@ -159,6 +159,11 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;
