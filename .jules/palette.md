@@ -1,0 +1,4 @@
+## 2024-05-18 - Improve screen reader accessibility for custom sliders
+
+**Learning:** Custom range sliders in React without explicit label linking fail screen reader accessibility tests, as visually implied labels (like generic `<span>` elements next to the slider) are not announced properly.
+**Action:** When creating form inputs or range sliders, always replace visually-associated `<span>` elements with semantic `<label>` elements and strictly associate them with the input field using the `htmlFor` and `id` attributes. Additionally, ensure icon-only buttons have an `aria-label` to describe their function.
