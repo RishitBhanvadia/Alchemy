@@ -1,0 +1,4 @@
+## 2024-05-24 - IDOR Vulnerability in resultController.js
+**Vulnerability:** In `server/controllers/resultController.js`, the `calculateResult` endpoint accepts `student_id` from the request body (`req.body.student_id`) and uses it to log experiment results (`user_id: targetStudentId`). This allows any authenticated user to pass another student's ID and log experiments on their behalf, or log experiments even if they are not the actual student.
+**Learning:** We should never trust identity parameters provided in the request body for write operations or data fetching. The identity should always be derived from the authenticated token (e.g. `req.user.id` populated by the `requireAuth` middleware).
+**Prevention:** Always derive the acting user's identity from `req.user.id` rather than relying on `req.body` parameters for operations that associate data with a user.
