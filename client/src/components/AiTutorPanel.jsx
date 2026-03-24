@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
@@ -62,7 +63,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
-      console.error('AI Tutorial error:', error);
+      // console.error('AI Tutorial error:', error);
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
@@ -111,7 +112,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
           <div className="chat-history">
             {chatHistory.length === 0 ? (
               <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '40px' }}>
-                <p>Hello! I'm your AI Chemistry Tutor.</p>
+                <p>Hello! I&apos;m your AI Chemistry Tutor.</p>
                 <p>Ask me anything about the chemicals or reactions in the lab.</p>
               </div>
             ) : (
@@ -159,6 +160,11 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;

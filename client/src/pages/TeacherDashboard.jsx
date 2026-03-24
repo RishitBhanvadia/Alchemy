@@ -190,10 +190,14 @@ export default function TeacherDashboard({ analytics = false }) {
         // OPTIMIZATION: Fetch all experiment counts in ONE query instead of N+1
         let expDataByStudent = {};
         if (studentIds.length > 0) {
-          const { data: allExpData } = await supabase
+          const { data: allExpData, error: expError } = await supabase
             .from('experiment_logs')
             .select('student_id, outcome_label')
             .in('student_id', studentIds);
+
+          if (expError) {
+             // console.error('Error fetching experiment data:', expError);
+          }
           
           // Group by student_id
           if (allExpData) {
@@ -231,7 +235,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
-        console.error('Failed to fetch students:', err);
+        // console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
         setLoading(false);
@@ -308,7 +312,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const { data, error: scoresError } = await query;
 
         if (scoresError) {
-          console.error('Scores query error:', scoresError);
+          // console.error('Scores query error:', scoresError);
           // Fallback: try without experiment type filter
           if (selectedExperiment) {
             const fallbackQuery = supabase
@@ -326,7 +330,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Since experiment_logs doesn't have scores, use 1 for each experiment
         setExperimentScores((data || []).map(() => 1));
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        // console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
       }
@@ -493,8 +497,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="startDateFilter" style={styles.dateLabel}>From:</label>
               <input
+                id="startDateFilter"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +507,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="endDateFilter" style={styles.dateLabel}>To:</label>
               <input
+                id="endDateFilter"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
