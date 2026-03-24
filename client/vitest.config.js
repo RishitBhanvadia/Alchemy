@@ -11,6 +11,11 @@ export default defineConfig({
             ...configDefaults.exclude,
             'tests/**',
         ],
+        server: {
+            deps: {
+                inline: [/@exodus\/bytes/, /html-encoding-sniffer/]
+            }
+        },
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html', 'lcov', 'cobertura'],
