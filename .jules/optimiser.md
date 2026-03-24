@@ -1,0 +1,4 @@
+## 2024-05-24 - Cursor Follower Re-render Bottleneck
+**Bottleneck:** The `CursorFollower` component was storing high-frequency `mousemove` coordinates `(x, y)` in React state using `useState`. This triggered a full component re-render on every single pixel movement of the mouse across the entire application, causing severe performance degradation and main thread blocking, particularly noticeable during complex 3D rendering.
+**Impact:** Eliminated 60+ unnecessary re-renders per second by bypassing the React rendering cycle entirely for mouse movements. The application is now significantly more responsive, especially during WebGL interactions.
+**Learning:** For continuous, high-frequency events like mouse tracking or scrolling where the updated values are only needed for styling, never use React state. Always use `useRef` combined with direct DOM manipulation (`ref.current.style`) to maintain 60 FPS performance and avoid costly React reconciliation loops.
