@@ -1,0 +1,4 @@
+## 2024-05-24 - Centralize Supabase Client Initialization
+**Before:** Multiple files (`server/controllers/titrationController.js` and `server/middleware/authMiddleware.js`) were instantiating their own instances of the Supabase client directly using `createClient()`.
+**Issue:** Scattered instantiations lead to duplicated environment variable lookups and inconsistent configurations. Crucially, in a CI environment where tests are run, if the original fallback URL and Key configuration isn't applied consistently everywhere, the server can crash upon startup due to missing credentials.
+**Learning:** Always centralise third-party client initialization. When creating a centralized module (like `supabaseClient.js`), apply placeholder fallbacks explicitly and validate against the original environment variables (`process.env.SUPABASE_URL`) to ensure CI tools or missing `.env` variables don't crash the application silently or unexpectedly.
