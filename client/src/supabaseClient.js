@@ -1,8 +1,23 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const envUrl = (typeof process !== 'undefined' && process.env && process.env.VITE_SUPABASE_URL) || (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : '');
-const envKey = (typeof process !== 'undefined' && process.env && process.env.VITE_SUPABASE_ANON_KEY) || (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : '');
+// Helper to safely extract env vars regardless of Vitest/Node/Vite context
+const getEnvVar = (key) => {
+    if (typeof process !== 'undefined' && process.env && process.env[key]) {
+        return process.env[key];
+    }
+    try {
+        if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) {
+            return import.meta.env[key];
+        }
+    } catch (_) {
+        // Ignore syntax errors in unsupported environments
+    }
+    return '';
+};
+
+const envUrl = getEnvVar('VITE_SUPABASE_URL');
+const envKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
 
 const supabaseUrl = envUrl || 'https://placeholder.supabase.co';
 const supabaseKey = envKey || 'placeholder';
