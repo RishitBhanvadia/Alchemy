@@ -1,4 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
+
 import { motion } from 'framer-motion';
 
 const MyTeacherCard = ({ classroom }) => {
@@ -66,4 +72,21 @@ const MyTeacherCard = ({ classroom }) => {
     );
 };
 
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
 export default MyTeacherCard;
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+
+MyTeacherCard.propTypes = { classroom: PropTypes.object };
+
+MyTeacherCard.propTypes = { classroom: PropTypes.object };

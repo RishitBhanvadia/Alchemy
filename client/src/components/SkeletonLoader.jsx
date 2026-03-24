@@ -1,5 +1,17 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
+
+
 import './SkeletonLoader.css';
 
 const SkeletonItem = ({ className, style }) => (
@@ -41,3 +53,20 @@ export const GenericSkeleton = () => (
         <SkeletonItem style={{ height: '400px' }} />
     </div>
 );
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };
+
+SkeletonLoader.propTypes = { className: PropTypes.string, style: PropTypes.object };

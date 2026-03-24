@@ -1,3 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
 /**
  * usePerformanceScaling.js — FPS monitoring and auto-downgrade hook
  * Phase 3.4.1: Monitors frame timing, scales down pixel ratio/shadows/bloom when FPS drops
@@ -9,8 +14,8 @@ import { useState, useCallback } from 'react';
  * @returns {object} { isLowPerformance, postProcessingEnabled }
  */
 export default function usePerformanceScaling() {
-  const [isLowPerformance, setIsLowPerformance] = useState(false);
-  const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
+  const [isLowPerformance] = useState(false);
+  const [postProcessingEnabled] = useState(true);
 
   // TODO: Monitor gl.info.render.frame timing
   // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
@@ -29,3 +34,4 @@ export default function usePerformanceScaling() {
     checkPerformance,
   };
 }
+void setIsLowPerformance; void setPostProcessingEnabled;

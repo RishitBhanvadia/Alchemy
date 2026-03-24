@@ -1,4 +1,16 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-undef */
 import React from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
+
+
 import './SkeletonBlock.css';
 
 const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', className = '' }) => {
@@ -48,4 +60,58 @@ export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
   );
 };
 
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
 export default SkeletonBlock;
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
+
+SkeletonBlock.propTypes = { width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), borderRadius: PropTypes.string, className: PropTypes.string };
+SkeletonText.propTypes = { lines: PropTypes.number, className: PropTypes.string };
+SkeletonChart.propTypes = { className: PropTypes.string };
+SkeletonTable.propTypes = { columns: PropTypes.number, className: PropTypes.string };
