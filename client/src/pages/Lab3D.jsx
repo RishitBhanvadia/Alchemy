@@ -30,7 +30,6 @@ const Lab3D = () => {
     const currentHint = useLabStore(state => state.currentHint);
     const setCurrentHint = useLabStore(state => state.setCurrentHint);
     const initiateReaction = useLabStore(state => state.initiateReaction);
-    const setReactionState = useLabStore(state => state.setReactionState);
     const reset = useLabStore(state => state.reset);
 
     // Fetch Classroom Restrictions
@@ -60,6 +59,7 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error fetching classroom restrictions:", error);
             }
         };
@@ -113,6 +113,7 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Failed to fetch AI hint:", error);
             }
         }, 800);
@@ -137,6 +138,7 @@ const Lab3D = () => {
                 }, 4000);
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Reaction failed:", error);
             toast.dismiss();
             
