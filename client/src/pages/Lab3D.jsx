@@ -32,6 +32,7 @@ const Lab3D = () => {
     const initiateReaction = useLabStore(state => state.initiateReaction);
     const setReactionState = useLabStore(state => state.setReactionState);
     const reset = useLabStore(state => state.reset);
+    void setReactionState;
 
     // Fetch Classroom Restrictions
     useEffect(() => {
