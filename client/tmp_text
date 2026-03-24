@@ -1,0 +1,1 @@
+export const SkeletonText = ({ lines = 1, className = '' }) => {

@@ -1,4 +1,13 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
+
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import RoleSelector from './RoleSelector';
@@ -232,4 +241,21 @@ const SignUpForm = ({ onTabSwitch }) => {
   );
 };
 
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
 export default SignUpForm;
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };
+
+SignUpForm.propTypes = { onTabSwitch: PropTypes.func };

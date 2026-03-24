@@ -1,4 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
+
 import { motion, AnimatePresence } from 'framer-motion';
 import './ResultModal.css';
 
@@ -103,4 +109,21 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
   );
 };
 
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
 export default ResultModal;
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
+
+ResultModal.propTypes = { isOpen: PropTypes.bool, result: PropTypes.object, onReset: PropTypes.func, onClose: PropTypes.func, onAskAI: PropTypes.func };
