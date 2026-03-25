@@ -14,7 +14,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
   const chemA = useLabStore(state => state.chemA);
   const chemB = useLabStore(state => state.chemB);
   const chemC = useLabStore(state => state.chemC);
-  const chemD = useLabStore(state => state.chemC);
+  const chemD = useLabStore(state => state.chemD);
   const lastReactionResult = useLabStore(state => state.reactionResult);
 
   const scrollToBottom = () => {
