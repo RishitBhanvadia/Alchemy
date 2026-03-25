@@ -1,0 +1,4 @@
+## 2024-03-25 - Mocking API Calls and Checking Loading States
+**Gap:** Login authentication form lacked tests for API interactions, validation errors, and button loading states, risking potential breakage in critical user flows.
+**Learning:** Testing component behaviour dependent on external modules (like `supabase.auth`) requires comprehensive mocking not only for success paths, but crucially for various failure paths (rate limiting, invalid credentials) to ensure appropriate UI feedback (toast notifications, disabled buttons).
+**Pattern:** Combine `vi.mock` for external services (`supabaseClient`, `react-hot-toast`) with delayed mock implementation (`mockImplementationOnce(() => new Promise(...))`) to effectively test transient UI states like disabling submit buttons during async API calls.
