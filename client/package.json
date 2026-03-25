@@ -99,7 +99,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.3.0",
     "@vitest/coverage-v8": "^4.1.1",
-    "@vitest/ui": "^4.0.18",
+    "@vitest/ui": "4.1.1",
     "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
@@ -110,6 +110,6 @@
     "jsdom": "^28.1.0",
     "prettier": "^3.8.1",
     "vite": "^6.1.0",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.1"
   }
 }
