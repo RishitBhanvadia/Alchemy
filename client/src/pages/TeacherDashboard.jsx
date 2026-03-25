@@ -24,6 +24,7 @@ import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
+import PropTypes from 'prop-types';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -231,6 +232,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
@@ -308,6 +310,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const { data, error: scoresError } = await query;
 
         if (scoresError) {
+          // eslint-disable-next-line no-console
           console.error('Scores query error:', scoresError);
           // Fallback: try without experiment type filter
           if (selectedExperiment) {
@@ -326,6 +329,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Since experiment_logs doesn't have scores, use 1 for each experiment
         setExperimentScores((data || []).map(() => 1));
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
@@ -493,8 +497,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="startDateInput" style={styles.dateLabel}>From:</label>
               <input
+                id="startDateInput"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +507,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="endDateInput" style={styles.dateLabel}>To:</label>
               <input
+                id="endDateInput"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
@@ -531,6 +537,10 @@ export default function TeacherDashboard({ analytics = false }) {
     </div>
   );
 }
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool,
+};
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 
