@@ -1,0 +1,4 @@
+## 2024-05-18 - Hardcoded Supabase Credentials in Migration Script
+**Vulnerability:** A hardcoded Supabase URL and service role key were found in `server/run_migration.js`.
+**Learning:** Utility and migration scripts are often overlooked and can contain hardcoded secrets used during development or initial setup, leading to critical secret leaks in version control.
+**Prevention:** Ensure that all scripts, including one-off utility files, strictly use environment variables with safe placeholder fallbacks for tests/CI (e.g., `process.env.SUPABASE_URL || 'https://placeholder.supabase.co'`). Never commit real keys.
