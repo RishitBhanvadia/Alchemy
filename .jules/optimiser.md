@@ -1,0 +1,4 @@
+## 2024-05-24 - Optimize mousemove for CursorFollower
+**Bottleneck:** Using `useState` to track high-frequency events like `mousemove` causes constant component re-renders, leading to severe performance degradation.
+**Impact:** Eliminates hundreds of unnecessary React renders per second when the user moves the mouse, resulting in significantly smoother UI interactions and lower CPU usage.
+**Learning:** In React components handling high-frequency events (like custom cursors), use `useRef` to store the changing state and directly mutate the DOM elements (e.g., `ref.current.style.left`) instead of relying on `useState` and React's render cycle.

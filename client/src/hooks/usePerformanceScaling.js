@@ -9,8 +9,11 @@ import { useState, useCallback } from 'react';
  * @returns {object} { isLowPerformance, postProcessingEnabled }
  */
 export default function usePerformanceScaling() {
-  const [isLowPerformance, setIsLowPerformance] = useState(false);
-  const [postProcessingEnabled, setPostProcessingEnabled] = useState(true);
+  const [isLowPerformance, voidSetIsLowPerformance] = useState(false);
+  const [postProcessingEnabled, voidSetPostProcessingEnabled] = useState(true);
+
+  void voidSetIsLowPerformance;
+  void voidSetPostProcessingEnabled;
 
   // TODO: Monitor gl.info.render.frame timing
   // TODO: If rolling avg FPS < 30 for 5 consecutive frames:
