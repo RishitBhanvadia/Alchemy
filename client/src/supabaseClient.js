@@ -12,16 +12,23 @@ try {
 }
 
 if (!supabaseUrl || !supabaseKey) {
-  supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-  supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
-
-  if (supabaseUrl === 'https://placeholder.supabase.co') {
-    // eslint-disable-next-line no-console
-    console.error(
-        'Missing Supabase environment variables (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY). ' +
-        'Authentication will not work. Please set them in your environment or .env.local file.'
-    );
+  try {
+    supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+    supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
+  } catch (e) {
+    // Ignore
   }
+}
+
+if (!supabaseUrl || !supabaseKey) {
+  supabaseUrl = 'https://placeholder.supabase.co';
+  supabaseKey = 'placeholder';
+
+  // eslint-disable-next-line no-console
+  console.error(
+      'Missing Supabase environment variables (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY). ' +
+      'Authentication will not work. Please set them in your environment or .env.local file.'
+  );
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
