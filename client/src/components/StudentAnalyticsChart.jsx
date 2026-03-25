@@ -158,6 +158,7 @@ const StudentAnalyticsChart = React.memo(function StudentAnalyticsChart({ scores
 StudentAnalyticsChart.propTypes = {
   scores: PropTypes.arrayOf(PropTypes.number),
   experimentName: PropTypes.string,
+  noDataMessage: PropTypes.string,
 };
 
 export default StudentAnalyticsChart;
