@@ -374,7 +374,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
       {/* Search / Filter */}
       <div style={styles.toolbar}>
+        <label htmlFor="search-students" className="sr-only">Search students</label>
         <input
+          id="search-students"
           style={styles.searchInput}
           type="text"
           placeholder="🔍 Search students..."
@@ -479,7 +481,9 @@ export default function TeacherDashboard({ analytics = false }) {
       <section id="analytics-section" aria-labelledby="analytics-title" style={styles.analyticsSection}>
         <div style={styles.analyticsHeader}>
           <h2 id="analytics-title" style={styles.analyticsTitle}>📈 Score Analytics</h2>
+          <label htmlFor="experiment-select" className="sr-only">Select Experiment</label>
           <select
+            id="experiment-select"
             style={styles.experimentSelect}
             value={selectedExperiment}
             onChange={(e) => setSelectedExperiment(e.target.value)}
@@ -493,8 +497,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label htmlFor="start-date" style={styles.dateLabel}>From:</label>
               <input
+                id="start-date"
                 type="date"
                 style={styles.dateInput}
                 value={startDate}
@@ -502,8 +507,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label htmlFor="end-date" style={styles.dateLabel}>To:</label>
               <input
+                id="end-date"
                 type="date"
                 style={styles.dateInput}
                 value={endDate}
