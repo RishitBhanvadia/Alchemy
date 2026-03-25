@@ -17,6 +17,10 @@ try {
     }
 }
 
+// Ensure the variables aren't strictly equal to empty strings if the env vars were present but blank
+if (!supabaseUrl) supabaseUrl = 'https://placeholder.supabase.co';
+if (!supabaseKey) supabaseKey = 'placeholder';
+
 if (supabaseUrl === 'https://placeholder.supabase.co' || supabaseKey === 'placeholder') {
     // eslint-disable-next-line no-console
     console.error(
