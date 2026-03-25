@@ -1,3 +1,3 @@
-## 2024-03-25 - Accessibility Improvement for Links Acting as Buttons
-**Learning:** When fixing `jsx-a11y/anchor-is-valid` ESLint errors by converting `<a href="#">` tags to `<button>` elements, if the element is inside a `<form>`, we must explicitly set `type="button"` to prevent accidental form submissions.
-**Action:** Always verify if a pseudo-link is within a form context. If so, convert to `<button type="button">` instead of just `<button>`. Preserve original CSS class names while resetting default styles using inline styles like `style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', color: 'inherit'}}` to prevent visual regressions.
+## 2024-03-25 - Accessibility Improvement for Form Labels
+**Learning:** Generic wrapper elements and implicit labeling are sometimes insufficient for reliable screen reader accessibility. When resolving ESLint `jsx-a11y/label-has-associated-control` warnings, implicit wrapping (placing the `<input>` inside the `<label>`) might not be semantically strong enough depending on the DOM structure and CSS.
+**Action:** Always explicitly associate `<label>` tags with their corresponding form controls using matching `htmlFor` and `id` attributes. This provides the most robust accessibility and prevents ESLint warnings.

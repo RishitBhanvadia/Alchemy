@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,11 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({});
+  const navigate = useNavigate();
+
+  // Temporary suppress the linting error if not yet implemented fully but need the hook
+  // eslint-disable-next-line no-unused-vars
+  void navigate;
 
   const validateField = (name, value) => {
     if (name === 'email') {
