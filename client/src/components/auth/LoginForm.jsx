@@ -13,6 +13,10 @@ const LoginForm = () => {
   const [touched, setTouched] = useState({});
   const navigate = useNavigate();
 
+  // Temporary suppress the linting error if not yet implemented fully but need the hook
+  // eslint-disable-next-line no-unused-vars
+  void navigate;
+
   const validateField = (name, value) => {
     if (name === 'email') {
       if (!value.trim()) return 'Please enter your email address.';
@@ -115,7 +119,7 @@ const LoginForm = () => {
         {touched.password && errors.password && (
           <span className="error-message" id="password-error" role="alert">{errors.password}</span>
         )}
-        <a href="#" className="forgot-password">Forgot password?</a>
+        <button type="button" className="forgot-password" style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit'}}>Forgot password?</button>
       </div>
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? (

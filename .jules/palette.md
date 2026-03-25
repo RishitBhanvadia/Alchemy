@@ -1,0 +1,3 @@
+## 2024-03-25 - Accessibility Improvement for Form Labels
+**Learning:** Generic wrapper elements and implicit labeling are sometimes insufficient for reliable screen reader accessibility. When resolving ESLint `jsx-a11y/label-has-associated-control` warnings, implicit wrapping (placing the `<input>` inside the `<label>`) might not be semantically strong enough depending on the DOM structure and CSS.
+**Action:** Always explicitly associate `<label>` tags with their corresponding form controls using matching `htmlFor` and `id` attributes. This provides the most robust accessibility and prevents ESLint warnings.
