@@ -1,8 +1,16 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+let supabaseUrl = '';
+let supabaseKey = '';
+
+try {
+    supabaseUrl = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+    supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
+} catch (e) {
+    supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+    supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
+}
 
 if (!supabaseUrl || !supabaseKey) {
     // eslint-disable-next-line no-console
