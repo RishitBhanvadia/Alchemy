@@ -1,0 +1,4 @@
+## 2024-03-25 - Normalization Math Bug Allows Inactive Chemicals To Spontaneously Activate
+**Bug:** When mixing 3 equal volumes of active chemicals (e.g., 33.3%, 33.3%, 33.3%) while leaving a fourth inactive (0%), the inactive chemical magically becomes 1% in the normalized output.
+**Root Cause:** The normalization logic calculated rounded percentages for the first 3 chemicals, then forcefully assigned the remainder of `100 - sum(rounded)` to the 4th chemical (`nc = 100 - na - nb - ni`). Since 33 + 33 + 33 = 99, it incorrectly gave `nc = 1`.
+**Learning:** When normalizing percentages that must sum to exactly 100%, rounding differences must be explicitly distributed to the largest active ingredient (a non-zero original input). Do not use a remainder assignment to a specific chemical, as it can assign a >0% concentration to an inactive chemical.
