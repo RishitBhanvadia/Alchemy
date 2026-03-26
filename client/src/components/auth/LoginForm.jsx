@@ -70,6 +70,7 @@ const LoginForm = () => {
         throw error;
       }
       
+      console.log('Login successful response from Supabase');
       toast.success('Logged in successfully!');
     } catch (err) {
       toast.error(err.message || 'Login failed. Please try again.');

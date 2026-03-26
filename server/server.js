@@ -11,6 +11,7 @@ const experimentRoutes = require('./routes/experimentRoutes');
 const classroomRoutes = require('./routes/classroomRoutes');
 const teacherRoutes = require('./routes/teacherRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const meetingRoutes = require('./routes/meetingRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -138,6 +139,9 @@ app.use('/api/classroom', requireAuth, requireRole('teacher'), classroomRoutes);
 app.use('/api/teacher', requireAuth, requireRole('teacher'), teacherRoutes);
 app.use('/api/student', requireAuth, requireRole('student'), experimentRoutes);
 app.use('/api/auth', requireAuth, profileRoutes);
+
+// Meeting routes (auth middleware applied inside the router per-route)
+app.use('/api/meetings', meetingRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {

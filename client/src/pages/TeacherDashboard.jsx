@@ -170,7 +170,7 @@ export default function TeacherDashboard({ analytics = false }) {
 
         // Fetch students in those classrooms with profile data
         const { data: studentData, error: studentError } = await supabase
-          .from('classroom_students')
+          .from('class_memberships')
           .select(`
             student_id,
             joined_at,
@@ -270,11 +270,11 @@ export default function TeacherDashboard({ analytics = false }) {
           return;
         }
 
-        const classroomIds = classrooms.map(c => c.id);
+        const classroomIds = classrooms.map((c) => c.id);
 
         // Get students in those classrooms
         const { data: studentData, error: studentError } = await supabase
-          .from('classroom_students')
+          .from('class_memberships')
           .select('student_id')
           .in('classroom_id', classroomIds);
 
@@ -284,17 +284,16 @@ export default function TeacherDashboard({ analytics = false }) {
           return;
         }
 
-        const studentIds = studentData.map(s => s.student_id);
+        const studentIds = studentData.map((s) => s.student_id);
 
         // Fetch experiment counts for students in teacher's classrooms
         let query = supabase
           .from('experiment_logs')
-          .select('created_at, experiment_type')
+          .select('created_at, experiment_type, score')
           .in('student_id', studentIds);
 
         // Only filter by experiment type if one is selected
         if (selectedExperiment) {
-          // Handle case-insensitive match and different format variations
           query = query.ilike('experiment_type', `%${selectedExperiment}%`);
         }
 
@@ -307,24 +306,8 @@ export default function TeacherDashboard({ analytics = false }) {
 
         const { data, error: scoresError } = await query;
 
-        if (scoresError) {
-          console.error('Scores query error:', scoresError);
-          // Fallback: try without experiment type filter
-          if (selectedExperiment) {
-            const fallbackQuery = supabase
-              .from('experiment_logs')
-              .select('created_at, experiment_type')
-              .in('student_id', studentIds);
-            
-            const { data: fallbackData } = await fallbackQuery;
-            setExperimentScores((fallbackData || []).map(() => 1)); // Count each experiment as 1
-            setLoading(false);
-            return;
-          }
-        }
-
-        // Since experiment_logs doesn't have scores, use 1 for each experiment
-        setExperimentScores((data || []).map(() => 1));
+        // Use the actual scores from DB
+        setExperimentScores((data || []).map((log) => log.score || 0));
       } catch (err) {
         console.error('Failed to fetch scores:', err);
       } finally {
@@ -378,6 +361,7 @@ export default function TeacherDashboard({ analytics = false }) {
           style={styles.searchInput}
           type="text"
           placeholder="🔍 Search students..."
+          data-testid="student-search-input"
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
@@ -481,6 +465,7 @@ export default function TeacherDashboard({ analytics = false }) {
           <h2 id="analytics-title" style={styles.analyticsTitle}>📈 Score Analytics</h2>
           <select
             style={styles.experimentSelect}
+            data-testid="experiment-type-select"
             value={selectedExperiment}
             onChange={(e) => setSelectedExperiment(e.target.value)}
           >
@@ -497,6 +482,7 @@ export default function TeacherDashboard({ analytics = false }) {
               <input
                 type="date"
                 style={styles.dateInput}
+                data-testid="start-date-input"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -506,6 +492,7 @@ export default function TeacherDashboard({ analytics = false }) {
               <input
                 type="date"
                 style={styles.dateInput}
+                data-testid="end-date-input"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />

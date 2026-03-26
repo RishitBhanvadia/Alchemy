@@ -8,6 +8,8 @@ import useHistoryStore from '../store/historyStore';
 import MyTeacherCard from '../components/student/MyTeacherCard';
 import JoinClassroom from '../components/student/JoinClassroom';
 import EmptyState from '../components/EmptyState';
+import useAssignmentStore from '../store/assignmentStore';
+import JoinMeetingPanel from '../components/student/JoinMeetingPanel';
 
 import './StudentDashboard.css';
 
@@ -53,12 +55,21 @@ const StudentDashboard = () => {
     
     const navigate = useNavigate();
 
+    const fetchAssignments = useAssignmentStore(state => state.fetchStudentAssignments);
+    const assignments = useAssignmentStore(state => state.assignments);
+
     useEffect(() => {
         if (profile) {
             fetchStudentMembership();
             fetchHistory();
         }
     }, [profile, fetchStudentMembership, fetchHistory]);
+
+    useEffect(() => {
+        if (membership?.classroom_id && profile?.id) {
+            fetchAssignments(membership.classroom_id, profile.id);
+        }
+    }, [membership, profile, fetchAssignments]);
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
@@ -119,6 +130,41 @@ const StudentDashboard = () => {
                             <h2 className="section-label">MY CLASS</h2>
                             <MyTeacherCard classroom={membership?.classroom} />
                         </section>
+
+                        {/* Join Meeting panel — always visible */}
+                        <section className="dashboard-section">
+                            <h2 className="section-label">JOIN MEETING</h2>
+                            <JoinMeetingPanel />
+                        </section>
+                        
+                        {membership && (
+                            <section className="dashboard-section">
+                                <h2 className="section-label">MY ASSIGNMENTS</h2>
+                                <div className="assignments-container">
+                                    {assignments.length > 0 ? (
+                                        assignments.map(asgn => (
+                                            <div key={asgn.id} className="assignment-card glass-card">
+                                                <div className="asgn-info">
+                                                    <span className="asgn-title">{asgn.title}</span>
+                                                    <span className="asgn-meta">{asgn.experiment_type.toUpperCase()} | TARGET: {asgn.required_score}%</span>
+                                                </div>
+                                                <div className="asgn-status">
+                                                    {asgn.progress?.score >= asgn.required_score ? (
+                                                        <span className="badge-pass">PASS</span>
+                                                    ) : (
+                                                        <span className="badge-pending">PENDING</span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="no-assignments">
+                                            <span>No assignments yet! Enjoy the sandbox. 🧪</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        )}
                         
                         {!membership && (
                             <section className="dashboard-section">

@@ -116,6 +116,31 @@ Alchemistry-master/
 - Input validation on all API endpoints
 - Supabase Row Level Security (RLS)
 
+## 🛠️ Environment Setup
+
+To automate environment variable management and deployment checks:
+
+1. **Install CLIs** (if you haven't already):
+   - **Vercel CLI**: `npm i -g vercel`
+   - **GitHub CLI**: `winget install --id GitHub.cli` (Windows) or `brew install gh` (Mac)
+
+2. **Sync Environment Variables**:
+   After cloning the repo and creating your `.env.local` file, run:
+   ```bash
+   npm run env:push
+   ```
+   This will automatically push all variables to **Vercel** (Production, Preview, Development) and **GitHub Secrets** in one command.
+
+3. **Verify Sync Status**:
+   Run the following anytime to confirm everything is in sync:
+   ```bash
+   npm run env:check
+   ```
+
+4. **Rules of Engagement**:
+   - Whenever you add a new variable to `.env.local`, just run `npm run env:push`.
+   - Before pushing major changes, run `npm run env:verify` to check sync and build locally.
+
 ## 📝 License
 
 MIT License - see [LICENSE](LICENSE) file

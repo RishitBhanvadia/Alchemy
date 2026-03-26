@@ -1,0 +1,363 @@
+.classroom-detail-page {
+    min-height: 100vh;
+    padding: 100px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    background: var(--color-bg-primary);
+}
+
+.detail-header {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--color-text-secondary);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.back-btn:hover {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.neon-glow {
+    font-size: 1.8rem;
+    color: var(--color-text-primary);
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    margin: 0;
+}
+
+.join-badge {
+    background: var(--color-accent-primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Detail Grid */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.detail-section {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    min-height: 350px;
+}
+
+.detail-section.full-width {
+    grid-column: 1 / -1;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+}
+
+.section-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.help-text {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 4px 0 0;
+}
+
+/* Student List */
+.student-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.student-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+}
+
+.stu-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    overflow: hidden;
+}
+
+.stu-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stu-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stu-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.stu-stats {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+/* Chem Locks */
+.chem-locks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.lock-btn {
+    padding: 20px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lock-btn.unlocked {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.lock-btn.unlocked:hover {
+    background: rgba(16, 185, 129, 0.2);
+    transform: scale(1.03);
+}
+
+.lock-btn.locked {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.lock-btn.locked:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: scale(1.03);
+}
+
+.lock-icon { font-size: 1.5rem; }
+.lock-label { font-weight: 800; font-size: 1.1rem; }
+
+/* Assignments Table */
+.assignments-table-container {
+    overflow-x: auto;
+}
+
+.assignments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.assignments-table th {
+    text-align: left;
+    padding: 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--glass-border);
+}
+
+.assignments-table td {
+    padding: 15px 12px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.capitalize { text-transform: capitalize; }
+
+.del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    opacity: 0.6;
+}
+
+.del-btn:hover { opacity: 1; }
+
+.empty-row {
+    text-align: center;
+    color: var(--color-text-secondary);
+    padding: 40px !important;
+}
+
+.create-btn {
+    background: var(--color-accent-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.assignment-modal {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.assignment-modal h2 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.form-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 12px;
+    color: white;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.submit-btn {
+    background: var(--color-accent-primary);
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+@media (max-width: 1024px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .classroom-detail-page {
+        padding: 80px 20px 20px;
+    }
+    
+    .detail-header {
+        padding: 15px 20px;
+    }
+    
+    .neon-glow {
+        font-size: 1.4rem;
+    }
+    
+    .join-badge {
+        font-size: 0.75rem;
+    }
+}

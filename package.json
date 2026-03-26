@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "env:push": "bash scripts/setup-env.sh",
+    "env:check": "node scripts/check-env-sync.js",
+    "env:verify": "npm run env:check && cd client && npm run build"
+  },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "gltf-pipeline": "^4.3.0"

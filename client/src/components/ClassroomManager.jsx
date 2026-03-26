@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
 import useClassroomStore from '../store/classroomStore';
 import EmptyState from './EmptyState';
+import CreateClassModal from './CreateClassModal';
 
 const ClassroomManager = () => {
+    const navigate = useNavigate();
     const classrooms = useClassroomStore(state => state.classrooms);
     const loading = useClassroomStore(state => state.loading);
     const fetchTeacherClassrooms = useClassroomStore(state => state.fetchTeacherClassrooms);
     const createClassroom = useClassroomStore(state => state.createClassroom);
     
     const [newClassName, setNewClassName] = useState('');
+    const [meetingType, setMeetingType] = useState('none');
+    const [showMeetingModal, setShowMeetingModal] = useState(false);
 
     useEffect(() => {
         fetchTeacherClassrooms();
@@ -20,13 +25,42 @@ const ClassroomManager = () => {
         e.preventDefault();
         if (!newClassName.trim() || loading) return;
 
-        const result = await createClassroom(newClassName);
+        // Determine redirect URL if meeting is selected
+        let redirectUrl = '';
+        if (meetingType === 'zoom') {
+            redirectUrl = 'https://zoom.us/start/videofrom';
+        } else if (meetingType === 'google') {
+            redirectUrl = 'https://meet.google.com/new';
+        }
+
+        const result = await createClassroom(newClassName, meetingType);
         
         if (result.error) {
             toast.error(result.error);
         } else {
             toast.success(`Classroom "${newClassName}" created!`);
             setNewClassName('');
+            
+            if (redirectUrl) {
+                toast.success(`Redirecting to ${meetingType === 'zoom' ? 'Zoom' : 'Google Meet'} to create meeting...`);
+                // Open meeting in new tab
+                window.open(redirectUrl, '_blank');
+            }
+        }
+    };
+
+    const updateMeetingLink = async (classId, link) => {
+        if (!link) return;
+        const { error } = await supabase
+            .from('classrooms')
+            .update({ meeting_link: link })
+            .eq('id', classId);
+
+        if (error) {
+            toast.error("Failed to update meeting link");
+        } else {
+            toast.success("Meeting link updated!");
+            fetchTeacherClassrooms(true);
         }
     };
 
@@ -58,18 +92,50 @@ const ClassroomManager = () => {
 
     return (
         <div className="classroom-manager glass-panel" style={styles.container}>
-            <h2 style={styles.title}>Classroom Management</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h2 style={styles.title}>Classroom Management</h2>
+                <button
+                    onClick={() => setShowMeetingModal(true)}
+                    style={styles.meetingButton}
+                    data-testid="create-meeting-btn"
+                >
+                    🎥 Create Meeting
+                </button>
+            </div>
+
+            {/* Meeting creation modal */}
+            <CreateClassModal
+                isOpen={showMeetingModal}
+                onClose={() => setShowMeetingModal(false)}
+            />
             
             <form onSubmit={handleCreateClassroom} style={styles.form}>
                 <input 
                     type="text" 
-                    placeholder="Class Name (e.g. Physics 101)" 
+                    placeholder="e.g. AP Chemistry Period 4" 
                     data-testid="classroom-name-input"
                     value={newClassName}
                     onChange={(e) => setNewClassName(e.target.value)}
+                    className="glass-input"
                     style={styles.input}
                     disabled={loading}
                 />
+                <div style={styles.meetingSelect}>
+                    <button 
+                        type="button" 
+                        onClick={() => setMeetingType(meetingType === 'zoom' ? 'none' : 'zoom')}
+                        style={{...styles.meetingBtn, border: meetingType === 'zoom' ? '2px solid #00f3ff' : '1px solid rgba(255,255,255,0.2)'}}
+                    >
+                        Zoom
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => setMeetingType(meetingType === 'google' ? 'none' : 'google')}
+                        style={{...styles.meetingBtn, border: meetingType === 'google' ? '2px solid #00f3ff' : '1px solid rgba(255,255,255,0.2)'}}
+                    >
+                        Google
+                    </button>
+                </div>
                 <button type="submit" style={styles.button} data-testid="create-classroom-btn" disabled={loading}>
                     {loading ? 'Creating...' : '+ Create Class'}
                 </button>
@@ -88,10 +154,12 @@ const ClassroomManager = () => {
                             <div style={styles.classHeader}>
                                 <h3 style={styles.className}>{cls.class_name}</h3>
                                 <div style={styles.codeContainer}>
-                                    <span style={styles.codeLabel}>CODE:</span>
-                                    <span style={styles.code} className="code" data-testid="join-code">{cls.join_code}</span>
+                                    <span style={styles.codeLabel}>JOIN CODE:</span>
+                                    <div className="join-code" data-testid="join-code-value">
+                                        {cls.class_code}
+                                    </div>
                                     <button 
-                                        onClick={() => copyToClipboard(cls.join_code)}
+                                        onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
                                     >
@@ -100,6 +168,24 @@ const ClassroomManager = () => {
                                 </div>
                             </div>
                             
+                            <div style={styles.meetingInfo}>
+                                <p style={styles.label}>Meeting: {cls.meeting_type && cls.meeting_type !== 'none' ? cls.meeting_type.toUpperCase() : 'Not Linked'}</p>
+                                <div style={{display: 'flex', gap: '4px'}}>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Paste meeting link here..."
+                                        defaultValue={cls.meeting_link || ''}
+                                        onBlur={(e) => updateMeetingLink(cls.id, e.target.value)}
+                                        style={styles.linkInput}
+                                    />
+                                    {cls.meeting_link && (
+                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn}>
+                                            🚀
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+
                             <div style={styles.chemControls}>
                                 <p style={styles.label}>Lock Chemicals for Students:</p>
                                 <div style={styles.chemButtons}>
@@ -120,6 +206,13 @@ const ClassroomManager = () => {
                                             {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
                                         </button>
                                     ))}
+                                    <button 
+                                        className="action-button active"
+                                        onClick={() => navigate(`/teacher/classroom/${cls.id}`)}
+                                        style={{ marginTop: '15px', padding: '10px', fontSize: '1rem' }}
+                                    >
+                                        MANAGE CLASS
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -223,6 +316,44 @@ const styles = {
         opacity: 0.7,
         transition: 'opacity 0.2s',
     },
+    meetingSelect: {
+        display: 'flex',
+        gap: '0.5rem',
+    },
+    meetingBtn: {
+        background: 'rgba(255,255,255,0.05)',
+        color: '#fff',
+        border: '1px solid rgba(255,255,255,0.2)',
+        borderRadius: '8px',
+        padding: '0.5rem 1rem',
+        cursor: 'pointer',
+        fontSize: '0.8rem',
+        transition: 'all 0.2s',
+    },
+    meetingInfo: {
+        marginBottom: '1rem',
+    },
+    linkInput: {
+        background: 'rgba(0,0,0,0.2)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '6px',
+        padding: '0.4rem 0.6rem',
+        color: '#fff',
+        fontSize: '0.8rem',
+        flex: 1,
+        outline: 'none',
+    },
+    launchBtn: {
+        background: 'rgba(0, 243, 255, 0.2)',
+        border: '1px solid #00f3ff',
+        borderRadius: '6px',
+        padding: '0.4rem 0.6rem',
+        textDecoration: 'none',
+        fontSize: '0.8rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     label: {
         fontSize: '0.85rem',
         color: '#888',
@@ -240,6 +371,17 @@ const styles = {
         border: '1px solid',
         color: '#fff',
         cursor: 'pointer',
+        transition: 'all 0.2s',
+    },
+    meetingButton: {
+        padding: '0.5rem 1rem',
+        borderRadius: '8px',
+        border: 'none',
+        background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+        color: '#fff',
+        cursor: 'pointer',
+        fontWeight: 600,
+        fontSize: '0.85rem',
         transition: 'all 0.2s',
     },
 };

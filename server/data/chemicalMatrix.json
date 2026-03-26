@@ -1,3 +1,57 @@
 {
-  "chemicals": []
+  "chemicals": [
+    {
+      "id": "chem_a",
+      "name": "Hydrochloric Acid",
+      "formula": "HCl",
+      "type": "acid",
+      "strength": 0.9,
+      "properties": {
+        "molarity_factor": 1.0,
+        "is_corrosive": true
+      }
+    },
+    {
+      "id": "chem_b",
+      "name": "Sodium Hydroxide",
+      "formula": "NaOH",
+      "type": "base",
+      "strength": 0.9,
+      "properties": {
+        "molarity_factor": 1.0,
+        "is_caustic": true
+      }
+    },
+    {
+      "id": "chem_i",
+      "name": "Bromothymol Blue",
+      "formula": "BTB",
+      "type": "indicator",
+      "properties": {
+        "neutral_color": "green",
+        "acid_color": "yellow",
+        "base_color": "blue",
+        "pKa": 7.1
+      }
+    },
+    {
+      "id": "chem_c",
+      "name": "Manganese Dioxide",
+      "formula": "MnO2",
+      "type": "catalyst",
+      "properties": {
+        "targets": ["H2O2"],
+        "effect": "decomposition"
+      }
+    }
+  ],
+  "reaction_patterns": [
+    {
+      "name": "Neutralization",
+      "reactants": ["acid", "base"],
+      "products": ["salt", "water"],
+      "thermal": "exothermic",
+      "equation": "HCl + NaOH -> NaCl + H2O"
+    }
+  ]
 }

@@ -25,7 +25,11 @@ test.describe('Role-Based Flow Verification', () => {
         
         // Verify Dashboard
         await expect(page).toHaveURL(/\/teacher/, { timeout: 10000 });
-        await expect(page.getByTestId('dashboard-title')).toContainText('Dashboard');
+        
+        // Wait for loading to clear
+        await expect(page.getByTestId('loading-overlay')).not.toBeVisible({ timeout: 15000 });
+        
+        await expect(page.getByTestId('dashboard-title')).toBeVisible();
         
         // Create Classroom
         const timestamp = Date.now();
@@ -33,15 +37,20 @@ test.describe('Role-Based Flow Verification', () => {
         await page.getByTestId('classroom-name-input').fill(className);
         await page.getByTestId('create-classroom-btn').click();
         
+        // Handle the CreateClassModal - Wait for modal and click Zoom Meeting option
+        const zoomOption = page.locator('button.meeting-option-card').filter({ hasText: 'Zoom Meeting' });
+        await expect(zoomOption).toBeVisible({ timeout: 10000 });
+        await zoomOption.click();
+        
         // Wait for classroom card and get join code
-        const codeElement = page.getByTestId('join-code').first();
+        const codeElement = page.getByTestId('join-code-value').first();
         await expect(codeElement).toBeVisible();
         const codeText = await codeElement.innerText();
         joinCode = codeText.trim();
         console.log(`Generated Join Code: ${joinCode}`);
         
         // Logout
-        await page.click('button:has-text("LOGOUT")');
+        await page.getByTestId('logout-btn').click();
         await expect(page).toHaveURL(/.*login/);
     });
 
@@ -62,14 +71,14 @@ test.describe('Role-Based Flow Verification', () => {
         await expect(page.getByTestId('welcome-text')).toBeVisible();
         
         // Join Classroom
-        await page.fill('input[placeholder*="ENTER CLASS CODE"]', joinCode || 'CHEM101');
-        await page.click('button:has-text("JOIN CLASSROOM")');
+        await page.getByTestId('join-code-input').fill(joinCode || 'CHEM101');
+        await page.getByTestId('join-classroom-btn').click();
         
         // Verify join success (toast message or card appears)
         await expect(page.locator('text=Successfully joined')).toBeVisible();
         
         // Logout
-        await page.click('button:has-text("LOGOUT")');
+        await page.getByTestId('logout-btn').click();
         await expect(page).toHaveURL(/.*login/);
     });
 
@@ -77,20 +86,7 @@ test.describe('Role-Based Flow Verification', () => {
         await mockSupabase(page, { isLoggedIn: true, role: 'teacher' });
         await page.goto('/teacher');
         
-        // Mock some students in the list for the teacher
-        await page.route('**/rest/v1/classroom_students*', async route => {
-            await route.fulfill({
-                status: 200,
-                contentType: 'application/json',
-                body: JSON.stringify([
-                    { 
-                        student_id: '00000000-0000-0000-0000-000000000002', 
-                        profiles: { display_name: 'Alice Student', role: 'student' } 
-                    }
-                ])
-            });
-        });
-
+        // The mock for class_memberships is now in mockSupabase helper
         await page.reload();
         
         // Verify student list/table

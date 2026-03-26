@@ -135,6 +135,7 @@ const SignUpForm = ({ onTabSwitch }) => {
           id="fullName"
           name="fullName"
           className={`auth-input ${touched.fullName && errors.fullName ? 'input-error' : ''}`}
+          data-testid="fullname-input"
           placeholder="John Doe"
           value={formData.fullName}
           onChange={handleChange}
@@ -154,6 +155,7 @@ const SignUpForm = ({ onTabSwitch }) => {
           id="signup-email"
           name="email"
           className={`auth-input ${touched.email && errors.email ? 'input-error' : ''}`}
+          data-testid="email-input"
           placeholder="johndoe@example.com"
           value={formData.email}
           onChange={handleChange}
@@ -173,6 +175,7 @@ const SignUpForm = ({ onTabSwitch }) => {
           id="signup-password"
           name="password"
           className={`auth-input ${touched.password && errors.password ? 'input-error' : ''}`}
+          data-testid="password-input"
           placeholder="Min 8 characters"
           value={formData.password}
           onChange={handleChange}
@@ -192,6 +195,7 @@ const SignUpForm = ({ onTabSwitch }) => {
           id="confirmPassword"
           name="confirmPassword"
           className={`auth-input ${touched.confirmPassword && errors.confirmPassword ? 'input-error' : ''}`}
+          data-testid="confirm-password-input"
           placeholder="••••••••"
           value={formData.confirmPassword}
           onChange={handleChange}
@@ -218,7 +222,7 @@ const SignUpForm = ({ onTabSwitch }) => {
         )}
       </div>
 
-      <button type="submit" className="submit-btn" disabled={loading}>
+      <button type="submit" className="submit-btn" data-testid="signup-submit-btn" disabled={loading}>
         {loading ? (
           <>
             <span className="btn-spinner"></span>

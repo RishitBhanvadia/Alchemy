@@ -132,8 +132,7 @@ const StudentAnalyticsChart = React.memo(({ scores = [], experimentName = '', no
           />
           {scores.length > 0 && (
             <ReferenceLine
-              y={null}
-              x={null}
+              x={BUCKET_LABELS[Math.min(9, Math.floor(average / 10))]}
               stroke="#00f3ff"
               strokeDasharray="5 5"
               strokeWidth={2}

@@ -6,6 +6,7 @@ const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
     return (
         <motion.div 
             className="loading-overlay"
+            data-testid="loading-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

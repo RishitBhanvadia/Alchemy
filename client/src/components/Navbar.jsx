@@ -52,6 +52,7 @@ const Navbar = () => {
                                 to="/student"
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
+                                data-testid="nav-dashboard"
                                 aria-label="Navigate to Dashboard"
                                 role="menuitem"
                             >
@@ -61,6 +62,7 @@ const Navbar = () => {
                                 to="/student/lab"
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
+                                data-testid="nav-lab"
                                 aria-label="Navigate to Laboratory"
                                 role="menuitem"
                             >
@@ -73,6 +75,7 @@ const Navbar = () => {
                                 to="/teacher"
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
+                                data-testid="nav-dashboard"
                                 aria-label="Navigate to Teacher Dashboard"
                                 role="menuitem"
                             >
@@ -82,6 +85,7 @@ const Navbar = () => {
                                 to="/teacher/analytics"
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
+                                data-testid="nav-analytics"
                                 aria-label="Navigate to Analytics"
                                 role="menuitem"
                             >
@@ -93,6 +97,7 @@ const Navbar = () => {
                         to="/profile"
                         className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                         onClick={() => setIsMenuOpen(false)}
+                        data-testid="nav-profile"
                         aria-label="Navigate to Profile"
                         role="menuitem"
                     >
@@ -102,6 +107,7 @@ const Navbar = () => {
                         to="/history"
                         className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                         onClick={() => setIsMenuOpen(false)}
+                        data-testid="nav-history"
                         aria-label="Navigate to History"
                         role="menuitem"
                     >
@@ -113,6 +119,7 @@ const Navbar = () => {
                     <div className="profile-icon">{getInitials(profile?.display_name || profile?.full_name)}</div>
                     <button
                         className="logout-button"
+                        data-testid="logout-btn"
                         onClick={handleLogout}
                     >
                         LOGOUT

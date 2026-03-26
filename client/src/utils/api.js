@@ -68,4 +68,27 @@ export const explainReaction = (chemicals, reactionOutcome, studentQuestion) => 
   });
 };
 
+// ─── Meeting API functions ────────────────────────────────────────────────────
+
+/** Create a Zoom instant meeting (teacher only) */
+export const createZoomMeeting = () => {
+  return api.post('/meetings/zoom');
+};
+
+/** Get the Google OAuth redirect URL (server-side route) */
+export const getGoogleAuthUrl = (teacherId) => {
+  const baseUrl = import.meta.env.VITE_API_URL || '/api';
+  return `${baseUrl}/meetings/google/auth?teacherId=${encodeURIComponent(teacherId)}`;
+};
+
+/** Create a Google Meet via Calendar API (teacher only, requires OAuth first) */
+export const createGoogleMeeting = () => {
+  return api.post('/meetings/google');
+};
+
+/** Look up a meeting code and get the meeting URL */
+export const joinMeetingByCode = (code) => {
+  return api.get(`/meetings/join?code=${encodeURIComponent(code)}`);
+};
+
 export default api;

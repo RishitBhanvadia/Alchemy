@@ -22,14 +22,14 @@ const Dashboard = () => {
             const { data: className, error: classError } = await supabase
                 .from('classrooms')
                 .select('id, class_name')
-                .eq('join_code', joinCode.toUpperCase())
+                .eq('class_code', joinCode.toUpperCase())
                 .single();
 
             if (classError || !className) throw new Error("Invalid class code");
 
             // Check if already in classroom
             const { data: existing } = await supabase
-                .from('classroom_students')
+                .from('class_memberships')
                 .select('*')
                 .eq('classroom_id', className.id)
                 .eq('student_id', user.id)
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
             // Join classroom
             const { error: joinError } = await supabase
-                .from('classroom_students')
+                .from('class_memberships')
                 .insert([
                     { classroom_id: className.id, student_id: user.id }
                 ]);

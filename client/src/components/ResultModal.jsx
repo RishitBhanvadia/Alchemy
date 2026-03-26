@@ -57,8 +57,8 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
             </div>
           </div>
 
-          <div className="result-modal-body">
-            <h3 className="outcome-name">{outcome_label}</h3>
+          <div className="result-modal-body" data-testid="observation-panel">
+            <h3 className="outcome-name" data-testid="reaction-result">{outcome_label}</h3>
             
             <div className="result-stats">
               {thermal_effect && (

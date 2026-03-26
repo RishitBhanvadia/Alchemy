@@ -17,6 +17,7 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error, ariaDescribedBy })
     >
       <div 
         className={`role-card ${selectedRole === 'student' ? 'selected' : ''}`}
+        data-testid="role-student"
         onClick={() => setSelectedRole('student')}
         onKeyDown={(e) => handleKeyDown(e, 'student')}
         role="radio"
@@ -30,6 +31,7 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error, ariaDescribedBy })
       </div>
       <div 
         className={`role-card ${selectedRole === 'teacher' ? 'selected' : ''}`}
+        data-testid="role-teacher"
         onClick={() => setSelectedRole('teacher')}
         onKeyDown={(e) => handleKeyDown(e, 'teacher')}
         role="radio"

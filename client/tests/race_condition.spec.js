@@ -3,52 +3,60 @@ import { mockSupabase } from './helpers/mockSupabase';
 
 test.describe('Race Condition Verification', () => {
 
-    test('Concurrent Lab Interactions', async ({ context }) => {
-        // Create two pages within the same context (sharing localStorage)
-        const page1 = await context.newPage();
-        const page2 = await context.newPage();
+    test('Concurrent Lab Interactions', async ({ browser }) => {
+        // Use two separate contexts to ensure absolute isolation of localStorage and session state
+        const context1 = await browser.newContext();
+        const context2 = await browser.newContext();
+        
+        const page1 = await context1.newPage();
+        const page2 = await context2.newPage();
 
-        await mockSupabase(page1);
-        await mockSupabase(page2);
+        // 1. Setup - Mock Supabase on both pages with session already active
+        await mockSupabase(page1, { isLoggedIn: true, role: 'student', userId: 'student-1' });
+        await mockSupabase(page2, { isLoggedIn: true, role: 'student', userId: 'student-2' });
 
-        // Perform login on both pages to set session
-        for (const p of [page1, page2]) {
-            await p.goto('/login');
-            await p.getByTestId('email-input').fill('test@alchemistry.com');
-            await p.getByTestId('password-input').fill('password123');
-            await mockSupabase(p, { isLoggedIn: true, role: 'teacher' });
-            await p.getByTestId('login-submit-btn').click();
-            await expect(p).toHaveURL(/.*teacher/, { timeout: 10000 }); // Mocked role is teacher
-        }
-
-        // Navigate both pages to the lab page
+        // 2. Navigate both pages directly to the lab page
         await page1.goto('/lab');
         await page2.goto('/lab');
 
         // Clear local storage cart initially
         await page1.evaluate(() => localStorage.setItem('cart', '[]'));
 
-        // Mock the backend response with 2s delay
-        await context.route('**/results', async route => {
+        // Apply global mock but with a specific delay for results to test race condition
+        await mockSupabase(page1, { isLoggedIn: true, role: 'student' });
+        await mockSupabase(page2, { isLoggedIn: true, role: 'student' });
+
+        // Add a delay specifically for the race condition test
+        const delayRoute = async route => {
             if (route.request().method() === 'POST') {
                 await new Promise(resolve => setTimeout(resolve, 2000));
+                // Resupply the same mock data as global utility but with delay
+                const responseData = {
+                    outcome_label: "Reaction Complete",
+                    color: "#05B9C4",
+                    product_formula: "H2O",
+                    ai_tutor_context: "The reaction produced water."
+                };
                 await route.fulfill({
-                    status: 200,
+                    status: 201, // Mock API expects success wrapper
                     contentType: 'application/json',
-                    body: JSON.stringify({
-                        success: true,
-                        data: [{
-                            outcome_label: "Reaction Complete",
-                            color: "#05B9C4",
-                            product_formula: "H2O",
-                            ai_tutor_context: "Test context"
-                        }]
-                    })
+                    body: JSON.stringify({ success: true, data: [responseData] })
                 });
             } else {
                 await route.continue();
             }
-        });
+        };
+
+        // Use page.route to override mockSupabase's page.route handler
+        await page1.route('**/api/results*', delayRoute);
+        await page2.route('**/api/results*', delayRoute);
+
+        // Initialize empty cart
+        await page1.goto('/lab');
+        await page2.goto('/lab');
+        
+        await page1.evaluate(() => localStorage.setItem('cart', '[]'));
+        await page2.evaluate(() => localStorage.setItem('cart', '[]'));
 
         // Set inputs for Page 1: A=10, B=10
         await page1.evaluate(() => {

@@ -49,7 +49,8 @@ exports.explainReaction = async (req, res) => {
 
 Task:
 Explain the chemistry behind this reaction in simple language suitable for a school student.
-Use analogies if helpful.
+Identify the specific chemicals involved: Chem A is Hydrochloric Acid (HCl), Chem B is Sodium Hydroxide (NaOH), Chem I is Bromothymol Blue (BTB Indicator), and Chem C is Manganese Dioxide (MnO₂).
+Use analogies if helpful. If the student is asking "what next", suggest a different ratio or a follow-up experiment.
 Be encouraging and foster curiosity.
 Keep the response under 150-200 words.
 Ensure the explanation is scientifically accurate but easy to understand.`;
@@ -66,7 +67,7 @@ Ensure the explanation is scientifically accurate but easy to understand.`;
 
 exports.getHint = async (req, res) => {
     try {
-        const { chem_a, chem_b, chem_c, chem_d } = req.query;
+        const { chem_a, chem_b, chem_c, chem_d, chem_i } = req.query;
 
         if (!process.env.GEMINI_API_KEY) {
             return error(res, 'INTERNAL_ERROR', 'Gemini API key is not configured.', 500);
@@ -79,14 +80,14 @@ exports.getHint = async (req, res) => {
         };
 
         if (!validateConcentration(chem_a) || !validateConcentration(chem_b) || 
-            !validateConcentration(chem_c) || !validateConcentration(chem_d)) {
+            !validateConcentration(chem_i) || !validateConcentration(chem_c)) {
             return error(res, 'VALIDATION_ERROR', 'Invalid concentration values. Must be numbers between 0 and 100.', 400);
         }
 
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         const prompt = `You are a chemistry tutor. A student is about to mix these chemicals (concentrations 0-100):
-        Chemical A: ${chem_a}%, Chemical B: ${chem_b}%, Chemical C: ${chem_c}%, Chemical D: ${chem_d}%.
+        HCl (Acid): ${chem_a}%, NaOH (Base): ${chem_b}%, BTB (Indicator): ${chem_i}%, MnO2 (Catalyst): ${chem_c}%.
         
         Provide a very short, subtle hint or prediction about what might happen. 
         Keep it to 1 or 2 short sentences max. 

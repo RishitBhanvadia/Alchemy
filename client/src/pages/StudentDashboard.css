@@ -22,9 +22,10 @@
 }
 
 .welcome-text .highlight {
-  background: linear-gradient(135deg, #6366F1, #8B5CF6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    background: linear-gradient(135deg, var(--color-text-primary) 30%, var(--glass-border) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
@@ -198,6 +199,62 @@
 
 .status-dot.success { background: #10B981; box-shadow: 0 0 8px #10B981; }
 .status-dot.neutral { background: #6366F1; box-shadow: 0 0 8px #6366F1; }
+/* Assignments */
+.assignments-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.assignment-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-left: 4px solid var(--color-accent-primary);
+}
+
+.asgn-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.asgn-title {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.asgn-meta {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.badge-pass {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.badge-pending {
+    background: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.no-assignments {
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
 
 /* Main CTA Button */
 .main-cta-btn {

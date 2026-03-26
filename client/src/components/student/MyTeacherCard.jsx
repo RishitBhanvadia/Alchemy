@@ -58,10 +58,37 @@ const MyTeacherCard = ({ classroom }) => {
                     </p>
                 </div>
             </div>
-            <div className="class-section">
+            <div className="class-section" style={{ marginBottom: classroom.meeting_link ? '16px' : '0' }}>
                 <p style={{ color: '#9CA3AF', fontSize: '0.75rem', margin: '0 0 4px 0' }}>CLASSROOM</p>
                 <p style={{ color: '#F9FAFB', fontWeight: 600, margin: 0 }}>{class_name}</p>
             </div>
+
+            {classroom.meeting_link && (
+                <motion.a
+                    href={classroom.meeting_link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="join-meeting-btn"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        background: 'linear-gradient(135deg, #00f3ff, #0066ff)',
+                        color: 'white',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        fontWeight: 'bold',
+                        fontSize: '0.85rem',
+                        boxShadow: '0 4px 15px rgba(0, 243, 255, 0.3)'
+                    }}
+                >
+                    <span> {classroom.meeting_type === 'zoom' ? '📹 Join Zoom Class' : '👋 Join Google Meet'}</span>
+                </motion.a>
+            )}
         </motion.div>
     );
 };

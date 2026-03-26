@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { lazy, Suspense, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from "./components/Navbar";
 import CursorFollower from "./components/CursorFollower";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -24,6 +25,7 @@ const History = lazy(() => import("./pages/history"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Success = lazy(() => import("./pages/success"));
 const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
+const ClassroomDetail = lazy(() => import("./pages/ClassroomDetail"));
 
 import useAuthStore from './store/authStore';
 
@@ -56,6 +58,7 @@ function App() {
     // Only redirect if everything is loaded and we are on /login
     if (!loading && user && profile && location.pathname === '/login') {
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
+      console.log('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
     }
   }, [user, profile, loading, location.pathname, navigate]);
@@ -73,7 +76,8 @@ function App() {
         {showNavbar && <Navbar />}
         <Toaster />
 
-        <Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
           {/* Public Routes */}
           <Route path="/" element={<RootRedirect />} />
           <Route path="/login" element={<Suspense fallback={<LoadingOverlay />}><Login /></Suspense>} />
@@ -123,7 +127,7 @@ function App() {
           <Route path="/teacher/classroom/:id" element={
             <PrivateRoute>
               <RoleRoute requiredRole="teacher">
-                <Suspense fallback={<LoadingOverlay />}><div>Classroom Detail Page</div></Suspense>
+                <Suspense fallback={<LoadingOverlay />}><ClassroomDetail /></Suspense>
               </RoleRoute>
             </PrivateRoute>
           } />
@@ -133,6 +137,7 @@ function App() {
           {/* Catch-all redirect to root */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </AnimatePresence>
       </div>
     </ErrorBoundary >
   );

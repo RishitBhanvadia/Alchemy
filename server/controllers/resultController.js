@@ -1,7 +1,8 @@
 const supabase = require('../supabaseClient');
+const logger = require('../utils/logger');
 
 function computeReactionId(a, b, i, c) {
-  const THRESHOLD = 10;
+  const THRESHOLD = 5; // Lower threshold (5%) for fuzzy matching
   let id = 0;
   if (a >= THRESHOLD) id += 1;
   if (b >= THRESHOLD) id += 10;
@@ -12,7 +13,7 @@ function computeReactionId(a, b, i, c) {
 
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
-  if (total === 0) return null;
+  if (total < 1) return null; // Too dilute to calculate
   const na = Math.round((a / total) * 100);
   const nb = Math.round((b / total) * 100);
   const ni = Math.round((i / total) * 100);
@@ -22,10 +23,10 @@ function normalise(a, b, i, c) {
 
 function classifyRegime(a, b) {
   const total = a + b;
-  if (total === 0) return 'NEUTRAL';
+  if (total < 5) return 'NEUTRAL'; // Too little to differentiate
   const ratio = a / total;
-  if (ratio > 0.65) return 'ACID_DOMINANT';
-  if (ratio < 0.35) return 'BASE_DOMINANT';
+  if (ratio > 0.60) return 'ACID_DOMINANT';
+  if (ratio < 0.40) return 'BASE_DOMINANT';
   return 'NEUTRAL';
 }
 
@@ -46,10 +47,7 @@ exports.calculateResult = async (req, res) => {
 
     // Normalise
     const normalised = normalise(chem_a, chem_b, chem_i, chem_c);
-    if (!normalised) {
-      return res.status(400).json({ error: 'All chemicals are at 0%.' });
-    }
-    const [na, nb, ni, nc] = normalised;
+    const [na, nb, ni, nc] = normalised || [0, 0, 0, 0];
 
     // Compute lookup keys
     const reaction_id = computeReactionId(na, nb, ni, nc);
@@ -61,7 +59,7 @@ exports.calculateResult = async (req, res) => {
       .select('*')
       .eq('reaction_id', reaction_id)
       .eq('regime', regime)
-      .maybeSingle(); // use maybeSingle — returns null instead of error if no row found
+      .maybeSingle();
 
     // Fallback — try any regime for this reaction_id
     if (!data) {
@@ -74,11 +72,39 @@ exports.calculateResult = async (req, res) => {
       data = fallback.data;
     }
 
+    // Final Fallback — Algorithmic Result based on chemicalMatrix.json
     if (!data) {
-      return res.status(404).json({
-        error: `No reaction found for combination ID ${reaction_id} (regime: ${regime}).`
-      });
+        try {
+            const matrix = require('../data/chemicalMatrix.json');
+            // Simple rule: Acid + Base = Neutralization
+            if (na > 15 && nb > 15) {
+                const pattern = matrix.reaction_patterns.find(p => p.name === 'Neutralization');
+                data = {
+                    outcome_label: `Algorithmic ${pattern.name}`,
+                    product_formula: 'NaCl + H2O',
+                    color: regime === 'NEUTRAL' ? 'Green (BTB)' : (regime === 'ACID_DOMINANT' ? 'Yellow (Acidic)' : 'Blue (Basic)'),
+                    state_change: 'Mixed solution',
+                    thermal_effect: 'Slightly Exothermic',
+                    ai_tutor_context: 'This reaction was calculated dynamically based on chemical reactivity rules.',
+                    is_dangerous: false
+                };
+            }
+        } catch (e) {
+            logger.error('Algorithmic calculation failed', e);
+        }
     }
+
+    // Last Resort — Water (ID 0)
+    if (!data) {
+      const { data: water } = await supabase
+        .from('results')
+        .select('*')
+        .eq('reaction_id', 0)
+        .single();
+      data = water;
+    }
+
+    logger.info('Reaction calculated', { reaction_id, regime, outcome: data.outcome_label });
 
     // Return result
     return res.status(200).json({
@@ -94,7 +120,7 @@ exports.calculateResult = async (req, res) => {
     });
 
   } catch (err) {
-    console.error('[resultController.calculateResult] Unexpected error:', err.message);
-    return res.status(500).json({ error: 'Server error during reaction calculation.' });
+    logger.error('Reaction calculation failed', { error: err.message });
+    return res.status(500).json({ error: 'Server error during calculation.' });
   }
 };

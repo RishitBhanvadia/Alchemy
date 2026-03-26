@@ -17,7 +17,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             const { data: classroom, error: classError } = await supabase
                 .from('classrooms')
                 .select('id, class_name')
-                .eq('join_code', code.trim().toUpperCase())
+                .eq('class_code', code.trim().toUpperCase())
                 .maybeSingle();
 
             if (classError) {
@@ -31,7 +31,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
 
             // 2. Create membership
             const { error: joinError } = await supabase
-                .from('classroom_students')
+                .from('class_memberships')
                 .insert({
                     classroom_id: classroom.id,
                     student_id: profileId
@@ -66,11 +66,12 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             <form onSubmit={handleJoin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <input
                     type="text"
-                    placeholder="ENTER CLASS CODE (e.g. XK9P2)"
+                    placeholder="ENTER 6-CHAR CODE (e.g. XK9P2W)"
+                    data-testid="join-code-input"
                     value={code}
                     onChange={(e) => setCode(e.target.value.toUpperCase())}
                     className="glass-input"
-                    maxLength={10}
+                    maxLength={6}
                     style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -86,6 +87,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                 <button 
                     type="submit" 
                     className="join-btn"
+                    data-testid="join-classroom-btn"
                     disabled={loading}
                     style={{
                         background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',

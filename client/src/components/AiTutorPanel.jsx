@@ -13,8 +13,8 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
   const addChatMessage = useLabStore(state => state.addChatMessage);
   const chemA = useLabStore(state => state.chemA);
   const chemB = useLabStore(state => state.chemB);
+  const chemI = useLabStore(state => state.chemI);
   const chemC = useLabStore(state => state.chemC);
-  const chemD = useLabStore(state => state.chemC);
   const lastReactionResult = useLabStore(state => state.reactionResult);
 
   const scrollToBottom = () => {
@@ -49,8 +49,8 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         chemicals: { 
           chem_a: Math.round(chemA), 
           chem_b: Math.round(chemB), 
-          chem_c: Math.round(chemC), 
-          chem_d: Math.round(chemD) 
+          chem_i: Math.round(chemI), 
+          chem_c: Math.round(chemC) 
         },
         reaction_outcome: lastReactionResult?.outcome || 'No reaction yet',
         student_question: currentQuestion
@@ -95,9 +95,9 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
             <h4>Current Lab State</h4>
             <div className="context-values">
               <span className="context-badge">HCl: {Math.round(chemA)}%</span>
-              <span className="context-badge">NaCl: {Math.round(chemB)}%</span>
-              <span className="context-badge">CuSO₄: {Math.round(chemC)}%</span>
-              <span className="context-badge">FeSO₄: {Math.round(chemD)}%</span>
+              <span className="context-badge">NaOH: {Math.round(chemB)}%</span>
+              <span className="context-badge">BTB: {Math.round(chemI)}%</span>
+              <span className="context-badge">MnO₂: {Math.round(chemC)}%</span>
             </div>
             {lastReactionResult && (
               <div style={{ marginTop: '8px' }}>
