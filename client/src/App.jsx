@@ -58,6 +58,7 @@ function App() {
     // Only redirect if everything is loaded and we are on /login
     if (!loading && user && profile && location.pathname === '/login') {
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
+      // eslint-disable-next-line no-console
       console.log('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
     }
