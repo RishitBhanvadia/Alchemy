@@ -40,4 +40,14 @@ export default defineConfig({
         include: ['react', 'react-dom', 'zustand', 'axios'],
         exclude: ['@react-three/rapier'],
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/test/setup.js',
+        server: {
+            deps: {
+                inline: ['@exodus/bytes', 'html-encoding-sniffer']
+            }
+        }
+    }
 });

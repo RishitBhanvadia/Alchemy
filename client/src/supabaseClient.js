@@ -11,4 +11,6 @@ if (!supabaseUrl || !supabaseKey) {
     );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = (supabaseUrl && supabaseKey) 
+    ? createClient(supabaseUrl, supabaseKey) 
+    : null;
