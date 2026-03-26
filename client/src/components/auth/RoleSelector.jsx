@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types, no-console */
 import React from 'react';
 
 const RoleSelector = ({ selectedRole, setSelectedRole, error, ariaDescribedBy }) => {

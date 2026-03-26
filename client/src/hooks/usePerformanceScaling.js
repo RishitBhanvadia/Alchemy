@@ -25,7 +25,9 @@ export default function usePerformanceScaling() {
 
   return {
     isLowPerformance,
+    setIsLowPerformance,
     postProcessingEnabled,
+    setPostProcessingEnabled,
     checkPerformance,
   };
 }
