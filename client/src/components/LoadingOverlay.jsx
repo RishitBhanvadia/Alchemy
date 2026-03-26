@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types, no-console */
 import React from 'react';
 import { motion } from 'framer-motion';
 import './LoadingOverlay.css';
