@@ -1,0 +1,4 @@
+## 2024-03-26 - Fix Regime Classifier Preemption Logic
+**Bug:** `CATALYST_DOMINANT` and `INDICATOR_DOMINANT` regimes were completely unrechable whenever there was any acid or base present, even though their conditions check for `acidBaseSum < 20`. The output was incorrectly classified as `ACID_DOMINANT`, `BASE_DOMINANT`, or `NEUTRAL` instead.
+**Root Cause:** A hardcoded `if (acidBaseSum > 0)` block preemptively caught all cases where `chem_a` or `chem_b` had any concentration above 0 and returned a result, preventing the explicit indicator and catalyst conditions below it from executing.
+**Learning:** Always order early returns and conditional blocks by specificity (most specific/restrictive conditions first) to prevent broad checks from silently swallowing and hiding overlapping conditional states.
