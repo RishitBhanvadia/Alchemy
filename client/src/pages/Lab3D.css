@@ -193,6 +193,24 @@
     transform: scale(1.2);
 }
 
+.chem-slider:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.chem-slider:disabled::-webkit-slider-thumb {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.chem-slider:disabled::-moz-range-thumb {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
 .lab3d-actions {
     display: flex;
     flex-direction: column;
