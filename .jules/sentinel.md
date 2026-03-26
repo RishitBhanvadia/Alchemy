@@ -1,0 +1,4 @@
+## 2026-03-26 - Hardcoded Supabase Credentials
+**Vulnerability:** Found a hardcoded Supabase URL and service role key in `server/run_migration.js`.
+**Learning:** Hardcoded credentials should never be committed, especially for scripts, as they expose sensitive backend configurations. In this case, `run_migration.js` bypassed the environment variables configuration when it should have reused the shared `.env` setup in `server/supabaseClient.js`.
+**Prevention:** Always centralize external service initializations (e.g., Supabase) and import the configured client rather than creating new clients in standalone scripts. Ensure environment variables are correctly loaded for such scripts using a shared client approach.
