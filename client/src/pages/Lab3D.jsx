@@ -39,7 +39,6 @@ const Lab3D = () => {
     const currentHint = useLabStore(state => state.currentHint);
     const setCurrentHint = useLabStore(state => state.setCurrentHint);
     const initiateReaction = useLabStore(state => state.initiateReaction);
-    const setReactionState = useLabStore(state => state.setReactionState);
     const reset = useLabStore(state => state.reset);
 
     // Fetch Classroom Restrictions
@@ -133,14 +132,6 @@ const Lab3D = () => {
     const handlePlayClick = async () => {
         if (isLoading || reactionState === 'loading') return;
         
-        // Capture snapshot for consistency
-        const snapshot = {
-            chem_a: chemA,
-            chem_b: chemB,
-            chem_i: chemI,
-            chem_c: chemC,
-        };
-
         setCurrentHint(null);
         setIsResultOpen(false);
         setIsLoading(true);

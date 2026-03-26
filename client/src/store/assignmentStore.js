@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
 
-const useAssignmentStore = create((set, get) => ({
+const useAssignmentStore = create((set) => ({
     assignments: [],
     studentProgress: [],
     loading: false,

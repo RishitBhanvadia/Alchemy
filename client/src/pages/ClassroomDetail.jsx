@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
-import useClassroomStore from '../store/classroomStore';
 import useAssignmentStore from '../store/assignmentStore';
 import LoadingOverlay from '../components/LoadingOverlay';
 import logger from '../utils/logger';

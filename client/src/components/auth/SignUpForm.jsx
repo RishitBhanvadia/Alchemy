@@ -98,11 +98,11 @@ const SignUpForm = ({ onTabSwitch }) => {
     const isValid = validateField('all');
     if (!isValid) return;
 
-    const { fullName, email, password, confirmPassword, role } = formData;
+    const { fullName, email, password, role } = formData;
 
     setLoading(true);
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {

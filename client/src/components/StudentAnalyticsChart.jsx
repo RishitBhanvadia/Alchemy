@@ -159,6 +159,8 @@ StudentAnalyticsChart.propTypes = {
   experimentName: PropTypes.string,
 };
 
+StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
+
 export default StudentAnalyticsChart;
 
 // ─── Inline Styles ──────────────────────────────────────────────────────────

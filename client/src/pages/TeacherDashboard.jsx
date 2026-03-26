@@ -304,7 +304,7 @@ export default function TeacherDashboard({ analytics = false }) {
           query = query.lte('created_at', `${endDate}T23:59:59Z`);
         }
 
-        const { data, error: scoresError } = await query;
+        const { data } = await query;
 
         // Use the actual scores from DB
         setExperimentScores((data || []).map((log) => log.score || 0));
@@ -478,8 +478,9 @@ export default function TeacherDashboard({ analytics = false }) {
 
           <div style={styles.dateFilterGroup}>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>From:</label>
+              <label style={styles.dateLabel} htmlFor="start-date-input">From:</label>
               <input
+                id="start-date-input"
                 type="date"
                 style={styles.dateInput}
                 data-testid="start-date-input"
@@ -488,8 +489,9 @@ export default function TeacherDashboard({ analytics = false }) {
               />
             </div>
             <div style={styles.dateField}>
-              <label style={styles.dateLabel}>To:</label>
+              <label style={styles.dateLabel} htmlFor="end-date-input">To:</label>
               <input
+                id="end-date-input"
                 type="date"
                 style={styles.dateInput}
                 data-testid="end-date-input"
