@@ -12,6 +12,7 @@
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 import apiClient from '../utils/apiClient';
+import logger from '../utils/logger';
 
 function deriveThermalState(deltaH) {
   if (deltaH === null || deltaH === 0) return 'neutral';
@@ -167,7 +168,7 @@ try {
   useHistoryStore = require('./historyStore').default;
   useProfileStore = require('./profileStore').default;
 } catch (e) {
-  console.warn('Store imports deferred');
+  logger.warn('Store imports deferred');
 }
 
 export default useLabStore;
