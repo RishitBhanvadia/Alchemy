@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const MyTeacherCard = ({ classroom }) => {
     if (!classroom) {
@@ -64,6 +65,16 @@ const MyTeacherCard = ({ classroom }) => {
             </div>
         </motion.div>
     );
+};
+
+MyTeacherCard.propTypes = {
+  classroom: PropTypes.shape({
+    class_name: PropTypes.string,
+    teacher: PropTypes.shape({
+      avatar_url: PropTypes.string,
+      display_name: PropTypes.string,
+    }),
+  }),
 };
 
 export default MyTeacherCard;
