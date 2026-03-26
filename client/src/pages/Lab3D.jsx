@@ -8,6 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
+import logger from "../utils/logger";
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
@@ -60,7 +61,7 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
-                console.error("Error fetching classroom restrictions:", error);
+                logger.error("Error fetching classroom restrictions:", error);
             }
         };
 
@@ -113,7 +114,7 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
-                console.error("Failed to fetch AI hint:", error);
+                logger.error("Failed to fetch AI hint:", error);
             }
         }, 800);
 
@@ -137,7 +138,7 @@ const Lab3D = () => {
                 }, 4000);
             }
         } catch (error) {
-            console.error("Reaction failed:", error);
+            logger.error("Reaction failed:", error);
             toast.dismiss();
             
             let userMessage = 'Something went wrong. Please try again.';

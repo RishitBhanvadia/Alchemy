@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import LoadingOverlay from '../components/LoadingOverlay';
+import logger from './logger';
 
 // Blocks unauthenticated users
 export function PrivateRoute({ children }) {
@@ -22,7 +23,7 @@ export function RoleRoute({ children, requiredRole }) {
   
   // If we have a user but no profile after loading, it's a fatal error for this route
   if (user && !profile) {
-    console.error('User authenticated but profile missing');
+    logger.error('User authenticated but profile missing');
     return <Navigate to="/login" replace />;
   }
   
