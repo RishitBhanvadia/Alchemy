@@ -1,18 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-const { createClient } = require('@supabase/supabase-js');
-
-// Initialize Supabase Client
+const supabase = require('../supabaseClient');
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Error: SUPABASE_URL and SUPABASE_KEY (or SUPABASE_SERVICE_KEY) must be set in .env');
-  console.error('Current SUPABASE_URL:', supabaseUrl);
-  process.exit(1);
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const ALLOWED_OUTCOMES = [
   'No Reaction', 'Neutralisation / Salt Water',
