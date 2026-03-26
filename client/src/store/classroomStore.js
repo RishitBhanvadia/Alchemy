@@ -23,6 +23,7 @@ const useClassroomStore = create((set, get) => ({
       .maybeSingle();
 
     if (error) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching membership:', error);
       set({ membership: null, loading: false });
     } else {
@@ -51,6 +52,7 @@ const useClassroomStore = create((set, get) => ({
       .order('created_at', { ascending: false });
 
     if (error) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching classrooms:', error);
       set({ classrooms: [], loading: false });
     } else {

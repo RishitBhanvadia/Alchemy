@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import RoleSelector from './RoleSelector';
+import PropTypes from 'prop-types';
 
 const SignUpForm = ({ onTabSwitch }) => {
   const [loading, setLoading] = useState(false);
@@ -98,11 +99,11 @@ const SignUpForm = ({ onTabSwitch }) => {
     const isValid = validateField('all');
     if (!isValid) return;
 
-    const { fullName, email, password, confirmPassword, role } = formData;
+    const { fullName, email, password, role } = formData;
 
     setLoading(true);
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -230,6 +231,10 @@ const SignUpForm = ({ onTabSwitch }) => {
       </button>
     </form>
   );
+};
+
+SignUpForm.propTypes = {
+  onTabSwitch: PropTypes.func.isRequired,
 };
 
 export default SignUpForm;

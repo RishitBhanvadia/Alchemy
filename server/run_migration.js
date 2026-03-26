@@ -1,9 +1,7 @@
-const { createClient } = require('@supabase/supabase-js');
+const supabase = require('./supabaseClient');
 
-const supabaseUrl = 'https://madcquepligcvwkfycud.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGNxdWVwbGlnY3Z3a2Z5Y3VkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDM4NzMwMCwiZXhwIjoyMDg1OTYzMzAwfQ.alfgbAhbrxP7Y25qrlmY-3D6uUAsK5PAyYjAW4_ygQU';
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder';
 
 const migrationSQL = `
 -- STEP 1: Add missing columns to profiles
