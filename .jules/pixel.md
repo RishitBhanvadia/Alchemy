@@ -1,0 +1,4 @@
+## 2024-05-24 - Improve visual feedback for disabled range sliders
+**Problem:** The custom range sliders for chemical levels in the Lab3D component did not visually indicate when they were disabled (during an active reaction), which causes confusion for users trying to interact with them.
+**Context:** During the 3D chemistry reaction, users must not change chemical inputs to prevent breaking the physics or state flow. Without clear feedback, users might think the UI is broken when interactions are ignored.
+**Solution:** Added `cursor: not-allowed;`, `opacity: 0.5;`, and `filter: grayscale(1);` to `.chem-slider:disabled` and its respective `-webkit-slider-thumb` and `-moz-range-thumb` pseudo-elements. This leverages the existing design language (e.g. grayscale for disabled action buttons) to consistently signal interactivity state without relying solely on behavior.
