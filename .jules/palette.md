@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing ARIA label in AiTutorPanel
+**Learning:** Found a pattern of missing ARIA labels on icon-only close buttons (like '×') in custom components such as the AiTutorPanel. This makes it impossible for screen reader users to understand the button's purpose since the text content is just a symbol.
+**Action:** Ensure all icon-only buttons receive an appropriate `aria-label` property to clarify their action for screen reader users.
