@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import RoleSelector from './RoleSelector';
@@ -234,6 +235,10 @@ const SignUpForm = ({ onTabSwitch }) => {
       </button>
     </form>
   );
+};
+
+SignUpForm.propTypes = {
+  onTabSwitch: PropTypes.func.isRequired,
 };
 
 export default SignUpForm;

@@ -12,6 +12,7 @@ const isValid = supabaseUrl &&
 
 if (!isValid) {
     if (import.meta.env.MODE !== 'test') { // Only warn in development/production
+        // eslint-disable-next-line no-console
         console.warn(
             '⚠️ Missing or invalid Supabase environment variables. ' +
             'Authentication features will be disabled. ' +
