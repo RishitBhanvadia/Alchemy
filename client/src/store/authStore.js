@@ -122,7 +122,8 @@ try {
   useProfileStore = require('./profileStore').default;
   useClassroomStore = require('./classroomStore').default;
 } catch (e) {
-  console.warn('Store imports deferred - stores may not be initialized yet');
+  // eslint-disable-next-line no-console
+      console.warn('Store imports deferred - stores may not be initialized yet');
 }
 
 export default useAuthStore;

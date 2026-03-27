@@ -1,0 +1,4 @@
+## 2026-03-27 - Alchemistry EdTech Market Gaps
+**Market Insight:** Top virtual chemistry simulators (Labster, PhET, Gizmos) excel not just in 3D visuals, but in scientific data collection and analysis. Students need to document observations in a "Lab Notebook" and export tabular data (like titration curves) to CSV to perform external analysis.
+**Codebase Match:** The `history.jsx` and `titration.jsx` pages currently display logs and charts, but there is no mechanism for students to add custom annotations to their experiment history or export the data for external homework assignments.
+**Opportunity:** Adding an "Add Note" feature to `history.jsx` and an "Export to CSV" button in `titration.jsx` (and history) using existing `Papa Parse` or simple JS blob methods would drastically bridge the gap between a "game" and a "learning tool."

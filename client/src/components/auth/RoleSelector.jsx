@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const RoleSelector = ({ selectedRole, setSelectedRole, error, ariaDescribedBy }) => {
   const handleKeyDown = (e, role) => {
@@ -45,6 +46,13 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error, ariaDescribedBy })
       </div>
     </div>
   );
+};
+
+RoleSelector.propTypes = {
+  selectedRole: PropTypes.string,
+  setSelectedRole: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  ariaDescribedBy: PropTypes.string,
 };
 
 export default RoleSelector;

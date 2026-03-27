@@ -182,7 +182,8 @@ try {
   useHistoryStore = require('./historyStore').default;
   useProfileStore = require('./profileStore').default;
 } catch (e) {
-  console.warn('Store imports deferred');
+  // eslint-disable-next-line no-console
+      console.warn('Store imports deferred');
 }
 
 export default useLabStore;

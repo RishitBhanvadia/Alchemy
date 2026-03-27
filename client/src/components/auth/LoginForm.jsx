@@ -68,6 +68,7 @@ const LoginForm = () => {
         throw error;
       }
       
+      // eslint-disable-next-line no-console
       console.log('Login successful response from Supabase');
       toast.success('Logged in successfully!');
     } catch (err) {
