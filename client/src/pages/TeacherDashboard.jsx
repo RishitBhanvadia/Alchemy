@@ -10,6 +10,7 @@
  * - Responsive: card list on mobile < 768px
  */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -231,6 +232,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
@@ -309,6 +311,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Use the actual scores from DB
         setExperimentScores((data || []).map((log) => log.score || 0));
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
@@ -762,3 +765,7 @@ styleSheet.innerText = `
   }
 `;
 document.head.appendChild(styleSheet);
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool,
+};

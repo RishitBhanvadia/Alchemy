@@ -182,6 +182,7 @@ try {
   useHistoryStore = require('./historyStore').default;
   useProfileStore = require('./profileStore').default;
 } catch (e) {
+  // eslint-disable-next-line no-console
   console.warn('Store imports deferred');
 }
 

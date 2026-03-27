@@ -19,6 +19,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             set({ assignments: data });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error fetching assignments:', error);
             toast.error('Failed to load assignments');
         } finally {
@@ -36,6 +37,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             set({ studentProgress: data });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error fetching progress:', error);
         }
     },
@@ -56,6 +58,7 @@ const useAssignmentStore = create((set) => ({
             toast.success('Assignment created!');
             return data[0];
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error creating assignment:', error);
             toast.error('Failed to create assignment');
             return null;
@@ -77,6 +80,7 @@ const useAssignmentStore = create((set) => ({
             
             toast.success('Assignment removed');
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error deleting assignment:', error);
             toast.error('Failed to delete assignment');
         }
@@ -109,6 +113,7 @@ const useAssignmentStore = create((set) => ({
 
             set({ assignments: merged });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error fetching student assignments:', error);
         } finally {
             set({ loading: false });
@@ -129,6 +134,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             toast.success('Assignment progress saved!');
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error submitting assignment:', error);
         }
     }
