@@ -1,0 +1,4 @@
+## 2024-05-24 - Cursor Follower Re-render Loop Fix
+**Bottleneck:** The `CursorFollower` component was utilizing React state (`useState`) to track X and Y mouse coordinates inside a `mousemove` event listener. This caused unnecessary, constant re-renders across the component tree synchronously at the rate of the user's mouse movement, resulting in severe frame drops and janky interactions.
+**Impact:** Eliminating constant React re-renders provides smoother 60FPS UI performance and substantially reduces CPU overhead when interacting with the application.
+**Learning:** Using `useState` to track high-frequency events like mouse movement causes severe performance degradation. Direct DOM manipulation with `useRef` directly mutating the CSS properties avoids these React re-render loops entirely while maintaining full functionality.
