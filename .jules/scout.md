@@ -1,0 +1,6 @@
+# Scout Learnings
+
+## 2024-05-24 - Virtual Labs EdTech Landscape
+**Market Insight:** The market for virtual science labs (like Labster, PraxiLabs, Beyond Labz) focuses heavily on bridging the gap between theoretical knowledge and practical application safely. The top tools not only simulate experiments but also integrate deeply with LMS (Learning Management Systems), provide detailed analytics for educators, and offer structured guidance (lab manuals/workbooks) for students to log observations and answer questions.
+**Codebase Match:** Alchemistry currently has a solid 3D interactive simulation core, authentication, basic role management (teacher/student), assignments, and a student experiment log. However, it lacks structured lab reports/workbooks for students to submit data/observations and deeper LMS-style features like exporting grades or importing rosters.
+**Opportunity:** Adding a structured "Lab Report" submission flow for assignments and a CSV export feature for teacher analytics would significantly close the gap between Alchemistry and enterprise-grade virtual labs.
