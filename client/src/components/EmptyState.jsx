@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './EmptyState.css';
 
+/* eslint-disable react/prop-types */
 const EmptyState = ({ 
   icon = '📭', 
   title = 'Nothing here yet', 
