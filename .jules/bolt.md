@@ -1,0 +1,4 @@
+
+## 2024-05-15 - [Optimize N+1 Query in Teacher Analytics]
+**Learning:** Found an N+1 query issue in the `getAnalytics` function of the `server/controllers/teacherController.js`. It iterated through each classroom and made individual Supabase queries to fetch student logs. This became a bottleneck since latency increases linearly with the number of classrooms a teacher has.
+**Action:** Replaced the loop-based querying with a single, batched `.in()` fetch that targets all `student_id`s across the classrooms. Then, efficiently associated the fetched logs back to the respective classrooms using an O(1) in-memory `Map` lookup and standard `.filter()`/`.sort()`. Next time, when aggregating data over relational items using Supabase or similar DB setups, preemptively structure the fetching to be batched and then manipulate the data grouping on the application server side via hash maps to eliminate multiple, redundant network roundtrips.
