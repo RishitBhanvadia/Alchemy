@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from "framer-motion";
 import "./Lab3D.css";
