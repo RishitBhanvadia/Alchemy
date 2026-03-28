@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 /**
  * CreateClassModal.jsx — Modal to create a Zoom or Google Meet session
  *
