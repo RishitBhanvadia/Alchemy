@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    // Instead of using state for position which causes re-renders on every mouse move,
+    // we use refs to directly mutate the DOM elements for performance.
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
+
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
@@ -25,7 +29,12 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (cursorRef.current && dotRef.current) {
+                // Using transform: translate3d avoids layout recalculations and only triggers compositor layers
+                const transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+                cursorRef.current.style.transform = transform;
+                dotRef.current.style.transform = transform;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -65,12 +74,12 @@ const CursorFollower = () => {
     return (
         <>
             <div
+                ref={cursorRef}
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
             <div
+                ref={dotRef}
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
             />
         </>
     );
