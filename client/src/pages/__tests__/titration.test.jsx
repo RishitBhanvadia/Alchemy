@@ -1,8 +1,9 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Titration from '../titration';
 import { describe, it, expect, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 
 // Mock Supabase
 vi.mock('../../supabaseClient', () => ({
