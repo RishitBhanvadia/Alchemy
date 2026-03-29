@@ -144,10 +144,11 @@ const Titration = () => {
     if (shake) {
       setShaking(true);
       setTimeout(() => setShaking(false), 500);
-      for (var i = 0; i < data.points.length; i++) {
-        if ((count / 10) >= data.points[i]) {
-          SetSColor(data.color[i]);
-
+      if (data && data.points && data.color) {
+        for (var i = 0; i < data.points.length; i++) {
+          if ((count / 10) >= data.points[i]) {
+            SetSColor(data.color[i]);
+          }
         }
       }
     }
