@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import './EmptyState.css';
 
@@ -31,6 +32,15 @@ const EmptyState = ({
       )}
     </motion.div>
   );
+};
+
+EmptyState.propTypes = {
+  icon: PropTypes.node,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  actionLabel: PropTypes.string,
+  onAction: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default EmptyState;
