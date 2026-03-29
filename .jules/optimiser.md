@@ -1,0 +1,4 @@
+## 2024-03-29 - Optimize CursorFollower Performance
+**Bottleneck:** High-frequency events like `mousemove` triggering synchronous React re-renders by calling `setState` on every move. This can cause severe performance degradation as the component re-renders dozens of times per second.
+**Impact:** Improved application overall responsiveness by bypassing the React rendering cycle and saving unnecessary full renders.
+**Learning:** For high-frequency positional tracking in React (like custom cursors), use `useRef` to reference DOM elements and directly mutate their `style` properties (e.g., `ref.current.style.left`) instead of `useState`.
