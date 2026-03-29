@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 const validateEnv = require('./config/validateEnv');
 validateEnv(); // exits process if any required var is missing
 

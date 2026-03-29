@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "env:push": "bash scripts/setup-env.sh",
+    "env:push": "node scripts/setup-env.js",
     "env:check": "node scripts/check-env-sync.js",
     "env:verify": "npm run env:check && cd client && npm run build"
   },
