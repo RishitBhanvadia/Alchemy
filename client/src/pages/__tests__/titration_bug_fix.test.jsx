@@ -1,7 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Titration from '../titration';
-import { vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
 
 // Mock Supabase
 vi.mock('../../supabaseClient', () => ({
@@ -28,22 +29,28 @@ describe('Titration Component Bug Fix', () => {
       </MemoryRouter>
     );
 
+    // Wait for initial render to settle
+    await screen.findByRole('heading', { name: /TITRATION SETUP/i });
+
     // Initial setup with base to make fallback[1] undefined
     const baseArrow = screen.getAllByRole('button', { name: '>' })[0];
-    fireEvent.click(baseArrow);
+    await userEvent.click(baseArrow);
 
     const confirmBtn = screen.getByRole('button', { name: 'CONFIRM SELECTION' });
-    fireEvent.click(confirmBtn);
+    await userEvent.click(confirmBtn);
 
-    const addAcidBtn = screen.getByRole('button', { name: 'ADD 10ML ACID' });
-    fireEvent.click(addAcidBtn);
+    const addAcidBtn = await screen.findByRole('button', { name: 'ADD 10ML ACID' });
+    await userEvent.click(addAcidBtn);
 
-    const addKmnBtn = screen.getByRole('button', { name: 'ADD INDICATOR (KMnO4)' });
-    fireEvent.click(addKmnBtn);
+    const addKmnBtn = await screen.findByRole('button', { name: 'ADD INDICATOR (KMnO4)' });
+    await userEvent.click(addKmnBtn);
 
-    const shakeBtn = screen.getByRole('button', { name: 'SHAKE' });
+    const shakeBtn = await screen.findByRole('button', { name: 'SHAKE' });
+    await userEvent.click(shakeBtn);
 
-    // This will not throw because of the fix
-    expect(() => fireEvent.click(shakeBtn)).not.toThrow();
+    // If it doesn't crash, the UI remains rendered (the component doesn't unmount).
+    // We can assert the page is still visible.
+    const setupHeading = await screen.findByRole('heading', { name: /TITRATION SETUP/i });
+    expect(setupHeading).toBeInTheDocument();
   });
 });
