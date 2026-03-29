@@ -15,13 +15,17 @@ const EmptyState = ({
       className={`empty-state-container ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div className="empty-state-icon">{icon}</div>
-      <h3 className="empty-state-title">{title}</h3>
+      <div className="empty-state-icon" aria-hidden="true">{icon}</div>
+      <h3 className="empty-state-title neon-glow">{title}</h3>
       <p className="empty-state-description">{description}</p>
       {actionLabel && onAction && (
-        <button className="empty-state-action" onClick={onAction}>
+        <button
+          type="button"
+          className="empty-state-action"
+          onClick={onAction}
+        >
           {actionLabel}
         </button>
       )}
