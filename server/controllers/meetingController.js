@@ -12,18 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
-
-// ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
-
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-function generateCode() {
-  let code = '';
-  for (let i = 0; i < 6; i++) {
-    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
-  }
-  return code;
-}
+const generateCode = require('../utils/generateCode');
 
 /**
  * Generates a unique 6-char code by checking Supabase for collisions.
