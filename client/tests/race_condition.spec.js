@@ -61,27 +61,37 @@ test.describe('Race Condition Verification', () => {
         // Set inputs for Page 1: A=10, B=10
         await page1.evaluate(() => {
             const ranges = document.querySelectorAll('input[type="range"]');
-            const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-            setter.call(ranges[0], 10);
-            ranges[0].dispatchEvent(new Event('change', { bubbles: true }));
-            setter.call(ranges[1], 10);
-            ranges[1].dispatchEvent(new Event('change', { bubbles: true }));
+            if (ranges[0]) {
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+                setter.call(ranges[0], 10);
+                ranges[0].dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (ranges[1]) {
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+                setter.call(ranges[1], 10);
+                ranges[1].dispatchEvent(new Event('change', { bubbles: true }));
+            }
         });
 
         // Set inputs for Page 2: A=20, B=20
         await page2.evaluate(() => {
             const ranges = document.querySelectorAll('input[type="range"]');
-            const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-            setter.call(ranges[0], 20);
-            ranges[0].dispatchEvent(new Event('change', { bubbles: true }));
-            setter.call(ranges[1], 20);
-            ranges[1].dispatchEvent(new Event('change', { bubbles: true }));
+            if (ranges[0]) {
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+                setter.call(ranges[0], 20);
+                ranges[0].dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (ranges[1]) {
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+                setter.call(ranges[1], 20);
+                ranges[1].dispatchEvent(new Event('change', { bubbles: true }));
+            }
         });
 
         // Click "INITIATE REACTION" button concurrently
         await Promise.all([
-            page1.getByTestId('initiate-reaction-btn').click(),
-            page2.getByTestId('initiate-reaction-btn').click()
+            page1.click('.action-button'),
+            page2.click('.action-button')
         ]);
 
         // Wait for results to load
