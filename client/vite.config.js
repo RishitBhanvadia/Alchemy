@@ -20,16 +20,28 @@ export default defineConfig({
         minify: 'esbuild',
         sourcemap: false,
         cssCodeSplit: true,
-        chunkSizeWarningLimit: 500,
+        chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
-                manualChunks: {
-                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-                    'vendor-state': ['zustand', 'axios'],
-                    'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
-                    'vendor-physics': ['@react-three/rapier'],
-                    'vendor-charts': ['recharts', '@tanstack/react-table'],
-                    'vendor-animation': ['framer-motion', 'gsap', '@use-gesture/react'],
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('react') || id.includes('react-dom')) {
+                            return 'vendor-react';
+                        }
+                        if (id.includes('three-mesh-bvh')) {
+                            return 'vendor-three-bvh';
+                        }
+                        if (id.includes('three')) {
+                            return 'vendor-three';
+                        }
+                        if (id.includes('@react-three')) {
+                            return 'vendor-r3f';
+                        }
+                        if (id.includes('framer-motion') || id.includes('gsap')) {
+                            return 'vendor-animation';
+                        }
+                        return 'vendor'; // everything else in one vendor chunk
+                    }
                 },
                 assetFileNames: 'assets/[name]-[hash][extname]',
                 chunkFileNames: 'chunks/[name]-[hash].js',
