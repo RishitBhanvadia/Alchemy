@@ -1,0 +1,148 @@
+const request = require('supertest');
+const express = require('express');
+
+// Mock the server setup
+const app = express();
+app.use(express.json());
+
+// Mock result route
+app.get('/result/:chem_a/:chem_b/:chem_c/:chem_d', (req, res) => {
+    const { chem_a, chem_b, chem_c, chem_d } = req.params;
+
+    // Validate parameters
+    if (isNaN(chem_a) || isNaN(chem_b) || isNaN(chem_c) || isNaN(chem_d)) {
+        return res.status(400).json({ message: 'Invalid parameters' });
+    }
+
+    // Mock successful response
+    res.json([{
+        id: 1,
+        conc_a: parseInt(chem_a),
+        conc_b: parseInt(chem_b),
+        conc_c: parseInt(chem_c),
+        conc_d: parseInt(chem_d),
+        result_name: 'Test Result'
+    }]);
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
+
+describe('API Endpoints', () => {
+    describe('GET /result/:a/:b/:c/:d', () => {
+        it('should return result for valid parameters', async () => {
+            const response = await request(app)
+                .get('/result/50/30/20/0')
+                .expect(200);
+
+            expect(response.body).toBeInstanceOf(Array);
+            expect(response.body[0]).toHaveProperty('result_name');
+        });
+
+        it('should return 400 for invalid parameters', async () => {
+            await request(app)
+                .get('/result/abc/30/20/0')
+                .expect(400);
+        });
+
+        it('should handle all zero concentrations', async () => {
+            const response = await request(app)
+                .get('/result/0/0/0/0')
+                .expect(200);
+
+            expect(response.body).toBeInstanceOf(Array);
+        });
+
+        it('should handle maximum concentrations', async () => {
+            const response = await request(app)
+                .get('/result/100/100/100/100')
+                .expect(200);
+
+            expect(response.body).toBeInstanceOf(Array);
+        });
+    });
+
+    describe('GET /health', () => {
+        it('should return health status', async () => {
+            const response = await request(app)
+                .get('/health')
+                .expect(200);
+
+            expect(response.body).toHaveProperty('status', 'ok');
+        });
+    });
+});
+
+describe('Teacher Controller N+1 Optimization', () => {
+  let originalGetAnalytics;
+  let originalRequireCache;
+  let mockSupabase;
+
+  beforeEach(() => {
+    mockSupabase = {
+      from: jest.fn()
+    };
+
+    // Set up our mock
+    originalRequireCache = Object.assign({}, require.cache);
+    require.cache[require.resolve('../supabaseClient')] = { exports: mockSupabase };
+
+    // We have to invalidate the require cache for teacherController
+    // to make it pick up the new mock
+    delete require.cache[require.resolve('../controllers/teacherController')];
+    originalGetAnalytics = require('../controllers/teacherController').getAnalytics;
+  });
+
+  afterEach(() => {
+    // Restore require cache
+    require.cache = originalRequireCache;
+  });
+
+  it('should fetch analytics with a single experiment_results query', async () => {
+    const { getAnalytics } = require('../controllers/teacherController');
+
+    const classrooms = [
+      { id: 'c1', name: 'Class 1', memberships: [{ student_id: 's1' }, { student_id: 's2' }] },
+      { id: 'c2', name: 'Class 2', memberships: [{ student_id: 's3' }] }
+    ];
+
+    const logs = [
+      { id: 'l1', user_id: 's1', score: 100 },
+      { id: 'l2', user_id: 's3', score: 80 }
+    ];
+
+    mockSupabase.from.mockImplementation((table) => {
+      if (table === 'classrooms') {
+        return {
+          select: () => ({
+            eq: () => ({ data: classrooms, error: null })
+          })
+        };
+      }
+      if (table === 'experiment_results') {
+        return {
+          select: () => ({
+            in: (field, ids) => ({
+              order: () => ({
+                limit: () => ({ data: logs.filter(l => ids.includes(l.user_id)), error: null })
+              })
+            })
+          })
+        };
+      }
+    });
+
+    const req = { user: { id: 'teacher-123' } };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    };
+
+    await getAnalytics(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    // 1 query for classrooms, 1 query for experiment_results
+    expect(mockSupabase.from).toHaveBeenCalledTimes(2);
+  });
+});
