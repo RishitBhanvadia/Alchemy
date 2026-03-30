@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
@@ -62,7 +63,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
-      console.error('AI Tutorial error:', error);
+      // Ignore AI Tutorial error in console to resolve linting, but handle gracefully in UI
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
@@ -159,6 +160,11 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;
