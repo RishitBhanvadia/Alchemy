@@ -34,7 +34,7 @@ const useProfileStore = create((set, get) => ({
 
     const logs = logsResult.data || [];
     const total = logs.length;
-    const scores = logs.map(l => l.score || 0).filter(s => s > 0);
+    const scores = logs.map(l => typeof l.score === 'number' ? l.score : 0);
     const avgAccuracy = scores.length > 0
       ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
       : 0;
