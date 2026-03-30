@@ -4,6 +4,10 @@
   "type": "module",
   "proxy": "http://localhost:5000",
   "private": true,
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  },
   "dependencies": {
     "@babel/parser": "^7.29.0",
     "@react-three/drei": "^9.122.0",

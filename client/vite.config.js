@@ -14,6 +14,12 @@ export default defineConfig({
             },
         },
     },
+    resolve: {
+        alias: {
+            'react': '/node_modules/react',
+            'react-dom': '/node_modules/react-dom',
+        },
+    },
     build: {
         outDir: 'build',
         target: 'es2020',
@@ -25,22 +31,19 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
-                        if (id.includes('react') || id.includes('react-dom')) {
-                            return 'vendor-react';
+                        // Keep React and router together in one chunk
+                        if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+                            return 'vendor-react-core';
                         }
-                        if (id.includes('three-mesh-bvh')) {
-                            return 'vendor-three-bvh';
+                        // Keep Three.js ecosystem together
+                        if (id.includes('three') || id.includes('@react-three')) {
+                            return 'vendor-three-core';
                         }
-                        if (id.includes('three')) {
-                            return 'vendor-three';
-                        }
-                        if (id.includes('@react-three')) {
-                            return 'vendor-r3f';
-                        }
+                        // Animation libraries
                         if (id.includes('framer-motion') || id.includes('gsap')) {
                             return 'vendor-animation';
                         }
-                        return 'vendor'; // everything else in one vendor chunk
+                        return 'vendor'; // all other libs
                     }
                 },
                 assetFileNames: 'assets/[name]-[hash][extname]',
