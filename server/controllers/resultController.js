@@ -14,11 +14,38 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  const exactA = (Number(a) / total) * 100;
+  const exactB = (Number(b) / total) * 100;
+  const exactI = (Number(i) / total) * 100;
+  const exactC = (Number(c) / total) * 100;
+
+  let na = Math.floor(exactA);
+  let nb = Math.floor(exactB);
+  let ni = Math.floor(exactI);
+  let nc = Math.floor(exactC);
+
+  let remainders = [
+    { key: 'na', rem: exactA - na },
+    { key: 'nb', rem: exactB - nb },
+    { key: 'ni', rem: exactI - ni },
+    { key: 'nc', rem: exactC - nc }
+  ];
+
+  let deficit = 100 - (na + nb + ni + nc);
+
+  // Sort by largest remainder descending
+  remainders.sort((x, y) => y.rem - x.rem);
+
+  // Distribute the deficit to the variables with the largest remainders
+  for (let idx = 0; idx < deficit && idx < remainders.length; idx++) {
+    if (remainders[idx].key === 'na') na++;
+    else if (remainders[idx].key === 'nb') nb++;
+    else if (remainders[idx].key === 'ni') ni++;
+    else if (remainders[idx].key === 'nc') nc++;
+  }
+
+  return [na, nb, ni, nc];
 }
 
 function classifyRegime(a, b) {
