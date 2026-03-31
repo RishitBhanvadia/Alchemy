@@ -52,18 +52,26 @@ const useAuthStore = create((set, get) => ({
     await supabase.auth.signOut();
     set({ user: null, profile: null, session: null, loading: false, error: null });
     
-    if (typeof useLabStore !== 'undefined') {
-      useLabStore.getState().reset();
-    }
-    if (typeof useHistoryStore !== 'undefined') {
-      useHistoryStore.getState().reset();
-    }
-    if (typeof useProfileStore !== 'undefined') {
-      useProfileStore.getState().reset();
-    }
-    if (typeof useClassroomStore !== 'undefined') {
-      useClassroomStore.getState().reset();
-    }
+    // Dynamically import stores to reset them on logout — avoids circular deps
+    try {
+      const { default: labStore } = await import('./labStore');
+      labStore.getState().reset();
+    } catch (_) { /* store not available */ }
+    
+    try {
+      const { default: historyStore } = await import('./historyStore');
+      historyStore.getState().reset();
+    } catch (_) { /* store not available */ }
+    
+    try {
+      const { default: profileStore } = await import('./profileStore');
+      profileStore.getState().reset();
+    } catch (_) { /* store not available */ }
+    
+    try {
+      const { default: classroomStore } = await import('./classroomStore');
+      classroomStore.getState().reset();
+    } catch (_) { /* store not available */ }
   },
 
   refreshProfile: async () => {
@@ -90,39 +98,37 @@ async function fetchProfile(user) {
     }
     
     if (error?.code === 'PGRST116') {
+      // Profile not found — create one (fallback if trigger didn't fire)
+      const profilePayload = {
+        id: user.id,
+        full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown User',
+        display_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown User',
+        role: user.user_metadata?.role || 'student',
+        avatar_url: user.user_metadata?.avatar_url || null,
+      };
+      
       const { data: newProfile, error: insertError } = await supabase
         .from('profiles')
-        .insert({
-          id: user.id,
-          full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown User',
-          display_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown User',
-          role: user.user_metadata?.role || 'student',
-          avatar_url: user.user_metadata?.avatar_url || null,
-        })
+        .insert(profilePayload)
         .select()
         .single();
       
       if (insertError) {
+        console.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
         return null;
       }
       return newProfile;
     }
     
+    if (error) {
+      console.error('[authStore] Profile fetch error:', error.message, error.code);
+    }
+    
     return null;
   } catch (err) {
+    console.error('[authStore] fetchProfile exception:', err.message);
     return null;
   }
-}
-
-let useLabStore, useHistoryStore, useProfileStore, useClassroomStore;
-
-try {
-  useLabStore = require('./labStore').default;
-  useHistoryStore = require('./historyStore').default;
-  useProfileStore = require('./profileStore').default;
-  useClassroomStore = require('./classroomStore').default;
-} catch (e) {
-  console.warn('Store imports deferred - stores may not be initialized yet');
 }
 
 export default useAuthStore;

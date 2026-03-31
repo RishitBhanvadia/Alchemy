@@ -135,12 +135,15 @@ export const useLabStore = create((set, get) => ({
           });
         }
 
-        if (typeof useHistoryStore !== 'undefined') {
-          useHistoryStore.getState().refresh();
-        }
-        if (typeof useProfileStore !== 'undefined') {
-          useProfileStore.getState().refresh();
-        }
+        // Dynamically import dependent stores to avoid circular dependencies
+        try {
+          const { default: historyStore } = await import('./historyStore');
+          historyStore.getState().refresh();
+        } catch (_) { /* store not available */ }
+        try {
+          const { default: profileStore } = await import('./profileStore');
+          profileStore.getState().refresh();
+        } catch (_) { /* store not available */ }
       }
 
       return res.data;
@@ -175,14 +178,5 @@ export const useLabStore = create((set, get) => ({
 }));
 
 export { deriveThermalState };
-
-let useHistoryStore, useProfileStore;
-
-try {
-  useHistoryStore = require('./historyStore').default;
-  useProfileStore = require('./profileStore').default;
-} catch (e) {
-  console.warn('Store imports deferred');
-}
 
 export default useLabStore;

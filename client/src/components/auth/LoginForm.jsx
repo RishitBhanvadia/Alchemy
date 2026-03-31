@@ -1,55 +1,35 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
+import { Mail, Lock } from 'lucide-react';
+import InputField from './InputField';
+import CTAButton from './CTAButton';
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [touched, setTouched] = useState({});
 
-  const validateField = (name, value) => {
-    if (name === 'email') {
-      if (!value.trim()) return 'Please enter your email address.';
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) return 'That doesn\'t look like a valid email.';
-    }
-    if (name === 'password') {
-      if (!value) return 'Please enter a password.';
-    }
-    return '';
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.email) newErrors.email = 'Email address is required.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email.';
+    
+    if (!formData.password) newErrors.password = 'Security key is required.';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (touched[name]) {
-      setErrors({ ...errors, [name]: validateField(name, value) });
-    }
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors, [name]: validateField(name, value) });
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
-    const newErrors = {
-      email: validateField('email', formData.email),
-      password: validateField('password', formData.password)
-    };
-    setErrors(newErrors);
-    setTouched({ email: true, password: true });
-    
-    if (newErrors.email || newErrors.password) {
-      return;
-    }
+    if (!validate()) return;
     
     setLoading(true);
     try {
@@ -59,75 +39,54 @@ const LoginForm = () => {
       });
       
       if (error) {
-        if (error.message.includes('rate limit')) {
-          throw new Error('Too many login attempts. Please wait a few minutes.');
-        }
-        if (error.message.includes('Invalid login')) {
-          throw new Error('Invalid email or password.');
-        }
-        throw error;
+         if (error.message.includes('Invalid login')) throw new Error('Lab credentials unauthorized.');
+         throw error;
       }
       
-      console.log('Login successful response from Supabase');
-      toast.success('Logged in successfully!');
+      toast.success('Lab access granted. Welcome scientist!');
     } catch (err) {
-      toast.error(err.message || 'Login failed. Please try again.');
+      toast.error(err.message || 'Access denied.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div className="form-group">
-        <label htmlFor="email" className="form-label">Email Address</label>
-        <input 
-          type="email" 
-          id="email"
-          name="email"
-          className={`auth-input ${touched.email && errors.email ? 'input-error' : ''}`}
-          data-testid="email-input"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          aria-invalid={touched.email && !!errors.email}
-        />
-        {touched.email && errors.email && (
-          <span className="error-message" id="email-error" role="alert">{errors.email}</span>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="password" className="form-label">Password</label>
-        <input 
-          type="password" 
-          id="password"
+    <form onSubmit={handleLogin} className="space-y-6">
+      <InputField
+        label="Email Address"
+        name="email"
+        type="email"
+        icon={Mail}
+        placeholder="scientist@alchemistry.edu"
+        value={formData.email}
+        onChange={handleChange}
+        error={errors.email}
+        disabled={loading}
+      />
+
+      <div>
+        <InputField
+          label="Password"
           name="password"
-          className={`auth-input ${touched.password && errors.password ? 'input-error' : ''}`}
-          data-testid="password-input"
+          type="password"
+          icon={Lock}
           placeholder="••••••••"
           value={formData.password}
           onChange={handleChange}
-          onBlur={handleBlur}
-          aria-describedby={errors.password ? "password-error" : undefined}
-          aria-invalid={touched.password && !!errors.password}
+          error={errors.password}
+          disabled={loading}
         />
-        {touched.password && errors.password && (
-          <span className="error-message" id="password-error" role="alert">{errors.password}</span>
-        )}
-        <a href="#!" className="forgot-password">Forgot password?</a>
+        <div className="flex justify-end mt-2">
+          <a href="#" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
+            Forgot password?
+          </a>
+        </div>
       </div>
-      <button type="submit" className="submit-btn" data-testid="login-submit-btn" disabled={loading}>
-        {loading ? (
-          <>
-            <span className="btn-spinner"></span>
-            Logging in...
-          </>
-        ) : (
-          'Access Lab'
-        )}
-      </button>
+
+      <CTAButton loading={loading}>
+        Access Lab
+      </CTAButton>
     </form>
   );
 };
