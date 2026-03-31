@@ -193,7 +193,16 @@ const ClassroomDetail = () => {
                                         <td>{asgn.required_score}%</td>
                                         <td>{asgn.due_date ? new Date(asgn.due_date).toLocaleDateString() : 'No Limit'}</td>
                                         <td>
-                                            <button className="del-btn" onClick={() => deleteAssignment(asgn.id)}>🗑️</button>
+                                            <button
+                                                className="del-btn"
+                                                title="Delete assignment"
+                                                aria-label="Delete assignment"
+                                                onClick={() => {
+                                                    if (window.confirm('Are you sure you want to delete this assignment?')) {
+                                                        deleteAssignment(asgn.id);
+                                                    }
+                                                }}
+                                            >🗑️</button>
                                         </td>
                                     </tr>
                                 ))}
