@@ -130,7 +130,7 @@ export const useLabStore = create((set, get) => ({
             reaction_id: res.data.reaction_id,
             outcome_label: res.data.outcome_label,
             module: 'lab',
-            score: 75 + Math.floor(Math.random() * 26),
+            score: res.data.score || 0,
             ran_at: new Date().toISOString()
           });
         }

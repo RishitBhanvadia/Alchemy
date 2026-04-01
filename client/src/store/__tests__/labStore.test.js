@@ -4,8 +4,31 @@
  *
  * @vitest-environment node
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useLabStore, deriveThermalState } from '../labStore';
+
+vi.mock('../../supabaseClient', () => ({
+  supabase: {
+    auth: {
+      getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'test-user-id' } } }),
+    },
+    from: vi.fn().mockReturnValue({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      gte: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockResolvedValue({ data: null }),
+      insert: vi.fn().mockResolvedValue({ error: null }),
+    }),
+  },
+}));
+
+vi.mock('../../utils/apiClient', () => ({
+  default: {
+    post: vi.fn(),
+  },
+}));
 
 describe('labStore', () => {
   // Reset store to defaults before each test
@@ -167,6 +190,50 @@ describe('labStore', () => {
   });
 
   describe('Reaction slice', () => {
+    it('initiateReaction uses score from API response', async () => {
+      // Setup mock API response with a specific score
+      const mockApiResponse = {
+        data: {
+          reaction_id: 123,
+          outcome_label: 'Success',
+          score: 88
+        }
+      };
+
+      const { supabase } = await import('../../supabaseClient');
+      const apiClient = await import('../../utils/apiClient');
+
+      apiClient.default.post = vi.fn().mockResolvedValue(mockApiResponse);
+
+      // Mock user explicitly since auth is used in initiateReaction
+      supabase.auth.getUser = vi.fn().mockResolvedValue({
+        data: { user: { id: 'test-user-id' } }
+      });
+
+      // Setup mock Supabase insert
+      const insertMock = vi.fn().mockResolvedValue({ error: null });
+      supabase.from = vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        gte: vi.fn().mockReturnThis(),
+        order: vi.fn().mockReturnThis(),
+        limit: vi.fn().mockReturnThis(),
+        maybeSingle: vi.fn().mockResolvedValue({ data: null }),
+        insert: insertMock,
+      });
+
+      // Set chemicals so reaction can proceed
+      useLabStore.getState().setChemA(10);
+
+      // Trigger reaction
+      await useLabStore.getState().initiateReaction();
+
+      // Verify insert was called with the score from API (88), not a random number
+      expect(insertMock).toHaveBeenCalled();
+      const insertArgs = insertMock.mock.calls[0][0];
+      expect(insertArgs.score).toBe(88);
+    });
+
     it('setActiveChemicals updates chemicals', () => {
       useLabStore.getState().setChemA(10);
       useLabStore.getState().setChemB(20);
