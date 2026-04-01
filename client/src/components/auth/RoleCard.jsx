@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, FlaskConical, Check } from 'lucide-react';
+import { GraduationCap, FlaskConical } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 const RoleCard = ({ roleType, selected, onSelect }) => {
   const isStudent = roleType === 'student';
@@ -56,3 +57,9 @@ const RoleCard = ({ roleType, selected, onSelect }) => {
 };
 
 export default RoleCard;
+
+RoleCard.propTypes = {
+  roleType: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
