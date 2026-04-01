@@ -503,6 +503,7 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
+        {/* ⚡ Bolt Optimization: Lazy load heavy charting library below the fold to reduce initial dashboard bundle size */}
         <React.Suspense fallback={<div style={styles.emptyState}>Loading analytics...</div>}>
           <StudentAnalyticsChart
             scores={experimentScores}
