@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onChange, onBlur, error, name, disabled }) => {
   return (
     <div className="space-y-2">
-      <label className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
+      <label htmlFor={name} className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
         {label}
       </label>
       <div className="relative group">
