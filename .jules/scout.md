@@ -1,0 +1,4 @@
+## 2024-10-24 - AI-Guided Contextual Tips
+**Market Insight:** Top virtual lab competitors (Labster, PraxiLabs) all provide step-by-step contextual guidance and "sandbox tips" that pop up when students pause or make incorrect chemical combinations, rather than just post-experiment feedback.
+**Codebase Match:** We have a robust AI Tutor panel (`client/src/components/AiTutorPanel.jsx`) but it requires manual interaction. We can hook into the existing 3D lab state (`client/src/pages/Lab3D.jsx`) to auto-trigger the AI tutor with contextual hints based on idle time or specific incorrect combinations.
+**Opportunity:** Enhance `AiTutorPanel` to listen for idle events or specific experiment states to proactively offer help, dramatically improving the onboarding and learning experience for complex reactions.
