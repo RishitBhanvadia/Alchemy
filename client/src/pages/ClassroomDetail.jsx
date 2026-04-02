@@ -87,6 +87,12 @@ const ClassroomDetail = () => {
         }
     };
 
+    const handleDeleteAssignment = async (assignmentId) => {
+        if (window.confirm('Are you sure you want to delete this assignment? This action cannot be undone.')) {
+            await deleteAssignment(assignmentId);
+        }
+    };
+
     const handleCreateAssignment = async (e) => {
         e.preventDefault();
         const success = await createAssignment({
@@ -193,7 +199,12 @@ const ClassroomDetail = () => {
                                         <td>{asgn.required_score}%</td>
                                         <td>{asgn.due_date ? new Date(asgn.due_date).toLocaleDateString() : 'No Limit'}</td>
                                         <td>
-                                            <button className="del-btn" onClick={() => deleteAssignment(asgn.id)}>🗑️</button>
+                                            <button
+                                                className="del-btn"
+                                                onClick={() => handleDeleteAssignment(asgn.id)}
+                                                title="Delete assignment"
+                                                aria-label="Delete assignment"
+                                            >🗑️</button>
                                         </td>
                                     </tr>
                                 ))}
