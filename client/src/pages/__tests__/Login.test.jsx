@@ -46,8 +46,8 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getAllByLabelText(/email address/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByLabelText(/password/i)[0]).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
@@ -64,8 +64,8 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
+        const emailInput = screen.getAllByLabelText(/email address/i)[0];
+        const passwordInput = screen.getAllByLabelText(/password/i)[0];
         const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
@@ -88,8 +88,8 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
+        const emailInput = screen.getAllByLabelText(/email address/i)[0];
+        const passwordInput = screen.getAllByLabelText(/password/i)[0];
         const submitButton = screen.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
