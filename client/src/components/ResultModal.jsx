@@ -13,6 +13,15 @@ import './ResultModal.css';
  * @param {function} onAskAI - Callback to open AI tutor with context
  */
 const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
+  const [showConfirmReset, setShowConfirmReset] = React.useState(false);
+
+  // Reset confirmation state when modal is closed
+  React.useEffect(() => {
+    if (!isOpen) {
+      setShowConfirmReset(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen || !result) return null;
 
   const { 
@@ -85,17 +94,36 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
           </div>
 
           <div className="result-modal-footer">
-            <button className="modal-btn btn-ai" onClick={onAskAI}>
-              <span>🤖</span> Ask AI Tutor for Explanation
-            </button>
-            <div className="footer-actions-row">
-              <button className="modal-btn btn-secondary" onClick={onClose}>
-                Keep Experiment
-              </button>
-              <button className="modal-btn btn-reset" onClick={onReset}>
-                Reset Lab
-              </button>
-            </div>
+            {showConfirmReset ? (
+              <div className="confirm-prompt">
+                <p className="confirm-text">Are you sure you want to reset? This will clear your current experiment.</p>
+                <div className="footer-actions-row">
+                  <button className="modal-btn btn-secondary" onClick={() => setShowConfirmReset(false)}>
+                    Cancel
+                  </button>
+                  <button className="modal-btn btn-confirm-reset" onClick={() => {
+                    setShowConfirmReset(false);
+                    onReset();
+                  }}>
+                    Yes, Reset
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <button className="modal-btn btn-ai" onClick={onAskAI}>
+                  <span>🤖</span> Ask AI Tutor for Explanation
+                </button>
+                <div className="footer-actions-row">
+                  <button className="modal-btn btn-secondary" onClick={onClose}>
+                    Keep Experiment
+                  </button>
+                  <button className="modal-btn btn-reset" onClick={() => setShowConfirmReset(true)}>
+                    Reset Lab
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </motion.div>
       </motion.div>
