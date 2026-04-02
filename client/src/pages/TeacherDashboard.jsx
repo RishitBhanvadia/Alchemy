@@ -504,7 +504,7 @@ export default function TeacherDashboard({ analytics = false }) {
         </div>
 
         {/* ⚡ Bolt Optimization: Lazy load heavy charting library below the fold to reduce initial dashboard bundle size */}
-        <React.Suspense fallback={<div style={styles.emptyState}>Loading analytics...</div>}>
+        <React.Suspense fallback={<div className="p-8 flex justify-center w-full"><EmptyState icon="📊" title="Loading analytics..." description="Please wait while the chart data loads." /></div>}>
           <StudentAnalyticsChart
             scores={experimentScores}
             experimentName={
