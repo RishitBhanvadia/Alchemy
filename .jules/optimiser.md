@@ -1,0 +1,4 @@
+## 2025-04-02 - Lazy load StudentAnalyticsChart in TeacherDashboard
+**Bottleneck:** The `StudentAnalyticsChart` component uses the heavy `recharts` library and was statically imported in `TeacherDashboard.jsx`. This caused the `TeacherDashboard` main chunk to bloat to 442kB (uncompressed) on initial load, blocking the rendering of above-the-fold content while downloading below-the-fold chart components.
+**Impact:** Reduced `TeacherDashboard` chunk size from 442kB to 80kB, with the remaining 362kB `StudentAnalyticsChart` component (and `recharts` dependencies) shifted to an asynchronously loaded chunk.
+**Learning:** Statically importing heavy charting libraries significantly increases the bundle size of parent pages. By leveraging `React.lazy()` and `<Suspense>`, we can selectively defer loading these components until they are actually rendered, dramatically improving the initial load time of the dashboard.
