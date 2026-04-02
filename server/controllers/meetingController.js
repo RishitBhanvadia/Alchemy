@@ -12,6 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
+const crypto = require('crypto');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
 
@@ -167,9 +168,9 @@ exports.createZoomMeeting = async (req, res) => {
 };
 
 /**
- * GET /api/meetings/google/auth?teacherId=xxx
- * Redirects the teacher to Google OAuth consent screen.
- * Note: This is a browser redirect, so no auth middleware — teacherId is passed as query param.
+ * GET /api/meetings/google/auth
+ * Returns the Google OAuth consent screen URL.
+ * Secure API endpoint that requires authentication and teacher role.
  */
 exports.googleAuthRedirect = (req, res) => {
   try {
@@ -178,21 +179,23 @@ exports.googleAuthRedirect = (req, res) => {
       return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID in .env', 500);
     }
 
-    const { teacherId } = req.query;
+    const teacherId = req.user.id;
     if (!teacherId) {
-      return error(res, 'VALIDATION_ERROR', 'teacherId query parameter is required.', 400);
+      return error(res, 'UNAUTHORIZED', 'Teacher ID not found in request.', 401);
     }
 
-    // Build the server callback URL dynamically
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const redirectUri = `${protocol}://${host}/api/meetings/google/callback`;
+    // Use environment variable for backend URL to prevent Host Header Injection
+    const backendUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+    const redirectUri = `${backendUrl}/api/meetings/google/callback`;
 
-    // Store redirect URI and teacher ID in state for the callback
-    const state = Buffer.from(JSON.stringify({
-      teacherId,
-      redirectUri,
-    })).toString('base64');
+    // Create a state object and sign it to prevent tampering and CSRF
+    const stateObj = { teacherId, redirectUri };
+    const stateString = JSON.stringify(stateObj);
+    const signature = crypto.createHmac('sha256', process.env.JWT_SECRET || 'fallback_secret')
+                            .update(stateString)
+                            .digest('hex');
+
+    const state = Buffer.from(JSON.stringify({ ...stateObj, signature })).toString('base64');
 
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
     authUrl.searchParams.set('client_id', clientId);
@@ -203,10 +206,10 @@ exports.googleAuthRedirect = (req, res) => {
     authUrl.searchParams.set('prompt', 'consent');
     authUrl.searchParams.set('state', state);
 
-    return res.redirect(authUrl.toString());
+    return success(res, { authUrl: authUrl.toString() });
   } catch (err) {
     logger.error('[googleAuthRedirect]', err.message);
-    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to initiate Google auth.', 500);
+    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to generate Google auth URL.', 500);
   }
 };
 
@@ -223,7 +226,23 @@ exports.googleAuthCallback = async (req, res) => {
     }
 
     // Decode state to get teacher ID and redirect URI
-    const { teacherId, redirectUri } = JSON.parse(Buffer.from(state, 'base64').toString());
+    const parsedState = JSON.parse(Buffer.from(state, 'base64').toString());
+    const { teacherId, redirectUri, signature } = parsedState;
+
+    if (!teacherId || !redirectUri || !signature) {
+      return error(res, 'INVALID_STATE', 'Invalid state parameter.', 400);
+    }
+
+    // Verify the signature
+    const stateString = JSON.stringify({ teacherId, redirectUri });
+    const expectedSignature = crypto.createHmac('sha256', process.env.JWT_SECRET || 'fallback_secret')
+                                    .update(stateString)
+                                    .digest('hex');
+
+    if (signature !== expectedSignature) {
+      logger.error('[Google] State signature verification failed.');
+      return error(res, 'CSRF_ERROR', 'State validation failed.', 403);
+    }
 
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
