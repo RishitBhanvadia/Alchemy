@@ -158,8 +158,13 @@ const StudentDashboard = () => {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="no-assignments">
-                                            <span>No assignments yet! Enjoy the sandbox. 🧪</span>
+                                        <div className="glass-card">
+                                            <EmptyState
+                                                icon="📋"
+                                                title="No assignments right now"
+                                                description="Your teacher hasn't assigned anything yet. Enjoy the sandbox or check back later!"
+                                                className="no-assignments-empty"
+                                            />
                                         </div>
                                     )}
                                 </div>
