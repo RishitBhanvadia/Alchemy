@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, FlaskConical, Check } from 'lucide-react';
+import { GraduationCap, FlaskConical } from 'lucide-react';
 
 const RoleCard = ({ role, selected, onSelect }) => {
   const isStudent = role === 'student';
@@ -13,10 +13,19 @@ const RoleCard = ({ role, selected, onSelect }) => {
 
   return (
     <motion.div
+      role="button"
+      aria-pressed={selected}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(role);
+        }
+      }}
       whileHover={{ y: -2, borderColor: 'rgba(255,255,255,0.12)' }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onSelect(role)}
-      className={`relative flex-1 cursor-pointer p-5 rounded-2xl border transition-all duration-300 text-center group ${
+      className={`relative flex-1 cursor-pointer p-5 rounded-2xl border transition-all duration-300 text-center group outline-none focus-visible:ring-2 focus-visible:ring-lab-purple ${
         selected 
         ? 'bg-lab-purple/10 border-lab-purple/70 shadow-lab-role-selected' 
         : 'bg-lab-input border-white/5'
