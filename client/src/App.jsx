@@ -58,7 +58,7 @@ function App() {
     // Only redirect if everything is loaded and we are on /login
     if (!loading && user && profile && location.pathname === '/login') {
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
-      console.log('Redirecting to:', target, 'Profile role:', profile.role);
+      // Intentionally omitting console.log per lint rules
       navigate(target, { replace: true });
     }
   }, [user, profile, loading, location.pathname, navigate]);

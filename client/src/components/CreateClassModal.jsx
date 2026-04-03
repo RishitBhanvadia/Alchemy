@@ -27,6 +27,26 @@ const CreateClassModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  // Close on overlay click or Escape key
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+         setMeetingData(null);
+         setLoading(false);
+         onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
   // ─── Zoom flow: direct API call ─────────────────────────────────────────────
 
   const handleZoom = async () => {
@@ -79,8 +99,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div style={styles.overlay} onClick={handleOverlayClick} onKeyDown={(e) => { if(e.key === 'Escape') handleOverlayClick(e); }} role="button" aria-label="Close modal" tabIndex={-1}>
+      <div style={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
