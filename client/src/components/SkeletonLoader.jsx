@@ -20,6 +20,23 @@ export const LabSkeleton = () => (
     </div>
 );
 
+export const StudentDashboardSkeleton = () => (
+    <div className="skeleton-container student-dashboard-skeleton">
+        <SkeletonItem className="skeleton-student-header" />
+        <div className="skeleton-student-grid">
+            <div className="skeleton-student-left">
+                <SkeletonItem className="skeleton-student-card" />
+                <SkeletonItem className="skeleton-student-card" />
+                <SkeletonItem className="skeleton-student-card" />
+            </div>
+            <div className="skeleton-student-right">
+                <SkeletonItem className="skeleton-student-modules" />
+                <SkeletonItem className="skeleton-student-history" />
+            </div>
+        </div>
+    </div>
+);
+
 export const DashboardSkeleton = () => (
     <div className="skeleton-container dashboard-skeleton">
         <SkeletonItem className="skeleton-header" />

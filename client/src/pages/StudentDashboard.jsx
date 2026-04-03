@@ -10,6 +10,7 @@ import JoinClassroom from '../components/student/JoinClassroom';
 import EmptyState from '../components/EmptyState';
 import useAssignmentStore from '../store/assignmentStore';
 import JoinMeetingPanel from '../components/student/JoinMeetingPanel';
+import { StudentDashboardSkeleton } from '../components/SkeletonLoader';
 
 import './StudentDashboard.css';
 
@@ -92,14 +93,7 @@ const StudentDashboard = () => {
     };
 
     if (loading && !membership) {
-        return (
-            <div className="student-dashboard loading-state">
-                <div className="loader-container">
-                    <h2 className="neon-glow">Initialising Laboratory Access...</h2>
-                    <div className="shimmer-bar"></div>
-                </div>
-            </div>
-        );
+        return <StudentDashboardSkeleton />;
     }
 
     const recentExperiments = logs.slice(0, 3);

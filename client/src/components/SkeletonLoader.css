@@ -76,6 +76,60 @@
     border-radius: 30px;
 }
 
+/* Student Dashboard Skeleton */
+.student-dashboard-skeleton {
+    padding: 120px 5% 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #0A0A1A;
+}
+
+.student-dashboard-skeleton .skeleton-student-header {
+    height: 80px;
+    width: 60%;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+.student-dashboard-skeleton .skeleton-student-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 40px;
+}
+
+@media (max-width: 968px) {
+  .student-dashboard-skeleton .skeleton-student-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.student-dashboard-skeleton .skeleton-student-left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.student-dashboard-skeleton .skeleton-student-card {
+    height: 150px;
+    border-radius: 16px;
+}
+
+.student-dashboard-skeleton .skeleton-student-right {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.student-dashboard-skeleton .skeleton-student-modules {
+    height: 250px;
+    border-radius: 16px;
+}
+
+.student-dashboard-skeleton .skeleton-student-history {
+    height: 300px;
+    border-radius: 16px;
+}
+
 /* Dashboard Skeleton */
 .dashboard-skeleton .skeleton-header {
     height: 100px;
