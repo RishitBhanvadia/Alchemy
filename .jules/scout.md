@@ -1,0 +1,4 @@
+## 2024-05-24 - Guided Learning vs Sandbox
+**Market Insight:** The most successful virtual labs (Labster, PraxiLabs) do not just offer a sandbox; they tightly integrate step-by-step guidance, lab manuals, and assessments (quizzes) to ensure educational value.
+**Codebase Match:** Alchemistry currently has a strong sandbox foundation with interactive 3D physics (`Lab3D.jsx`) and assignment tracking (`assignmentStore.js`), but it lacks integrated in-experiment assessments and procedural overlays.
+**Opportunity:** Build pre/post-experiment quizzes and an in-experiment lab manual overlay. These features map easily to the existing `ResultModal.jsx` and `useAssignmentStore` without requiring massive architectural shifts.
