@@ -80,9 +80,9 @@ const CreateClassModal = ({ isOpen, onClose }) => {
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
-    <div style={styles.overlay} onClick={handleClose} role="dialog" aria-hidden="true">
+    <div style={styles.overlay} onClick={handleClose} role="presentation">
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="document">
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
