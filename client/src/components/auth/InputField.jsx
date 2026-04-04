@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onChange, onBlur, error, name, disabled }) => {
   return (
     <div className="space-y-2">
-      <label className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
+      <label htmlFor={name} className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
         {label}
       </label>
       <div className="relative group">
@@ -43,6 +44,19 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
       </AnimatePresence>
     </div>
   );
+};
+
+InputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  type: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
+  error: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
 };
 
 export default InputField;
