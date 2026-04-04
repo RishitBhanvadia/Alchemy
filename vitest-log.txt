@@ -1,0 +1,745 @@
+
+> alchemy-client@0.1.0 test
+> vitest --run
+
+
+[1m[46m RUN [49m[22m [36mv4.1.2 [39m[90m/app/client[39m
+
+ [32m✓[39m src/store/__tests__/labStore.test.js [2m([22m[2m31 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+[90mstderr[2m | src/pages/__tests__/Dashboard.test.jsx[2m > [22m[2mDashboard Component[2m > [22m[2mshould render dashboard title
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/pages/__tests__/Dashboard.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 187[2mms[22m[39m
+ [32m✓[39m src/utils/__tests__/notifications.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+[90mstderr[2m | src/pages/__tests__/Login.test.jsx[2m > [22m[2mLogin Component[2m > [22m[2mshould render login form
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [31m❯[39m src/pages/__tests__/Login.test.jsx [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 585[2mms[22m[39m
+[31m     [31m×[31m should render login form[39m[32m 120[2mms[22m[39m
+     [33m[2m✓[22m[39m should have submit button [33m 412[2mms[22m[39m
+[31m     [31m×[31m should handle form submission[39m[32m 29[2mms[22m[39m
+[31m     [31m×[31m should handle login error[39m[32m 20[2mms[22m[39m
+ [32m✓[39m src/utils/__tests__/logger.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstderr[2m | src/components/__tests__/Navbar.test.jsx[2m > [22m[2mNavbar Component[2m > [22m[2mshould render navigation links for teacher (default)
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/components/__tests__/Navbar.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/Login.test.jsx[2m > [22mLogin Component[2m > [22mshould render login form
+[31m[1mTestingLibraryElementError[22m[39m: Found a label with the text of: /email address/i, however no form control was found associated to that label. Make sure you're using the "for" attribute or "aria-labelledby" attribute correctly.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"login-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-1"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-2"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Authentication form"[39m
+        [33mclass[39m=[32m"auth-card"[39m
+        [33mdata-testid[39m=[32m"auth-card"[39m
+        [33mrole[39m=[32m"main"[39m
+        [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"logo-section"[39m
+        [36m>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"logo-text"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m⚗️[0m
+            [36m</span>[39m
+            [0m Alchemistry[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"logo-tagline"[39m
+          [36m>[39m
+            [0mThe Virtual Chemistry Lab[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tabs-container"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn active"[39m
+            [33mdata-testid[39m=[32m"login-tab"[39m
+          [36m>[39m
+            [0mLog In[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn "[39m
+          [36m>[39m
+            [0mSign Up[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"opacity: 0; transform: translateX(20px);"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-2"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+              [36m>[39m
+                [0mEmail Address[0m
+              [36m</label>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative group"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-mail"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"18"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"18"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                    [36m/>[39m
+                    [36m<rect[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mrx[39m=[32m"2"[39m
+                      [33mwidth[39m=[32m"20"[39m
+                      [33mx[39m=[32m"2"[39m
+                      [33my[39m=[32m"4"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</div>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mname[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"scientist@alchemistry.edu"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-2"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative group"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-lock"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"18"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"18"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"11"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mry[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"18"[39m
+                        [33mx[39m=[32m"3"[39m
+                        [33my[39m=[32m"11"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M7 11V7a5 5 0 0 1 10 0v4"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</div>[39m
+                  [36m<input[39m
+                    [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                    [33mid[39m=[32m"password"[39m
+                    [33mname[39m=[32m"password"[39m
+                    [33mplaceholder[39m=[32m"••••••••"[39m
+                    [33mtype[39m=[32m"password"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex justify-end mt-2"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline"[39m
+                  [33mhref[39m=[32m"#"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"relative w-full h-[52px] bg-ion-gradient rounded-[14px] text-white font-bold text-sm tracking-[0.08em] uppercase flex items-center justify-center gap-3 overflow-hidden transition-all duration-300 shadow-lab-button group cursor-pointer"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute inset-0 border-t border-white/20 rounded-[14px] pointer-events-none"[39m
+              [36m/>[39m
+              [0mAccess Lab[0m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-right group-hover:translate-x-1.5 transition-transform duration-300"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M5 12h14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m12 5 7 7-7 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"footer-text"[39m
+        [36m>[39m
+          [0mBy signing up you agree to our [0m
+          [36m<a[39m
+            [33mclass[39m=[32m"footer-link"[39m
+            [33mhref[39m=[32m"#!"[39m
+          [36m>[39m
+            [0mTerms of Service[0m
+          [36m</a>[39m
+        [36m</p>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:[2m108:40[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/__tests__/Login.test.jsx:[2m49:23[22m[39m
+    [90m 47|[39m     [34mit[39m([32m'should render login form'[39m[33m,[39m () [33m=>[39m {
+    [90m 48|[39m         [34mrenderLogin[39m()[33m;[39m
+    [90m 49|[39m         expect(screen.getByLabelText(/email address/i)).toBeInTheDocum…
+    [90m   |[39m                       [31m^[39m
+    [90m 50|[39m         [34mexpect[39m(screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m 51|[39m     })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/Login.test.jsx[2m > [22mLogin Component[2m > [22mshould handle form submission
+[31m[1mTestingLibraryElementError[22m[39m: Found a label with the text of: /email address/i, however no form control was found associated to that label. Make sure you're using the "for" attribute or "aria-labelledby" attribute correctly.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"login-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-1"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-2"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Authentication form"[39m
+        [33mclass[39m=[32m"auth-card"[39m
+        [33mdata-testid[39m=[32m"auth-card"[39m
+        [33mrole[39m=[32m"main"[39m
+        [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"logo-section"[39m
+        [36m>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"logo-text"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m⚗️[0m
+            [36m</span>[39m
+            [0m Alchemistry[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"logo-tagline"[39m
+          [36m>[39m
+            [0mThe Virtual Chemistry Lab[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tabs-container"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn active"[39m
+            [33mdata-testid[39m=[32m"login-tab"[39m
+          [36m>[39m
+            [0mLog In[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn "[39m
+          [36m>[39m
+            [0mSign Up[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"opacity: 0; transform: translateX(20px);"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-2"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+              [36m>[39m
+                [0mEmail Address[0m
+              [36m</label>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative group"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-mail"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"18"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"18"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                    [36m/>[39m
+                    [36m<rect[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mrx[39m=[32m"2"[39m
+                      [33mwidth[39m=[32m"20"[39m
+                      [33mx[39m=[32m"2"[39m
+                      [33my[39m=[32m"4"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</div>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mname[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"scientist@alchemistry.edu"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-2"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative group"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-lock"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"18"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"18"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"11"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mry[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"18"[39m
+                        [33mx[39m=[32m"3"[39m
+                        [33my[39m=[32m"11"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M7 11V7a5 5 0 0 1 10 0v4"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</div>[39m
+                  [36m<input[39m
+                    [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                    [33mid[39m=[32m"password"[39m
+                    [33mname[39m=[32m"password"[39m
+                    [33mplaceholder[39m=[32m"••••••••"[39m
+                    [33mtype[39m=[32m"password"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex justify-end mt-2"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline"[39m
+                  [33mhref[39m=[32m"#"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"relative w-full h-[52px] bg-ion-gradient rounded-[14px] text-white font-bold text-sm tracking-[0.08em] uppercase flex items-center justify-center gap-3 overflow-hidden transition-all duration-300 shadow-lab-button group cursor-pointer"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute inset-0 border-t border-white/20 rounded-[14px] pointer-events-none"[39m
+              [36m/>[39m
+              [0mAccess Lab[0m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-right group-hover:translate-x-1.5 transition-transform duration-300"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M5 12h14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m12 5 7 7-7 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"footer-text"[39m
+        [36m>[39m
+          [0mBy signing up you agree to our [0m
+          [36m<a[39m
+            [33mclass[39m=[32m"footer-link"[39m
+            [33mhref[39m=[32m"#!"[39m
+          [36m>[39m
+            [0mTerms of Service[0m
+          [36m</a>[39m
+        [36m</p>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:[2m108:40[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/__tests__/Login.test.jsx:[2m67:35[22m[39m
+    [90m 65|[39m         [34mrenderLogin[39m()[33m;[39m
+    [90m 66|[39m
+    [90m 67|[39m         [35mconst[39m emailInput [33m=[39m screen[33m.[39m[34mgetByLabelText[39m([36m/email address/i[39m)[33m;[39m
+    [90m   |[39m                                   [31m^[39m
+    [90m 68|[39m         [35mconst[39m passwordInput [33m=[39m screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m 69|[39m         const submitButton = screen.getByRole('button', { name: /acces…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/Login.test.jsx[2m > [22mLogin Component[2m > [22mshould handle login error
+[31m[1mTestingLibraryElementError[22m[39m: Found a label with the text of: /email address/i, however no form control was found associated to that label. Make sure you're using the "for" attribute or "aria-labelledby" attribute correctly.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"login-container"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-1"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"bg-blob blob-2"[39m
+      [36m/>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Authentication form"[39m
+        [33mclass[39m=[32m"auth-card"[39m
+        [33mdata-testid[39m=[32m"auth-card"[39m
+        [33mrole[39m=[32m"main"[39m
+        [33mstyle[39m=[32m"opacity: 0; transform: translateY(20px);"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"logo-section"[39m
+        [36m>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"logo-text"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m⚗️[0m
+            [36m</span>[39m
+            [0m Alchemistry[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"logo-tagline"[39m
+          [36m>[39m
+            [0mThe Virtual Chemistry Lab[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tabs-container"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn active"[39m
+            [33mdata-testid[39m=[32m"login-tab"[39m
+          [36m>[39m
+            [0mLog In[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tab-btn "[39m
+          [36m>[39m
+            [0mSign Up[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"opacity: 0; transform: translateX(20px);"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"space-y-6"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-2"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+              [36m>[39m
+                [0mEmail Address[0m
+              [36m</label>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative group"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"lucide lucide-mail"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"18"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"18"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                    [36m/>[39m
+                    [36m<rect[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mrx[39m=[32m"2"[39m
+                      [33mwidth[39m=[32m"20"[39m
+                      [33mx[39m=[32m"2"[39m
+                      [33my[39m=[32m"4"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</div>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mname[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"scientist@alchemistry.edu"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-2"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative group"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 text-lab-muted group-focus-within:text-lab-purple"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-lock"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"18"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"18"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"11"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mry[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"18"[39m
+                        [33mx[39m=[32m"3"[39m
+                        [33my[39m=[32m"11"[39m
+                      [36m/>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M7 11V7a5 5 0 0 1 10 0v4"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</div>[39m
+                  [36m<input[39m
+                    [33mclass[39m=[32m"w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 border-white/5 focus:border-lab-purple/60 focus:shadow-lab-input-focus group-hover:border-white/10 "[39m
+                    [33mid[39m=[32m"password"[39m
+                    [33mname[39m=[32m"password"[39m
+                    [33mplaceholder[39m=[32m"••••••••"[39m
+                    [33mtype[39m=[32m"password"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex justify-end mt-2"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline"[39m
+                  [33mhref[39m=[32m"#"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</a>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"relative w-full h-[52px] bg-ion-gradient rounded-[14px] text-white font-bold text-sm tracking-[0.08em] uppercase flex items-center justify-center gap-3 overflow-hidden transition-all duration-300 shadow-lab-button group cursor-pointer"[39m
+              [33mtabindex[39m=[32m"0"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"absolute inset-0 border-t border-white/20 rounded-[14px] pointer-events-none"[39m
+              [36m/>[39m
+              [0mAccess Lab[0m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-right group-hover:translate-x-1.5 transition-transform duration-300"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M5 12h14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m12 5 7 7-7 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"footer-text"[39m
+        [36m>[39m
+          [0mBy signing up you agree to our [0m
+          [36m<a[39m
+            [33mclass[39m=[32m"footer-link"[39m
+            [33mhref[39m=[32m"#!"[39m
+          [36m>[39m
+            [0mTerms of Service[0m
+          [36m</a>[39m
+        [36m</p>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:[2m108:40[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/pages/__tests__/Login.test.jsx:[2m91:35[22m[39m
+    [90m 89|[39m         [34mrenderLogin[39m()[33m;[39m
+    [90m 90|[39m
+    [90m 91|[39m         [35mconst[39m emailInput [33m=[39m screen[33m.[39m[34mgetByLabelText[39m([36m/email address/i[39m)[33m;[39m
+    [90m   |[39m                                   [31m^[39m
+    [90m 92|[39m         [35mconst[39m passwordInput [33m=[39m screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m 93|[39m         const submitButton = screen.getByRole('button', { name: /acces…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (6)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m45 passed[39m[22m[90m (48)[39m
+[2m   Start at [22m 18:26:50
+[2m   Duration [22m 5.32s[2m (transform 1.05s, setup 2.38s, import 2.26s, tests 930ms, environment 7.78s)[22m
