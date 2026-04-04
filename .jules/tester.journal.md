@@ -1,0 +1,4 @@
+## 2025-02-28 - Testing Input Fields using React Testing Library
+**Gap:** The testing library queries like `getByLabelText` couldn't find inputs associated with labels because of missing `htmlFor` attributes on custom input components.
+**Learning:** React Testing Library is extremely strict about accessibility. Without `htmlFor={name}` mapping correctly to the input's `id={name}`, `getByLabelText` will fail indicating "no form control was found associated to that label".
+**Pattern:** Always ensure custom input components pass the `name`/`id` down properly and their accompanying `<label>` elements have matching `htmlFor` attributes for accessibility and reliable querying in tests.
