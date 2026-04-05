@@ -1,5 +1,6 @@
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
+const { success, error: responseError } = require('../utils/response');
 
 function computeReactionId(a, b, i, c) {
   const THRESHOLD = 5; // Lower threshold (5%) for fuzzy matching
@@ -40,9 +41,7 @@ exports.calculateResult = async (req, res) => {
 
     // Validate
     if ([chem_a, chem_b, chem_i, chem_c].some(n => isNaN(n) || n < 0 || n > 100)) {
-      return res.status(400).json({
-        error: 'Invalid concentration values. Each must be a number between 0 and 100.'
-      });
+      return responseError(res, 'VALIDATION_ERROR', 'Invalid concentration values. Each must be a number between 0 and 100.', 400);
     }
 
     // Normalise
@@ -107,7 +106,7 @@ exports.calculateResult = async (req, res) => {
     logger.info('Reaction calculated', { reaction_id, regime, outcome: data.outcome_label });
 
     // Return result
-    return res.status(200).json({
+    return success(res, {
       reaction_id,
       regime,
       outcome_label:    data.outcome_label,
@@ -121,6 +120,6 @@ exports.calculateResult = async (req, res) => {
 
   } catch (err) {
     logger.error('Reaction calculation failed', { error: err.message });
-    return res.status(500).json({ error: 'Server error during calculation.' });
+    return responseError(res, 'INTERNAL_ERROR', 'Server error during calculation.', 500);
   }
 };
