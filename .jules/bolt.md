@@ -1,0 +1,3 @@
+## 2024-04-05 - Lazy Loading Heavy Visualization Components
+**Learning:** Heavy visualization components like `StudentAnalyticsChart` (which relies on libraries like Recharts) can block the main thread and significantly inflate the initial JavaScript bundle size if imported statically, especially on pages where they aren't the primary immediate interaction focus (like a dashboard).
+**Action:** Always use `React.lazy()` and `<Suspense>` to code-split heavy visualization components in this architecture. Ensure the `fallback` UI doesn't reference variables defined later in the file (like bottom-placed `styles` objects) to prevent ReferenceErrors during initialization.
