@@ -126,12 +126,12 @@ const SignUpForm = ({ onTabSwitch }) => {
         </h3>
         <div className="flex gap-3">
           <RoleCard 
-            roleType="student"
+            role="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            roleType="teacher"
+            role="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />

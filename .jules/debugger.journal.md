@@ -1,0 +1,4 @@
+## 2025-02-23 - Fix server CI timeout
+**Bug:** The `build-server` GitHub Actions job was timing out after 6 hours due to the Express app automatically starting (`app.listen()`) when imported by a test or verification script.
+**Root Cause:** In `server/server.js`, `app.listen()` was called directly on the main execution thread without checking `require.main === module`. Thus, any script (like `node -e "require('./server.js')"`) would block and keep the process alive indefinitely.
+**Learning:** Always wrap the `app.listen()` call with `if (require.main === module) { ... }` in Node.js applications. This ensures that the server can be safely imported for integration testing or build verification scripts without hanging the process. Do not use `setTimeout(() => process.exit(0))` hacks in CI testing, fix the structural require issue instead.
