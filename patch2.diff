@@ -1,0 +1,25 @@
+<<<<<<< SEARCH
+const RoleCard = ({ role, selected, onSelect }) => {
+  const isStudent = role === 'student';
+  const Icon = isStudent ? GraduationCap : Presentation;
+  const title = isStudent ? 'Student' : 'Teacher';
+  const desc = isStudent ? 'Learn & Experiment' : 'Manage & Teach';
+
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => onSelect(role)}
+=======
+const RoleCard = ({ roleType, selected, onSelect }) => {
+  const isStudent = roleType === 'student';
+  const Icon = isStudent ? GraduationCap : Presentation;
+  const title = isStudent ? 'Student' : 'Teacher';
+  const desc = isStudent ? 'Learn & Experiment' : 'Manage & Teach';
+
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => onSelect(roleType)}
+>>>>>>> REPLACE
