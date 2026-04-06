@@ -38,8 +38,6 @@ const Sidebar = () => {
             className={`element ${selectedTab === "lab" ? "selected" : ""}`}
           >
             <button
-              aria-label="Lab"
-              title="Lab"
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
             >
@@ -57,8 +55,6 @@ const Sidebar = () => {
               }`}
           >
             <button
-              aria-label="Titration"
-              title="Titration"
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
             >
@@ -76,8 +72,6 @@ const Sidebar = () => {
               }`}
           >
             <button
-              aria-label="Organic Chemistry"
-              title="Organic Chemistry"
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
             >
@@ -95,8 +89,6 @@ const Sidebar = () => {
               }`}
           >
             <button
-              aria-label="Inorganic Chemistry"
-              title="Inorganic Chemistry"
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
             >
@@ -114,8 +106,6 @@ const Sidebar = () => {
               }`}
           >
             <button
-              aria-label="History"
-              title="History"
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
             >
