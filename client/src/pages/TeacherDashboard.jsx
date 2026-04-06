@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -20,11 +20,10 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
+import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
-
-const StudentAnalyticsChart = lazy(() => import('../components/StudentAnalyticsChart'));
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -503,25 +502,19 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <Suspense fallback={
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#666', background: 'rgba(26, 26, 46, 0.5)', borderRadius: '12px' }}>
-            Loading analytics chart...
-          </div>
-        }>
-          <StudentAnalyticsChart
-            scores={experimentScores}
-            experimentName={
-              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-            }
-            noDataMessage={
-              !selectedExperiment
-                ? "Select an experiment type above to see score distribution."
-                : experimentScores.length === 0
-                  ? "No students have completed this experiment yet."
-                  : undefined
-            }
-          />
-        </Suspense>
+        <StudentAnalyticsChart
+          scores={experimentScores}
+          experimentName={
+            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+          }
+          noDataMessage={
+            !selectedExperiment
+              ? "Select an experiment type above to see score distribution."
+              : experimentScores.length === 0
+                ? "No students have completed this experiment yet."
+                : undefined
+          }
+        />
       </section>
       </main>
     </div>
