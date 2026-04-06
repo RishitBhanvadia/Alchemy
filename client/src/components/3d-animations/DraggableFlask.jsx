@@ -91,6 +91,9 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
     }, [camera, gl, position]);
 
+    const accumulatedPour = useRef(0);
+    const lastPourTime = useRef(0);
+
     const handlePointerUp = useCallback((e) => {
         if (!dragActive.current) return;
         e.stopPropagation();
@@ -107,7 +110,13 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [gl, position]);
+
+        // Flush remaining pour when stopped
+        if (accumulatedPour.current > 0) {
+            onPour(accumulatedPour.current);
+            accumulatedPour.current = 0;
+        }
+    }, [gl, position, onPour]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
@@ -121,7 +130,18 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (isPouring.current && amount > 0) {
             const pourAmount = delta * 20;
             setAmount((prev) => Math.max(0, prev - pourAmount));
-            onPour(pourAmount);
+            accumulatedPour.current += pourAmount;
+        }
+
+        // Throttle onPour calls to prevent React state spam (15fps max = ~0.066s)
+        if (accumulatedPour.current > 0 && state.clock.elapsedTime - lastPourTime.current > 0.066) {
+            onPour(accumulatedPour.current);
+            accumulatedPour.current = 0;
+            lastPourTime.current = state.clock.elapsedTime;
+        } else if (!isPouring.current && accumulatedPour.current > 0) {
+            // Flush remaining pour when stopped
+            onPour(accumulatedPour.current);
+            accumulatedPour.current = 0;
         }
 
         // Calculate velocity for Slosh
