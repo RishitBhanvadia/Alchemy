@@ -1,6 +1,6 @@
 -- 003_rbac_classrooms.sql
 -- Phase 3.2.1: Role-Based Access Control for Classrooms
--- Creates user roles, classrooms table, and classroom_students junction table
+-- Creates user roles, classrooms table, and class_memberships junction table
 --
 -- Dependencies: Supabase auth.users table must exist
 -- Applied: Phase 3 Task [4]
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS public.classrooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     teacher_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     class_name TEXT NOT NULL,
-    join_code TEXT UNIQUE NOT NULL DEFAULT substr(md5(random()::text), 1, 8),
+    class_code TEXT UNIQUE NOT NULL DEFAULT substr(md5(random()::text), 1, 8),
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -95,28 +95,31 @@ CREATE POLICY "Students can view joined classrooms"
     FOR SELECT
     USING (
         EXISTS (
-            SELECT 1 FROM public.classroom_students cs
-            WHERE cs.classroom_id = id
-            AND cs.student_id = auth.uid()
+            SELECT 1 FROM public.class_memberships cm
+            WHERE cm.classroom_id = id
+            AND cm.student_id = auth.uid()
         )
     );
 
 -- ============================================================
--- 3. Classroom Students junction table
+-- 3. Class Memberships junction table
 -- ============================================================
-CREATE TABLE IF NOT EXISTS public.classroom_students (
+CREATE TABLE IF NOT EXISTS public.class_memberships (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     classroom_id UUID NOT NULL REFERENCES public.classrooms(id) ON DELETE CASCADE,
-    student_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    student_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    teacher_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     joined_at TIMESTAMPTZ DEFAULT now(),
-    PRIMARY KEY (classroom_id, student_id)
+    last_active_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE (classroom_id, student_id)
 );
 
--- Enable RLS on classroom_students
-ALTER TABLE public.classroom_students ENABLE ROW LEVEL SECURITY;
+-- Enable RLS on class_memberships
+ALTER TABLE public.class_memberships ENABLE ROW LEVEL SECURITY;
 
--- classroom_students: teachers can SELECT students in their own classrooms
+-- class_memberships: teachers can SELECT students in their own classrooms
 CREATE POLICY "Teachers can view their classroom students"
-    ON public.classroom_students
+    ON public.class_memberships
     FOR SELECT
     USING (
         EXISTS (
@@ -126,21 +129,21 @@ CREATE POLICY "Teachers can view their classroom students"
         )
     );
 
--- classroom_students: students can INSERT themselves only (join a classroom)
+-- class_memberships: students can INSERT themselves only (join a classroom)
 CREATE POLICY "Students can join classrooms"
-    ON public.classroom_students
+    ON public.class_memberships
     FOR INSERT
     WITH CHECK (auth.uid() = student_id);
 
--- classroom_students: students can view their own memberships
+-- class_memberships: students can view their own memberships
 CREATE POLICY "Students can view own memberships"
-    ON public.classroom_students
+    ON public.class_memberships
     FOR SELECT
     USING (auth.uid() = student_id);
 
--- classroom_students: students can leave classrooms (delete own membership)
+-- class_memberships: students can leave classrooms (delete own membership)
 CREATE POLICY "Students can leave classrooms"
-    ON public.classroom_students
+    ON public.class_memberships
     FOR DELETE
     USING (auth.uid() = student_id);
 
@@ -148,6 +151,6 @@ CREATE POLICY "Students can leave classrooms"
 -- 4. Indexes for performance
 -- ============================================================
 CREATE INDEX IF NOT EXISTS idx_classrooms_teacher_id ON public.classrooms(teacher_id);
-CREATE INDEX IF NOT EXISTS idx_classroom_students_student_id ON public.classroom_students(student_id);
-CREATE INDEX IF NOT EXISTS idx_classroom_students_classroom_id ON public.classroom_students(classroom_id);
-CREATE INDEX IF NOT EXISTS idx_classrooms_join_code ON public.classrooms(join_code);
+CREATE INDEX IF NOT EXISTS idx_class_memberships_student_id ON public.class_memberships(student_id);
+CREATE INDEX IF NOT EXISTS idx_class_memberships_classroom_id ON public.class_memberships(classroom_id);
+CREATE INDEX IF NOT EXISTS idx_classrooms_class_code ON public.classrooms(class_code);

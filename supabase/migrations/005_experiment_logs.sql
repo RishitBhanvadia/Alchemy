@@ -5,7 +5,7 @@
 -- Create experiment_logs table
 CREATE TABLE IF NOT EXISTS public.experiment_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    student_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    student_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
     classroom_id UUID REFERENCES public.classrooms(id) ON DELETE SET NULL,
     chem_a INTEGER NOT NULL DEFAULT 0,
     chem_b INTEGER NOT NULL DEFAULT 0,
@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS public.experiment_logs (
     chem_c INTEGER NOT NULL DEFAULT 0,
     reaction_id INTEGER,
     outcome_label TEXT,
-    created_at TIMESTAMPTZ DEFAULT now()
+    score INTEGER,
+    ran_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- Enable RLS on experiment_logs
@@ -46,20 +47,12 @@ CREATE POLICY "Teachers can view classroom experiment logs"
 -- Add index for performance
 CREATE INDEX IF NOT EXISTS idx_experiment_logs_student_id ON public.experiment_logs(student_id);
 CREATE INDEX IF NOT EXISTS idx_experiment_logs_classroom_id ON public.experiment_logs(classroom_id);
-CREATE INDEX IF NOT EXISTS idx_experiment_logs_created_at ON public.experiment_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_experiment_logs_ran_at ON public.experiment_logs(ran_at DESC);
 
 -- Add locked_chemicals column to classrooms table (JSON array)
 ALTER TABLE public.classrooms 
 ADD COLUMN IF NOT EXISTS locked_chemicals JSONB DEFAULT '[]'::jsonb;
 
--- Add last_active_at column to classroom_students table
-ALTER TABLE public.classroom_students 
+-- Add last_active_at column to class_memberships table
+ALTER TABLE public.class_memberships 
 ADD COLUMN IF NOT EXISTS last_active_at TIMESTAMPTZ;
-
--- Add experiment_type column to experiment_logs if needed for analytics
-ALTER TABLE public.experiment_logs
-ADD COLUMN IF NOT EXISTS experiment_type TEXT DEFAULT 'inorganic';
-
--- Add ran_at as an alias for created_at compatibility (views workaround)
--- Since we can't add a computed column easily, we'll use created_at everywhere
--- and update the client code to use created_at instead of ran_at

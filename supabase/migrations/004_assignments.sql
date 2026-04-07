@@ -47,9 +47,9 @@ CREATE POLICY "Students can view assignments for their classrooms"
     FOR SELECT
     USING (
         EXISTS (
-            SELECT 1 FROM public.classroom_students cs
-            WHERE cs.classroom_id = assignments.classroom_id
-            AND cs.student_id = auth.uid()
+            SELECT 1 FROM public.class_memberships cm
+            WHERE cm.classroom_id = assignments.classroom_id
+            AND cm.student_id = auth.uid()
         )
     );
 
