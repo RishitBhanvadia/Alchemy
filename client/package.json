@@ -90,6 +90,16 @@
             "itemSize",
             "vertexColors",
             "sizeAttenuation",
+            "blending",
+            "uColor",
+            "depthWrite",
+            "castShadow",
+            "receiveShadow",
+            "array",
+            "count",
+            "itemSize",
+            "vertexColors",
+            "sizeAttenuation",
             "blending"
           ]
         }
