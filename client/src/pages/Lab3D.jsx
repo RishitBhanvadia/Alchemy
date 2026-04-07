@@ -8,7 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -266,8 +266,23 @@ const Lab3D = () => {
                         <Canvas
                             camera={{ position: [0, 2, 12], fov: 45 }}
                             style={{ background: '#0A0A1A' }}
-                            dpr={[1, Math.min(window.devicePixelRatio, 2)]}
-                            gl={{ antialias: true, alpha: false }}
+                            dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2)]}
+                            gl={{
+                                antialias: true,
+                                alpha: false,
+                                powerPreference: 'high-performance',
+                                failIfMajorPerformanceCaveat: false,
+                            }}
+                            onCreated={({ gl }) => {
+                                const canvas = gl.domElement;
+                                canvas.addEventListener('webglcontextlost', (e) => {
+                                    e.preventDefault();
+                                    console.warn('[Lab3D] WebGL context lost — attempting recovery');
+                                }, false);
+                                canvas.addEventListener('webglcontextrestored', () => {
+                                    console.warn('[Lab3D] WebGL context restored');
+                                }, false);
+                            }}
                         >
                             <PhysicsLab
                                 setChemA={setChemA}
