@@ -15,11 +15,18 @@ import './StudentDashboard.css';
 
 const MODULE_CARDS = [
   {
-    id: 'laboratory',
-    icon: '🧪',
-    name: 'Laboratory',
-    description: 'Run chemical reactions and observe results',
+    id: 'laboratory-3d',
+    icon: '🥽',
+    name: '3D Laboratory',
+    description: 'Immersive 3D chemical reactions',
     route: '/student/lab'
+  },
+  {
+    id: 'laboratory-2d',
+    icon: '🧪',
+    name: '2D Laboratory',
+    description: 'Classic test tube experiments',
+    route: '/lab'
   },
   {
     id: 'titration',
