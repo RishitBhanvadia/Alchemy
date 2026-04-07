@@ -1,0 +1,3 @@
+## 2024-05-18 - Fix N+1 query in Teacher Controller
+**Learning:** Found an N+1 query vulnerability in `server/controllers/teacherController.js` inside `getAnalytics`. It mapped over classrooms and fetched `experiment_results` for students of each classroom iteratively within `Promise.all`. This causes multiple round-trips to Supabase that degrade performance.
+**Action:** When working with nested relations or data mapping, always extract all necessary IDs first, perform a single batched query using `.in('column', ids)`, and group the results locally to map them back to their respective objects.
