@@ -9,6 +9,7 @@
  */
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
 
 const MeetingCodeCard = ({ code, meetingUrl, platform, onClose }) => {
@@ -66,6 +67,13 @@ const MeetingCodeCard = ({ code, meetingUrl, platform, onClose }) => {
       <p style={styles.expiryNote}>This code expires in 2 hours</p>
     </div>
   );
+};
+
+MeetingCodeCard.propTypes = {
+  code: PropTypes.string.isRequired,
+  meetingUrl: PropTypes.string.isRequired,
+  platform: PropTypes.oneOf(['zoom', 'google']).isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 const styles = {
