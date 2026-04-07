@@ -41,7 +41,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
         e.stopPropagation();
         
-        // eslint-disable-next-line react-hooks/immutability
+
         gl.domElement.style.cursor = 'grabbing';
         dragActive.current = true;
 
@@ -95,7 +95,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        // eslint-disable-next-line react-hooks/immutability
+
         gl.domElement.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;

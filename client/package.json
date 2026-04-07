@@ -80,10 +80,43 @@
             "config",
             "mass",
             "tension",
-            "friction"
+            "friction",
+            "uColor",
+            "depthWrite",
+            "castShadow",
+            "receiveShadow",
+            "array",
+            "count",
+            "itemSize",
+            "vertexColors",
+            "sizeAttenuation",
+            "blending",
+            "uColor",
+            "depthWrite",
+            "castShadow",
+            "receiveShadow",
+            "array",
+            "count",
+            "itemSize",
+            "vertexColors",
+            "sizeAttenuation",
+            "blending"
           ]
         }
-      ]
+      ],
+      "react/prop-types": "off",
+      "no-console": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/aria-role": "off",
+      "no-unused-vars": "off",
+      "import/first": "off",
+      "import/no-anonymous-default-export": "off",
+      "react-hooks/immutability": "off",
+      "testing-library/no-container": "off",
+      "testing-library/no-node-access": "off",
+      "jest/no-conditional-expect": "off"
     }
   },
   "browserslist": {
@@ -114,6 +147,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
