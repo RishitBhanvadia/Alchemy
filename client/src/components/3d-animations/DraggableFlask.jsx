@@ -133,15 +133,15 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (isPouring.current && amount - accumulatedPour.current > 0) {
             const pourAmount = delta * 20;
             accumulatedPour.current += pourAmount;
+        }
 
-            // Throttle state updates to roughly 10fps (every 0.1s)
-            if (state.clock.elapsedTime - lastPourFlushTime.current > 0.1) {
-                const flushAmount = accumulatedPour.current;
-                setAmount((prev) => Math.max(0, prev - flushAmount));
-                onPour(flushAmount);
-                accumulatedPour.current = 0;
-                lastPourFlushTime.current = state.clock.elapsedTime;
-            }
+        // Throttle state updates to roughly 10fps (every 0.1s)
+        if (accumulatedPour.current > 0 && state.clock.elapsedTime - lastPourFlushTime.current > 0.1) {
+            const flushAmount = accumulatedPour.current;
+            setAmount((prev) => Math.max(0, prev - flushAmount));
+            onPour(flushAmount);
+            accumulatedPour.current = 0;
+            lastPourFlushTime.current = state.clock.elapsedTime;
         }
 
         // Calculate velocity for Slosh
