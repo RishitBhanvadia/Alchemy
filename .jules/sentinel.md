@@ -1,0 +1,4 @@
+## 2024-04-07 - Remove Hardcoded Supabase Service Role Key
+**Vulnerability:** A hardcoded Supabase Service Role Key was found in the `server/run_migration.js` file. The Service Role key allows bypassing Row Level Security (RLS) policies and gives full admin access to the database.
+**Learning:** Hardcoded secrets present a critical risk. Storing secrets directly in source code means anyone who gains access to the source code (or commit history) can view and misuse the secret.
+**Prevention:** Always use environment variables (`process.env.SECRET_NAME`) for sensitive credentials and keys. Ensure `.env` files are ignored by version control (via `.gitignore`) and provide `.env.example` without real secrets. Also, consider integrating secrets scanning tools in the CI pipeline to block commits containing secrets.

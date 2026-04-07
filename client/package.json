@@ -14,6 +14,7 @@
     "@react-three/fiber": "^8.18.0",
     "@react-three/rapier": "^2.2.0",
     "@supabase/supabase-js": "^2.95.3",
+    "@tailwindcss/oxide": "^4.2.2",
     "@tanstack/react-table": "^8.21.3",
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.4.0",
@@ -124,6 +125,6 @@
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "vite": "^6.1.0",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.3"
   }
 }
