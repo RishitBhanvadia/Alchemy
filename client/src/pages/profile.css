@@ -2,8 +2,8 @@
     min-height: 100vh;
     background: radial-gradient(circle at center, #12122A 0%, #0A0A1A 100%);
     color: #fff;
-    padding-top: 80px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 100px;
+    font-family: 'Outfit', sans-serif;
 }
 
 .profile-container {
@@ -34,14 +34,7 @@
     }
 }
 
-.glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
+/* glass-panel is now defined globally in tokens.css */
 
 .user-info {
     text-align: center;
@@ -201,10 +194,10 @@
 }
 
 .logo-spinner {
-    animation: pulse 2s infinite ease-in-out;
+    animation: profile-pulse 2s infinite ease-in-out;
 }
 
-@keyframes pulse {
+@keyframes profile-pulse {
     0% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); opacity: 0.8; }

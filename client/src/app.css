@@ -1,5 +1,5 @@
-.mainpage{
+.mainpage {
     width: 100%;
-    height: 713px;
+    min-height: 100vh;
     display: flex;
 }

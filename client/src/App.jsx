@@ -136,8 +136,6 @@ function App() {
             </PrivateRoute>
           } />
 
-          {/* Redirect root based on role */}
-          <Route path="/" element={<RootRedirect />} />
           {/* Catch-all redirect to root */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

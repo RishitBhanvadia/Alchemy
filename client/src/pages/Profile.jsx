@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
 import useAuthStore from "../store/authStore";
 import useProfileStore from "../store/profileStore";
 import SkeletonBlock from "../components/SkeletonBlock";
@@ -50,7 +49,6 @@ const Profile = () => {
     if (loading) {
         return (
             <div className="profile-page">
-                <Navbar />
                 <div className="profile-container">
                     <h1 className="page-title neon-glow">USER PROFILE</h1>
                     
@@ -84,7 +82,6 @@ const Profile = () => {
 
     return (
         <div className="profile-page">
-            <Navbar />
             
             <div className="profile-container">
                 <h1 className="page-title neon-glow">USER PROFILE</h1>
