@@ -59,20 +59,10 @@ const Navbar = () => {
                                 DASHBOARD
                             </NavLink>
                             <NavLink
-                                to="/lab"
-                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                                onClick={() => setIsMenuOpen(false)}
-                                data-testid="nav-lab-2d"
-                                aria-label="Navigate to 2D Laboratory"
-                                role="menuitem"
-                            >
-                                2D LAB
-                            </NavLink>
-                            <NavLink
                                 to="/student/lab"
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
-                                data-testid="nav-lab-3d"
+                                data-testid="nav-lab"
                                 aria-label="Navigate to 3D Laboratory"
                                 role="menuitem"
                             >
