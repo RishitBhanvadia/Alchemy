@@ -15,7 +15,8 @@ import "./accessibility.css";
 const Lab = lazy(() => import("./pages/lab"));
 const Lab3D = lazy(() => import("./pages/Lab3D"));
 const Landing = lazy(() => import("./pages/Landing"));
-const Login = lazy(() => import("./pages/Login"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const Result = lazy(() => import("./pages/result"));
 const Organic = lazy(() => import("./pages/organic"));
@@ -39,6 +40,7 @@ function RootRedirect() {
   if (!user) return <Suspense fallback={<LoadingOverlay />}><Landing /></Suspense>;
   // If profile is still null after loading, redirect to login (auth without profile)
   if (!profile) return <Navigate to="/login" replace />;
+
   return <Navigate to={(profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student'} replace />;
 }
 
@@ -57,6 +59,7 @@ function App() {
   useEffect(() => {
     // Only redirect if everything is loaded and we are on /login
     if (!loading && user && profile && location.pathname === '/login') {
+
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
       console.log('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
@@ -80,7 +83,8 @@ function App() {
           <Routes location={location} key={location.pathname}>
           {/* Public Routes */}
           <Route path="/" element={<RootRedirect />} />
-          <Route path="/login" element={<Suspense fallback={<LoadingOverlay />}><Login /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<LoadingOverlay />}><AuthPage /></Suspense>} />
+
 
           {/* Student-only routes */}
           <Route path="/student" element={

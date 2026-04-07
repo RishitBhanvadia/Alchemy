@@ -22,7 +22,7 @@ exports.createClassroom = async (req, res) => {
       const { data } = await supabase
         .from('classrooms')
         .select('id')
-        .eq('code', classCode)
+        .eq('class_code', classCode)
         .limit(1);
       existing = data && data.length > 0;
     } while (existing);
@@ -30,8 +30,8 @@ exports.createClassroom = async (req, res) => {
     const { data, error: dbError } = await supabase
       .from('classrooms')
       .insert({
-        name: name.trim(),
-        code: classCode,
+        class_name: name.trim(),
+        class_code: classCode,
         teacher_id: req.user.id,
         created_at: new Date().toISOString(),
       })
@@ -58,7 +58,7 @@ exports.joinClassroom = async (req, res) => {
     const { data: classroom, error: findError } = await supabase
       .from('classrooms')
       .select('*')
-      .eq('code', upperCode)
+      .eq('class_code', upperCode)
       .limit(1)
       .single();
 

@@ -43,7 +43,7 @@
 --   FOR SELECT
 --   USING (
 --       EXISTS (
---           SELECT 1 FROM public.classroom_students cs
+--           SELECT 1 FROM public.class_memberships cm
 --           WHERE cs.classroom_id = classrooms.id
 --           AND cs.student_id = auth.uid()
 --       )
@@ -59,7 +59,7 @@
 --   USING (
 --       EXISTS (
 --           SELECT 1 FROM public.classrooms c
---           WHERE c.id = classroom_students.classroom_id
+--           WHERE c.id = class_memberships.classroom_id
 --           AND c.teacher_id = auth.uid()
 --       )
 --   )

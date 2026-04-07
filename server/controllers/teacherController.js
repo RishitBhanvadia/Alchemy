@@ -6,7 +6,7 @@ exports.getAnalytics = async (req, res) => {
     const { data: classrooms, error: dbError } = await supabase
       .from('classrooms')
       .select(`
-        id, name, code, created_at,
+        id, class_name, class_code, created_at,
         memberships:class_memberships(
           id, student_id, joined_at,
           student:profiles(id, full_name, email)
@@ -41,8 +41,8 @@ exports.getAnalytics = async (req, res) => {
 
         return {
           id: cls.id,
-          name: cls.name,
-          code: cls.code,
+          name: cls.class_name,
+          code: cls.class_code,
           student_count: uniqueStudents,
           experiment_count: logs.length,
           average_score: avgScore,

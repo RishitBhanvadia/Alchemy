@@ -25,7 +25,7 @@ const useHistoryStore = create((set, get) => ({
       .from('experiment_logs')
       .select('*')
       .eq('student_id', user.id)
-      .order('created_at', { ascending: false })
+      .order('ran_at', { ascending: false })
       .limit(100);
 
     if (error) {
