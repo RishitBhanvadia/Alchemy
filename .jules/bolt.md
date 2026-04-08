@@ -1,0 +1,3 @@
+## 2024-03-31 - Reduce DB Roundtrips in Reaction Lookup
+**Learning:** Sequential fallback queries (try exact match -> if null, try fuzzy match -> if null, try default) create significant network latency overhead for database calls. In `resultController.js`, querying for a specific regime and then falling back to any regime for the same reaction caused up to 2 sequential queries.
+**Action:** When the total possible dataset is small (e.g., max 3 regimes per reaction ID), query the parent ID once to fetch all rows, then perform the exact match and fallback logic entirely in-memory to save a network roundtrip.

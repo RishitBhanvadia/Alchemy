@@ -53,23 +53,21 @@ exports.calculateResult = async (req, res) => {
     const reaction_id = computeReactionId(na, nb, ni, nc);
     const regime = classifyRegime(na, nb);
 
-    // Query — try exact regime match first
-    let { data, error } = await supabase
+    // Query — fetch all regimes for this reaction_id to avoid multiple DB roundtrips
+    let { data: allRegimes, error } = await supabase
       .from('results')
       .select('*')
-      .eq('reaction_id', reaction_id)
-      .eq('regime', regime)
-      .maybeSingle();
+      .eq('reaction_id', reaction_id);
 
-    // Fallback — try any regime for this reaction_id
-    if (!data) {
-      const fallback = await supabase
-        .from('results')
-        .select('*')
-        .eq('reaction_id', reaction_id)
-        .limit(1)
-        .maybeSingle();
-      data = fallback.data;
+    let data = null;
+    if (allRegimes && allRegimes.length > 0) {
+      // Try exact regime match first
+      data = allRegimes.find(r => r.regime === regime);
+
+      // Fallback — try any regime for this reaction_id
+      if (!data) {
+        data = allRegimes[0];
+      }
     }
 
     // Final Fallback — Algorithmic Result based on chemicalMatrix.json
