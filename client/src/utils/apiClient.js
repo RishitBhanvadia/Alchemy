@@ -8,7 +8,7 @@ if (baseURL.startsWith('http') && !baseURL.endsWith('/api')) {
 
 const apiClient = axios.create({ 
   baseURL,
-  timeout: 10000, // 10 second timeout - fail fast on network issues
+  timeout: 60000, // 60 second timeout - accommodates Render free tier cold starts
   headers: {
     'Content-Type': 'application/json'
   }
