@@ -4,6 +4,8 @@ import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
 
+import PropTypes from 'prop-types';
+
 const AiTutorPanel = ({ isOpen, onClose }) => {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,6 +64,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('AI Tutorial error:', error);
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
@@ -159,6 +162,11 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;
