@@ -394,7 +394,13 @@ export default function TeacherDashboard({ analytics = false }) {
         /* ── Mobile Card View ── */
         <div style={styles.cardList}>
           {table.getRowModel().rows.length === 0 ? (
-            <div style={styles.emptyState}>No students found</div>
+            <div style={styles.emptyState}>
+              <EmptyState
+                icon="🔍"
+                title="No students found"
+                description="Try adjusting your search query."
+              />
+            </div>
           ) : (
             table.getRowModel().rows.map((row) => (
               <div key={row.id} style={styles.card}>
@@ -440,7 +446,11 @@ export default function TeacherDashboard({ analytics = false }) {
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td colSpan={columns.length} style={styles.emptyCell}>
-                    No students found
+                    <EmptyState
+                      icon="🔍"
+                      title="No students found"
+                      description="Try adjusting your search query."
+                    />
                   </td>
                 </tr>
               ) : (
