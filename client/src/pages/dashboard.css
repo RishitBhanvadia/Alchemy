@@ -4,7 +4,7 @@
     display: flex;
     background: transparent;
     position: relative;
-    padding-top: 120px;
+    padding-top: 100px;
     /* Added to clear the fixed Navbar */
     box-sizing: border-box;
     overflow-y: auto;
@@ -50,7 +50,7 @@
     margin: 0;
     letter-spacing: 3px;
     color: #fff;
-    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
 }
 
 .subtitle {

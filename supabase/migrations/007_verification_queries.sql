@@ -40,7 +40,7 @@ ORDER BY trigger_name;
 -- 6. Check for orphaned data
 SELECT 
   (SELECT COUNT(*) FROM experiment_logs WHERE NOT EXISTS (SELECT 1 FROM profiles WHERE id = student_id)) as orphaned_logs,
-  (SELECT COUNT(*) FROM classroom_students WHERE NOT EXISTS (SELECT 1 FROM classrooms WHERE id = classroom_id)) as orphaned_memberships;
+  (SELECT COUNT(*) FROM class_memberships WHERE NOT EXISTS (SELECT 1 FROM classrooms WHERE id = classroom_id)) as orphaned_memberships;
 
 -- 7. Check concentration integrity
 SELECT COUNT(*) as invalid_concentrations
@@ -58,7 +58,7 @@ SELECT COUNT(*) as profiles_missing_full_name
 FROM profiles
 WHERE full_name IS NULL OR full_name = '';
 
--- 10. Check classroom columns renamed correctly
+-- 10. Check classroom columns are correct
 SELECT column_name 
 FROM information_schema.columns 
-WHERE table_name = 'classrooms' AND column_name = 'name';
+WHERE table_name = 'classrooms' AND column_name IN ('class_name', 'class_code');

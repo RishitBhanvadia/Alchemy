@@ -1,0 +1,4 @@
+## 2024-05-15 - Replace insecure Math.random() with crypto.randomInt()
+**Before:** `Math.random()` was used to generate alphanumeric meeting codes (`code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));`).
+**Issue:** `Math.random()` is not cryptographically secure and predictable, which can result in a vulnerability (CWE-338). Meeting codes could be brute-forced or guessed if the RNG state is known. Memory guideline states: "When generating custom alphanumeric IDs (like meeting or class codes) in Node.js, avoid Math.random() as it is not cryptographically secure (CWE-338). Instead, use crypto.randomInt() from the built-in crypto module."
+**Learning:** Replaced `Math.random()` with `crypto.randomInt(CHARS.length)` for generating secure unique codes in the `meetingController.js`. Small utility functions like code generators often harbor hidden security/predictability issues if they rely on standard JS Math functions.

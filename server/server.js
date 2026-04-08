@@ -89,16 +89,31 @@ if (process.env.FRONTEND_URL) {
     const urls = process.env.FRONTEND_URL.split(',').map(url => url.trim());
     allowedOrigins.push(...urls);
 }
-app.use(cors({
-    origin: allowedOrigins,
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        // allow local config + dynamic vercel preview URLs
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+
+        console.warn(`[CORS] Blocked request from unauthorized origin: ${origin}`);
+        return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true,
     maxAge: 86400,
-}));
+};
 
-// Handle preflight OPTIONS requests explicitly
-app.options('*', cors());
+// Apply CORS globally
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests explicitly with the same config
+app.options('*', cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
 
@@ -167,24 +182,17 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-let server;
-if (require.main === module) {
-    server = app.listen(PORT, '0.0.0.0', () => {
-        logger.info(`Server running on port ${PORT}`);
-    });
-}
+const server = app.listen(PORT, '0.0.0.0', () => {
+    logger.info(`Server running on port ${PORT}`);
+});
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Closing server gracefully...');
-  if (server) {
-    server.close(() => {
-      logger.info('Server closed.');
-      process.exit(0);
-    });
-  } else {
+  server.close(() => {
+    logger.info('Server closed.');
     process.exit(0);
-  }
+  });
   // Force close after 10 seconds
   setTimeout(() => process.exit(1), 10000);
 });

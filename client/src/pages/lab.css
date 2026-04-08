@@ -1,12 +1,12 @@
 /* Laboratory Redesign */
 .lab-page {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 80px;
+    padding-top: 100px;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -103,18 +103,19 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     outline: none;
-    cursor: none;
+    cursor: pointer;
 }
 
 .sci-fi-range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     background: #fff;
     border-radius: 50%;
     box-shadow: 0 0 10px var(--primary-neon);
-    cursor: none;
-    margin-top: -6px;
+    cursor: pointer;
+    margin-top: -7px;
+    border: 2px solid var(--primary-neon);
 }
 
 /* Center Stage */
@@ -180,7 +181,7 @@
 }
 
 /* Action Button */
-.action-button {
+.lab-page .action-button {
     background: transparent;
     border: 2px solid #333;
     color: #333;
@@ -194,15 +195,15 @@
     cursor: not-allowed;
 }
 
-.action-button.active {
+.lab-page .action-button.active {
     border-color: var(--primary-neon);
     color: var(--primary-neon);
-    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    background: rgba(99, 102, 241, 0.1);
     cursor: pointer;
 }
 
-.action-button.active:hover {
+.lab-page .action-button.active:hover {
     background: var(--primary-neon);
     color: #000;
     box-shadow: 0 0 40px var(--primary-neon);
@@ -260,4 +261,23 @@
     color: red;
     font-weight: 700;
     margin-right: 5px;
+}
+
+/* ── Responsive Breakpoints ── */
+@media (max-width: 1200px) {
+    .lab-page {
+        flex-direction: column;
+        padding-top: 120px;
+        height: auto;
+        overflow-y: auto;
+    }
+    .chemical-rack, .status-panel {
+        width: 90%;
+        margin: 20px auto;
+        height: auto;
+    }
+    .center-stage {
+        margin-top: 50px;
+        order: -1; /* Move experiment to top on mobile */
+    }
 }

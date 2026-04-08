@@ -8,13 +8,7 @@
     background: radial-gradient(circle at 50% 10%, #1a1a3a 0%, var(--color-bg-primary) 70%);
 }
 
-.glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-md);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
+/* glass-panel is now defined globally in tokens.css */
 
 .lab3d-header {
     width: 100%;
@@ -29,10 +23,7 @@
     margin-bottom: var(--spacing-sm);
 }
 
-.neon-glow {
-    color: var(--color-text-primary);
-    text-shadow: 0 0 10px rgba(99, 102, 241, 0.8), 0 0 20px rgba(99, 102, 241, 0.4);
-}
+/* neon-glow is now defined globally in tokens.css */
 
 .lab3d-header p {
     color: var(--color-text-secondary);

@@ -1,7 +1,13 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const supabaseUrl = 'https://madcquepligcvwkfycud.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hZGNxdWVwbGlnY3Z3a2Z5Y3VkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDM4NzMwMCwiZXhwIjoyMDg1OTYzMzAwfQ.alfgbAhbrxP7Y25qrlmY-3D6uUAsK5PAyYjAW4_ygQU';
+const supabaseUrl = process.env.SUPABASE_URL || 'https://madcquepligcvwkfycud.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseKey) {
+  console.error('FATAL: SUPABASE_SERVICE_ROLE_KEY environment variable is required.');
+  console.error('Set it via: export SUPABASE_SERVICE_ROLE_KEY=your_key_here');
+  process.exit(1);
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -10,8 +16,8 @@ const migrationSQL = `
 ALTER TABLE public.profiles 
 ADD COLUMN IF NOT EXISTS full_name TEXT,
 ADD COLUMN IF NOT EXISTS avatar_url TEXT,
-ADD COLUMN IF NOT EXISTS xp INTEGER NOT NULL DEFAULT 0 CHECK (xp >= 0),
-ADD COLUMN IF NOT EXISTS level INTEGER NOT NULL DEFAULT 1 CHECK (level >= 1);
+ADD COLUMN IF NOT EXISTS xp INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN IF NOT EXISTS level INTEGER NOT NULL DEFAULT 1;
 
 UPDATE public.profiles SET full_name = display_name WHERE full_name IS NULL OR full_name = '';
 ALTER TABLE public.profiles ALTER COLUMN full_name SET NOT NULL;
@@ -21,7 +27,7 @@ ALTER TABLE public.classrooms RENAME COLUMN class_name TO name;
 
 ALTER TABLE public.classrooms 
 ADD CONSTRAINT name_not_empty CHECK (length(trim(name)) BETWEEN 1 AND 100),
-ADD CONSTRAINT join_code_format CHECK (join_code ~ '^[A-Z0-9]{5,8}$');
+ADD CONSTRAINT class_code_format CHECK (class_code ~ '^[A-Z0-9]{5,8}$');
 
 -- STEP 3: Enhance experiment_logs
 ALTER TABLE public.experiment_logs
@@ -40,19 +46,21 @@ ADD COLUMN IF NOT EXISTS thermal_effect TEXT,
 ADD COLUMN IF NOT EXISTS ai_tutor_context TEXT,
 ADD COLUMN IF NOT EXISTS is_dangerous BOOLEAN DEFAULT FALSE;
 
+-- NOTE: conc_a/b/c/d, result_name, result_formula, color, characteristics
+-- were already dropped in a previous migration run against the live DB.
+-- Keeping these as no-ops for safety:
 ALTER TABLE public.results DROP COLUMN IF EXISTS conc_a;
 ALTER TABLE public.results DROP COLUMN IF EXISTS conc_b;
 ALTER TABLE public.results DROP COLUMN IF EXISTS conc_c;
 ALTER TABLE public.results DROP COLUMN IF EXISTS conc_d;
 ALTER TABLE public.results DROP COLUMN IF EXISTS result_name;
 ALTER TABLE public.results DROP COLUMN IF EXISTS result_formula;
-ALTER TABLE public.results DROP COLUMN IF EXISTS color;
 ALTER TABLE public.results DROP COLUMN IF EXISTS characteristics;
 
 ALTER TABLE public.results ADD CONSTRAINT unique_reaction_regime UNIQUE (reaction_id, regime);
 
--- STEP 5: Move titration_data to public schema
-ALTER TABLE titration_data SET SCHEMA public;
+-- STEP 5: Move titration_data to public schema (if not already there)
+ALTER TABLE IF EXISTS titration_data SET SCHEMA public;
 ALTER TABLE public.titration_data ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "titration_authenticated_read" ON public.titration_data;
@@ -108,7 +116,7 @@ CREATE POLICY "profiles_teacher_see_students"
   USING (
     EXISTS (
       SELECT 1 FROM public.classrooms c
-      JOIN public.classroom_students m ON m.classroom_id = c.id
+      JOIN public.class_memberships m ON m.classroom_id = c.id
       WHERE c.teacher_id = auth.uid() AND m.student_id = profiles.id
     )
   );
@@ -120,10 +128,10 @@ CREATE POLICY "results_authenticated_read"
 -- STEP 9: Data cleanup
 DELETE FROM public.experiment_logs WHERE chem_a = 0 AND chem_b = 0 AND chem_i = 0 AND chem_c = 0;
 
-DELETE FROM public.classroom_students WHERE classroom_id IN (
-  SELECT id FROM public.classrooms WHERE name LIKE 'Auto Class%'
+DELETE FROM public.class_memberships WHERE classroom_id IN (
+  SELECT id FROM public.classrooms WHERE class_name LIKE 'Auto Class%'
 );
-DELETE FROM public.classrooms WHERE name LIKE 'Auto Class%';
+DELETE FROM public.classrooms WHERE class_name LIKE 'Auto Class%';
 
 UPDATE public.profiles p SET xp = COALESCE((
   SELECT COUNT(*) * 50 FROM public.experiment_logs e WHERE e.student_id = p.id
@@ -135,9 +143,9 @@ INSERT INTO public.achievements (student_id, achievement, unlocked_at)
 SELECT 
   student_id,
   CASE 
-    WHEN exp_count >= 1 THEN 'novice_chemist'
-    WHEN exp_count >= 10 THEN 'lab_regular'
     WHEN exp_count >= 25 THEN 'master_researcher'
+    WHEN exp_count >= 10 THEN 'lab_regular'
+    WHEN exp_count >= 1 THEN 'novice_chemist'
   END,
   NOW()
 FROM (

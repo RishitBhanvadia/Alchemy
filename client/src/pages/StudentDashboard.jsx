@@ -19,7 +19,7 @@ const MODULE_CARDS = [
     icon: '🧪',
     name: 'Laboratory',
     description: 'Run chemical reactions and observe results',
-    route: '/student/lab'
+    route: '/lab'
   },
   {
     id: 'titration',

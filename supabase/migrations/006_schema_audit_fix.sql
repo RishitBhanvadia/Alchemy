@@ -35,27 +35,30 @@ UPDATE public.profiles SET full_name = COALESCE(display_name, 'Unknown') WHERE f
 SELECT column_name FROM information_schema.columns 
 WHERE table_name = 'classrooms' AND table_schema = 'public' AND column_name IN ('class_name', 'name', 'join_code');
 
--- STEP 4: Rename class_name to name if it exists
+-- STEP 4: Check if classrooms needs updates
 -- ============================================================================
--- Run this separately to see if it works
+-- NOTE: Live DB already uses class_name and class_code — no rename needed.
+-- The original plan to rename class_name→name was never applied.
+-- Adding constraints to existing columns:
 DO $$
 BEGIN
   IF EXISTS (
     SELECT 1 FROM information_schema.columns 
     WHERE table_name = 'classrooms' AND column_name = 'class_name'
   ) THEN
-    ALTER TABLE public.classrooms RENAME COLUMN class_name TO name;
+    ALTER TABLE public.classrooms DROP CONSTRAINT IF EXISTS class_name_not_empty;
+    ALTER TABLE public.classrooms ADD CONSTRAINT class_name_not_empty CHECK (length(trim(class_name)) BETWEEN 1 AND 100);
   END IF;
 END $$;
 
--- Add constraints only if join_code exists
 DO $$
 BEGIN
   IF EXISTS (
     SELECT 1 FROM information_schema.columns 
-    WHERE table_name = 'classrooms' AND column_name = 'join_code'
+    WHERE table_name = 'classrooms' AND column_name = 'class_code'
   ) THEN
-    ALTER TABLE public.classrooms ADD CONSTRAINT name_not_empty CHECK (length(trim(name)) BETWEEN 1 AND 100);
+    ALTER TABLE public.classrooms DROP CONSTRAINT IF EXISTS class_code_format;
+    -- class_code format: alphanumeric, 5-8 chars
   END IF;
 END $$;
 
@@ -63,7 +66,7 @@ END $$;
 -- ============================================================================
 ALTER TABLE public.experiment_logs ADD COLUMN IF NOT EXISTS module TEXT DEFAULT 'lab';
 ALTER TABLE public.experiment_logs ADD COLUMN IF NOT EXISTS score INTEGER;
-ALTER TABLE public.experiment_logs ADD COLUMN IF NOT EXISTS ran_at TIMESTAMPTZ;
+ALTER TABLE public.experiment_logs ADD COLUMN IF NOT EXISTS ran_at TIMESTAMPTZ DEFAULT now();
 
 -- Add concentration constraint (may fail if data doesn't sum to 100 - that's ok, data will need cleanup)
 ALTER TABLE public.experiment_logs DROP CONSTRAINT IF EXISTS concentrations_sum_100;
@@ -142,7 +145,7 @@ CREATE POLICY "profiles_teacher_see_students"
   USING (
     EXISTS (
       SELECT 1 FROM public.classrooms c
-      JOIN public.classroom_students m ON m.classroom_id = c.id
+      JOIN public.class_memberships m ON m.classroom_id = c.id
       WHERE c.teacher_id = auth.uid() AND m.student_id = profiles.id
     )
   );
@@ -157,10 +160,10 @@ CREATE POLICY "results_authenticated_read"
 DELETE FROM public.experiment_logs WHERE chem_a = 0 AND chem_b = 0 AND chem_i = 0 AND chem_c = 0;
 
 -- Remove 'Auto Class' spam classrooms
-DELETE FROM public.classroom_students WHERE classroom_id IN (
-  SELECT id FROM public.classrooms WHERE name LIKE 'Auto Class%'
+DELETE FROM public.class_memberships WHERE classroom_id IN (
+  SELECT id FROM public.classrooms WHERE class_name LIKE 'Auto Class%'
 );
-DELETE FROM public.classrooms WHERE name LIKE 'Auto Class%';
+DELETE FROM public.classrooms WHERE class_name LIKE 'Auto Class%';
 
 -- Update XP
 UPDATE public.profiles p SET xp = COALESCE((
@@ -174,9 +177,9 @@ INSERT INTO public.achievements (student_id, achievement, unlocked_at)
 SELECT 
   student_id,
   CASE 
-    WHEN exp_count >= 1 THEN 'novice_chemist'
-    WHEN exp_count >= 10 THEN 'lab_regular'
     WHEN exp_count >= 25 THEN 'master_researcher'
+    WHEN exp_count >= 10 THEN 'lab_regular'
+    WHEN exp_count >= 1 THEN 'novice_chemist'
   END,
   NOW()
 FROM (

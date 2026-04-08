@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { supabase } from '../supabaseClient';
 
-const baseURL = import.meta.env.VITE_API_URL || '/api';
+let baseURL = import.meta.env.VITE_API_URL || '/api';
+if (baseURL.startsWith('http') && !baseURL.endsWith('/api')) {
+  baseURL = baseURL.replace(/\/$/, '') + '/api';
+}
+
 const apiClient = axios.create({ 
   baseURL,
   timeout: 10000, // 10 second timeout - fail fast on network issues

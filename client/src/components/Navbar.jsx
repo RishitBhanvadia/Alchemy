@@ -63,7 +63,7 @@ const Navbar = () => {
                                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                                 data-testid="nav-lab"
-                                aria-label="Navigate to Laboratory"
+                                aria-label="Navigate to 3D Laboratory"
                                 role="menuitem"
                             >
                                 3D LAB

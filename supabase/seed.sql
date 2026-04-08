@@ -42,7 +42,7 @@ ON CONFLICT (id) DO UPDATE SET role = 'student', display_name = 'Bob Student';
 -- ============================================================
 -- Demo Classroom
 -- ============================================================
-INSERT INTO public.classrooms (id, teacher_id, class_name, join_code)
+INSERT INTO public.classrooms (id, teacher_id, class_name, class_code)
 VALUES (
     '10000000-0000-0000-0000-000000000001',
     '00000000-0000-0000-0000-000000000001',
@@ -51,12 +51,12 @@ VALUES (
 )
 ON CONFLICT (id) DO UPDATE SET
     class_name = 'Chemistry 101 — Intro to Reactions',
-    join_code = 'CHEM101A';
+    class_code = 'CHEM101A';
 
 -- ============================================================
 -- Enroll demo students in the classroom
 -- ============================================================
-INSERT INTO public.classroom_students (classroom_id, student_id)
+INSERT INTO public.class_memberships (classroom_id, student_id)
 VALUES
     ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002'),
     ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000003')

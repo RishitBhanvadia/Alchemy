@@ -1,9 +1,9 @@
 /* Titration Page Styles - Deep Blue Theme */
 
 .titration-page {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
-    padding-top: 80px;
+    padding-top: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -190,8 +190,11 @@
 }
 .note-box {
     border-left: 3px solid #ff4d4d;
+    padding: 12px 16px;
     font-size: 0.9rem;
     color: #ddd;
+    background: rgba(255, 77, 77, 0.05);
+    border-radius: 0 8px 8px 0;
 }
 
 @keyframes shake {
@@ -212,4 +215,33 @@
   animation: shake 0.5s;
   animation-iteration-count: infinite;
   transform-origin: center;
+}
+
+/* ── Responsive Breakpoints ── */
+@media (max-width: 1024px) {
+    .titration-container {
+        flex-direction: column;
+        height: auto;
+    }
+    .titration-controls {
+        max-width: 100%;
+    }
+    .titration-experiment-area {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .operating-buttons {
+        position: static;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .op-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+    }
 }

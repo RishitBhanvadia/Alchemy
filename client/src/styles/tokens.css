@@ -1,5 +1,11 @@
+/* =============================================
+   ALCHEMISTRY — Global Design Tokens
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
 :root {
-  /* Colour Palette */
+  /* ── Colour Palette ── */
   --color-bg-primary: #0A0A1A;
   --color-bg-secondary: #12122A;
   --color-bg-card: rgba(255, 255, 255, 0.05);
@@ -11,23 +17,63 @@
   --color-warning: #F59E0B;
   --color-danger: #EF4444;
 
-  /* Glassmorphism */
+  /* ── Legacy Variables (used across lab, result, titration, organic, inorganic, dashboard, landing) ── */
+  --primary-neon: #6366F1;
+  --secondary-neon: #8B5CF6;
+  --primary-blue: #3B82F6;
+  --secondary-purple: #8B5CF6;
+  --text-gray: #9CA3AF;
+  --text-muted: #9CA3AF;
+  --text-white: #F9FAFB;
+
+  /* ── Glassmorphism ── */
   --glass-bg: rgba(255, 255, 255, 0.07);
   --glass-border: rgba(255, 255, 255, 0.15);
   --glass-blur: blur(16px);
 
-  /* Spacing */
+  /* ── Spacing ── */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 48px;
 
-  /* Border Radius */
+  /* ── Border Radius ── */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
 
-  /* Shadows */
+  /* ── Shadows ── */
   --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+
+  /* ── Global Glassmorphism Utility ── */
+}
+
+/* ── Shared Glass Panel ── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* ── Shared Neon Glow Text ── */
+.neon-glow {
+  color: var(--color-text-primary);
+  text-shadow: 0 0 10px rgba(99, 102, 241, 0.8), 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+/* ── Shared Screen-Reader Only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

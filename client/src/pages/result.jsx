@@ -121,6 +121,7 @@ const Result = () => {
         
         if (isMounted) {
           setCart(finalCart);
+          setData(normalized);
         }
       } catch (error) {
         logger.error("Fetch error:", error);

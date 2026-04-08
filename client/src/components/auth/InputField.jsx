@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onChange, onBlur, error, name, disabled }) => {
   return (
     <div className="space-y-2">
-      <label htmlFor={name} className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
+      <label className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
         {label}
       </label>
       <div className="relative group">
@@ -17,8 +17,6 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
           type={type}
           name={name}
           id={name}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${name}-error` : undefined}
           disabled={disabled}
           className={`w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 ${
             error 
@@ -37,7 +35,6 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            id={`${name}-error`}
             className="text-[10px] text-red-400 font-medium ml-1 mt-1"
           >
             {error}

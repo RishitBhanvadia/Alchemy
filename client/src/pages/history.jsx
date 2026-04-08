@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import useHistoryStore from "../store/historyStore";
 import EmptyState from "../components/EmptyState";
 import SkeletonBlock from "../components/SkeletonBlock";
@@ -50,7 +49,6 @@ const History = () => {
 
     return (
         <div className="history-page">
-            <Navbar />
 
             <div className="history-container">
                 <h1 className="neon-glow page-title">EXPERIMENT LOGS</h1>
