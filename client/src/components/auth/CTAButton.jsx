@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { ArrowRight, UserPlus, Atom } from 'lucide-react';
 
@@ -39,6 +40,14 @@ const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType
       )}
     </motion.button>
   );
+};
+
+CTAButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  loading: PropTypes.bool,
+  type: PropTypes.string,
+  icon: PropTypes.string
 };
 
 export default CTAButton;
