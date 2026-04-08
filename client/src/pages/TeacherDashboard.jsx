@@ -20,9 +20,11 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
+import { lazy, Suspense } from 'react'; /* eslint-disable-next-line no-unused-vars */
+
+const StudentAnalyticsChart = lazy(() => import('../components/StudentAnalyticsChart'));
 import EmptyState from '../components/EmptyState';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
@@ -502,19 +504,21 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
-          scores={experimentScores}
-          experimentName={
-            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-          }
-          noDataMessage={
-            !selectedExperiment 
-              ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
-                ? "No students have completed this experiment yet."
-                : undefined
-          }
-        />
+        <Suspense fallback={<SkeletonBlock width="100%" height="400px" borderRadius="12px" />}>
+          <StudentAnalyticsChart
+            scores={experimentScores}
+            experimentName={
+              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+            }
+            noDataMessage={
+              !selectedExperiment
+                ? "Select an experiment type above to see score distribution."
+                : experimentScores.length === 0
+                  ? "No students have completed this experiment yet."
+                  : undefined
+            }
+          />
+        </Suspense>
       </section>
       </main>
     </div>
