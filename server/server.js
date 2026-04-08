@@ -74,6 +74,7 @@ app.use(helmet({
         : false,
     hidePoweredBy: true,
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
 // CORS Configuration
