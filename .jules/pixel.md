@@ -1,4 +1,0 @@
-## 2025-03-05 - Add Empty State for Assignments in StudentDashboard
-**Problem:** The Student Dashboard currently shows a plain text message "No assignments yet! Enjoy the sandbox. 🧪" when there are no assignments. This plain text breaks the visual hierarchy and is inconsistent with the EmptyState component used for empty history logs, making the layout feel unfinished.
-**Context:** For students, checking assignments is a primary action. An empty assignments list shouldn't look like an error or a forgotten part of the UI. It should use the established EmptyState pattern which features an icon, a clear title, and descriptive text.
-**Solution:** I will replace the inline `<div className="no-assignments">...</div>` block in `client/src/pages/StudentDashboard.jsx` with the existing `EmptyState` component. This will make the "My Assignments" section visually consistent with the "Recent Experiments" section, providing better visual grouping and a more polished experience.
