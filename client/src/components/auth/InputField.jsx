@@ -27,11 +27,14 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${name}-error` : undefined}
         />
       </div>
       <AnimatePresence>
         {error && (
           <motion.p
+            id={`${name}-error`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
