@@ -60,6 +60,7 @@ const CursorFollower = () => {
 
         addEventListeners();
         return () => removeEventListeners();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isTouchDevice]);
 
     if (isTouchDevice) return null;
