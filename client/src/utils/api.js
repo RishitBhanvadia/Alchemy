@@ -5,15 +5,19 @@ const api = apiClient;
 
 api.interceptors.response.use(
   (response) => {
-    const { success, data, error } = response.data;
-    if (success === false) {
-      const err = new Error(error?.message || 'Request failed');
-      err.code = error?.code;
-      err.details = error?.details;
-      logger.error('API Error:', error);
-      return Promise.reject(err);
+    // Check if the backend uses the { success, data, error } wrapper format
+    if (response.data && typeof response.data === 'object' && 'success' in response.data) {
+      const { success, data, error } = response.data;
+      if (success === false) {
+        const err = new Error(error?.message || 'Request failed');
+        err.code = error?.code;
+        err.details = error?.details;
+        logger.error('API Error Response:', error);
+        return Promise.reject(err);
+      }
+      // Re-assign the wrapped data payload as the main response data
+      response.data = data;
     }
-    response.data = data;
     return response;
   },
   (error) => {

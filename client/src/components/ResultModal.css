@@ -4,6 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   display: flex;
@@ -19,7 +20,8 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 500px;
+  max-max-width: 500px;
+  width: 100%;
   overflow: hidden;
   box-shadow: var(--shadow-glow);
   position: relative;

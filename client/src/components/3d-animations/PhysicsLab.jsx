@@ -24,12 +24,13 @@ const PhysicsLab = ({
     chemI,
     chemC
 }) => {
-    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && (window.visualViewport?.width || window.innerWidth || 1024) < 768);
     
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const handleResize = () => setIsMobile((window.visualViewport?.width || window.innerWidth || 1024) < 768);
+        const viewport = window.visualViewport || window;
+        viewport.addEventListener('resize', handleResize);
+        return () => viewport.removeEventListener('resize', handleResize);
     }, []);
     
     const totalConcentration = (chemA + chemB + chemI + chemC) / 400;

@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+  height: 100dvh;
     width: 100vw;
     background: var(--color-bg-primary, #0A0A1A);
     padding: var(--spacing-lg, 24px);
@@ -11,7 +12,8 @@
 }
 
 .error-card {
-    max-width: 500px;
+    max-max-width: 500px;
+  width: 100%;
     width: 100%;
     padding: var(--spacing-xl, 48px);
     text-align: center;
@@ -54,6 +56,8 @@
     text-align: left;
     max-height: 200px;
     overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
     width: 100%;
     font-family: monospace;
     white-space: pre-wrap;

@@ -16,8 +16,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const groupRef = useRef();
     const [amount, setAmount] = useState(maxAmount);
     
-    // Detect mobile for segments optimisation
-    const isMobile = window.innerWidth < 768;
+    // Detect mobile for segments optimisation using visualViewport for keyboard safety
+    const isMobile = (window.visualViewport?.width || window.innerWidth || 1024) < 768;
     const segments = isMobile ? 16 : 32;
     const currentPos = useRef(new Vector3(...position));
     const isPouring = useRef(false);

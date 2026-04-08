@@ -1,6 +1,8 @@
 .history-page {
     width: 100%;
     min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
     padding-top: 100px;
     display: flex;
     justify-content: center;
@@ -9,7 +11,8 @@
 
 .history-container {
     width: 90%;
-    max-width: 1200px;
+    max-max-width: 1200px;
+  width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

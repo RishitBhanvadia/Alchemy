@@ -1,5 +1,7 @@
 .lab3d-page {
     min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
     padding: 100px 20px 40px;
     display: flex;
     flex-direction: column;
@@ -12,7 +14,8 @@
 
 .lab3d-header {
     width: 100%;
-    max-width: 1200px;
+    max-max-width: 1200px;
+  width: 100%;
     text-align: center;
     padding: var(--spacing-lg);
 }
@@ -32,7 +35,8 @@
 
 .lab3d-canvas-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-max-width: 1200px;
+  width: 100%;
     height: 55vh;
     min-height: 400px;
     position: relative;
@@ -45,7 +49,8 @@
 
 .lab3d-controls-container {
     width: 100%;
-    max-width: 1200px;
+    max-max-width: 1200px;
+  width: 100%;
     margin-top: var(--spacing-md);
 }
 
@@ -192,7 +197,8 @@
 }
 
 .action-button {
-    min-width: 240px;
+    min-max-width: 240px;
+  width: 100%;
     padding: 16px 32px;
     font-size: 1.2rem;
     font-weight: 700;
@@ -344,7 +350,8 @@
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     font-size: 0.95rem;
-    max-width: 450px;
+    max-max-width: 450px;
+  width: 100%;
     text-align: center;
     z-index: 10;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
@@ -458,7 +465,8 @@
     position: fixed;
     top: 170px;
     left: 30px;
-    width: 280px;
+    max-width: 280px;
+  width: 100%;
     max-height: 60vh;
     padding: var(--spacing-md);
     z-index: 99;
@@ -466,6 +474,8 @@
     flex-direction: column;
     gap: var(--spacing-md);
     overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .lab-history-panel h3 {
@@ -539,6 +549,7 @@
     .lab-history-panel {
         top: 75px;
         left: 10px;
-        width: 220px;
+        max-width: 220px;
+  width: 100%;
     }
 }

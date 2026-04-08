@@ -1,5 +1,7 @@
 .classroom-detail-page {
     min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
     padding: 100px 40px 40px;
     display: flex;
     flex-direction: column;
@@ -9,7 +11,8 @@
 
 .detail-header {
     width: 100%;
-    max-width: 1400px;
+    max-max-width: 1400px;
+  width: 100%;
     margin: 0 auto;
     padding: 20px 30px;
     display: flex;
@@ -61,7 +64,8 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-lg);
     width: 100%;
-    max-width: 1400px;
+    max-max-width: 1400px;
+  width: 100%;
     margin: 0 auto;
 }
 
@@ -102,6 +106,8 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 12px;
     overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .student-card {
@@ -261,7 +267,8 @@
 
 .assignment-modal {
     width: 100%;
-    max-width: 500px;
+    max-max-width: 500px;
+  width: 100%;
     padding: 30px;
     display: flex;
     flex-direction: column;

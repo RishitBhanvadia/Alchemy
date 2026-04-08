@@ -25,11 +25,41 @@
 }
 
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+  }
+
   body {
     @apply bg-lab-black text-white antialiased font-sans;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+  }
+
+  /* Fix iOS 100vh bug */
+  .full-height {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* Apple HIG minimum touch target size */
+  .interactive, button, [role="button"], a, .game-element {
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS auto-zoom on inputs */
+  input, textarea, select {
+    font-size: 16px;
   }
 
   h1, h2, h3, h4, h5, h6 {
