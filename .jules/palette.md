@@ -1,0 +1,3 @@
+## 2024-03-28 - Missing Accessible Names on Virtual Lab Controls
+**Learning:** Virtual lab components (`Lab3D.jsx`, `titration.jsx`) rely heavily on icon-only and minimal-text buttons (like '📋', '🤖', and '<'/'>' arrows) for a cleaner UI, but frequently lack `aria-label` attributes, making them inaccessible and confusing to screen reader users who cannot visually infer their function.
+**Action:** Always verify that purely visual or icon-only interactive controls (such as toggles, AI chat buttons, and carousel/selection arrows) have explicit `aria-label` attributes describing their function. Add `aria-expanded` attributes where appropriate for toggles.

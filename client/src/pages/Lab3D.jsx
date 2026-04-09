@@ -214,6 +214,8 @@ const Lab3D = () => {
                 className={`history-toggle ${isHistoryOpen ? 'active' : ''}`}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
                 title="Experiment History"
+                aria-label="Toggle Experiment History"
+                aria-expanded={isHistoryOpen}
             >
                 📋
             </button>
@@ -437,6 +439,8 @@ const Lab3D = () => {
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
+                aria-label="Open AI Tutor Panel"
+                aria-expanded={isAiOpen}
             >
                 🤖
             </button>
