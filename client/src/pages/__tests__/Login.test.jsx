@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
@@ -46,13 +46,18 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        const authCard = screen.getByTestId('auth-card');
+        const loginForm = authCard.querySelector('form');
+        const loginFormScope = within(loginForm);
+        expect(loginFormScope.getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(loginFormScope.getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
+        const authCard = screen.getByTestId('auth-card');
+        const loginForm = authCard.querySelector('form');
+        const submitButton = within(loginForm).getByRole('button', { name: /access lab/i });
         expect(submitButton).toBeInTheDocument();
     });
 
@@ -64,9 +69,13 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
+        const authCard = screen.getByTestId('auth-card');
+        const loginForm = authCard.querySelector('form');
+        const loginFormScope = within(loginForm);
+
+        const emailInput = loginFormScope.getByLabelText(/email address/i);
+        const passwordInput = loginFormScope.getByLabelText(/password/i);
+        const submitButton = loginFormScope.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +97,13 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
+        const authCard = screen.getByTestId('auth-card');
+        const loginForm = authCard.querySelector('form');
+        const loginFormScope = within(loginForm);
+
+        const emailInput = loginFormScope.getByLabelText(/email address/i);
+        const passwordInput = loginFormScope.getByLabelText(/password/i);
+        const submitButton = loginFormScope.getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
