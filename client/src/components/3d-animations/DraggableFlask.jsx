@@ -112,7 +112,6 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const lastUpdate = useRef(0);
     const pourAccumulator = useRef(0);
     const lastPourUpdate = useRef(0);
-
     useFrame((state, delta) => {
         // Performance optimization: throttle physics/logic to ~30fps on mobile
         if (isMobile) {
@@ -124,7 +123,6 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (isPouring.current && amount > 0) {
             const pourAmount = delta * 20;
             pourAccumulator.current += pourAmount;
-
             // Throttle state updates to ~15fps (every 66ms) to prevent excessive parent re-renders
             lastPourUpdate.current += delta;
             if (lastPourUpdate.current >= 1/15) {
