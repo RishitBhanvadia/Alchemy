@@ -1,0 +1,4 @@
+## 2024-05-29 - Crash in Titration Component when Data is Missing
+**Bug:** The Titration page would crash when a user clicked the "SHAKE" button if the expected API data was not loaded properly. Specifically, this happens when the H2SO4 base is selected but the fallback or API response only returned a single object.
+**Root Cause:** The `handleShake` function in `client/src/pages/titration.jsx` accessed `data.points` in a for-loop without verifying that `data` and its nested properties actually exist.
+**Learning:** Always use defensive programming and optional chaining or null checks before accessing properties of API-driven data objects, especially deeply nested arrays like `.points` or `.color`. Ensure loops iterating over dynamically fetched lengths are guarded by truthy checks on the array itself.
