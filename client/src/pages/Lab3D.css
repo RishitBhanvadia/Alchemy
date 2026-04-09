@@ -147,6 +147,11 @@
     background: rgba(255, 255, 255, 0.15);
 }
 
+.chem-slider:focus-visible {
+    outline: 2px solid #00ff88;
+    outline-offset: 4px;
+}
+
 .chem-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;

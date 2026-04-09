@@ -1,0 +1,4 @@
+## 2025-02-18 - Missing keyboard focus states and empty state consistency
+**Problem:** The 3D Lab sliders lacked visible focus indicators for keyboard users because `outline: none` disabled default browser outlines without a fallback, making navigation difficult. Also, the assignments empty state in the student dashboard was implemented inconsistently using a plain div instead of the reusable `EmptyState` component.
+**Context:** Consistent empty states provide a polished UX, and clear focus indicators are critical for accessibility, especially when core interactions (adjusting chemicals) rely on slider inputs.
+**Solution:** Replaced the plain div in `StudentDashboard.jsx` with the `EmptyState` component. Added a `:focus-visible` rule in `Lab3D.css` to restore keyboard accessibility for `.chem-slider` without compromising the mouse/touch visual experience.
