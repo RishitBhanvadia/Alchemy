@@ -120,18 +120,18 @@ const SignUpForm = ({ onTabSwitch }) => {
         />
       </div>
 
-      <div className="pt-2 space-y-3">
-        <h3 className="text-center text-[11px] font-medium text-lab-muted tracking-[0.15em] uppercase">
+      <fieldset className="pt-2 space-y-3">
+        <legend className="text-center text-[11px] font-medium text-lab-muted tracking-[0.15em] uppercase w-full mb-3">
           Select Your Lab Role
-        </h3>
+        </legend>
         <div className="flex gap-3">
           <RoleCard 
-            role="student" 
+            roleType="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
+            roleType="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />
@@ -139,7 +139,7 @@ const SignUpForm = ({ onTabSwitch }) => {
         {errors.role && (
           <p className="text-center text-[10px] text-red-400 font-medium">{errors.role}</p>
         )}
-      </div>
+      </fieldset>
 
       <div className="pt-2">
         <CTAButton loading={loading} icon="UserPlus">
