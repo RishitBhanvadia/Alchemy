@@ -148,11 +148,6 @@ const Result = () => {
     return () => { isMounted = false; };
   }, [location.state]);
 
-  // Cart persistence hook
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
   // Early return MUST happen after all hooks
   if (!location.state) {
     return null;

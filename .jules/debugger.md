@@ -1,0 +1,4 @@
+## 2024-03-30 - Fix Cart State Race Condition on Result Page
+**Bug:** The history cart in `client/src/pages/result.jsx` suffered from a race condition where multiple concurrent asynchronous API calls resulting in cart updates (from different tabs or fast interactions) would overwrite each other's history entries.
+**Root Cause:** A `useEffect` hook listening to the `cart` state blindly overwrote `localStorage` with its own potentially stale closure/state every time `cart` updated, wiping out changes from parallel updates that had successfully appended correctly through the `updateCartAtomically` block.
+**Learning:** Do not use a naive `useEffect` dependent on state variables to sync back to `localStorage` when multiple parts of the application or separate browser tabs might also need to append to that `localStorage` object concurrently. Always read immediately before write (which was done) and omit the redundant overwrite effect.
