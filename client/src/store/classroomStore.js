@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
+import { generateSecureCode } from '../utils/generateCode';
 
 const useClassroomStore = create((set, get) => ({
   membership: null,
@@ -96,7 +97,7 @@ const useClassroomStore = create((set, get) => ({
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'Not authenticated' };
 
-    const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const classCode = generateSecureCode();
 
     const { data, error } = await supabase
       .from('classrooms')
