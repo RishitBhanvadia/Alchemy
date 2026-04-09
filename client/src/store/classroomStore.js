@@ -1,3 +1,4 @@
+import logger from "../utils/logger";
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 
@@ -23,7 +24,7 @@ const useClassroomStore = create((set, get) => ({
       .maybeSingle();
 
     if (error) {
-      console.error('Error fetching membership:', error);
+      logger.error('Error fetching membership:', error);
       set({ membership: null, loading: false });
     } else {
       set({ membership: data || null, loading: false, lastFetched: Date.now() });
@@ -51,7 +52,7 @@ const useClassroomStore = create((set, get) => ({
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching classrooms:', error);
+      logger.error('Error fetching classrooms:', error);
       set({ classrooms: [], loading: false });
     } else {
       set({ classrooms: data || [], loading: false, lastFetched: now });

@@ -1,3 +1,4 @@
+import logger from "../utils/logger";
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
@@ -19,7 +20,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             set({ assignments: data });
         } catch (error) {
-            console.error('Error fetching assignments:', error);
+            logger.error('Error fetching assignments:', error);
             toast.error('Failed to load assignments');
         } finally {
             set({ loading: false });
@@ -36,7 +37,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             set({ studentProgress: data });
         } catch (error) {
-            console.error('Error fetching progress:', error);
+            logger.error('Error fetching progress:', error);
         }
     },
 
@@ -56,7 +57,7 @@ const useAssignmentStore = create((set) => ({
             toast.success('Assignment created!');
             return data[0];
         } catch (error) {
-            console.error('Error creating assignment:', error);
+            logger.error('Error creating assignment:', error);
             toast.error('Failed to create assignment');
             return null;
         }
@@ -77,7 +78,7 @@ const useAssignmentStore = create((set) => ({
             
             toast.success('Assignment removed');
         } catch (error) {
-            console.error('Error deleting assignment:', error);
+            logger.error('Error deleting assignment:', error);
             toast.error('Failed to delete assignment');
         }
     },
@@ -109,7 +110,7 @@ const useAssignmentStore = create((set) => ({
 
             set({ assignments: merged });
         } catch (error) {
-            console.error('Error fetching student assignments:', error);
+            logger.error('Error fetching student assignments:', error);
         } finally {
             set({ loading: false });
         }
@@ -129,7 +130,7 @@ const useAssignmentStore = create((set) => ({
             if (error) throw error;
             toast.success('Assignment progress saved!');
         } catch (error) {
-            console.error('Error submitting assignment:', error);
+            logger.error('Error submitting assignment:', error);
         }
     }
 }));

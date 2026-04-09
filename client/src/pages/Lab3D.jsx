@@ -1,3 +1,4 @@
+import logger from "../utils/logger";
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from "framer-motion";
 import "./Lab3D.css";
@@ -8,7 +9,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState, } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -68,7 +69,7 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
-                console.error("Error fetching classroom restrictions:", error);
+                logger.error("Error fetching classroom restrictions:", error);
             }
         };
 
@@ -122,7 +123,7 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
-                console.error("Failed to fetch AI hint:", error);
+                logger.error("Failed to fetch AI hint:", error);
             }
         }, 800);
 
@@ -156,7 +157,7 @@ const Lab3D = () => {
                 setIsLoading(false);
             }
         } catch (error) {
-            console.error("Reaction failed:", error);
+            logger.error("Reaction failed:", error);
             setIsLoading(false);
             toast.dismiss();
             
@@ -277,10 +278,10 @@ const Lab3D = () => {
                                 const canvas = gl.domElement;
                                 canvas.addEventListener('webglcontextlost', (e) => {
                                     e.preventDefault();
-                                    console.warn('[Lab3D] WebGL context lost — attempting recovery');
+                                    logger.warn('[Lab3D] WebGL context lost — attempting recovery');
                                 }, false);
                                 canvas.addEventListener('webglcontextrestored', () => {
-                                    console.warn('[Lab3D] WebGL context restored');
+                                    logger.warn('[Lab3D] WebGL context restored');
                                 }, false);
                             }}
                         >

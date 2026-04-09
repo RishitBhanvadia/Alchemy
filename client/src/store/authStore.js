@@ -1,3 +1,4 @@
+import logger from "../utils/logger";
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 
@@ -114,19 +115,19 @@ async function fetchProfile(user) {
         .single();
       
       if (insertError) {
-        console.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
+        logger.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
         return null;
       }
       return newProfile;
     }
     
     if (error) {
-      console.error('[authStore] Profile fetch error:', error.message, error.code);
+      logger.error('[authStore] Profile fetch error:', error.message, error.code);
     }
     
     return null;
   } catch (err) {
-    console.error('[authStore] fetchProfile exception:', err.message);
+    logger.error('[authStore] fetchProfile exception:', err.message);
     return null;
   }
 }
