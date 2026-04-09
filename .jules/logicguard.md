@@ -1,0 +1,4 @@
+## 2025-02-23 - Logic inconsistencies in hashing and classification
+**Bug:** The `computeReactionId` and `classifyRegime` functions duplicated inside `server/controllers/resultController.js` contained inconsistent logic and incorrect hashing multipliers for `chem_i` and `chem_c` compared to `server/utils/reactionHash.js` and `server/utils/regimeClassifier.js`.
+**Root Cause:** Duplication of business logic across controllers and shared utilities. Specifically, the multiplier for `chem_i` (Indicator) and `chem_c` (Catalyst) were swapped. Furthermore, the inline `classifyRegime` completely ignored the indicator and catalyst concentrations, preventing them from being accurately mapped in the reaction lookups.
+**Learning:** Shared business rules regarding lookup algorithms and logic branching should always be imported from central utilities, rather than redefined dynamically inside route controllers to prevent mapping discrepancies over time.
