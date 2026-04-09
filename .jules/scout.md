@@ -1,0 +1,4 @@
+## 2026-03-19 - Virtual Chemistry Lab Market Insights
+**Market Insight:** The virtual chemistry laboratory market is increasingly shifting towards gamified, data-driven platforms (like Labster and PraxiLabs) that integrate seamlessly into existing educational workflows. Top competitors differentiate themselves through structured learning pathways, AI-assisted guidance, and comprehensive assessment tools.
+**Codebase Match:** Alchemistry has a strong foundation with its interactive 3D environments (Three.js) and basic teacher dashboards, but lacks explicit formative assessments and in-experiment guidance.
+**Opportunity:** Adding formative assessment features (like in-lab quizzes), exportable data for teachers, and improving the onboarding/guidance experience to match industry standards without requiring major architectural changes.
