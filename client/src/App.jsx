@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import CursorFollower from "./components/CursorFollower";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LoadingOverlay from "./components/LoadingOverlay";
-import { LabSkeleton, DashboardSkeleton } from "./components/SkeletonLoader";
+import { LabSkeleton, DashboardSkeleton, StudentDashboardSkeleton } from "./components/SkeletonLoader";
 import { PrivateRoute, RoleRoute } from './utils/roleGuard';
 import "./app.css";
 import "./accessibility.css";
@@ -90,7 +90,7 @@ function App() {
           <Route path="/student" element={
             <PrivateRoute>
               <RoleRoute requiredRole="student">
-                <Suspense fallback={<DashboardSkeleton />}><StudentDashboard /></Suspense>
+                <Suspense fallback={<StudentDashboardSkeleton />}><StudentDashboard /></Suspense>
               </RoleRoute>
             </PrivateRoute>
           } />
