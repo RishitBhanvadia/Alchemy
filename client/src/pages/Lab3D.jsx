@@ -4,14 +4,14 @@ import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
 import { toast } from "react-hot-toast";
-import AiTutorPanel from "../components/AiTutorPanel";
-import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
+const AiTutorPanel = lazy(() => import("../components/AiTutorPanel"));
+const ResultModal = lazy(() => import("../components/ResultModal"));
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
 const Lab3D = () => {
@@ -441,18 +441,26 @@ const Lab3D = () => {
                 🤖
             </button>
  
-            <AiTutorPanel 
-                isOpen={isAiOpen} 
-                onClose={() => setIsAiOpen(false)} 
-            />
+            <Suspense fallback={null}>
+                {isAiOpen && (
+                    <AiTutorPanel
+                        isOpen={isAiOpen}
+                        onClose={() => setIsAiOpen(false)}
+                    />
+                )}
+            </Suspense>
  
-            <ResultModal 
-                isOpen={isResultOpen}
-                result={reactionResult}
-                onClose={() => setIsResultOpen(false)}
-                onReset={handleResetLab}
-                onAskAI={handleAskAI}
-            />
+            <Suspense fallback={null}>
+                {isResultOpen && (
+                    <ResultModal
+                        isOpen={isResultOpen}
+                        result={reactionResult}
+                        onClose={() => setIsResultOpen(false)}
+                        onReset={handleResetLab}
+                        onAskAI={handleAskAI}
+                    />
+                )}
+            </Suspense>
         </motion.div>
     );
 };
