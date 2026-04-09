@@ -1,0 +1,3 @@
+## 2024-05-24 - Recharts Bundle Size Optimization
+**Learning:** The `recharts` library is large and can inflate the initial JavaScript bundle size, slowing down page loads for components like `TeacherDashboard` that depend on heavy visualization components.
+**Action:** When working with heavy visualization components like `StudentAnalyticsChart`, always lazily load them using `React.lazy()` and `<Suspense>`. To prevent layout shifts and `ReferenceError` crashes during initialization, implement a specifically inline-styled fallback UI that doesn't reference bottom-defined `styles` objects, and place the `React.lazy` declaration strictly after static ES6 imports.

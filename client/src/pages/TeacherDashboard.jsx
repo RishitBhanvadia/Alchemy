@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -20,10 +20,13 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
+
+// ⚡ Optimizer: Lazy load the heavy StudentAnalyticsChart component (which includes recharts)
+// to reduce the initial JS bundle size and improve page load performance.
+const StudentAnalyticsChart = lazy(() => import('../components/StudentAnalyticsChart'));
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -502,19 +505,36 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
-          scores={experimentScores}
-          experimentName={
-            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-          }
-          noDataMessage={
-            !selectedExperiment 
-              ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
-                ? "No students have completed this experiment yet."
-                : undefined
-          }
-        />
+        <Suspense fallback={
+          <div style={{
+            background: 'rgba(26, 26, 46, 0.8)',
+            borderRadius: '12px',
+            padding: '3rem',
+            textAlign: 'center',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            minHeight: '280px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#888'
+          }}>
+            Loading analytics chart...
+          </div>
+        }>
+          <StudentAnalyticsChart
+            scores={experimentScores}
+            experimentName={
+              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+            }
+            noDataMessage={
+              !selectedExperiment
+                ? "Select an experiment type above to see score distribution."
+                : experimentScores.length === 0
+                  ? "No students have completed this experiment yet."
+                  : undefined
+            }
+          />
+        </Suspense>
       </section>
       </main>
     </div>
