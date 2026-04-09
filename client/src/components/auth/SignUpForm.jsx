@@ -12,7 +12,7 @@ const SignUpForm = ({ onTabSwitch }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: null
+    roleType: null
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ const SignUpForm = ({ onTabSwitch }) => {
     
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Secret keys do not match.';
     
-    if (!formData.role) newErrors.role = 'Please choose your lab role.';
+    if (!formData.roleType) newErrors.roleType = 'Please choose your lab roleType.';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -40,9 +40,9 @@ const SignUpForm = ({ onTabSwitch }) => {
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
-  const handleRoleSelect = (role) => {
-    setFormData(prev => ({ ...prev, role }));
-    if (errors.role) setErrors(prev => ({ ...prev, role: '' }));
+  const handleRoleSelect = (roleType) => {
+    setFormData(prev => ({ ...prev, roleType }));
+    if (errors.roleType) setErrors(prev => ({ ...prev, roleType: '' }));
   };
 
   const handleSignUp = async (e) => {
@@ -55,7 +55,7 @@ const SignUpForm = ({ onTabSwitch }) => {
         email: formData.email,
         password: formData.password,
         options: {
-          data: { full_name: formData.fullName, role: formData.role }
+          data: { full_name: formData.fullName, roleType: formData.roleType }
         }
       });
 
@@ -126,18 +126,18 @@ const SignUpForm = ({ onTabSwitch }) => {
         </h3>
         <div className="flex gap-3">
           <RoleCard 
-            role="student" 
-            selected={formData.role === 'student'} 
+            roleType="student"
+            selected={formData.roleType === 'student'}
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
-            selected={formData.role === 'teacher'} 
+            roleType="teacher"
+            selected={formData.roleType === 'teacher'}
             onSelect={handleRoleSelect} 
           />
         </div>
-        {errors.role && (
-          <p className="text-center text-[10px] text-red-400 font-medium">{errors.role}</p>
+        {errors.roleType && (
+          <p className="text-center text-[10px] text-red-400 font-medium">{errors.roleType}</p>
         )}
       </div>
 
