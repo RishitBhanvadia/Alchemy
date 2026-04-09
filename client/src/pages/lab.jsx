@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -23,29 +23,13 @@ const Lab = () => {
 
 
 
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+  useEffect(() => {
+    if (chemA > 0) return SetTColor('#05B9C4');
+    if (chemB > 0) return SetTColor('#04CE7E');
+    if (chemC > 0) return SetTColor('#FBC2E3');
+    if (chemD > 0) return SetTColor('#DAA520');
+    SetTColor("");
+  }, [chemA, chemB, chemC, chemD]);
 
   useLayoutEffect(() => {
     if (animate) {
@@ -63,51 +47,19 @@ const Lab = () => {
   }, [animate]);
 
   const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
+    setChemA(parseInt(e.target.value));
   };
 
   const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
+    setChemB(parseInt(e.target.value));
   };
 
   const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
+    setChemC(parseInt(e.target.value));
   };
 
   const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
-    change_tip();
+    setChemD(parseInt(e.target.value));
   };
 
   const useHandlePlayClick = () => {
