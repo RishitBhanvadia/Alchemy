@@ -158,9 +158,12 @@ const StudentDashboard = () => {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="no-assignments">
-                                            <span>No assignments yet! Enjoy the sandbox. 🧪</span>
-                                        </div>
+                                        <EmptyState
+                                            icon="📝"
+                                            title="No assignments yet"
+                                            description="Enjoy the sandbox and practice your skills! 🧪"
+                                            className="compact-empty"
+                                        />
                                     )}
                                 </div>
                             </section>
@@ -181,17 +184,20 @@ const StudentDashboard = () => {
                                 {MODULE_CARDS.map((module, idx) => (
                                     <motion.div
                                         key={module.id}
-                                        className="module-card glass-card"
-                                        data-testid={`module-card-${module.id}`}
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.1 * idx }}
-                                        onClick={() => navigate(module.route)}
                                         whileHover={{ y: -4 }}
                                     >
-                                        <div className="module-icon">{module.icon}</div>
-                                        <h3 className="module-name">{module.name}</h3>
-                                        <p className="module-desc">{module.description}</p>
+                                        <Link
+                                            to={module.route}
+                                            className="module-card glass-card"
+                                            data-testid={`module-card-${module.id}`}
+                                        >
+                                            <div className="module-icon">{module.icon}</div>
+                                            <h3 className="module-name">{module.name}</h3>
+                                            <p className="module-desc">{module.description}</p>
+                                        </Link>
                                     </motion.div>
                                 ))}
                             </div>
