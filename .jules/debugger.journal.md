@@ -1,0 +1,4 @@
+## 2025-02-14 - Fix accessibility query failure in React Testing Library
+**Bug:** Tests failing because `screen.getByLabelText` could not find the input element.
+**Root Cause:** The `<label>` element did not have the `htmlFor` attribute linking to the `<input>` element's `id`. This caused the testing library to not be able to map the label to the input, as well as breaking accessibility for screen readers.
+**Learning:** Always ensure that `<label>` elements are properly associated with their corresponding input elements using the `htmlFor` attribute (matching the input's `id`) to ensure tests and accessibility work correctly.
