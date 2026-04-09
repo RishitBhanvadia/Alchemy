@@ -437,6 +437,7 @@ const Lab3D = () => {
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
+                aria-label="Ask AI Tutor"
             >
                 🤖
             </button>
