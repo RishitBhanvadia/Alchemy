@@ -1,4 +1,3 @@
-import logger from "./logger";
 import axios from 'axios';
 import { supabase } from '../supabaseClient';
 
@@ -23,7 +22,7 @@ apiClient.interceptors.request.use(async (config) => {
       config.headers.Authorization = `Bearer ${session.access_token}`;
     }
   } catch (error) {
-    logger.error('Error fetching auth session for API request:', error);
+    console.error('Error fetching auth session for API request:', error);
   }
   return config;
 });
@@ -44,7 +43,7 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         }
       } catch (refreshError) {
-        logger.warn('Token refresh failed:', refreshError);
+        console.warn('Token refresh failed:', refreshError);
       }
       // If refresh failed, redirect to login
       window.location.href = '/login?expired=true';
@@ -53,12 +52,12 @@ apiClient.interceptors.response.use(
     
     // Handle timeout errors with specific message
     if (error.code === 'ECONNABORTED') {
-      logger.warn('Request timeout:', error.message);
+      console.warn('Request timeout:', error.message);
     }
     
     // Handle network errors
     if (!navigator.onLine) {
-      logger.warn('Network offline');
+      console.warn('Network offline');
     }
     
     return Promise.reject(error);

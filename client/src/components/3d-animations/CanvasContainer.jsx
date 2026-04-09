@@ -1,4 +1,3 @@
-import logger from "../../utils/logger";
 import React, { useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import PropTypes from 'prop-types';
@@ -14,11 +13,11 @@ const CanvasContainer = ({ children, style, ...props }) => {
 
         const onContextLost = (e) => {
             e.preventDefault();
-            logger.warn('[CanvasContainer] WebGL context lost — will attempt restore');
+            console.warn('[CanvasContainer] WebGL context lost — will attempt restore');
         };
 
         const onContextRestored = () => {
-            logger.warn('[CanvasContainer] WebGL context restored');
+            console.warn('[CanvasContainer] WebGL context restored');
         };
 
         canvas.addEventListener('webglcontextlost', onContextLost, false);
