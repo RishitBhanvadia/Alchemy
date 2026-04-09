@@ -1,0 +1,4 @@
+## 2025-04-04 - Fix ARIA role prop conflict in React components
+**Before:** Custom React components like `RoleCard` were receiving a prop named `role` (e.g. `role="student"`). The `eslint-plugin-jsx-a11y` parser mistakenly identified these as invalid standard HTML ARIA roles, leading to `jsx-a11y/aria-role` linting errors.
+**Issue:** The prop `role` conflicts with standard HTML DOM attributes in linting checks, leading to false positives for invalid non-abstract ARIA roles and confusing errors.
+**Learning:** To prevent `jsx-a11y/aria-role` ESLint errors when passing role data to custom React components, avoid naming the prop `role` as it conflicts with native DOM attributes. Use an alternative name like `roleType`.
