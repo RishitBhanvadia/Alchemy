@@ -20,10 +20,11 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
+
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -502,19 +503,22 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
-          scores={experimentScores}
-          experimentName={
-            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-          }
-          noDataMessage={
-            !selectedExperiment 
-              ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
-                ? "No students have completed this experiment yet."
-                : undefined
-          }
-        />
+        {/* ⚡ Bolt Optimization: Lazy load heavy charting library below the fold to reduce initial dashboard bundle size */}
+        <React.Suspense fallback={<div className="p-8 flex justify-center w-full"><EmptyState icon="📊" title="Loading analytics..." description="Please wait while the chart data loads." /></div>}>
+          <StudentAnalyticsChart
+            scores={experimentScores}
+            experimentName={
+              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+            }
+            noDataMessage={
+              !selectedExperiment
+                ? "Select an experiment type above to see score distribution."
+                : experimentScores.length === 0
+                  ? "No students have completed this experiment yet."
+                  : undefined
+            }
+          />
+        </React.Suspense>
       </section>
       </main>
     </div>
