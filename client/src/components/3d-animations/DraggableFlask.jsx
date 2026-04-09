@@ -24,6 +24,10 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const isTilted = useRef(false);
     const dragActive = useRef(false);
     
+    // Pour accumulation refs for throttling
+    const accumulatedPour = useRef(0);
+    const lastPourFlushTime = useRef(0);
+
     // Shader refs
     const liquidMatRef = useRef();
     const velocityTracker = useRef(new Vector2());
@@ -101,13 +105,21 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         isPouring.current = false;
         isTilted.current = false;
 
+        // Flush any remaining accumulated pour
+        if (accumulatedPour.current > 0) {
+            const flushAmount = accumulatedPour.current;
+            setAmount((prev) => Math.max(0, prev - flushAmount));
+            onPour(flushAmount);
+            accumulatedPour.current = 0;
+        }
+
         // Reset position
         currentPos.current.set(...position);
 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [gl, position]);
+    }, [gl, position, onPour]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
@@ -118,10 +130,18 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             lastUpdate.current = 0;
         }
 
-        if (isPouring.current && amount > 0) {
+        if (isPouring.current && amount - accumulatedPour.current > 0) {
             const pourAmount = delta * 20;
-            setAmount((prev) => Math.max(0, prev - pourAmount));
-            onPour(pourAmount);
+            accumulatedPour.current += pourAmount;
+        }
+
+        // Throttle state updates to roughly 10fps (every 0.1s)
+        if (accumulatedPour.current > 0 && state.clock.elapsedTime - lastPourFlushTime.current > 0.1) {
+            const flushAmount = accumulatedPour.current;
+            setAmount((prev) => Math.max(0, prev - flushAmount));
+            onPour(flushAmount);
+            accumulatedPour.current = 0;
+            lastPourFlushTime.current = state.clock.elapsedTime;
         }
 
         // Calculate velocity for Slosh
