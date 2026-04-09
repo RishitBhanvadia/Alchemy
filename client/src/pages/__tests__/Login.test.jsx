@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from '../Login';
 
@@ -46,8 +46,12 @@ describe('Login Component', () => {
 
     it('should render login form', () => {
         renderLogin();
-        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+
+        const form = screen.getByRole('button', { name: /access lab/i }).closest('form');
+        const { getByLabelText } = within(form);
+
+        expect(getByLabelText(/email address/i)).toBeInTheDocument();
+        expect(getByLabelText(/password/i)).toBeInTheDocument();
     });
 
     it('should have submit button', () => {
@@ -64,9 +68,12 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
+        const form = screen.getByRole('button', { name: /access lab/i }).closest('form');
+        const { getByLabelText, getByRole } = within(form);
+
+        const emailInput = getByLabelText(/email address/i);
+        const passwordInput = getByLabelText(/password/i);
+        const submitButton = getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -88,9 +95,12 @@ describe('Login Component', () => {
 
         renderLogin();
 
-        const emailInput = screen.getByLabelText(/email address/i);
-        const passwordInput = screen.getByLabelText(/password/i);
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
+        const form = screen.getByRole('button', { name: /access lab/i }).closest('form');
+        const { getByLabelText, getByRole } = within(form);
+
+        const emailInput = getByLabelText(/email address/i);
+        const passwordInput = getByLabelText(/password/i);
+        const submitButton = getByRole('button', { name: /access lab/i });
 
         fireEvent.change(emailInput, { target: { value: 'wrong@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
