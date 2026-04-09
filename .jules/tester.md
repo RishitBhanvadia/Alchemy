@@ -1,0 +1,4 @@
+## 2024-03-28 - Testing Zustand Auth Flow with Deferred Imports
+**Gap:** The critical user authentication flow in `authStore.js` was entirely untested, leaving login/logout logic and Supabase integration vulnerable to regressions.
+**Learning:** `authStore.js` uses deferred imports for other stores (`useLabStore = require('./labStore').default`) inside a try-catch block to avoid circular dependencies during normal execution. However, during Vitest unit testing, if these dependent stores are not properly mocked at the top-level, it causes Vitest to throw runner errors or "store imports deferred" warnings, breaking the test suite.
+**Pattern:** Always use `vi.mock('../[dependentStore]')` with a default export containing the expected minimal structure (e.g., `default: { getState: () => ({ reset: vi.fn() }) }`) at the top level of the test file *before* importing the main store being tested.
