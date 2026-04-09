@@ -16,7 +16,7 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
         <input
           type={type}
           name={name}
-          id={name}
+          id={name} aria-invalid={!!error} aria-describedby={error ? `${name}-error` : undefined}
           disabled={disabled}
           className={`w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 ${
             error 
@@ -35,7 +35,7 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="text-[10px] text-red-400 font-medium ml-1 mt-1"
+            id={`${name}-error`} className="text-[10px] text-red-400 font-medium ml-1 mt-1"
           >
             {error}
           </motion.p>
