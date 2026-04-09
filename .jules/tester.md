@@ -1,0 +1,4 @@
+## 2024-04-01 - Fix Auth Form Tests
+**Gap:** The login tests were failing because custom input fields (`InputField`) did not correctly associate `<label>` elements with their inputs using the `htmlFor` and `id` attributes. Additionally, the `SignUpForm` had almost no test coverage.
+**Learning:** React Testing Library's `getByLabelText` relies entirely on valid accessibility associations. Without `htmlFor` pointing to the input's `id`, `getByLabelText` throws a `TestingLibraryElementError`. Ensuring this association fixes tests and improves accessibility.
+**Pattern:** For custom input components, explicitly pass the `id` (or `name` if used as ID) to the input element and matching `htmlFor` to the `<label>`. When testing custom role selectors that share text with other elements, use `getAllByText` or scope the query appropriately.
