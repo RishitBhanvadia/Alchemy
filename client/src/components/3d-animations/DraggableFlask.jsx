@@ -24,6 +24,10 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const isTilted = useRef(false);
     const dragActive = useRef(false);
     
+    // Performance: Throttle React state updates from useFrame
+    const accumulatedPour = useRef(0);
+    const lastPourUpdate = useRef(0);
+
     // Shader refs
     const liquidMatRef = useRef();
     const velocityTracker = useRef(new Vector2());
@@ -101,13 +105,21 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         isPouring.current = false;
         isTilted.current = false;
 
+        // Flush any uncommitted accumulated pour amount
+        if (accumulatedPour.current > 0) {
+            const flushAmount = accumulatedPour.current;
+            setAmount((prev) => Math.max(0, prev - flushAmount));
+            if (onPour) onPour(flushAmount);
+            accumulatedPour.current = 0;
+        }
+
         // Reset position
         currentPos.current.set(...position);
 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [gl, position]);
+    }, [gl, position, onPour]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
@@ -119,9 +131,19 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
 
         if (isPouring.current && amount > 0) {
-            const pourAmount = delta * 20;
-            setAmount((prev) => Math.max(0, prev - pourAmount));
-            onPour(pourAmount);
+            // Accumulate pour amount instead of calling React state immediately
+            accumulatedPour.current += delta * 20;
+            lastPourUpdate.current += delta;
+
+            // Throttle state update to ~10fps (every 0.1s)
+            if (lastPourUpdate.current >= 0.1) {
+                const totalPour = accumulatedPour.current;
+                setAmount((prev) => Math.max(0, prev - totalPour));
+                if (onPour) onPour(totalPour);
+
+                accumulatedPour.current = 0;
+                lastPourUpdate.current = 0;
+            }
         }
 
         // Calculate velocity for Slosh
