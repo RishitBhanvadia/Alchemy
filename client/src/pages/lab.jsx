@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import CustomTestTube from "../components/testtube";
@@ -22,7 +22,7 @@ const Lab = () => {
   const [chemD, setChemD] = useState(0);
 
   // Update tip color whenever a chemical concentration changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (chemA > 0) SetTColor('#05B9C4');
     else if (chemB > 0) SetTColor('#04CE7E');
@@ -68,6 +68,8 @@ const Lab = () => {
   // Require at least two active chemicals to enable play
   const activeChemCount = [chemA, chemB, chemC, chemD].filter(c => c > 0).length;
   const isPlayDisabled = activeChemCount < 2;
+
+
 
   return (
     <div className="lab-page" ref={app}>
