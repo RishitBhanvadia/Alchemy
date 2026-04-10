@@ -6,16 +6,13 @@ on:
   pull_request:
     branches: [ main, master ]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   test:
     runs-on: ubuntu-latest
     
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
     
     steps:
     - name: Checkout code
@@ -34,10 +31,18 @@ jobs:
       working-directory: ./client
       run: npm ci
     
+    - name: Ensure tailwindcss native binding
+      working-directory: ./client
+      run: npm install @tailwindcss/oxide@4.2.2 --save-optional
+
     - name: Install server dependencies
       working-directory: ./server
       run: npm ci
     
+    - name: Ensure tailwindcss native binding
+      working-directory: ./client
+      run: npm install @tailwindcss/oxide@4.2.2 --save-optional
+
     - name: Lint client code
       working-directory: ./client
       run: npm run lint
