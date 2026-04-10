@@ -17,9 +17,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -48,6 +52,8 @@ jobs:
     
     - name: Upload Test logs
       uses: actions/upload-artifact@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       if: always()
       with:
         name: vitest-logs
@@ -68,7 +74,9 @@ jobs:
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       if: always()
       with:
         files: ./client/coverage/*.xml
