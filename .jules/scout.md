@@ -1,0 +1,4 @@
+## 2024-04-10 - Virtual Chemistry Lab Market Research
+**Market Insight:** Top virtual labs (Labster, PraxiLabs) heavily emphasize tying practical simulations to theoretical assessments (pre-lab theory reading and post-lab quizzes) and reducing teacher workload through automated performance tracking. They also enforce virtual lab safety (PPE) as a learning mechanic.
+**Codebase Match:** Alchemistry currently has a robust 3D sandbox and AI tutor, but lacks integrated theory/quizzes and explicit safety protocols. The `history.jsx` and `ResultModal.jsx` are perfect insertion points for these features.
+**Opportunity:** Adding pre-lab briefings, post-lab quizzes, safety equipment toggles, and data export features will bridge the gap from a "sandbox" to a comprehensive "educational tool", aligning with what educators look for in procurement.
