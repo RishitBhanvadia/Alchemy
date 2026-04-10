@@ -21,31 +21,14 @@ const Lab = () => {
   const [chemC, setChemC] = useState(0);
   const [chemD, setChemD] = useState(0);
 
-
-
-  function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
-  }
+  // Update tip color whenever a chemical concentration changes
+  useLayoutEffect(() => {
+    if (chemA > 0) SetTColor('#05B9C4');
+    else if (chemB > 0) SetTColor('#04CE7E');
+    else if (chemC > 0) SetTColor('#FBC2E3');
+    else if (chemD > 0) SetTColor('#DAA520');
+    else SetTColor("");
+  }, [chemA, chemB, chemC, chemD]);
 
   useLayoutEffect(() => {
     if (animate) {
@@ -61,54 +44,6 @@ const Lab = () => {
       return () => ctx.revert();
     }
   }, [animate]);
-
-  const handleChemAChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemA(value);
-    change_tip();
-  };
-
-  const handleChemBChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemB(value);
-    change_tip();
-  };
-
-  const handleChemCChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemC(value);
-    change_tip();
-  };
-
-  const handleChemDChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value !== 0) {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    else {
-      // Logic for tracking active chemicals (removed unused arr)
-    }
-    setChemD(value);
-    change_tip();
-  };
 
   const useHandlePlayClick = () => {
     // Prevent double-clicks
@@ -129,18 +64,9 @@ const Lab = () => {
     }, 1500);
   };
 
-  function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
-  }
-
-  const isPlayDisabled = !(onOrNot());
-
-
+  // Require at least two active chemicals to enable play
+  const activeChemCount = [chemA, chemB, chemC, chemD].filter(c => c > 0).length;
+  const isPlayDisabled = activeChemCount < 2;
 
   return (
     <div className="lab-page" ref={app}>
@@ -162,7 +88,7 @@ const Lab = () => {
               min="0"
               max={100 - chemB - chemC - chemD}
               value={chemA}
-              onChange={handleChemAChange}
+              onChange={(e) => setChemA(parseInt(e.target.value) || 0)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemA}%</span>
@@ -181,7 +107,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemC - chemD}
               value={chemB}
-              onChange={handleChemBChange}
+              onChange={(e) => setChemB(parseInt(e.target.value) || 0)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemB}%</span>
@@ -200,7 +126,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemB - chemD}
               value={chemC}
-              onChange={handleChemCChange}
+              onChange={(e) => setChemC(parseInt(e.target.value) || 0)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemC}%</span>
@@ -219,7 +145,7 @@ const Lab = () => {
               min="0"
               max={100 - chemA - chemB - chemC}
               value={chemD}
-              onChange={handleChemDChange}
+              onChange={(e) => setChemD(parseInt(e.target.value) || 0)}
               className="sci-fi-range"
             />
             <span className="chem-value">{chemD}%</span>
