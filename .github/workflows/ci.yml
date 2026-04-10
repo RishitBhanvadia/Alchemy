@@ -31,18 +31,10 @@ jobs:
       working-directory: ./client
       run: npm ci
     
-    - name: Ensure tailwindcss native binding
-      working-directory: ./client
-      run: npm install @tailwindcss/oxide@4.2.2 --save-optional
-
     - name: Install server dependencies
       working-directory: ./server
       run: npm ci
     
-    - name: Ensure tailwindcss native binding
-      working-directory: ./client
-      run: npm install @tailwindcss/oxide@4.2.2 --save-optional
-
     - name: Lint client code
       working-directory: ./client
       run: npm run lint
