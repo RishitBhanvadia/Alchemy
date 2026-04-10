@@ -8,6 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
+import EmptyState from "../components/EmptyState";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
@@ -241,7 +242,9 @@ const Lab3D = () => {
                                     </div>
                                 </div>
                             ))}
-                            {historyLogs.length === 0 && <p className="empty-history">No experiments run yet.</p>}
+                            {historyLogs.length === 0 && (
+                                <EmptyState icon="🔬" title="No experiments run yet" description="Start mixing chemicals to see your history." className="lab3d-empty-state" />
+                            )}
                         </div>
                     </motion.div>
                 )}
