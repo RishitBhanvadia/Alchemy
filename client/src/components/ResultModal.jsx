@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ResultModal.css';
@@ -101,6 +102,14 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
       </motion.div>
     </AnimatePresence>
   );
+};
+
+ResultModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  result: PropTypes.object,
+  onReset: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAskAI: PropTypes.func,
 };
 
 export default ResultModal;

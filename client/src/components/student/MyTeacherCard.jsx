@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -91,6 +92,10 @@ const MyTeacherCard = ({ classroom }) => {
             )}
         </motion.div>
     );
+};
+
+MyTeacherCard.propTypes = {
+  classroom: PropTypes.object,
 };
 
 export default MyTeacherCard;

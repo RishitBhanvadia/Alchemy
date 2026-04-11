@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -27,6 +28,10 @@ const AuthPage = ({ children }) => {
       </motion.div>
     </div>
   );
+};
+
+AuthPage.propTypes = {
+  children: PropTypes.node,
 };
 
 export default AuthPage;
