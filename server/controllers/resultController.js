@@ -14,10 +14,35 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
+
+  let na = Math.round((a / total) * 100);
+  let nb = Math.round((b / total) * 100);
+  let ni = Math.round((i / total) * 100);
+  let nc = Math.round((c / total) * 100);
+
+  const sum = na + nb + ni + nc;
+  if (sum !== 100) {
+      const diff = 100 - sum;
+      // Distribute diff to the largest non-zero concentration to minimise impact
+      const arr = [
+          { index: 0, val: a, rounded: na },
+          { index: 1, val: b, rounded: nb },
+          { index: 2, val: i, rounded: ni },
+          { index: 3, val: c, rounded: nc }
+      ];
+      arr.sort((x, y) => y.val - x.val);
+      if (arr[0].val > 0) {
+          arr[0].rounded += diff;
+      }
+
+      // restore original order
+      arr.sort((x, y) => x.index - y.index);
+      na = arr[0].rounded;
+      nb = arr[1].rounded;
+      ni = arr[2].rounded;
+      nc = arr[3].rounded;
+  }
+
   return [na, nb, ni, Math.max(0, nc)];
 }
 
@@ -29,6 +54,8 @@ function classifyRegime(a, b) {
   if (ratio < 0.40) return 'BASE_DOMINANT';
   return 'NEUTRAL';
 }
+
+exports.normalise = normalise;
 
 exports.calculateResult = async (req, res) => {
   try {
