@@ -29,11 +29,11 @@ jobs:
     
     - name: Install client dependencies
       working-directory: ./client
-      run: npm install
+      run: npm install --include=optional --no-audit --no-fund
     
     - name: Install server dependencies
       working-directory: ./server
-      run: npm install
+      run: npm install --include=optional --no-audit --no-fund
     
     - name: Lint client code
       working-directory: ./client
