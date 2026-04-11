@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
@@ -126,12 +127,12 @@ const SignUpForm = ({ onTabSwitch }) => {
         </h3>
         <div className="flex gap-3">
           <RoleCard 
-            role="student" 
+            roleType="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
+            roleType="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />
@@ -148,6 +149,10 @@ const SignUpForm = ({ onTabSwitch }) => {
       </div>
     </form>
   );
+};
+
+SignUpForm.propTypes = {
+  onTabSwitch: PropTypes.func,
 };
 
 export default SignUpForm;

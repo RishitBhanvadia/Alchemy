@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { GraduationCap, FlaskConical, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -63,6 +64,12 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error }) => {
       })}
     </div>
   );
+};
+
+RoleSelector.propTypes = {
+  selectedRole: PropTypes.string,
+  setSelectedRole: PropTypes.func,
+  error: PropTypes.string,
 };
 
 export default RoleSelector;

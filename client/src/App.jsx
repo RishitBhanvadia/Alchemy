@@ -61,7 +61,8 @@ function App() {
     if (!loading && user && profile && location.pathname === '/login') {
 
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
-      console.log('Redirecting to:', target, 'Profile role:', profile.role);
+      // eslint-disable-next-line no-console
+    console.log('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
     }
   }, [user, profile, loading, location.pathname, navigate]);

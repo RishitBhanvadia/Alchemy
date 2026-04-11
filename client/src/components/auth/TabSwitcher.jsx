@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -38,6 +39,11 @@ const TabSwitcher = ({ activeTab, onTabChange }) => {
       </button>
     </div>
   );
+};
+
+TabSwitcher.propTypes = {
+  activeTab: PropTypes.string,
+  onTabChange: PropTypes.func,
 };
 
 export default TabSwitcher;

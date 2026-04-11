@@ -114,19 +114,22 @@ async function fetchProfile(user) {
         .single();
       
       if (insertError) {
-        console.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
+        // eslint-disable-next-line no-console
+      console.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
         return null;
       }
       return newProfile;
     }
     
     if (error) {
+      // eslint-disable-next-line no-console
       console.error('[authStore] Profile fetch error:', error.message, error.code);
     }
     
     return null;
   } catch (err) {
-    console.error('[authStore] fetchProfile exception:', err.message);
+    // eslint-disable-next-line no-console
+      console.error('[authStore] fetchProfile exception:', err.message);
     return null;
   }
 }
