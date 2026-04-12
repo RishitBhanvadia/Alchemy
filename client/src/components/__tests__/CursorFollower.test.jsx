@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import CursorFollower from '../CursorFollower';
-import { vi } from 'vitest';
+import { vi, describe, beforeEach, it, expect } from 'vitest';
 
 describe('CursorFollower Component', () => {
   beforeEach(() => {
