@@ -1,0 +1,4 @@
+## 2025-04-12 - Fix weak random number generation for sensitive codes
+**Vulnerability:** Used predictable `Math.random()` to generate meeting and classroom codes, which could allow attackers to guess access codes and bypass intended authentication/authorization structures for these sessions.
+**Learning:** `Math.random()` is not cryptographically secure and should never be used for security purposes, such as generating IDs, codes, or tokens that protect access to resources.
+**Prevention:** Always use Node's built-in `crypto` module (e.g., `crypto.randomInt()`) to generate random values for security-sensitive operations.
