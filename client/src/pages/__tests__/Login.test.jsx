@@ -19,6 +19,7 @@ vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
             signInWithPassword: vi.fn(),
+            signUp: vi.fn(),
         },
     },
 }));
@@ -98,6 +99,49 @@ describe('Login Component', () => {
 
         await waitFor(() => {
             expect(supabase.auth.signInWithPassword).toHaveBeenCalled();
+        });
+    });
+
+    it('should handle sign up form submission', async () => {
+        supabase.auth.signUp.mockResolvedValue({
+            data: { user: { id: '456', email: 'new@example.com' } },
+            error: null,
+        });
+
+        renderLogin();
+
+        const signupTab = screen.getByText('Sign Up');
+        fireEvent.click(signupTab);
+
+        const fullNameInput = await screen.findByLabelText(/full name/i);
+        const emailInput = screen.getByLabelText(/email address/i);
+        const passwordInputs = screen.getAllByLabelText(/password/i);
+        // There is 'Password' and 'Confirm' which has an id or label.
+        // Let's grab by label text: 'Password' and 'Confirm'
+
+        const mainPasswordInput = passwordInputs[0];
+        const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+
+        const roleStudent = screen.getByText('Student').closest('div');
+
+        const submitButton = screen.getByRole('button', { name: /initialize account/i });
+
+        fireEvent.change(fullNameInput, { target: { value: 'Dr. Jane' } });
+        fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+        fireEvent.change(mainPasswordInput, { target: { value: 'password123' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+        fireEvent.click(roleStudent);
+
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            expect(supabase.auth.signUp).toHaveBeenCalledWith({
+                email: 'new@example.com',
+                password: 'password123',
+                options: {
+                    data: { full_name: 'Dr. Jane', role: 'student' }
+                }
+            });
         });
     });
 });
