@@ -8,9 +8,8 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
-import EmptyState from '../components/EmptyState';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
@@ -242,13 +241,7 @@ const Lab3D = () => {
                                     </div>
                                 </div>
                             ))}
-                            {historyLogs.length === 0 && (
-                                <EmptyState
-                                    icon="⚗️"
-                                    title="No experiments run yet"
-                                    description="Your experiment history will appear here."
-                                />
-                            )}
+                            {historyLogs.length === 0 && <p className="empty-history">No experiments run yet.</p>}
                         </div>
                     </motion.div>
                 )}
