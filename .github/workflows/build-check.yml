@@ -14,10 +14,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
-      - run: cd client && npm install --include=optional --no-audit --no-fund
+      - run: cd client && npm ci
       - run: cd client && npm run build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
@@ -30,10 +30,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
-      - run: cd server && npm install --include=optional --no-audit --no-fund
+      - run: cd server && npm ci
       - name: Check server syntax/startup
         run: |
           cd server
