@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import './LoadingOverlay.css';
 
 const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
@@ -43,6 +44,10 @@ const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
             </div>
         </motion.div>
     );
+};
+
+LoadingOverlay.propTypes = {
+    message: PropTypes.string
 };
 
 export default LoadingOverlay;
