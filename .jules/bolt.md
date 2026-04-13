@@ -1,0 +1,3 @@
+## 2024-04-12 - Strict avoidance of Node workflow upgrades for native binding errors
+**Learning:** Re-attempting to bump `node-version` (e.g. 18 to 22) across CI workflows or regenerating `package-lock.json` purely to resolve `@tailwindcss/oxide` build failures can cause unapproved architectural changes and transitive dependency pollution.
+**Action:** Always follow the localized fix for `Cannot find native binding` during `npm ci` without modifying external CI workflows. Apply a targeted fallback in the workflow step using `npm ci || npm install` to let the runner fetch missing architecture-specific bindings without permanently polluting the lockfile.
