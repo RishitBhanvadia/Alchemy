@@ -14,7 +14,7 @@
 
 .inorganic-container {
     width: 90%;
-    max-max-width: 1200px;
+    max-width: 1200px;
   width: 100%;
     display: flex;
     flex-direction: column;
@@ -66,13 +66,13 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-max-width: 900px;
+    max-width: 900px;
   width: 100%;
     z-index: 10;
 }
 
 .test-btn {
-    min-max-width: 140px;
+    min-width: 140px;
   width: 100%;
     font-size: 0.9rem;
 }

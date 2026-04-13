@@ -8,18 +8,19 @@ const EmptyState = ({
   description = 'There is nothing to display at the moment.',
   actionLabel = '',
   onAction = null,
-  className = ''
+  className = '',
+  small = false
 }) => {
   return (
     <motion.div 
-      className={`empty-state-container ${className}`}
+      className={`empty-state-container ${small ? 'empty-state-small' : ''} ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
       <div className="empty-state-icon">{icon}</div>
       <h3 className="empty-state-title">{title}</h3>
-      <p className="empty-state-description">{description}</p>
+      {description && <p className="empty-state-description">{description}</p>}
       {actionLabel && onAction && (
         <button className="empty-state-action" onClick={onAction}>
           {actionLabel}
