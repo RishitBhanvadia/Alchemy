@@ -14,11 +14,36 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  const raw_na = (a / total) * 100;
+  const raw_nb = (b / total) * 100;
+  const raw_ni = (i / total) * 100;
+  const raw_nc = (c / total) * 100;
+
+  let r_na = Math.round(raw_na);
+  let r_nb = Math.round(raw_nb);
+  let r_ni = Math.round(raw_ni);
+  let r_nc = Math.round(raw_nc);
+
+  const diff = 100 - (r_na + r_nb + r_ni + r_nc);
+
+  if (diff !== 0) {
+    const arr = [
+      { key: 'na', val: raw_na, rounded: r_na },
+      { key: 'nb', val: raw_nb, rounded: r_nb },
+      { key: 'ni', val: raw_ni, rounded: r_ni },
+      { key: 'nc', val: raw_nc, rounded: r_nc },
+    ];
+    arr.sort((x, y) => y.val - x.val);
+    arr[0].rounded += diff;
+
+    r_na = arr.find(x => x.key === 'na').rounded;
+    r_nb = arr.find(x => x.key === 'nb').rounded;
+    r_ni = arr.find(x => x.key === 'ni').rounded;
+    r_nc = arr.find(x => x.key === 'nc').rounded;
+  }
+
+  return [r_na, r_nb, r_ni, r_nc];
 }
 
 function classifyRegime(a, b) {
