@@ -7,3 +7,6 @@
 - Using custom props named `role` (e.g. `<RoleCard role="student" />`) can conflict with native ARIA roles and throw `jsx-a11y/aria-role`. These should be renamed to something like `roleType`.
 - Hook execution order is strict; `useEffect` cannot be placed below a conditional return.
 **Action:** Always run linting locally before submitting changes, and prioritize fixing actual errors over warnings if they block the CI.
+## 2024-04-12 - Fixing TailwindCSS Oxide build failure
+**Learning:** In GitHub Actions CI pipelines running `npm run build`, Vite may fail with `Cannot find native binding` related to `@tailwindcss/oxide`. This occurs when the `package-lock.json` contains incorrect or outdated os/cpu platform bindings, causing the native addon to be missed during `npm ci`.
+**Action:** When bumping `node-version` (e.g., from 18 to 22), or encountering native binding errors in CI, recreate the lockfile locally (`rm -rf node_modules package-lock.json && npm install`) and commit the newly generated `package-lock.json` to ensure the correct architecture native bindings are captured for `@tailwindcss/oxide` and similar packages.
