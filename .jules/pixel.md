@@ -1,0 +1,4 @@
+## 2024-04-13 - Improved Empty State for Experiment History
+**Problem:** The experiment history panel in `Lab3D.jsx` displayed a plain text "No experiments run yet." when empty, lacking visual consistency with the rest of the application's empty states.
+**Context:** This app heavily uses glassmorphism and modern UI elements. A plain text string feels out of place and offers weak visual feedback, especially since the Lab module is a core interaction area.
+**Solution:** Reused the existing `EmptyState` component for the history panel. Added a new `small={true}` prop variant to `EmptyState` so it scales down gracefully to fit within the constrained width of the `lab-history-panel` without breaking the layout. This maintains consistency, provides a nicer icon, and fits the overall aesthetic better.
