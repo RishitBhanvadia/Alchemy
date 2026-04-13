@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
@@ -159,6 +160,11 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;
