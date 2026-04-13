@@ -4,20 +4,22 @@ import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
 import { toast } from "react-hot-toast";
-import AiTutorPanel from "../components/AiTutorPanel";
-import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+const AiTutorPanel = lazy(() => import('../components/AiTutorPanel'));
+const ResultModal = lazy(() => import('../components/ResultModal'));
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
+    const [hasAiOpened, setHasAiOpened] = useState(false);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false); // Renamed from showHistory
     const [isResultOpen, setIsResultOpen] = useState(false); // Kept original name
+    const [hasResultOpened, setHasResultOpened] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [lockedChems, setLockedChems] = useState([]);
@@ -40,6 +42,21 @@ const Lab3D = () => {
     const setCurrentHint = useLabStore(state => state.setCurrentHint);
     const initiateReaction = useLabStore(state => state.initiateReaction);
     const reset = useLabStore(state => state.reset);
+
+    // Track modal first openings for lazy loading
+    useEffect(() => {
+        if (isAiOpen && !hasAiOpened) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasAiOpened(true);
+        }
+    }, [isAiOpen, hasAiOpened]);
+
+    useEffect(() => {
+        if (isResultOpen && !hasResultOpened) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasResultOpened(true);
+        }
+    }, [isResultOpen, hasResultOpened]);
 
     // Fetch Classroom Restrictions
     useEffect(() => {
@@ -441,18 +458,26 @@ const Lab3D = () => {
                 🤖
             </button>
  
-            <AiTutorPanel
-                isOpen={isAiOpen}
-                onClose={() => setIsAiOpen(false)}
-            />
+            {hasAiOpened && (
+                <Suspense fallback={null}>
+                    <AiTutorPanel
+                        isOpen={isAiOpen}
+                        onClose={() => setIsAiOpen(false)}
+                    />
+                </Suspense>
+            )}
  
-            <ResultModal
-                isOpen={isResultOpen}
-                result={reactionResult}
-                onClose={() => setIsResultOpen(false)}
-                onReset={handleResetLab}
-                onAskAI={handleAskAI}
-            />
+            {hasResultOpened && (
+                <Suspense fallback={null}>
+                    <ResultModal
+                        isOpen={isResultOpen}
+                        result={reactionResult}
+                        onClose={() => setIsResultOpen(false)}
+                        onReset={handleResetLab}
+                        onAskAI={handleAskAI}
+                    />
+                </Suspense>
+            )}
         </motion.div>
     );
 };
