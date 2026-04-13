@@ -10,3 +10,6 @@
 ## 2024-04-12 - Fixing TailwindCSS Oxide build failure
 **Learning:** In GitHub Actions CI pipelines running `npm run build`, Vite may fail with `Cannot find native binding` related to `@tailwindcss/oxide`. This occurs when the `package-lock.json` contains incorrect or outdated os/cpu platform bindings, causing the native addon to be missed during `npm ci`.
 **Action:** When bumping `node-version` (e.g., from 18 to 22), or encountering native binding errors in CI, recreate the lockfile locally (`rm -rf node_modules package-lock.json && npm install`) and commit the newly generated `package-lock.json` to ensure the correct architecture native bindings are captured for `@tailwindcss/oxide` and similar packages.
+## 2024-04-12 - Strict avoidance of Node workflow upgrades for native binding errors
+**Learning:** Re-attempting to bump `node-version` (e.g. 18 to 22) across CI workflows purely to resolve `@tailwindcss/oxide` build failures can be rejected as a massive, unapproved architectural change.
+**Action:** Always follow the localized fix for `Cannot find native binding` during `npm ci` without modifying external CI workflows. Simply recreate the lockfile via `rm -rf node_modules package-lock.json && npm install` to correctly embed the native bindings for the default CI Node engine version.

@@ -11,6 +11,11 @@ import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+
+// ⚡ Bolt: Performance Optimisation
+// Lazy-loading heavy interactive panels (AiTutorPanel and ResultModal) to reduce initial bundle size bloat.
+// Expected Impact: Significantly decreases the initial payload fetched by the client, speeding up the parsing
+// and execution time necessary to render the 3D lab environment. Panels are only fetched on first interaction.
 const AiTutorPanel = lazy(() => import('../components/AiTutorPanel'));
 const ResultModal = lazy(() => import('../components/ResultModal'));
 
