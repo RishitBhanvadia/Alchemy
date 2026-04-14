@@ -1,0 +1,3 @@
+## 2025-02-12 - Improve accessibility of icon-only navigation sidebar
+**Learning:** Icon-only navigation links (like those using FontAwesome `<i>` tags) are completely opaque to screen readers and sighted users who don't recognize the icon. Furthermore, nesting a focusable `<button>` inside an already-focusable `<NavLink>` creates a confusing "double-focus" trap for keyboard navigation.
+**Action:** When building icon-only navigation bars, always apply `aria-label` and `title` to the outer link element (e.g. `<NavLink>`), add `tabIndex="-1"` to any nested interactive elements like `<button>`, and hide purely decorative icon graphics from screen readers using `aria-hidden="true"`.
