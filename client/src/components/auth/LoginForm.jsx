@@ -52,7 +52,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="space-y-6">
+    <form onSubmit={handleLogin} className="bg-transparent border-none p-0 cursor-pointer space-y-6">
       <InputField
         label="Email Address"
         name="email"
@@ -77,10 +77,10 @@ const LoginForm = () => {
           error={errors.password}
           disabled={loading}
         />
-        <div className="flex justify-end mt-2">
-          <a href="#" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
+        <div className="bg-transparent border-none p-0 cursor-pointer flex justify-end mt-2">
+          <button type="button" className="bg-transparent border-none p-0 cursor-pointer text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
             Forgot password?
-          </a>
+          </button>
         </div>
       </div>
 
