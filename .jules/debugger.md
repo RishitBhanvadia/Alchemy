@@ -21,3 +21,16 @@ The `npm` version running in the CI runner has a known issue with strictly resol
 
 **Learning:**
 In GitHub Actions workflows, replacing `npm ci` with `npm install` outright is a major anti-pattern. However, if `npm ci` fails with 'Cannot find native binding' for optional dependencies, apply a targeted fallback in the workflow step using `npm ci || npm install` to let the runner fetch missing architecture-specific bindings without polluting the lockfile.
+
+## 2025-02-18 - Fix ESLint jsx-a11y and no-unused-vars CI build failures
+
+**Bug:**
+The GitHub Actions CI pipeline failed during the `npm run lint` step due to multiple ESLint errors, including `jsx-a11y/anchor-is-valid`, `jsx-a11y/aria-role`, and `no-unused-vars`.
+
+**Root Cause:**
+1. `anchor-is-valid`: Using generic `<a href="#">` tags for interactive javascript actions instead of valid navigational URLs.
+2. `aria-role`: Using the reserved HTML attribute `role` as a custom React prop name in `<RoleCard role="student">`.
+3. `no-unused-vars`: Lingering unused React imports (`useCallback`, `Check`, `Loader2`).
+
+**Learning:**
+Always run linters locally before pushing code. When resolving ESLint `jsx-a11y/anchor-is-valid` errors for generic `href="#"` links, replace the `<a>` tag with a semantic `<button type="button">` and apply appropriate CSS resets (e.g., `bg-transparent border-none p-0 cursor-pointer`). Avoid naming custom component props `role` to prevent conflicts with native HTML ARIA attributes; use alternatives like `roleType`.
