@@ -25,6 +25,7 @@ jobs:
         run: |
           cd client
           npm ci || npm install
+          npm rebuild @tailwindcss/oxide
 
       - name: Verify build
         run: |
