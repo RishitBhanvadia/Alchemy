@@ -29,13 +29,13 @@ jobs:
       env:
         FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-    - name: Fallback install bindings
-      working-directory: ./client
-      run: npm i @tailwindcss/oxide
-    
     - name: Install client dependencies
       working-directory: ./client
       run: npm ci || npm install
+
+    - name: Fallback install bindings
+      working-directory: ./client
+      run: npm i --no-save @tailwindcss/oxide
     
     - name: Install server dependencies
       working-directory: ./server
