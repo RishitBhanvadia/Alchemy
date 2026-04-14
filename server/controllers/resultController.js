@@ -14,10 +14,30 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
+
+  let na = Math.round((a / total) * 100);
+  let nb = Math.round((b / total) * 100);
+  let ni = Math.round((i / total) * 100);
+  let nc = Math.round((c / total) * 100);
+
+  let diff = 100 - (na + nb + ni + nc);
+
+  if (diff !== 0) {
+    const vals = [
+      { key: 'na', val: Number(a), rounded: na },
+      { key: 'nb', val: Number(b), rounded: nb },
+      { key: 'ni', val: Number(i), rounded: ni },
+      { key: 'nc', val: Number(c), rounded: nc }
+    ];
+    vals.sort((x, y) => y.val - x.val);
+    vals[0].rounded += diff;
+
+    na = vals.find(v => v.key === 'na').rounded;
+    nb = vals.find(v => v.key === 'nb').rounded;
+    ni = vals.find(v => v.key === 'ni').rounded;
+    nc = vals.find(v => v.key === 'nc').rounded;
+  }
+
   return [na, nb, ni, Math.max(0, nc)];
 }
 
@@ -29,6 +49,8 @@ function classifyRegime(a, b) {
   if (ratio < 0.40) return 'BASE_DOMINANT';
   return 'NEUTRAL';
 }
+
+exports.normaliseForTest = normalise;
 
 exports.calculateResult = async (req, res) => {
   try {
