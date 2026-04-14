@@ -20,7 +20,7 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-max-width: 500px;
+  max-width: 500px;
   width: 100%;
   overflow: hidden;
   box-shadow: var(--shadow-glow);
