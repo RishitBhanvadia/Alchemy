@@ -26,12 +26,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd client
-          npm ci || npm install
-
-      - name: Fallback install bindings
-        run: |
-          cd client
-          npm i --no-save @tailwindcss/oxide
+          rm -rf package-lock.json node_modules
+          npm install
 
       - name: Verify build
         run: |
