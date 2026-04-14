@@ -34,3 +34,14 @@ The GitHub Actions CI pipeline failed during the `npm run lint` step due to mult
 
 **Learning:**
 Always run linters locally before pushing code. When resolving ESLint `jsx-a11y/anchor-is-valid` errors for generic `href="#"` links, replace the `<a>` tag with a semantic `<button type="button">` and apply appropriate CSS resets (e.g., `bg-transparent border-none p-0 cursor-pointer`). Avoid naming custom component props `role` to prevent conflicts with native HTML ARIA attributes; use alternatives like `roleType`.
+
+## 2025-02-18 - Fix npm ci 0 exit code bug
+
+**Bug:**
+The GitHub Actions workflow failed during `npm run build` or `npm run test` with a 'Cannot find native binding' error despite having `npm ci || npm install` in the step.
+
+**Root Cause:**
+`npm ci` has a known bug where it fails to compile optional native dependencies (like `@tailwindcss/oxide`) in certain runner environments, but it incorrectly exits with a success code `0`. Because it exits with 0, the `|| npm install` fallback logic is never executed. The pipeline proceeds to the next steps which then fail due to the missing binding.
+
+**Learning:**
+In GitHub Actions workflows, `npm ci` has a known bug where it can exit with code 0 even if it fails to compile optional native dependencies. Using `npm ci || npm install` as a fallback is ineffective due to the 0 exit code. In this specific scenario, replacing `npm ci` with `npm install` is the necessary workaround to safely resolve the dependencies and allow the pipeline to proceed.
