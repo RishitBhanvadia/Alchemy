@@ -45,3 +45,14 @@ The GitHub Actions workflow failed during `npm run build` or `npm run test` with
 
 **Learning:**
 In GitHub Actions workflows, `npm ci` has a known bug where it can exit with code 0 even if it fails to compile optional native dependencies. Using `npm ci || npm install` as a fallback is ineffective due to the 0 exit code. In this specific scenario, replacing `npm ci` with `npm install` is the necessary workaround to safely resolve the dependencies and allow the pipeline to proceed.
+
+## 2025-02-18 - Fix npm ci native binding resolution with explicit lockfile wipe
+
+**Bug:**
+The GitHub Actions workflow failed during `npm run build` or `npm run test` with a 'Cannot find native binding' error, despite using `npm ci || npm install` or `npm install && npm rebuild`.
+
+**Root Cause:**
+When pulling down the cache in GitHub Actions, npm sometimes fails to correctly cross-compile optional native dependencies (like `@tailwindcss/oxide`) for the specific runner architecture due to a known npm bug regarding optional dependencies caching (issue #4828). This causes it to completely skip downloading the required architecture binding and strictly adhere to the missing state in the lockfile/cache.
+
+**Learning:**
+In GitHub Actions workflows, `npm ci` has a known bug where it can exit with code 0 even if it fails to compile optional native dependencies. Using `npm ci || npm install` or even just `npm install` as a fallback may still fail to resolve the correct architecture bindings. The reliable workaround, strictly as a last resort in automated runners, is to explicitly force the compilation by wiping the local environment state via `rm -rf node_modules package-lock.json && npm install`.
