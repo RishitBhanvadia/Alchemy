@@ -8,10 +8,6 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
     useEffect(() => {
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
@@ -31,53 +27,40 @@ const CursorFollower = () => {
 
         const onMouseMove = (e) => {
             setPosition({ x: e.clientX, y: e.clientY });
-
-            // Check if hovering over clickable elements
-            const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
-
-            setHovering(!!isClickable);
+            handleHover(e.target);
         };
 
-        const onMouseEnter = () => {
-            setHidden(false);
-        };
+        const onMouseEnter = () => setHidden(false);
+        const onMouseLeave = () => setHidden(true);
+        const onMouseDown = () => setClicking(true);
+        const onMouseUp = () => setClicking(false);
 
-        const onMouseLeave = () => {
-            setHidden(true);
-        };
+        const handleHover = (element) => {
+            const isInteractive =
+                element.tagName.toLowerCase() === 'a' ||
+                element.tagName.toLowerCase() === 'button' ||
+                element.closest('a') ||
+                element.closest('button') ||
+                element.closest('.interactive') ||
+                element.classList.contains('interactive');
 
-        const onMouseDown = () => {
-            setClicking(true);
-        };
-
-        const onMouseUp = () => {
-            setClicking(false);
+            setHovering(isInteractive);
         };
 
         addEventListeners();
         return () => removeEventListeners();
     }, []);
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+    if (isTouchDevice) return null;
 
     return (
-        <>
-            <div
-                className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-            <div
-                className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-        </>
+        <div
+            className={`cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`}
+            style={{
+                left: `${position.x}px`,
+                top: `${position.y}px`
+            }}
+        />
     );
 };
 
