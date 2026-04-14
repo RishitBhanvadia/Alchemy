@@ -17,7 +17,12 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
-      - run: cd client && npm ci
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      - name: Fallback install bindings
+        working-directory: ./client
+        run: npm i @tailwindcss/oxide
+      - run: cd client && npm ci || npm install
       - run: cd client && npm run build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
@@ -33,7 +38,9 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
-      - run: cd server && npm ci
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      - run: cd server && npm ci || npm install
       - name: Check server syntax/startup
         run: |
           cd server

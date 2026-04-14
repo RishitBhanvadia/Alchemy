@@ -28,6 +28,10 @@ jobs:
           server/package-lock.json
       env:
         FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    - name: Fallback install bindings
+      working-directory: ./client
+      run: npm i @tailwindcss/oxide
     
     - name: Install client dependencies
       working-directory: ./client
