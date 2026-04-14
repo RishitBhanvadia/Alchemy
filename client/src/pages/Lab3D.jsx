@@ -4,8 +4,6 @@ import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
 import { toast } from "react-hot-toast";
-import AiTutorPanel from "../components/AiTutorPanel";
-import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
@@ -13,11 +11,15 @@ import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+const AiTutorPanel = lazy(() => import('../components/AiTutorPanel'));
+const ResultModal = lazy(() => import('../components/ResultModal'));
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
+    const [hasOpenedAi, setHasOpenedAi] = useState(false);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false); // Renamed from showHistory
     const [isResultOpen, setIsResultOpen] = useState(false); // Kept original name
+    const [hasOpenedResult, setHasOpenedResult] = useState(false);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [lockedChems, setLockedChems] = useState([]);
@@ -183,6 +185,21 @@ const Lab3D = () => {
         setIsAiOpen(true);
         // We could also pre-fill the AI chat here if desired
     };
+
+    // Track when panels are first opened
+    useEffect(() => {
+        if (isAiOpen && !hasOpenedAi) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasOpenedAi(true);
+        }
+    }, [isAiOpen, hasOpenedAi]);
+
+    useEffect(() => {
+        if (isResultOpen && !hasOpenedResult) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasOpenedResult(true);
+        }
+    }, [isResultOpen, hasOpenedResult]);
 
     function onOrNot() {
         let sum = 0;
@@ -441,18 +458,26 @@ const Lab3D = () => {
                 🤖
             </button>
  
-            <AiTutorPanel 
-                isOpen={isAiOpen} 
-                onClose={() => setIsAiOpen(false)} 
-            />
+            {hasOpenedAi && (
+                <Suspense fallback={null}>
+                    <AiTutorPanel
+                        isOpen={isAiOpen}
+                        onClose={() => setIsAiOpen(false)}
+                    />
+                </Suspense>
+            )}
  
-            <ResultModal 
-                isOpen={isResultOpen}
-                result={reactionResult}
-                onClose={() => setIsResultOpen(false)}
-                onReset={handleResetLab}
-                onAskAI={handleAskAI}
-            />
+            {hasOpenedResult && (
+                <Suspense fallback={null}>
+                    <ResultModal
+                        isOpen={isResultOpen}
+                        result={reactionResult}
+                        onClose={() => setIsResultOpen(false)}
+                        onReset={handleResetLab}
+                        onAskAI={handleAskAI}
+                    />
+                </Suspense>
+            )}
         </motion.div>
     );
 };
