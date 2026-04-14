@@ -1,0 +1,4 @@
+## 2024-05-24 - Lazy Load Heavy Panels with Framer Motion
+**Before:** Modal panels (`AiTutorPanel`, `ResultModal`) were statically imported in `Lab3D.jsx` and always included in the initial bundle chunk, increasing load time.
+**Issue:** These panels are not visible on initial load. They are hidden behind `isOpen` states, but the heavy dependencies were eagerly loaded.
+**Learning:** In React Three Fiber applications, improve performance by lazy-loading (`React.lazy` and `Suspense`) heavy interactive panels that are not visible on initial load. To preserve Framer Motion `AnimatePresence` exit animations, do not conditionally unmount these components based on their active state. Instead, track a local `hasOpened` state and render the `Suspense` boundary permanently after the first interaction. Use `useEffect` with `eslint-disable-next-line react-hooks/set-state-in-effect` to cleanly initialize the open state without triggering cascading renders.

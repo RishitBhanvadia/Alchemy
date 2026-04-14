@@ -4,15 +4,15 @@ import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
 import { toast } from "react-hot-toast";
-import AiTutorPanel from "../components/AiTutorPanel";
-import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+const AiTutorPanel = lazy(() => import('../components/AiTutorPanel'));
+const ResultModal = lazy(() => import('../components/ResultModal'));
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
@@ -22,6 +22,8 @@ const Lab3D = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [lockedChems, setLockedChems] = useState([]);
     const [showCelebration, setShowCelebration] = useState(false); // Added this state
+    const [aiHasOpened, setAiHasOpened] = useState(false);
+    const [resultHasOpened, setResultHasOpened] = useState(false);
  
     const historyLogs = useHistoryStore(state => state.logs);
     const fetchHistory = useHistoryStore(state => state.fetch);
@@ -101,6 +103,20 @@ const Lab3D = () => {
         }, 2000);
         return () => clearTimeout(timer);
     }, [fetchHistory]);
+
+    useEffect(() => {
+        if (isAiOpen && !aiHasOpened) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setAiHasOpened(true);
+        }
+    }, [isAiOpen, aiHasOpened]);
+
+    useEffect(() => {
+        if (isResultOpen && !resultHasOpened) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setResultHasOpened(true);
+        }
+    }, [isResultOpen, resultHasOpened]);
 
     // AI Hint Debounce Logic
     useEffect(() => {
@@ -441,18 +457,26 @@ const Lab3D = () => {
                 🤖
             </button>
  
-            <AiTutorPanel 
-                isOpen={isAiOpen} 
-                onClose={() => setIsAiOpen(false)} 
-            />
+            {aiHasOpened && (
+                <Suspense fallback={null}>
+                    <AiTutorPanel
+                        isOpen={isAiOpen}
+                        onClose={() => setIsAiOpen(false)}
+                    />
+                </Suspense>
+            )}
  
-            <ResultModal 
-                isOpen={isResultOpen}
-                result={reactionResult}
-                onClose={() => setIsResultOpen(false)}
-                onReset={handleResetLab}
-                onAskAI={handleAskAI}
-            />
+            {resultHasOpened && (
+                <Suspense fallback={null}>
+                    <ResultModal
+                        isOpen={isResultOpen}
+                        result={reactionResult}
+                        onClose={() => setIsResultOpen(false)}
+                        onReset={handleResetLab}
+                        onAskAI={handleAskAI}
+                    />
+                </Suspense>
+            )}
         </motion.div>
     );
 };
