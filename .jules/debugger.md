@@ -1,0 +1,4 @@
+## 2024-04-15 - React Hooks Ordering and Duplicate State Declaration Bug
+**Bug:** The Vite build crashed with esbuild Duplicate Declaration errors, and if bypassed, the app would crash at runtime because of a `react-hooks/rules-of-hooks` violation.
+**Root Cause:** The `CursorFollower.jsx` component incorrectly repeated its `clicking` and `hovering` state declarations (`const [clicking, setClicking] = useState(false);`). Furthermore, it had an early return statement (`if (isTouchDevice) return null;`) positioned *before* the component`s `useEffect` hook and the duplicated `useState` hooks. React requires hooks to be called in the exact same order on every render; an early conditional return violates this.
+**Learning:** Always ensure React hooks (`useEffect`, `useState`) are called unconditionally at the absolute top level of the component body, and verify there are no duplicate `const` state declarations when copy-pasting blocks of hooks.
