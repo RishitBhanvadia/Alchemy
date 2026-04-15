@@ -1,0 +1,4 @@
+## 2024-04-15 - Mocking dynamically imported cross-store dependencies in Zustand tests
+**Gap:** Testing Zustand stores that import other Zustand stores dynamically inside functions (like `authStore` importing `labStore` during `logout`) can crash the test runner due to unmocked imports.
+**Learning:** In tests for actions like `logout` that reset other application stores, failing to mock these dynamically imported dependencies leads to cascading store initialization errors or circular dependency crashes in the test environment, even if the primary store logic works fine.
+**Pattern:** Explicitly mock the dependent store modules using `vi.mock` (e.g., `vi.mock('../labStore', () => ({ default: { getState: () => ({ reset: vi.fn() }) } }))`) at the top of the test file to prevent test crashes from unmocked cross-store imports.
