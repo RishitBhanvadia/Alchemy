@@ -59,7 +59,6 @@ const CursorFollower = () => {
         };
 
         addEventListeners();
-        if (isTouchDevice) return null;
 
     return () => removeEventListeners();
     }, []);
