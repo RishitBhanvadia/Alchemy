@@ -1,0 +1,3 @@
+## 2024-04-14 - Lazy Loading Heavy Interactive Components
+**Learning:** In React Three Fiber applications, heavy interactive UI components (like complex modals or chat panels) that are not immediately visible can significantly bloat the initial chunk bundle size if imported synchronously.
+**Action:** Use `React.lazy` and `Suspense` to code-split these components. To preserve Framer Motion `AnimatePresence` exit animations, do not conditionally unmount them based on their active state. Instead, track a "hasOpened" initialization state to mount the Suspense boundary permanently after the first interaction, avoiding `react-hooks/set-state-in-effect` linting errors via targeted rule disable comments.
