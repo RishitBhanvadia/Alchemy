@@ -1,0 +1,4 @@
+## 2024-05-24 - Normalisation logic hallucinating non-zero values
+**Bug:** The calculation to normalise chemical concentrations by percentage resulted in non-zero values being assigned to elements that had 0 initial concentration, due to rounding remainders being arbitrarily applied to the final element.
+**Root Cause:** The logic subtracted the rounded percentages of the first three elements from 100 to determine the final element's percentage `nc = 100 - na - nb - ni;`. This forced `nc` to absorb all rounding errors, which created values out of nowhere.
+**Learning:** When normalising percentages or distributing rounding errors, never assign the remainder directly to the last element. Instead, calculate exact percentages, round each element individually, and distribute any total difference (100 - sum) to the element with the largest original value to ensure exact sums without hallucinating data.

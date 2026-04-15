@@ -14,11 +14,30 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  const raw = [
+    { val: a, pct: (a / total) * 100 },
+    { val: b, pct: (b / total) * 100 },
+    { val: i, pct: (i / total) * 100 },
+    { val: c, pct: (c / total) * 100 }
+  ];
+
+  const rounded = raw.map(x => ({ ...x, rounded: Math.round(x.pct) }));
+
+  const sum = rounded.reduce((s, x) => s + x.rounded, 0);
+  const diff = 100 - sum;
+
+  if (diff !== 0) {
+    let maxIdx = 0;
+    for (let j = 1; j < rounded.length; j++) {
+      if (rounded[j].val > rounded[maxIdx].val) {
+        maxIdx = j;
+      }
+    }
+    rounded[maxIdx].rounded += diff;
+  }
+
+  return [rounded[0].rounded, rounded[1].rounded, rounded[2].rounded, rounded[3].rounded];
 }
 
 function classifyRegime(a, b) {
@@ -124,3 +143,4 @@ exports.calculateResult = async (req, res) => {
     return res.status(500).json({ error: 'Server error during calculation.' });
   }
 };
+exports.normalise = normalise;
