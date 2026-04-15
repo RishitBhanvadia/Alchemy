@@ -1,4 +1,0 @@
-## 2025-02-14 - Market Research Report Setup
-**Market Insight:** Virtual chemistry labs (Labster, PraxiLabs, PhET) focus heavily on immersive 3D simulations with safe environments, real-time feedback, accessibility, and interactive tutorials.
-**Codebase Match:** Alchemistry has a React/Three.js based 3D lab, user auth, AI Tutor, and history logs. Gaps include structured tutorials/guided pathways, interactive tooltips, custom quiz builders, variable environment constraints (temperature/pressure controls), and accessibility enhancements (like high-contrast or text-to-speech).
-**Opportunity:** The application can significantly improve its market standing by adding an interactive onboarding/tutorial system, more environmental controls (temperature/pressure) to mimic real-life labs, and a built-in assessment/quiz feature tied to experiments.
