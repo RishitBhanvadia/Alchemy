@@ -29,4 +29,13 @@ const EmptyState = ({
   );
 };
 
+import PropTypes from 'prop-types';
+EmptyState.propTypes = {
+  icon: PropTypes.node,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  actionLabel: PropTypes.string,
+  onAction: PropTypes.func,
+  className: PropTypes.string,
+};
 export default EmptyState;
