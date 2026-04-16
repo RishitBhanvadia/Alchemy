@@ -1,0 +1,4 @@
+## 2026-04-16 - Fix Invalid CSS Layout Constraints
+**Problem:** Multiple UI components (login cards, modals, empty states, lab buttons) were stretching to 100% width and ignoring constraints, leading to completely broken layouts on larger screens.
+**Context:** In the Alchemistry application, `.css` files heavily use `max-width` to bound glassmorphism panels. A systemic bug occurred where the property name was mistakenly written as `max-max-width` and `min-max-width`, causing the CSS rules to be invalid and ignored by browsers. This caused components to fall back to `width: 100%` without limits.
+**Solution:** Used `sed` to find and replace all instances of `max-max-width` with `max-width`, and `min-max-width` with `min-width` across the entire `client/` codebase. This restored the intended responsive constraints, maintaining the 100% width on mobile while correctly restricting widths on desktop.
