@@ -14,11 +14,24 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  let na = Math.round((a / total) * 100);
+  let nb = Math.round((b / total) * 100);
+  let ni = Math.round((i / total) * 100);
+  let nc = Math.round((c / total) * 100);
+
+  const diff = 100 - (na + nb + ni + nc);
+
+  if (diff !== 0) {
+    const arr = [Number(a), Number(b), Number(i), Number(c)];
+    const maxIndex = arr.indexOf(Math.max(...arr));
+    if (maxIndex === 0) na += diff;
+    else if (maxIndex === 1) nb += diff;
+    else if (maxIndex === 2) ni += diff;
+    else nc += diff;
+  }
+
+  return [na, nb, ni, nc];
 }
 
 function classifyRegime(a, b) {
@@ -29,6 +42,8 @@ function classifyRegime(a, b) {
   if (ratio < 0.40) return 'BASE_DOMINANT';
   return 'NEUTRAL';
 }
+
+exports.normalise = normalise;
 
 exports.calculateResult = async (req, res) => {
   try {

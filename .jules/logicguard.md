@@ -1,0 +1,4 @@
+## 2024-05-24 - Normalisation hallucination
+**Bug:** The `normalise` function artificially inflated the value of the 4th element (`c`) to account for rounding errors, meaning even if `c` was `0`, it could be assigned a non-zero value.
+**Root Cause:** The normalisation logic assigned the remainder of `100 - na - nb - ni` to `nc`. This caused rounding errors from the first three elements to be entirely absorbed by the fourth, even if its original input was 0.
+**Learning:** When normalising values to a sum (e.g., percentages summing to 100), round each element individually based on its own proportion. If there's a difference due to rounding errors, distribute it to the largest element to minimise relative impact, rather than a fixed arbitrary element, to prevent hallucinating data for elements that should remain 0.
