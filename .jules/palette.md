@@ -1,0 +1,3 @@
+## 2024-05-18 - ARIA labels for icon-only buttons
+**Learning:** Icon-only buttons (like those found in navigation sidebars, history toggles, or AI panels) require an `aria-label` attribute and `aria-hidden="true"` on their inner graphic elements (e.g., FontAwesome `<i>` tags or emojis wrapped in spans) to be properly interpreted by screen readers.
+**Action:** When creating new interactive elements, immediately add `aria-label` attributes if there is no visible descriptive text. Verify by checking screen reader output or running accessibility linters on PRs. Ensure visual but non-semantic elements like icons are hidden from screen readers.
