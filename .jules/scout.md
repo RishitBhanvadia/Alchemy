@@ -1,0 +1,4 @@
+## 2025-04-16 - Virtual Lab Competitor Analysis
+**Market Insight:** Virtual laboratory tools like PraxiLabs and Labster heavily emphasize assessment features, quiz building, and LMS integrations (Canvas, Blackboard) to drive institutional adoption. They also prioritize detailed "safety and error" simulation where students can fail without real-world danger.
+**Codebase Match:** Alchemistry currently has robust 3D simulation, Teacher/Student roles, Classroom management, and a History of experiments. However, it lacks built-in quizzes/assessments and LMS integrations. While we have chemistry modules, explicit safety warnings/protocols or quiz grading are not fully formed.
+**Opportunity:** We can add an assessment module directly tied to experiment outcomes, and safety protocol "pre-checks" before allowing chemistry experiments, aligning our feature set with the standard expectations for EdTech tools.
