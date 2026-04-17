@@ -60,7 +60,7 @@ const CursorFollower = () => {
 
         addEventListeners();
         return () => removeEventListeners();
-    }, []);
+    }, [isTouchDevice]);
 
     if (isTouchDevice) return null;
 
