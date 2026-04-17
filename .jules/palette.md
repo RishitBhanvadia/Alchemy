@@ -1,0 +1,3 @@
+## 2024-04-16 - Add ARIA label to icon-only close button
+**Learning:** React components (such as modals and side panels like AiTutorPanel) often use raw text characters like "×" for close buttons. Since these lack descriptive text content, they are announced poorly by screen readers (often just "times" or "multiplication sign").
+**Action:** Always add an explicit `aria-label="Close [Context]"` to any icon-only button to ensure semantic and accessible behavior for screen reader users.
