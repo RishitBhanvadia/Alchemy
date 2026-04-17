@@ -1,0 +1,4 @@
+## 2024-04-16 - Insecure Random Number Generation for Security-Sensitive Identifiers
+**Vulnerability:** The application used `Math.random()` to generate classroom codes and meeting codes. `Math.random()` is not cryptographically secure and its outputs can be predictable, potentially allowing an attacker to guess future or previous identifiers and gain unauthorized access to classrooms or meetings.
+**Learning:** `Math.random()` relies on a pseudo-random number generator that is not designed for security purposes. Any identifier that gates access to resources or sessions must be generated using a cryptographically secure random number generator (CSPRNG).
+**Prevention:** Always use `crypto.randomInt` (Node.js) or `window.crypto.getRandomValues` (browser) when generating access codes, tokens, passwords, or any other security-sensitive identifiers.
