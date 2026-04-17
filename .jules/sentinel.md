@@ -1,0 +1,4 @@
+## 2025-02-28 - Weak Random Number Generation in Access Codes
+**Vulnerability:** Found `Math.random()` being used to generate meeting access codes and classroom codes in `server/controllers/meetingController.js` and `server/controllers/classroomController.js`.
+**Learning:** Using `Math.random()` to generate access codes creates predictability vulnerabilities that may allow brute-force or prediction of access codes, which could lead to unauthorized access to classes and meetings.
+**Prevention:** Always use a cryptographically secure pseudo-random number generator (CSPRNG) like `crypto.randomInt()` from the Node.js `crypto` module when generating secure tokens, passwords, or access codes.
