@@ -5,6 +5,7 @@ const SuccessCelebration = ({ active, onComplete }) => {
     const [particles, setParticles] = useState([]);
 
     useEffect(() => {
+        let isMounted = true;
         if (active) {
             const newParticles = Array.from({ length: 40 }).map((_, i) => ({
                 id: i,
@@ -13,14 +14,23 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            if (isMounted) setParticles(newParticles);
             
             const timer = setTimeout(() => {
-                onComplete?.();
-                setParticles([]);
+                if (isMounted) {
+                    onComplete?.();
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setParticles([]);
+                }
             }, 3000);
-            return () => clearTimeout(timer);
+            return () => {
+                isMounted = false;
+                clearTimeout(timer);
+            };
         }
+        return () => { isMounted = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active, onComplete]);
 
     return (

@@ -110,7 +110,8 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        gl.domElement.style.cursor = 'grab';
+        // eslint-disable-next-line react-hooks/immutability
+        if (gl?.domElement) gl.domElement.style.cursor = 'grab';
       }
     },
     [dragState, gl]
@@ -123,7 +124,8 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        gl.domElement.style.cursor = 'default';
+        // eslint-disable-next-line react-hooks/immutability
+        if (gl?.domElement) gl.domElement.style.cursor = 'default';
       }
     },
     [dragState, gl]
@@ -139,7 +141,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
-      gl.domElement.style.cursor = 'grabbing';
+      // eslint-disable-next-line react-hooks/immutability
+      if (gl?.domElement) gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -208,7 +211,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
-      gl.domElement.style.cursor = 'default';
+      // eslint-disable-next-line react-hooks/immutability
+      if (gl?.domElement) gl.domElement.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
