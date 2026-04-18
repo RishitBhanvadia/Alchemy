@@ -9,6 +9,7 @@
  *  - joinMeeting:         Looks up meeting code → returns URL if not expired
  */
 
+const crypto = require('crypto');
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
@@ -20,7 +21,7 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 function generateCode() {
   let code = '';
   for (let i = 0; i < 6; i++) {
-    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+    code += CHARS.charAt(crypto.randomInt(CHARS.length));
   }
   return code;
 }
