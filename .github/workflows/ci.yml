@@ -12,11 +12,13 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Set FORCE_JAVASCRIPT_ACTIONS_TO_NODE24
+      run: echo "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true" >> $GITHUB_ENV
     
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -43,6 +45,7 @@ jobs:
       working-directory: ./client
       run: npm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
       env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
@@ -57,6 +60,7 @@ jobs:
       working-directory: ./client
       run: npm run test:coverage -- --run
       env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
@@ -64,6 +68,7 @@ jobs:
       working-directory: ./client
       run: npm run build
       env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
@@ -72,3 +77,4 @@ jobs:
       if: always()
       with:
         files: ./client/coverage/*.xml
+        fail_ci_if_error: false
