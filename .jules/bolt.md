@@ -1,0 +1,3 @@
+## 2024-04-17 - CursorFollower React Re-render Penalty
+**Learning:** Attaching React `useState` hooks directly to high-frequency browser events like `mousemove` triggers a full component re-render on every single pixel moved. In the case of `CursorFollower.jsx`, this resulted in hundreds of unnecessary renders per second, causing severe frame drops and performance degradation, particularly noticeable in 3D contexts like `@react-three/fiber` scenes where the main thread is already busy.
+**Action:** Use `useRef` to maintain a reference to DOM elements (like the custom cursor) and update their styles (e.g., `ref.current.style.left`) directly within the event handler to completely bypass the React render cycle for purely visual high-frequency updates.
