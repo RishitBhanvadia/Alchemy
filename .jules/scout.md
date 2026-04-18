@@ -1,0 +1,4 @@
+## 2026-04-18 - Market Research for Virtual Chemistry Labs
+**Market Insight:** Top EdTech virtual lab platforms (Labster, PraxiLabs) heavily prioritize structured onboarding, instant quiz-based assessment, and robust teacher reporting/exporting, in addition to their core 3D simulation features.
+**Codebase Match:** Alchemistry currently features an impressive 3D sandbox and an AI tutor, but lacks contextual onboarding for first-time users (no tutorial in Lab3D.jsx) and robust export functionalities for teachers (no CSV export in TeacherDashboard.jsx).
+**Opportunity:** Implementing a first-time guided tour, context-aware AI prompts based on selected chemicals, and CSV export for teacher analytics are small effort tasks that will significantly align the product with market expectations for usability and teacher utility.

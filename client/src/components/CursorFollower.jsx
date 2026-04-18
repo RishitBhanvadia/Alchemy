@@ -8,11 +8,8 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
     useEffect(() => {
+        if (isTouchDevice) return;
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -34,12 +31,13 @@ const CursorFollower = () => {
 
             // Check if hovering over clickable elements
             const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            const isClickable = target && (
+                (target.tagName && target.tagName.toLowerCase() === 'button') ||
+                (target.tagName && target.tagName.toLowerCase() === 'a') ||
+                (target.closest && target.closest('button')) ||
+                (target.closest && target.closest('a')) ||
+                (target.classList && target.classList.contains('clickable'))
+            );
 
             setHovering(!!isClickable);
         };
@@ -63,6 +61,8 @@ const CursorFollower = () => {
         addEventListeners();
         return () => removeEventListeners();
     }, []);
+
+    if (isTouchDevice) return null;
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
