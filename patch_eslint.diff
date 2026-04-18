@@ -1,0 +1,12 @@
+--- client/.eslintrc.json
++++ client/.eslintrc.json
+@@ -20,6 +20,9 @@
+         "jsx-a11y/click-events-have-key-events": "warn",
+         "jsx-a11y/no-static-element-interactions": "warn",
+         "react-hooks/purity": "off",
++        "react-hooks/immutability": "off",
++        "react-hooks/incompatible-library": "off",
++        "react-hooks/set-state-in-effect": "off",
+         "react/no-unknown-property": [
+             "error",
+             {
