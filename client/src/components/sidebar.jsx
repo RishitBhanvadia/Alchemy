@@ -32,7 +32,8 @@ const Sidebar = () => {
         <NavLink
           to="/lab"
           className={({ isActive }) => isActive ? "selected" : ""}
-
+          aria-label="Laboratory"
+          title="Laboratory"
         >
           <div
             className={`element ${selectedTab === "lab" ? "selected" : ""}`}
@@ -40,6 +41,7 @@ const Sidebar = () => {
             <button
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
+              tabIndex={-1}
             >
               <i className="fa-solid fa-flask"></i>
             </button>
@@ -48,7 +50,8 @@ const Sidebar = () => {
         <NavLink
           to="/titration"
           className={({ isActive }) => isActive ? "selected" : ""}
-
+          aria-label="Titration"
+          title="Titration"
         >
           <div
             className={`element titration ${selectedTab === "titration" ? "selected" : ""
@@ -57,6 +60,7 @@ const Sidebar = () => {
             <button
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
+              tabIndex={-1}
             >
               <i className="fa-solid fa-flask-vial"></i>
             </button>
@@ -65,7 +69,8 @@ const Sidebar = () => {
         <NavLink
           to="/organic"
           className={({ isActive }) => isActive ? "selected" : ""}
-
+          aria-label="Organic Chemistry"
+          title="Organic Chemistry"
         >
           <div
             className={`element organic ${selectedTab === "organic" ? "selected" : ""
@@ -74,6 +79,7 @@ const Sidebar = () => {
             <button
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
+              tabIndex={-1}
             >
               <i className="fa-solid fa-user-plus"></i>
             </button>
@@ -82,7 +88,8 @@ const Sidebar = () => {
         <NavLink
           to="/inorganic"
           className={({ isActive }) => isActive ? "selected" : ""}
-
+          aria-label="Inorganic Chemistry"
+          title="Inorganic Chemistry"
         >
           <div
             className={`element inorganic ${selectedTab === "inorganic" ? "selected" : ""
@@ -91,6 +98,7 @@ const Sidebar = () => {
             <button
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
+              tabIndex={-1}
             >
               <i className="fa-solid fa-user-minus"></i>
             </button>
@@ -99,7 +107,8 @@ const Sidebar = () => {
         <NavLink
           to="/history"
           className={({ isActive }) => isActive ? "selected" : ""}
-
+          aria-label="History"
+          title="History"
         >
           <div
             className={`element ${selectedTab === "history" ? "selected" : ""
@@ -108,6 +117,7 @@ const Sidebar = () => {
             <button
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
+              tabIndex={-1}
             >
               <i className="fa-solid fa-clock-rotate-left"></i>
             </button>
