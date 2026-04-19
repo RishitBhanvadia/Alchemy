@@ -1,72 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient';
-import logger from '../utils/logger';
 
 import CompoundImg from "../components/compoundImg";
 import ExpResult from "./experiment_result";
+import useExperimentTest from "../hooks/useExperimentTest";
 import "./lab.css"
 import './organic.css'
 
 const Organic = () => {
-  const navigate = useNavigate();
-  const [on, setOn] = useState(false);
-  const [first, setFirst] = useState(true);
-  const [datanum, setDatanum] = useState(0);
-  const [wrong, setWrong] = useState(false);
-  const [uans, setUAns] = useState('');
-
-  // Animation logic for result
-  function send_info(i) {
-    setOn(true);
-    setTimeout(() => {
-      setOn(false);
-    }, 1000);
-    setFirst(false);
-    setDatanum(i);
-  }
-
-  async function checkAns() {
-    if (uans === '2') {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { error } = await supabase
-            .from('experiment_results')
-            .insert([
-              {
-                user_id: user.id,
-                experiment_type: 'organic',
-                score: 100,
-                details: { result: "Group 2 Detected" }
-              }
-            ]);
-            
-          if (error) {
-             logger.error("Error saving organic result:", error);
-          } else {
-             logger.info("Organic result saved successfully");
-          }
-        }
-      } catch (err) {
-        logger.error("Supabase error:", err);
-      }
-      navigate("/success", {
-        replace: true,
-      });
-    }
-    else {
-      setWrong(true);
-      setTimeout(() => {
-        setWrong(false);
-      }, 1000);
-    }
-  }
-
-  const handleChange = (event) => {
-    setUAns(event.target.value);
-  };
+  const {
+    on,
+    first,
+    datanum,
+    wrong,
+    uans,
+    send_info,
+    checkAns,
+    handleChange
+  } = useExperimentTest('organic', (ans) => ans === '2', "Group 2 Detected");
 
   return (
     <div className="organic-page">

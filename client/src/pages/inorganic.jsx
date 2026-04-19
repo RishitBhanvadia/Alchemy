@@ -1,71 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Navbar from "../components/Navbar";
-import { supabase } from '../supabaseClient';
-import logger from '../utils/logger';
 
 import InCompoundImg from "../components/InCompundImg"; // Fixed typo in import if needed, but file is InCompundImg.js
 import InExpResult from "../components/InExpResult";
+import useExperimentTest from "../hooks/useExperimentTest";
 import "./lab.css";
 import "./inorganic.css";
 
 const Inorganic = () => {
-  const navigate = useNavigate();
-  const [on, setOn] = useState(false);
-  const [first, setFirst] = useState(true);
-  const [datanum, setDatanum] = useState(0);
-  const [wrong, setWrong] = useState(false);
-  const [uans, setUAns] = useState('');
-
-  function send_info(i) {
-    setOn(true);
-    setTimeout(() => {
-      setOn(false);
-    }, 1000);
-    setFirst(false);
-    setDatanum(i);
-  }
-
-  async function checkAns() {
-    if (uans.toLowerCase() === 'nitrite') {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { error } = await supabase
-            .from('experiment_results')
-            .insert([
-              {
-                user_id: user.id,
-                experiment_type: 'inorganic',
-                score: 100,
-                details: { result: "Nitrite Detected" }
-              }
-            ]);
-            
-          if (error) {
-             logger.error("Error saving inorganic result:", error);
-          } else {
-             logger.info("Inorganic result saved successfully");
-          }
-        }
-      } catch (err) {
-        logger.error("Supabase error:", err);
-      }
-      navigate("/success", {
-        replace: true,
-      });
-    }
-    else {
-      setWrong(true);
-      setTimeout(() => {
-        setWrong(false);
-      }, 1000);
-    }
-  }
-
-  const handleChange = (event) => {
-    setUAns(event.target.value);
-  };
+  const {
+    on,
+    first,
+    datanum,
+    wrong,
+    uans,
+    send_info,
+    checkAns,
+    handleChange
+  } = useExperimentTest('inorganic', (ans) => ans.toLowerCase() === 'nitrite', "Nitrite Detected");
 
   return (
     <div className="inorganic-page">
