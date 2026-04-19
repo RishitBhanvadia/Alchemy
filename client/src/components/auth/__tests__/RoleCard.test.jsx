@@ -5,7 +5,7 @@ import RoleCard from '../RoleCard';
 describe('RoleCard Component', () => {
     it('should render student role', () => {
         const mockOnSelect = vi.fn();
-        render(<RoleCard role="student" selected={false} onSelect={mockOnSelect} />);
+        render(<RoleCard roleType="student" selected={false} onSelect={mockOnSelect} />);
 
         expect(screen.getByText('Student')).toBeInTheDocument();
         expect(screen.getByText('Explore experiments and join classrooms.')).toBeInTheDocument();
@@ -13,7 +13,7 @@ describe('RoleCard Component', () => {
 
     it('should render teacher role', () => {
         const mockOnSelect = vi.fn();
-        render(<RoleCard role="teacher" selected={false} onSelect={mockOnSelect} />);
+        render(<RoleCard roleType="teacher" selected={false} onSelect={mockOnSelect} />);
 
         expect(screen.getByText('Teacher')).toBeInTheDocument();
         expect(screen.getByText('Manage labs and track student progress.')).toBeInTheDocument();
@@ -21,7 +21,7 @@ describe('RoleCard Component', () => {
 
     it('should call onSelect with role when clicked', () => {
         const mockOnSelect = vi.fn();
-        render(<RoleCard role="student" selected={false} onSelect={mockOnSelect} />);
+        render(<RoleCard roleType="student" selected={false} onSelect={mockOnSelect} />);
 
         // Find the wrapper element and click it
         const studentTitle = screen.getByText('Student');
@@ -33,7 +33,7 @@ describe('RoleCard Component', () => {
 
     it('should apply selected styling when selected', () => {
         const mockOnSelect = vi.fn();
-        const { container } = render(<RoleCard role="student" selected={true} onSelect={mockOnSelect} />);
+        const { container } = render(<RoleCard roleType="student" selected={true} onSelect={mockOnSelect} />);
 
         const card = container.firstChild;
         expect(card).toHaveClass('bg-lab-purple/10');

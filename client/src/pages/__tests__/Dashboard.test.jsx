@@ -72,15 +72,7 @@ describe('Dashboard Component', () => {
         renderDashboard();
         const labCard = screen.getByText(/laboratory/i).closest('a');
         if (labCard) {
-            // Note: Since it's a Link component from react-router-dom, we should just check its href instead of click, but let's test fireEvent.click with default prevent or not
-            fireEvent.click(labCard);
-            // wait for navigate if it was handled internally or via useHref etc. Link does not use mockNavigate directly, but let's see. The original test said:
-            // renderDashboard();
-            // const labCard = screen.getByText(/laboratory/i).closest('div[role="button"]');
-            // if (labCard) { fireEvent.click(labCard); expect(mockNavigate).toHaveBeenCalled(); }
-            // wait, Dashboard.jsx module card is `<Link to="/lab" className="module-card glass-panel">`
-            // it doesn't have role="button" nor does it call navigate manually.
-            // Oh, I see. The original test had this:
+            expect(labCard).toHaveAttribute('href', '/lab');
         }
     });
 

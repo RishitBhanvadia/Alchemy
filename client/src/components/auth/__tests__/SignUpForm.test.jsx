@@ -47,7 +47,7 @@ describe('SignUpForm Component', () => {
             error: null,
         });
 
-        const { container } = renderSignUp();
+        renderSignUp();
 
         // Fill form
         fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Dr. John Doe' } });
