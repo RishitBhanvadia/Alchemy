@@ -1,0 +1,3 @@
+## 2025-04-19 - Improve accessibility for icon-only NavLink buttons
+**Learning:** When using icon-only navigation links in React with an inner `<button>` nested inside a `<NavLink>`, screen readers can double-focus or improperly announce the button.
+**Action:** Apply `aria-label` and `title` to the parent `<NavLink>` directly, and add `tabIndex={-1}` to the inner `<button>` to hide it from focus traversal, leaving only the semantically correct `<NavLink>` accessible to screen readers.
