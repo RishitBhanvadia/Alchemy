@@ -1,0 +1,4 @@
+## 2024-04-19 - Optimizing CursorFollower Rendering
+**Bottleneck:** The `CursorFollower` component triggered full React render cycles on every `mousemove` event because it stored the cursor `position` in `useState`. This causes massive performance degradation on high-frequency events.
+**Impact:** Reduced React renders to virtually zero during mouse movement. Bypassing the React tree significantly smooths animations and lowers CPU usage. Build warning resolved.
+**Learning:** For high-frequency DOM updates like cursor followers or scrolling, never use `useState`. Instead, maintain a `useRef` to the target DOM element and directly update its styles (e.g., `ref.current.style.left`) to bypass the React component render cycle completely. Always provide defensive checks inside event listeners (e.g., `e.target` properties) to handle potentially missing properties, particularly in tests or edge case events.
