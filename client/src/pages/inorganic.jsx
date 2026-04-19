@@ -13,7 +13,7 @@ const Inorganic = () => {
     first,
     datanum,
     wrong,
-    uans,
+
     send_info,
     checkAns,
     handleChange

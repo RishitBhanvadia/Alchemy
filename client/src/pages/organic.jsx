@@ -13,7 +13,7 @@ const Organic = () => {
     first,
     datanum,
     wrong,
-    uans,
+
     send_info,
     checkAns,
     handleChange
