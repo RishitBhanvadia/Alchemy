@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
+    const cursorRef = useRef(null);
+    const dotRef = useRef(null);
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [hidden, setHidden] = useState(false);
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
+        if (isTouchDevice) return;
+
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -30,53 +26,71 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (cursorRef.current && dotRef.current) {
+                const x = `${e.clientX}px`;
+                const y = `${e.clientY}px`;
+
+                cursorRef.current.style.left = x;
+                cursorRef.current.style.top = y;
+                dotRef.current.style.left = x;
+                dotRef.current.style.top = y;
+            }
 
             // Check if hovering over clickable elements
             const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            const isClickable = target && (
+                (target.tagName && (target.tagName.toLowerCase() === 'button' || target.tagName.toLowerCase() === 'a')) ||
+                (target.closest && (target.closest('button') || target.closest('a'))) ||
+                (target.classList && target.classList.contains('clickable'))
+            );
 
-            setHovering(!!isClickable);
+            if (cursorRef.current && dotRef.current) {
+                if (isClickable) {
+                    cursorRef.current.classList.add('hovering');
+                    dotRef.current.classList.add('hovering');
+                } else {
+                    cursorRef.current.classList.remove('hovering');
+                    dotRef.current.classList.remove('hovering');
+                }
+            }
         };
 
         const onMouseEnter = () => {
-            setHidden(false);
+            if (cursorRef.current && dotRef.current) {
+                cursorRef.current.classList.remove('hidden');
+                dotRef.current.classList.remove('hidden');
+            }
         };
 
         const onMouseLeave = () => {
-            setHidden(true);
+            if (cursorRef.current && dotRef.current) {
+                cursorRef.current.classList.add('hidden');
+                dotRef.current.classList.add('hidden');
+            }
         };
 
         const onMouseDown = () => {
-            setClicking(true);
+            if (cursorRef.current) {
+                cursorRef.current.classList.add('clicking');
+            }
         };
 
         const onMouseUp = () => {
-            setClicking(false);
+            if (cursorRef.current) {
+                cursorRef.current.classList.remove('clicking');
+            }
         };
 
         addEventListeners();
         return () => removeEventListeners();
-    }, []);
+    }, [isTouchDevice]);
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+    if (isTouchDevice) return null;
 
     return (
         <>
-            <div
-                className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-            <div
-                className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
+            <div ref={cursorRef} className="cursor-follower" />
+            <div ref={dotRef} className="cursor-dot" />
         </>
     );
 };
