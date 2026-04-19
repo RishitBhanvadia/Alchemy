@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
+import EmptyState from '../components/EmptyState';
 import useAssignmentStore from '../store/assignmentStore';
 import LoadingOverlay from '../components/LoadingOverlay';
 import logger from '../utils/logger';
@@ -130,7 +131,11 @@ const ClassroomDetail = () => {
                     </div>
                     <div className="student-list">
                         {students.length === 0 ? (
-                            <p className="empty-msg">No students enrolled yet.</p>
+                            <EmptyState
+                                icon="👨‍🎓"
+                                title="No students yet"
+                                description="Share the classroom code with your students for them to join."
+                            />
                         ) : (
                             students.map(stu => (
                                 <div key={stu.id} className="student-card glass-card">
@@ -199,7 +204,13 @@ const ClassroomDetail = () => {
                                 ))}
                                 {assignments.length === 0 && (
                                     <tr>
-                                        <td colSpan="5" className="empty-row">No assignments created yet.</td>
+                                        <td colSpan="5" className="empty-row">
+                                            <EmptyState
+                                                icon="📋"
+                                                title="No assignments"
+                                                description="Create your first assignment to assess your students."
+                                            />
+                                        </td>
                                     </tr>
                                 )}
                             </tbody>
