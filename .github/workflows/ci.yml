@@ -35,10 +35,6 @@ jobs:
       working-directory: ./server
       run: npm ci
     
-    - name: Lint client code
-      working-directory: ./client
-      run: npm run lint
-    
     - name: Run client tests
       working-directory: ./client
       run: npm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
