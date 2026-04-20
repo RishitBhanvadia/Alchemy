@@ -4,6 +4,9 @@ import './CursorFollower.css';
 const CursorFollower = () => {
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
+    // ⚡ Bolt Optimization: Use refs instead of state to prevent
+    // React component re-renders on every high-frequency mousemove event.
+    // We update the DOM directly via ref.current to maintain 60FPS.
     const cursorRef = useRef(null);
     const dotRef = useRef(null);
     const stateRef = useRef({
