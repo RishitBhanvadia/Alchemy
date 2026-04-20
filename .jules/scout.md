@@ -1,0 +1,4 @@
+## 2026-04-20 - Automated Assessment & In-Experiment Guidance Gap
+**Market Insight:** The leading virtual chemistry labs (PraxiLabs, Labster, ChemCollective) have moved beyond simply simulating chemical reactions to heavily incorporating automated grading, custom quiz builders, and real-time interactive tutors directly into the simulation flow.
+**Codebase Match:** Alchemistry currently relies on end-of-experiment results and lacks an explicit, inline quiz or hint architecture within the `Lab3D.jsx` component. It also lacks granular analytics in `TeacherDashboard.jsx` beyond basic completion tracking.
+**Opportunity:** The highest-impact opportunity is to build a `HintAssistant` overlay for `Lab3D.jsx` and integrate inline multiple-choice formative assessments into the experiment flow. This bridges the gap between a "sandbox" simulation and an educational tool.
