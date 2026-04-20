@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
 import Sidebar from '../sidebar';
 
 describe('Sidebar Component', () => {
