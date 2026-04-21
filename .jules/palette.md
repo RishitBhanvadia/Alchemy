@@ -1,0 +1,3 @@
+## 2026-04-21 - Keyboard Accessibility in Auth Forms
+**Learning:** Interactive generic elements like `motion.div` need `role="button"`, `tabIndex={0}`, and an `onKeyDown` handler to be accessible via keyboard. Additionally, placeholder `href="#"` links trigger `anchor-is-valid` lint errors and should be changed to styled `<button type="button">`. Finally, using `role` as a prop name for non-ARIA data triggers `aria-role` errors and should be renamed.
+**Action:** Use native interactive elements like `<button>` when possible. When using a custom wrapper like `motion.div` for interaction, always provide full keyboard support. Avoid using reserved HTML/ARIA attribute names like `role` for internal component props.
