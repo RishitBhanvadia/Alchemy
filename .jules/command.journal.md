@@ -1,0 +1,2 @@
+# Command Journal
+(Added placeholder)
