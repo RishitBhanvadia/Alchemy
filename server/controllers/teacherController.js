@@ -19,6 +19,10 @@ exports.getAnalytics = async (req, res) => {
       throw dbError;
     }
 
+    // ⚡ Bolt Optimization: Eliminate N+1 query problem
+    // Instead of querying `experiment_results` inside a loop for each classroom,
+    // we extract all unique student IDs and perform a single batch fetch.
+    // This reduces database queries from O(N) to O(1).
     const allStudentIds = [...new Set((classrooms || []).flatMap(cls => (cls.memberships || []).map(m => m.student_id)))];
 
     let allLogs = [];
