@@ -8,11 +8,13 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+
+const hintCache = new Map();
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
@@ -111,14 +113,22 @@ const Lab3D = () => {
             return;
         }
 
+        const cacheKey = `${chemA}-${chemB}-${chemI}-${chemC}`;
+        if (hintCache.has(cacheKey)) {
+            setCurrentHint(hintCache.get(cacheKey));
+            return;
+        }
+
         const timer = setTimeout(async () => {
             try {
-                const res = await fetch('/api/ai/hint', {
+                const query = new URLSearchParams({ chem_a: chemA, chem_b: chemB, chem_i: chemI, chem_c: chemC }).toString();
+                const res = await fetch(`/api/ai/hint?${query}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
                 if (data.hint) {
+                    hintCache.set(cacheKey, data.hint);
                     setCurrentHint(data.hint);
                 }
             } catch (error) {

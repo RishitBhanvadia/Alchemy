@@ -1,0 +1,3 @@
+## 2024-04-21 - Caching React Hooks that Fetch with Parameters
+**Learning:** The AI hint fetch operation in the client lacked proper caching. Additionally, it wasn't passing the parameters in the query string, which caused generic server responses. Debouncing alone doesn't prevent redundant fetches if the slider is moved back and forth.
+**Action:** When debouncing parameter-driven API calls (e.g., from sliders), implementing a module-level `Map` cache guarantees zero redundant network fetches for previously checked states. Ensure that parameters are actually encoded and appended (via `URLSearchParams`) so the caching and backend work correctly.

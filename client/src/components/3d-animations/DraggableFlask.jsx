@@ -41,8 +41,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
         e.stopPropagation();
         
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grabbing';
+        if (typeof document !== 'undefined') document.body.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -61,7 +60,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl, label, locked]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [camera, label, locked, gl]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -89,14 +89,14 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             isPouring.current = false;
             isTilted.current = false;
         }
-    }, [camera, gl, position]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [camera, position, gl]);
 
     const handlePointerUp = useCallback((e) => {
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grab';
+        if (typeof document !== 'undefined') document.body.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
@@ -107,7 +107,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [gl, position]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [position, gl]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {

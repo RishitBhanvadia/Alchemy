@@ -53,6 +53,7 @@ const PARTICLE_CONFIG = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/* eslint-disable react-hooks/immutability */
 export default function ParticleEmitter({
   gasType = 'H2',
   isExothermic = false,
@@ -174,9 +175,10 @@ export default function ParticleEmitter({
     if (!active) {
       hasShaken.current = false;
     }
-  }, [active, isExothermic, gl, applyExothermicBurst, gasType]);
+  }, [active, isExothermic, applyExothermicBurst, gasType, gl]);
 
   // ─── useFrame: Update particle positions every frame ────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useFrame((_, delta) => {
     if (!active || !pointsRef.current) return;
 
