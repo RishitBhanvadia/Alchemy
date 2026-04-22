@@ -1,0 +1,4 @@
+## 2026-04-21 - Replace weak PRNG with CSPRNG
+**Vulnerability:** The application used `Math.random()` to generate classroom join codes and meeting session codes. `Math.random()` is not cryptographically secure, meaning generated codes could potentially be predicted by an attacker.
+**Learning:** Security-sensitive codes, even short alphanumeric ones like meeting or class codes, must use a cryptographically secure pseudo-random number generator (CSPRNG) to prevent predictability and brute-force attacks.
+**Prevention:** Always use `crypto.randomInt()` (in Node.js) or `crypto.getRandomValues()` (in the browser) instead of `Math.random()` when generating any kind of access code, token, or secret.
