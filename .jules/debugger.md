@@ -1,7 +1,7 @@
-## 2025-04-22 - Fix CI server execution timeout
+## 2025-04-22 - Fix CSS @import ordering warning
 
-**Bug:** The `.github/workflows/build-check.yml` pipeline failed via a 6-hour execution timeout on the `Check server syntax/startup` step.
+**Bug:** A CSS parsing warning disrupted the Vite production build (`npm run build`) in the client application: `@import rules must precede all rules aside from @charset and @layer statements`.
 
-**Root Cause:** The inline Node.js validation script (`node -e "try { require('./server.js') } catch (e) { ... }"`) imported `server.js`, which automatically started an Express app listening on a port. Because the server process kept the event loop alive, the script hung indefinitely in the CI runner environment.
+**Root Cause:** In `client/src/index.css`, the standard Google Fonts `@import url(...)` rule was placed immediately *after* the framework-specific `@import "tailwindcss";` directive. Modern CSS parsers and Vite's build optimizer require native `@import url()` statements to be strictly at the absolute top of the CSS file.
 
-**Learning:** When validating a Node backend script that executes immediately on import (i.e. not exporting the server function but rather directly calling `app.listen()`), always include a hard kill mechanism like `setTimeout(() => process.exit(0), 2000);` within the inline runner script to force a graceful termination upon successful instantiation.
+**Learning:** When configuring entrypoint CSS files in Vite/Tailwind v4 architectures, always place native CSS imports (like external fonts) before framework imports (like `@import "tailwindcss";`) to prevent optimization warnings and ensure cross-browser compatibility.
