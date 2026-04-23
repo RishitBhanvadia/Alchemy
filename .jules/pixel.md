@@ -1,0 +1,4 @@
+## 2024-05-24 - Add Confirmation Dialog to ResultModal Reset Action
+**Problem:** The "Reset Lab" action in the `ResultModal` instantly cleared the user's current experiment state without any confirmation, potentially causing accidental data loss.
+**Context:** In this chemistry lab simulation, users spend time setting up their chemical mixtures. Accidental clicks on a destructive action like "Reset Lab" directly cause frustration, especially on mobile devices where misclicks are common.
+**Solution:** Replaced the immediate reset action with an inline confirmation state (`showConfirmReset`). When clicked, it reveals a confirmation prompt ("Are you sure you want to reset?") with styled "Yes, Reset" and "Cancel" buttons, directly preventing accidental resets while matching the existing glassmorphic design system.
