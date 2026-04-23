@@ -12,6 +12,7 @@
  * - Framer Motion scale pulse on HUD overlays
  */
 import React, { useRef, useMemo, useCallback, useEffect } from 'react';
+/* eslint-disable react-hooks/immutability */
 import { useFrame, useThree } from '@react-three/fiber';
 import { Color, AdditiveBlending } from 'three';
 import PropTypes from 'prop-types';
