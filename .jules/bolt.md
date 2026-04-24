@@ -1,0 +1,4 @@
+## 2024-05-19 - Client-Side Cache for AI Hint Debouncing
+
+**Learning:** When multiple rapidly updated state variables (like slider values) are used as dependencies for debounced API calls, the debouncing logic can still be overwhelmed or cause redundant requests if the user navigates between the same values. Additionally, a strict dependency on debouncing in a generic `useEffect` loop does not prevent redundant requests to the AI server across back-and-forth slider changes.
+**Action:** Implemented a module-level `Map` cache directly in `Lab3D.jsx` to store already computed AI hints based on the combination of slider values. This prevents repetitive network requests when parameters oscillate or are previously known. Also fixed the build error related to double declarations in `CursorFollower.jsx`.
