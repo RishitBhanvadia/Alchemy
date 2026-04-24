@@ -55,7 +55,7 @@ jobs:
 
     - name: Generate coverage
       working-directory: ./client
-      run: npm run test:coverage -- --run
+      run: npm run test:coverage
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
