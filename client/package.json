@@ -17,6 +17,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.4.0",
+    "codecov": "^3.8.2",
     "framer-motion": "^12.33.0",
     "glob": "^13.0.6",
     "gsap": "^3.12.1",
@@ -44,7 +45,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage --run"
   },
   "eslintConfig": {
     "extends": [
