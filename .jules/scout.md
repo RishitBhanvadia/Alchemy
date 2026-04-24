@@ -1,0 +1,4 @@
+## 2024-04-24 - Virtual Lab Market Gaps
+**Market Insight:** Top virtual lab competitors (Labster, Beyond Labz) heavily emphasize safety protocols and curriculum-aligned guided worksheets, rather than just open-ended sandboxes. Data export for grading is also a standard feature.
+**Codebase Match:** Alchemistry's `Lab3D.jsx` is fully open-ended and lacks pre-lab safety checks or guided step-by-step checklists. Furthermore, `history.jsx` logs experiments but does not allow students to export their results for submission.
+**Opportunity:** Implementing a quick pre-lab safety toggle in `Lab3D.jsx` and a CSV export button in `history.jsx` will immediately elevate the platform from a sandbox toy to a structured educational tool.
