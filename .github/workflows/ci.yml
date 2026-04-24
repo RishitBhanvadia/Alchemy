@@ -18,10 +18,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Setup Node.js \${{ matrix.node-version }}
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        node-version: \${{ matrix.node-version }}
+        node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: |
           client/package-lock.json
@@ -73,4 +73,4 @@ jobs:
       with:
         files: ./client/coverage/cobertura-coverage.xml
       env:
-        CODECOV_TOKEN: \${{ secrets.CODECOV_TOKEN }}
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
