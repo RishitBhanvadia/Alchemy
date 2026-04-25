@@ -1,0 +1,3 @@
+## 2024-04-25 - Cache derived student IDs to eliminate redundant database queries
+**Learning:** In TeacherDashboard.jsx, the `fetchScores` effect was re-fetching the current user, their classrooms, and all class memberships from Supabase every time the user changed the chart's UI filters (experiment type or date range). This caused 3 redundant database queries on every filter interaction.
+**Action:** Always look for opportunities to share and reuse fetched state across multiple `useEffect` hooks. By caching the `studentIds` gathered during the initial data load into a `managedStudentIds` state, we can skip the user/classroom/membership queries entirely and directly fetch the required `experiment_logs` in dependent effects.
