@@ -13,3 +13,8 @@
 **Bug:** GitHub Actions CI pipelines fail during the `npm run lint` step with `no-unused-vars` errors.
 **Root Cause:** The `client/src/pages/Lab3D.jsx`, `client/src/components/auth/RoleCard.jsx`, and `client/src/components/auth/CTAButton.jsx` files contained unused imports. The CI environment strictly enforces the `no-unused-vars` rule, causing the build to fail.
 **Learning:** Always remove unused variables and imports before submitting code, as CI environments often treat these linting warnings as fatal errors.
+## 2024-04-25 - CI Pipeline Timeouts Due to Unclosed Event Loops
+
+**Bug:** GitHub Actions `build-server` jobs exceed the maximum 6-hour runtime and are forcibly canceled.
+**Root Cause:** The pipeline runs an inline bash step (`node -e "try { require('./server.js') }..."`) to verify server startup. Because `server.js` naturally calls `app.listen()` and establishes active network listeners, the Node.js event loop remains open indefinitely, preventing the script from exiting gracefully.
+**Learning:** When writing simple "smoke tests" or inline validation scripts for an Express server in CI pipelines, ensure that you forcibly close the event loop (e.g., using `setTimeout(() => process.exit(0), 2000);`) after the required startup logic runs.
