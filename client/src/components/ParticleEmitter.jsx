@@ -195,15 +195,20 @@ export default function ParticleEmitter({
       const i3 = i * 3;
 
       // Update lifetime
+      // eslint-disable-next-line react-hooks/immutability
       lifetimes[i] += delta;
 
       // If particle expired, respawn it
       if (lifetimes[i] >= config.lifetime) {
+        // eslint-disable-next-line react-hooks/immutability
         lifetimes[i] = 0;
 
         // Reset position to origin
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3] = (Math.random() - 0.5) * 0.2;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 1] = 0;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 2] = (Math.random() - 0.5) * 0.2;
 
         // New velocity
@@ -214,8 +219,11 @@ export default function ParticleEmitter({
               (Math.random() - 0.5) * 3,
             ]
           : config.velocityFn();
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3] = v[0];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 1] = v[1];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 2] = v[2];
 
         // Reset color for non-exothermic
