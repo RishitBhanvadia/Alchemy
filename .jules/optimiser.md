@@ -1,0 +1,4 @@
+## 2024-04-25 - Caching AI Hints
+**Bottleneck:** Redundant AI hint requests in Lab3D. User navigating back to identical slider positions triggers redundant API calls, wasting user network bandwidth and delaying feedback, as well as wasting server-side Gemini tokens. Additionally, the existing hint fetch request completely omits passing the actual chemical concentrations (`chemA`, `chemB`, etc.) as query parameters, rendering it contextless.
+**Impact:** Eliminates network requests for previously seen slider states (0ms vs ~500ms network delay per repeated state). Re-uses cached insights instantly and correctly provides context variables (`chemA`, etc.) to the API.
+**Learning:** For frontend performance with parameter-driven API calls (debounced API hits), a module-level `Map` cache prevents redundant server-side processing when a user repeatedly tries the same parameters, optimizing both frontend responsiveness and backend API limit usage.
