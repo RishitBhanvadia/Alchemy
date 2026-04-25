@@ -8,11 +8,14 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState, } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+
+// Cache for AI hint responses to prevent redundant API calls
+const hintCache = new Map();
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
@@ -112,6 +115,12 @@ const Lab3D = () => {
         }
 
         const timer = setTimeout(async () => {
+            const cacheKey = `${chemA}-${chemB}-${chemI}-${chemC}`;
+            if (hintCache.has(cacheKey)) {
+                setCurrentHint(hintCache.get(cacheKey));
+                return;
+            }
+
             try {
                 const res = await fetch('/api/ai/hint', {
                     method: 'GET',
@@ -119,6 +128,7 @@ const Lab3D = () => {
                 });
                 const data = await res.json();
                 if (data.hint) {
+                    hintCache.set(cacheKey, data.hint);
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
