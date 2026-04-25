@@ -33,7 +33,7 @@ vi.mock('../../supabaseClient', () => ({
 describe('Dashboard Component', () => {
     const renderDashboard = () => {
         return render(
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <Dashboard />
             </BrowserRouter>
         );
