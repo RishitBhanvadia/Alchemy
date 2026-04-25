@@ -8,3 +8,8 @@
 **Bug:** GitHub Actions CI pipelines fail during `npm ci` with `EBADENGINE` errors ("Unsupported engine").
 **Root Cause:** The `node-version` in `.github/workflows/*.yml` was set to `18`. Modern dependencies (like `@tailwindcss/oxide`) now require Node.js >= 20, causing `npm ci` to fail the build.
 **Learning:** When adding modern dependencies or investigating CI build failures, verify the `node-version` matrix in all GitHub workflows matches the project's requirements (Node.js 20+).
+## 2024-04-25 - CI Pipeline Failures Due to Unused Variables
+
+**Bug:** GitHub Actions CI pipelines fail during the `npm run lint` step with `no-unused-vars` errors.
+**Root Cause:** The `client/src/pages/Lab3D.jsx`, `client/src/components/auth/RoleCard.jsx`, and `client/src/components/auth/CTAButton.jsx` files contained unused imports. The CI environment strictly enforces the `no-unused-vars` rule, causing the build to fail.
+**Learning:** Always remove unused variables and imports before submitting code, as CI environments often treat these linting warnings as fatal errors.
