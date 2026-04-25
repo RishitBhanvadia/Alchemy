@@ -1,4 +1,0 @@
-## 2025-04-25 - Virtual Chemistry Lab Market Research
-**Market Insight:** Top virtual chemistry labs like Labster, Futuclass, and PraxiLabs emphasize gamification, real-world context, interactive feedback loops, comprehensive teacher analytics (like time spent, performance tracing), quizzes integrated into labs, and accessibility/inclusivity (multilingual support, varied difficulties).
-**Codebase Match:** Alchemistry currently has a 3D Lab with chemical mixing (sliders), an AI Tutor overlay, basic history logging, and teacher score analytics based on simple outcomes. It lacks integrated mini-quizzes, in-depth performance analytics beyond score (e.g., time tracking), and explicit real-world context / gamification elements (achievements/badges).
-**Opportunity:** Adding gamification (e.g., achievements for specific experiment milestones), integrated quick quizzes pre/post experiment, and detailed analytics (time taken, errors made) would align it with market leaders.

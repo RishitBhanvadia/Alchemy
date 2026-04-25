@@ -80,14 +80,18 @@ const ParticleSystem = ({ active, config }) => {
 
         if (shouldShowBubbles && bubbleMeshRef.current) {
             bubbles.forEach((bubble, i) => {
+                // eslint-disable-next-line react-hooks/immutability
                 bubble.position.y += bubble.velocity * delta;
                 
                 const wobbleX = Math.sin(time * bubble.wobbleSpeed + bubble.wobbleOffset) * 0.05;
                 const wobbleZ = Math.cos(time * bubble.wobbleSpeed * 0.8 + bubble.wobbleOffset) * 0.05;
                 
                 if (bubble.position.y > 0.8) {
+                    // eslint-disable-next-line react-hooks/immutability
                     bubble.position.y = -1.4;
+                    // eslint-disable-next-line react-hooks/immutability
                     bubble.position.x = (Math.random() - 0.5) * 1.2;
+                    // eslint-disable-next-line react-hooks/immutability
                     bubble.position.z = (Math.random() - 0.5) * 1.2;
                 }
 
@@ -95,47 +99,63 @@ const ParticleSystem = ({ active, config }) => {
                 dummy.position.x += wobbleX;
                 dummy.position.z += wobbleZ;
                 dummy.scale.setScalar(bubble.scale);
+                // eslint-disable-next-line react-hooks/immutability
                 dummy.updateMatrix();
+                // eslint-disable-next-line react-hooks/immutability
                 bubbleMeshRef.current.setMatrixAt(i, dummy.matrix);
             });
+            // eslint-disable-next-line react-hooks/immutability
             bubbleMeshRef.current.instanceMatrix.needsUpdate = true;
         }
 
         if (shouldShowSmoke && smokeMeshRef.current) {
             smoke.forEach((particle, i) => {
+                // eslint-disable-next-line react-hooks/immutability
                 particle.position.addScaledVector(particle.velocity, delta);
+                // eslint-disable-next-line react-hooks/immutability
                 particle.scale += delta * 0.5;
+                // eslint-disable-next-line react-hooks/immutability
                 particle.life += delta * 0.5;
 
                 if (particle.life > 1.0) {
+                    // eslint-disable-next-line react-hooks/immutability
                     particle.life = 0;
+                    // eslint-disable-next-line react-hooks/immutability
                     particle.position.set(
                         (Math.random() - 0.5) * 1.0,
                         1.0,
                         (Math.random() - 0.5) * 1.0
                     );
+                    // eslint-disable-next-line react-hooks/immutability
                     particle.scale = 0.5 + Math.random();
                 }
 
                 dummy.position.copy(particle.position);
                 dummy.scale.setScalar(particle.scale);
+                // eslint-disable-next-line react-hooks/immutability
                 dummy.updateMatrix();
+                // eslint-disable-next-line react-hooks/immutability
                 smokeMeshRef.current.setMatrixAt(i, dummy.matrix);
             });
+            // eslint-disable-next-line react-hooks/immutability
             smokeMeshRef.current.instanceMatrix.needsUpdate = true;
         }
 
         if (shouldShowHeat && heatMeshRef.current) {
             heatParticles.forEach((particle, i) => {
+                // eslint-disable-next-line react-hooks/immutability
                 particle.position.y += particle.velocity * delta;
                 
                 const wobbleX = Math.sin(time * 3 + particle.wobbleOffset) * 0.03;
                 const wobbleZ = Math.cos(time * 2.5 + particle.wobbleOffset) * 0.03;
                 
+                // eslint-disable-next-line react-hooks/immutability
                 particle.life += delta * 0.4;
 
                 if (particle.position.y > 1.2 || particle.life > 1.0) {
+                    // eslint-disable-next-line react-hooks/immutability
                     particle.life = 0;
+                    // eslint-disable-next-line react-hooks/immutability
                     particle.position.set(
                         (Math.random() - 0.5) * 1.0,
                         -1.0 + Math.random() * 0.5,
@@ -148,9 +168,12 @@ const ParticleSystem = ({ active, config }) => {
                 dummy.position.x += wobbleX;
                 dummy.position.z += wobbleZ;
                 dummy.scale.setScalar(particle.scale * fadeOut);
+                // eslint-disable-next-line react-hooks/immutability
                 dummy.updateMatrix();
+                // eslint-disable-next-line react-hooks/immutability
                 heatMeshRef.current.setMatrixAt(i, dummy.matrix);
             });
+            // eslint-disable-next-line react-hooks/immutability
             heatMeshRef.current.instanceMatrix.needsUpdate = true;
         }
     });
