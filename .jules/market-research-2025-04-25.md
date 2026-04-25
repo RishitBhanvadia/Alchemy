@@ -1,78 +1,65 @@
 # Market Research Report
-**App:** A cutting-edge web-based virtual chemistry laboratory built with React and Three.js, enabling students to conduct safe, interactive chemistry experiments.
-**Market:** EdTech Virtual Science Labs (K-12 & Higher Education)
+**App:** A 3D virtual chemistry lab that allows students to mix chemicals, observe reactions, and learn safely via interactive WebGL simulations.
+**Market:** EdTech Virtual Science Labs
 **Date:** 2025-04-25
-**Competitors Researched:** Labster, PraxiLabs, Futuclass, ChemCollective, PhET Interactive Simulations
+**Competitors Researched:** Labster, PraxiLabs, Futuclass, PhET Interactive Simulations
 
 ## Executive Summary
-The virtual chemistry lab market is highly focused on increasing student engagement through gamification, providing real-world contexts for theoretical concepts, and offering deep analytics for educators. While Alchemistry has a solid foundation with its 3D interactive environment and AI Tutor, it lacks structured, scenario-based learning paths and detailed performance tracking. Adding guided experiments with built-in assessments and gamified progression will elevate it to compete with industry leaders.
+The EdTech Virtual Science Lab market is transitioning from unstructured sandbox environments to structured, guided learning platforms with strong instructor visibility. The Alchemistry app has a solid WebGL foundation for mixing chemicals but lacks the guided instructional layer and formative assessment loops found in top-tier platforms. The greatest opportunities for Alchemistry are implementing in-simulation guidance (scenarios) and providing granular, action-level analytics to educators to track student methodology, not just completion.
 
 ## Competitor Analysis
-- **Labster:** Market leader focusing on highly immersive, scenario-based virtual labs. Key differentiator: Gamified storylines (e.g., "Neutralize an acid lake") and comprehensive theory quizzes integrated mid-experiment.
-- **Futuclass:** Focused on younger students with a strong puzzle-game approach. Key differentiator: Short, highly interactive 5-10 minute modules designed for classroom activities.
-- **PraxiLabs:** Strong focus on realistic lab procedures. Key differentiator: Detailed performance analytics tracking every student action and time spent.
-- **ChemCollective / PhET:** Open educational resources. Key differentiator: Scenario-based problem solving and extreme accessibility/ease of use.
+- **Labster:** The market leader. Differentiates via highly structured, gamified "missions" with strong narrative wrappers and continuous multiple-choice knowledge checks during the simulation.
+- **PraxiLabs:** Focuses heavily on realism and protocol adherence. Differentiates with a strong "Hint" and "Guide" system that prevents students from getting stuck without providing direct answers.
+- **Futuclass:** A rising VR/3D entrant focusing on shorter, concept-specific modules (e.g., balancing equations) rather than full open-world labs. High emphasis on immediate visual feedback.
+- **PhET Interactive Simulations:** The free, open-source standard. Excels at unguided exploration but relies entirely on external teacher-provided worksheets for curriculum integration.
 
 ## Gap Analysis
+
 ### Table Stakes (Expected by users, missing from app)
-- **Guided Step-by-Step Instructions:** Competitors offer structured workflows. Alchemistry's lab is currently a sandbox.
-- **Formative Assessments:** In-lab quizzes before, during, or after experiments to test comprehension.
-- **Time Tracking & Action Logging:** Teachers need to know how long an experiment took, not just the final score.
+- **In-simulation Instructions:** A persistent UI panel guiding the student through the required steps of an experiment.
+- **Formative Assessment:** Small quizzes or checks for understanding presented *during* the reaction or immediately after, before moving to the next step.
 
 ### Differentiating Opportunities (Stand-out features)
-- **Gamified Progression:** Badges, streaks, or achievements for completing modules or mixing correct compounds.
-- **Real-World Scenarios:** Tying chemical reactions to real-world problems (e.g., environmental cleanup).
-- **Interactive Tooltips:** Contextual help during the first use of lab equipment.
+- **Granular Methodology Analytics:** Tracking *how* a student arrived at an answer (e.g., number of failed mixtures, time spent combining specific elements) rather than just final grades.
+- **Dynamic Hints:** Context-aware nudges based on what items a student is currently dragging/holding in the 3D space.
 
 ### UX Patterns (Design/interaction patterns common in top products)
-- **Progress Bars in Labs:** Showing students how far along they are in a specific experiment.
-- **Action History Sidebar:** A visible, running log of actions taken during the current lab session.
+- **Split-Screen Layouts:** 3D environment on one side (70% width), textual instructions/questions on a side panel (30% width).
+- **Reaction Replay:** The ability to "undo" or replay a specific chemical combination to re-observe the visual effect without restarting the whole scenario.
 
 ## Prioritised Recommendations
 
-### 1. Guided Experiment Mode — Priority: HIGH | Effort: LARGE
-**What:** Add a structured "Scenario Mode" alongside the current sandbox lab, offering step-by-step instructions to achieve a specific goal.
-**Why:** Top competitors like Labster use scenarios to anchor learning. This prevents students from aimlessly moving sliders.
-**Where in code:** `client/src/pages/Lab3D.jsx` and new `ScenarioOverlay` component.
-**How:** Create a `ScenarioEngine` hook that tracks the current step, required chemical levels, and displays instructions via a new overlay component in the 3D lab.
+### 1. Guided Scenario Panel — Priority: HIGH | Effort: MEDIUM
+**What:** A sidebar component within the 3D lab that presents step-by-step instructions (e.g., "Step 1: Combine Sodium and Water").
+**Why:** Transitioning from a pure sandbox to a structured learning tool is the #1 request from teachers using virtual labs, as seen in Labster's success.
+**Where in code:** `client/src/pages/Lab3D.jsx` (Add a `ScenarioSidebar` component alongside the canvas).
+**How:** Create a new state piece `currentStep` and a UI overlay that updates based on the current `reactions` array length or specific combinations achieved.
 
-### 2. Formative Quiz Integration — Priority: HIGH | Effort: MEDIUM
-**What:** Introduce mini-quizzes at the start or end of a reaction cycle.
-**Why:** Formative assessment is a table-stakes feature for educational software, ensuring concepts are understood, not just simulated.
-**Where in code:** `client/src/components/ResultModal.jsx` and `client/src/pages/Lab3D.jsx`.
-**How:** Extend `ResultModal` to include a short multiple-choice question before revealing the final score, or add a `QuizOverlay` triggered before the reaction starts.
+### 2. Formative Result Quizzes — Priority: HIGH | Effort: SMALL
+**What:** Add a quick "Why did this happen?" multiple-choice question when a reaction completes successfully.
+**Why:** Active recall immediately following observation drastically improves retention.
+**Where in code:** `client/src/components/ResultModal.jsx`
+**How:** Extend the modal to include a `QuizBox` component if the current result triggers a specific state change, requiring an answer before dismissal.
 
-### 3. Detailed Teacher Analytics (Time & Actions) — Priority: MEDIUM | Effort: MEDIUM
-**What:** Track time spent in the lab and specific slider adjustments made before hitting "Initiate Reaction".
-**Why:** Teachers need insight into student struggle. If a student took 30 minutes, they might need help even if they eventually got it right.
-**Where in code:** `client/src/store/historyStore.js` and `client/src/pages/TeacherDashboard.jsx`.
-**How:** Add start/end timestamps to the lab session state and log them to the backend when saving the history log. Display average completion time in the `TeacherDashboard` analytics.
+### 3. Methodology Analytics Tracking — Priority: MEDIUM | Effort: SMALL
+**What:** Log incorrect combinations or "near misses" and send them to the backend, rather than just logging successful experiments.
+**Why:** Teachers need to see where students are struggling, not just what they got right.
+**Where in code:** `client/src/store/historyStore.js` and the `onDrop` handler in `Lab3D.jsx`.
+**How:** Update the zustand store to track a `failedAttempts` array per session, and send this payload during the existing `saveExperiment` API call.
 
-### 4. Achievement & Badge System — Priority: MEDIUM | Effort: MEDIUM
-**What:** Award badges for specific actions (e.g., "First Reaction", "Perfect Acid-Base Mix").
-**Why:** Gamification drives engagement, especially in platforms like Futuclass.
-**Where in code:** `client/src/pages/Profile.jsx` and `client/src/components/SuccessCelebration.jsx`.
-**How:** Add a `badges` array to the user profile schema. When `reactionState === 'success'`, check conditions and trigger a badge unlock notification alongside the existing celebration.
+### 4. Interactive Hint System — Priority: MEDIUM | Effort: MEDIUM
+**What:** A "Need Help?" button that provides contextual hints based on the active items in the workspace.
+**Why:** Prevents student frustration and reduces the "guess and check" behavior common in sandbox labs.
+**Where in code:** `client/src/pages/Lab3D.jsx`
+**How:** Add a `HintButton` overlay. When clicked, it checks the currently selected/active `labEquipment` and provides a string hint from a predefined dictionary.
 
-### 5. Contextual Onboarding Tooltips — Priority: MEDIUM | Effort: SMALL
-**What:** Show tooltips pointing to the sliders and AI tutor the first time a user enters the 3D Lab.
-**Why:** Reduces cognitive load for new students and highlights features like the AI Tutor.
-**Where in code:** `client/src/pages/Lab3D.jsx`.
-**How:** Use `localStorage` to check a `hasSeenLabTour` flag. If false, render a `TooltipTour` component using a library like `react-joyride` pointing to key UI elements.
-
-### 6. Export Experiment Logs — Priority: LOW | Effort: SMALL
-**What:** Allow students and teachers to export history logs as CSV or PDF.
-**Why:** Useful for lab reports and grading offline, a common feature in professional and educational tools.
-**Where in code:** `client/src/pages/history.jsx` and `client/src/pages/TeacherDashboard.jsx`.
-**How:** Add an "Export" button that uses the existing fetched logs and a lightweight library like `papaparse` to trigger a file download.
-
-### 7. Real-Time Action Log Sidebar — Priority: LOW | Effort: SMALL
-**What:** Display a running log of actions (e.g., "Added 50% HCl", "Initiated Reaction") within the 3D lab view.
-**Why:** Helps students track their steps and understand the sequence of events, similar to real lab notebooks.
-**Where in code:** `client/src/pages/Lab3D.jsx`.
-**How:** Add an array of action strings to the component state, updated on slider change or button click, and render them in a collapsible sidebar panel.
+### 5. Detailed Student Dashboard View — Priority: HIGH | Effort: MEDIUM
+**What:** Expand the teacher dashboard to view individual student progress graphs and specific experiment logs.
+**Why:** Current implementation only provides high-level analytics. Teachers need granular data to intervene effectively.
+**Where in code:** `client/src/pages/TeacherDashboard.jsx` and `client/src/components/StudentAnalyticsChart.jsx`
+**How:** Add a modal or expanding row to the `useReactTable` implementation that fetches and displays the detailed `historyStore` logs for a specific `studentId`.
 
 ## Quick Wins (< 1 day each)
-1. **Export Experiment Logs:** Fast to implement using existing data and standard CSV formatting.
-2. **Contextual Onboarding Tooltips:** Easy to add with `react-joyride` and `localStorage`.
-3. **Real-Time Action Log Sidebar:** Purely local state update in the 3D lab UI without backend changes.
+1. **Formative Result Quizzes:** Can be added to the existing `ResultModal` with static questions mapped to known reaction formulas.
+2. **Methodology Analytics Tracking:** Requires only a small expansion of the existing Zustand store and API payload.
+3. **Interactive Hint System:** Can be implemented as a simple static lookup table based on current inventory state before building complex context-awareness.

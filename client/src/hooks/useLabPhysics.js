@@ -110,10 +110,10 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        document.body.style.cursor = 'grab';
+        gl.domElement.style.cursor = 'grab';
       }
     },
-    [dragState]
+    [dragState, gl]
   );
 
   /**
@@ -123,10 +123,10 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        document.body.style.cursor = 'default';
+        gl.domElement.style.cursor = 'default';
       }
     },
-    [dragState]
+    [dragState, gl]
   );
 
   /**
@@ -139,7 +139,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
-      document.body.style.cursor = 'grabbing';
+      gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -208,7 +208,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
-      document.body.style.cursor = 'default';
+      gl.domElement.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
@@ -232,7 +232,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, homePosition]
+    [dragState, gl, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
