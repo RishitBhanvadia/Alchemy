@@ -71,7 +71,10 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
+  // Using useRef instead of useMemo to allow mutation without violating react-hooks/immutability
+  const particleDataRef = useRef(null);
+
+  if (!particleDataRef.current || particleDataRef.current.particleCount !== particleCount) {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
     const life = new Float32Array(particleCount);
@@ -104,8 +107,10 @@ export default function ParticleEmitter({
       sz[i] = config.size * (0.5 + Math.random() * 0.5);
     }
 
-    return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
-  }, [particleCount, config]);
+    particleDataRef.current = { particleCount, positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
+  }
+
+  const { positions, velocities, lifetimes, colors, sizes } = particleDataRef.current;
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
