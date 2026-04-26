@@ -1,0 +1,4 @@
+## 2025-04-25 - Prevent Predictable PRNG for Security Codes
+**Vulnerability:** The application was using `Math.random()` to generate alphanumeric codes for meetings and classrooms on both backend controllers (`meetingController.js`, `classroomController.js`) and the frontend (`classroomStore.js`).
+**Learning:** `Math.random()` is not a cryptographically secure pseudo-random number generator (CSPRNG). Using it for security-sensitive items like invite codes or IDs makes it theoretically possible for attackers to predict subsequent generated codes, leading to insecure direct object references or unauthorized access.
+**Prevention:** Always use `crypto.randomInt` (or `crypto.randomBytes`) in Node.js environments and `window.crypto.getRandomValues()` in browser environments to generate secure random strings for sensitive tokens, codes, and IDs. Added `server/utils/cryptoUtils.js` with `generateSecureCode(length)` as a reusable secure pattern.
