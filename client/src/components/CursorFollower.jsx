@@ -9,7 +9,6 @@ const CursorFollower = () => {
     const [hovering, setHovering] = useState(false);
 
     if (isTouchDevice) return null;
-
     useEffect(() => {
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
