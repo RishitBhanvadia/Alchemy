@@ -319,6 +319,7 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: students,
     columns,
