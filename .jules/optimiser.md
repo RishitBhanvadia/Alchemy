@@ -1,0 +1,4 @@
+## 2025-04-27 - Lazy Load Heavy Chart Components
+**Bottleneck:** The `TeacherDashboard` component synchronously imported the `StudentAnalyticsChart`, which uses the `recharts` library. This caused the `TeacherDashboard` chunk to be 442 KB, slowing down the initial route load.
+**Impact:** Using `React.lazy()` and `<Suspense>` reduced the `TeacherDashboard` chunk size from 442 KB to 80 KB. The `recharts` library was split into its own chunk (362 KB) that is only loaded when needed.
+**Learning:** Always lazy load heavy visualization libraries like `recharts` or `chart.js` if they are not critical for the initial render above the fold, and wrap them in `<Suspense>` to handle the loading state gracefully.
