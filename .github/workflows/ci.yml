@@ -32,11 +32,11 @@ jobs:
     
     - name: Install client dependencies
       working-directory: ./client
-      run: npm install
+      run: rm -rf node_modules package-lock.json && npm install
     
     - name: Install server dependencies
       working-directory: ./server
-      run: npm install
+      run: rm -rf node_modules package-lock.json && npm install
     
     - name: Lint client code
       working-directory: ./client
@@ -74,6 +74,6 @@ jobs:
       uses: codecov/codecov-action@v4
       if: always()
       with:
-        files: ./client/coverage/cobertura-coverage.xml
+        directory: ./client/coverage
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: false

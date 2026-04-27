@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd client
-          npm install
+          rm -rf node_modules package-lock.json && npm install
 
       - name: Verify build
         run: |
