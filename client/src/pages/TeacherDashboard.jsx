@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /**
  * TeacherDashboard.jsx — Teacher's classroom management dashboard
  * Phase 3.2.2 Task [11]: Route-guarded, data grid, analytics chart

@@ -8,8 +8,11 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
+    if (isTouchDevice) return null;
+    const [clicking, setClicking] = useState(false);
+    const [hovering, setHovering] = useState(false);
+
     useEffect(() => {
-        if (isTouchDevice) return;
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -59,9 +62,7 @@ const CursorFollower = () => {
 
         addEventListeners();
         return () => removeEventListeners();
-    }, [isTouchDevice]);
-
-    if (isTouchDevice) return null;
+    }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;

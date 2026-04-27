@@ -187,6 +187,8 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
 });
 
+module.exports = server; // Export for testing/CI
+
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Closing server gracefully...');
