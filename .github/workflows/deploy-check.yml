@@ -1,3 +1,6 @@
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 name: Deployment Verification
 
 on:
@@ -24,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd client
-          npm ci
+          npm install
 
       - name: Verify build
         run: |
