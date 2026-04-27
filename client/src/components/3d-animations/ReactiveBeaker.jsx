@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial } from '@react-three/drei';
