@@ -64,6 +64,7 @@ const CursorFollower = () => {
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
 
     if (isTouchDevice) return null;
+    if (isTouchDevice) return null;
     return (
         <>
             <div
