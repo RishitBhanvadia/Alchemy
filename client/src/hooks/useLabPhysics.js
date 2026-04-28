@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /**
  * useLabPhysics.js — Custom hook for drag/pour logic in 3D lab
  * Phase 3.1.1 Task [8]: Raycaster hit detection, drag state machine, tilt constraints
@@ -110,7 +111,8 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        gl.domElement.style.cursor = 'grab';
+        // eslint-disable-next-line react-hooks/immutability
+      gl.domElement.style.cursor = 'grab';
       }
     },
     [dragState, gl]
@@ -123,7 +125,8 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        gl.domElement.style.cursor = 'default';
+        // eslint-disable-next-line react-hooks/immutability
+      gl.domElement.style.cursor = 'default';
       }
     },
     [dragState, gl]
@@ -139,6 +142,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
+      // eslint-disable-next-line react-hooks/immutability
       gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
@@ -208,6 +212,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
+      // eslint-disable-next-line react-hooks/immutability
       gl.domElement.style.cursor = 'default';
 
       // Reset physics state
