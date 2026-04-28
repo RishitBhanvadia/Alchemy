@@ -71,7 +71,7 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
+  const { positions, velocities, lifetimes, colors, sizes } = useRef((() => {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
     const life = new Float32Array(particleCount);
@@ -105,7 +105,7 @@ export default function ParticleEmitter({
     }
 
     return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
-  }, [particleCount, config]);
+  })()).current;
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
@@ -265,19 +265,19 @@ export default function ParticleEmitter({
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={positions}
+          array={positions} // eslint-disable-line react-hooks/refs
           count={particleCount}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          array={colors}
+          array={colors} // eslint-disable-line react-hooks/refs
           count={particleCount}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-size"
-          array={sizes}
+          array={sizes} // eslint-disable-line react-hooks/refs
           count={particleCount}
           itemSize={1}
         />

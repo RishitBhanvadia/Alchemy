@@ -20,7 +20,7 @@ const ParticleSystem = ({ active, config }) => {
     const smokeColor = isGas ? new Color('#cccccc') : new Color('#bbddbb');
     const heatColor = isExothermic ? new Color('#FF6B35') : (isEndothermic ? new Color('#60A5FA') : new Color('#ffffff'));
 
-    const bubbles = useMemo(() => {
+    const bubbles = useRef((() => {
         return new Array(bubbleCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.5,
@@ -33,9 +33,9 @@ const ParticleSystem = ({ active, config }) => {
             scale: 0.2 + Math.random() * 0.3,
             life: Math.random()
         }));
-    }, [bubbleCount]);
+    })()).current;
 
-    const smoke = useMemo(() => {
+    const smoke = useRef((() => {
         return new Array(smokeCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.0,
@@ -51,9 +51,9 @@ const ParticleSystem = ({ active, config }) => {
             life: Math.random(),
             opacityMod: Math.random()
         }));
-    }, [smokeCount]);
+    })()).current;
 
-    const heatParticles = useMemo(() => {
+    const heatParticles = useRef((() => {
         return new Array(heatCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.0,
@@ -65,9 +65,9 @@ const ParticleSystem = ({ active, config }) => {
             life: Math.random(),
             wobbleOffset: Math.random() * Math.PI * 2
         }));
-    }, [heatCount]);
+    })()).current;
 
-    const dummy = useMemo(() => new Object3D(), []);
+    const dummy = useMemo(() => new Object3D()).current;
 
     useFrame((state, delta) => {
         if (!active) return;

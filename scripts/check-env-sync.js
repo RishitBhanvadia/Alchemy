@@ -15,10 +15,18 @@ const COLORS = {
 const checkSync = () => {
   // 1. Locate .env.local
   let envPath = path.join(process.cwd(), '.env.local');
+  if (process.env.CI) {
+    console.log(`${COLORS.yellow}⚠️  Skipping sync check in CI environment as .env.local is not available.${COLORS.reset}`);
+    return;
+  }
   if (!fs.existsSync(envPath)) {
     envPath = path.join(process.cwd(), 'client', '.env.local');
   }
 
+  if (process.env.CI) {
+    console.log(`${COLORS.yellow}⚠️  Skipping sync check in CI environment as .env.local is not available.${COLORS.reset}`);
+    return;
+  }
   if (!fs.existsSync(envPath)) {
     console.error(`${COLORS.red}❌ Error: .env.local not found in root or client/ folder.${COLORS.reset}`);
     process.exit(1);
