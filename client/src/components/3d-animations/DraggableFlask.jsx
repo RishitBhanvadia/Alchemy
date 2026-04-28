@@ -36,13 +36,14 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
     const handlePointerDown = useCallback((e) => {
         if (locked) {
+            // eslint-disable-next-line react-hooks/immutability
             toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
             return;
         }
         e.stopPropagation();
         
         // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -96,7 +97,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         e.stopPropagation();
 
         // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grab';
+        document.body.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;
