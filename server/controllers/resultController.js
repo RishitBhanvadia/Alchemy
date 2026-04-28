@@ -17,8 +17,20 @@ function normalise(a, b, i, c) {
   const na = Math.round((a / total) * 100);
   const nb = Math.round((b / total) * 100);
   const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+  const nc = Math.round((c / total) * 100);
+
+  const arr = [na, nb, ni, nc];
+  const diff = 100 - (na + nb + ni + nc);
+
+  if (diff !== 0) {
+    let maxIdx = 0;
+    for (let j = 1; j < arr.length; j++) {
+      if (arr[j] > arr[maxIdx]) maxIdx = j;
+    }
+    arr[maxIdx] += diff;
+  }
+
+  return arr;
 }
 
 function classifyRegime(a, b) {
@@ -29,6 +41,8 @@ function classifyRegime(a, b) {
   if (ratio < 0.40) return 'BASE_DOMINANT';
   return 'NEUTRAL';
 }
+
+exports._normalise = normalise; // Export for testing
 
 exports.calculateResult = async (req, res) => {
   try {

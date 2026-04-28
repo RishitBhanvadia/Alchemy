@@ -1,0 +1,4 @@
+## 2024-10-24 - Normalisation Logic Bug in Percentage Distribution
+**Bug:** The `normalise` function calculated the percentage of the 4th variable (C) using `100 - na - nb - ni`. If inputs were 33.3, 33.3, 33.3, 0, they rounded to 33, 33, 33, and C became 1% (100 - 99), despite its input being 0. Additionally, inputs like 33.5, 33.5, 33.5, 0 resulted in a sum > 100.
+**Root Cause:** The formula assumed the 4th element would perfectly absorb rounding errors. However, doing so without bounds checking assigned values to 0-inputs or created invalid totals when `na+nb+ni` > 100.
+**Learning:** When normalizing percentages, calculate each variable independently and distribute any rounding remainder to the largest variable, rather than blindly dumping it into the last variable.
