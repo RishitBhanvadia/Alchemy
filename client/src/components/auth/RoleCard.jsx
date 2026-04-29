@@ -1,58 +1,57 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, FlaskConical, Check } from 'lucide-react';
+import PropTypes from 'prop-types';
+import { User, GraduationCap } from 'lucide-react';
 
-const RoleCard = ({ role, selected, onSelect }) => {
-  const isStudent = role === 'student';
-  const Icon = isStudent ? GraduationCap : FlaskConical;
-  const title = isStudent ? 'Student' : 'Teacher';
-  const description = isStudent 
-    ? 'Explore experiments and join classrooms.' 
-    : 'Manage labs and track student progress.';
-  const iconColor = isStudent ? '#a78bfa' : '#06b6d4';
+const RoleCard = ({ userRole, selected, onSelect }) => {
+  const roleConfig = {
+    student: {
+      icon: User,
+      title: 'Student',
+      description: 'Join classes and perform virtual experiments'
+    },
+    teacher: {
+      icon: GraduationCap,
+      title: 'Teacher',
+      description: 'Create classes and monitor student progress'
+    }
+  };
+
+  const config = roleConfig[userRole];
+  const Icon = config.icon;
 
   return (
-    <motion.div
-      whileHover={{ y: -2, borderColor: 'rgba(255,255,255,0.12)' }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(role)}
-      className={`relative flex-1 cursor-pointer p-5 rounded-2xl border transition-all duration-300 text-center group ${
-        selected 
-        ? 'bg-lab-purple/10 border-lab-purple/70 shadow-lab-role-selected' 
-        : 'bg-lab-input border-white/5'
+    <button
+      type="button"
+      onClick={() => onSelect(userRole)}
+      className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
+        selected
+          ? 'border-lab-cyan bg-lab-cyan/10'
+          : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
       }`}
     >
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            className="absolute top-3 right-3 w-2 h-2 bg-lab-purple rounded-full shadow-[0_0_10px_#7c3aed]"
-          />
-        )}
-      </AnimatePresence>
-
-      <div className={`w-11 h-11 mx-auto rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${
-        selected ? 'bg-lab-purple/25' : 'bg-lab-purple/12'
-      }`}>
-        <Icon 
-          size={22} 
-          style={{ color: selected ? '#a78bfa' : iconColor }} 
-          className="transition-colors duration-300"
-        />
+      <div className="flex items-center space-x-4">
+        <div className={`p-3 rounded-lg ${
+          selected ? 'bg-lab-cyan text-white' : 'bg-white/10 text-lab-muted'
+        }`}>
+          <Icon size={24} />
+        </div>
+        <div className="flex-1 text-left">
+          <h3 className={`font-semibold ${selected ? 'text-white' : 'text-gray-300'}`}>
+            {config.title}
+          </h3>
+          <p className="text-xs text-lab-muted mt-1 leading-relaxed">
+            {config.description}
+          </p>
+        </div>
       </div>
-
-      <h3 className={`text-sm font-semibold mb-1 transition-colors duration-300 ${
-        selected ? 'text-lab-purple-soft' : 'text-white'
-      }`}>
-        {title}
-      </h3>
-      <p className="text-[12px] text-lab-muted leading-tight font-medium">
-        {description}
-      </p>
-    </motion.div>
+    </button>
   );
+};
+
+RoleCard.propTypes = {
+  userRole: PropTypes.oneOf(['student', 'teacher']).isRequired,
+  selected: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default RoleCard;
