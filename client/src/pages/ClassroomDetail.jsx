@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import useAssignmentStore from '../store/assignmentStore';
 import LoadingOverlay from '../components/LoadingOverlay';
 import logger from '../utils/logger';
+import ConfirmModal from '../components/ConfirmModal';
 import './ClassroomDetail.css';
 
 const ClassroomDetail = () => {
@@ -15,6 +16,8 @@ const ClassroomDetail = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isCreatingAssignment, setIsCreatingAssignment] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState(null);
     
     // Assignment form state
     const [newAssignment, setNewAssignment] = useState({
@@ -193,7 +196,7 @@ const ClassroomDetail = () => {
                                         <td>{asgn.required_score}%</td>
                                         <td>{asgn.due_date ? new Date(asgn.due_date).toLocaleDateString() : 'No Limit'}</td>
                                         <td>
-                                            <button className="del-btn" onClick={() => deleteAssignment(asgn.id)}>🗑️</button>
+                                            <button className="del-btn" onClick={() => { setItemToDelete(asgn); setIsConfirmOpen(true); }}>🗑️</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -210,6 +213,25 @@ const ClassroomDetail = () => {
 
             {/* Create Assignment Modal */}
             <AnimatePresence>
+                <ConfirmModal
+                    isOpen={isConfirmOpen}
+                    title="Delete Assignment"
+                    message={`Are you sure you want to delete "${itemToDelete?.title}"? This action cannot be undone.`}
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                    isDestructive={true}
+                    onConfirm={() => {
+                        if (itemToDelete) {
+                            deleteAssignment(itemToDelete.id);
+                        }
+                        setIsConfirmOpen(false);
+                        setItemToDelete(null);
+                    }}
+                    onCancel={() => {
+                        setIsConfirmOpen(false);
+                        setItemToDelete(null);
+                    }}
+                />
                 {isCreatingAssignment && (
                     <div className="modal-overlay">
                         <motion.div 

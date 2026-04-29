@@ -1,0 +1,4 @@
+## 2024-04-29 - [Add Confirmation Dialogue for Delete Actions]
+**Problem:** Destructive actions like deleting assignments had no confirmation dialogue, leading to accidental deletions and friction for teachers.
+**Context:** Teachers manage assignments for their classrooms. An accidental click on the delete button immediately wiped out an assignment with no way to undo it. Given the app's focus on user friendly interactions, protecting users from accidental data loss is critical.
+**Solution:** Implemented a reusable `ConfirmModal` component leveraging the existing glassmorphism design system. Integrated it into `ClassroomDetail.jsx` for assignment deletion, providing a clear, contextual warning before performing the destructive action. This ensures safety without adding unnecessary visual clutter.
