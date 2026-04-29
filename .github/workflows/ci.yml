@@ -55,6 +55,7 @@ jobs:
       with:
         name: vitest-logs
         path: ./client/vitest-log.txt
+        if-no-files-found: ignore
 
     - name: Generate coverage
       working-directory: ./client
@@ -75,5 +76,5 @@ jobs:
       if: always()
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./client/coverage/cobertura-coverage.xml
+        files: ./client/coverage/clover.xml
         fail_ci_if_error: false
