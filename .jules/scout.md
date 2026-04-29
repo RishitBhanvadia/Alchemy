@@ -1,0 +1,4 @@
+## 2026-04-29 - Gamification and Virtual Lab Market Insight
+**Market Insight:** Top virtual chemistry labs like Labster and PraxiLabs heavily rely on gamified storylines, fast-forwarding capabilities, and robust real-time assessments (inquiry-based learning) to boost student engagement and retention.
+**Codebase Match:** Alchemistry currently uses basic history logs and scores for titrations, but lacks dedicated interactive notebooks, timeline controls, and robust gamified storylines to match the "game-like experience" of the top competitors. We have an AI tutor which is a huge strength, but it's isolated from direct, interactive lab notebook experiences.
+**Opportunity:** Integrate an in-lab student notebook component that records observations, and implement a time-scale control for reactions. This takes advantage of the existing `reactionState` and `store` setup to offer features similar to Beyond Labz.
