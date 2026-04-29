@@ -20,52 +20,46 @@ const ParticleSystem = ({ active, config }) => {
     const smokeColor = isGas ? new Color('#cccccc') : new Color('#bbddbb');
     const heatColor = isExothermic ? new Color('#FF6B35') : (isEndothermic ? new Color('#60A5FA') : new Color('#ffffff'));
 
-    const bubbles = useMemo(() => {
-        return new Array(bubbleCount).fill().map(() => ({
-            position: new Vector3(
-                (Math.random() - 0.5) * 1.5,
-                -1.4 + Math.random() * 0.5,
-                (Math.random() - 0.5) * 1.5
-            ),
-            velocity: 0.5 + Math.random() * 1.5,
-            wobbleSpeed: 2 + Math.random() * 3,
-            wobbleOffset: Math.random() * Math.PI * 2,
-            scale: 0.2 + Math.random() * 0.3,
-            life: Math.random()
-        }));
-    }, [bubbleCount]);
+    const bubbles = useRef(new Array(bubbleCount).fill().map(() => ({
+        position: new Vector3(
+            (Math.random() - 0.5) * 1.5,
+            -1.4 + Math.random() * 0.5,
+            (Math.random() - 0.5) * 1.5
+        ),
+        velocity: 0.5 + Math.random() * 1.5,
+        wobbleSpeed: 2 + Math.random() * 3,
+        wobbleOffset: Math.random() * Math.PI * 2,
+        scale: 0.2 + Math.random() * 0.3,
+        life: Math.random()
+    }))).current;
 
-    const smoke = useMemo(() => {
-        return new Array(smokeCount).fill().map(() => ({
-            position: new Vector3(
-                (Math.random() - 0.5) * 1.0,
-                1.0 + Math.random() * 0.5,
-                (Math.random() - 0.5) * 1.0
-            ),
-            velocity: new Vector3(
-                (Math.random() - 0.5) * 0.8,
-                1.0 + Math.random() * 1.0,
-                (Math.random() - 0.5) * 0.8
-            ),
-            scale: 0.5 + Math.random() * 1.0,
-            life: Math.random(),
-            opacityMod: Math.random()
-        }));
-    }, [smokeCount]);
+    const smoke = useRef(new Array(smokeCount).fill().map(() => ({
+        position: new Vector3(
+            (Math.random() - 0.5) * 1.0,
+            1.0 + Math.random() * 0.5,
+            (Math.random() - 0.5) * 1.0
+        ),
+        velocity: new Vector3(
+            (Math.random() - 0.5) * 0.2,
+            0.5 + Math.random() * 0.5,
+            (Math.random() - 0.5) * 0.2
+        ),
+        scale: 0.5 + Math.random() * 1.0,
+        life: Math.random(),
+        opacityMod: Math.random()
+    }))).current;
 
-    const heatParticles = useMemo(() => {
-        return new Array(heatCount).fill().map(() => ({
-            position: new Vector3(
-                (Math.random() - 0.5) * 1.0,
-                -1.0 + Math.random() * 0.5,
-                (Math.random() - 0.5) * 1.0
-            ),
-            velocity: 0.3 + Math.random() * 0.5,
-            scale: 0.1 + Math.random() * 0.15,
-            life: Math.random(),
-            wobbleOffset: Math.random() * Math.PI * 2
-        }));
-    }, [heatCount]);
+    const heatParticles = useRef(new Array(heatCount).fill().map(() => ({
+        position: new Vector3(
+            (Math.random() - 0.5) * 1.0,
+            -1.0 + Math.random() * 0.5,
+            (Math.random() - 0.5) * 1.0
+        ),
+        velocity: 0.3 + Math.random() * 0.5,
+        scale: 0.1 + Math.random() * 0.15,
+        life: Math.random(),
+        wobbleOffset: Math.random() * Math.PI * 2
+    }))).current;
 
     const dummy = useMemo(() => new Object3D(), []);
 
