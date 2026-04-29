@@ -20,7 +20,8 @@ const RoleCard = ({ userRole, selected, onSelect }) => {
   const Icon = config.icon;
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onSelect(userRole)}
       className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
         selected
@@ -43,7 +44,7 @@ const RoleCard = ({ userRole, selected, onSelect }) => {
           </p>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
