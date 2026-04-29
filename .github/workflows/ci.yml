@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     strategy:
       matrix:
@@ -68,7 +70,9 @@ jobs:
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       if: always()
       with:
-        files: ./client/coverage/*.xml
+        fail_ci_if_error: false
+        files: ./client/coverage/cobertura-coverage.xml
+        token: ${{ secrets.CODECOV_TOKEN }}
