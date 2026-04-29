@@ -20,8 +20,8 @@ const ParticleSystem = ({ active, config }) => {
     const smokeColor = isGas ? new Color('#cccccc') : new Color('#bbddbb');
     const heatColor = isExothermic ? new Color('#FF6B35') : (isEndothermic ? new Color('#60A5FA') : new Color('#ffffff'));
 
-    const bubbles = useMemo(() => {
-        return new Array(bubbleCount).fill().map(() => ({
+    const { current: bubbles } = useRef(
+        new Array(bubbleCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.5,
                 -1.4 + Math.random() * 0.5,
@@ -32,11 +32,11 @@ const ParticleSystem = ({ active, config }) => {
             wobbleOffset: Math.random() * Math.PI * 2,
             scale: 0.2 + Math.random() * 0.3,
             life: Math.random()
-        }));
-    }, [bubbleCount]);
+        }))
+    );
 
-    const smoke = useMemo(() => {
-        return new Array(smokeCount).fill().map(() => ({
+    const { current: smoke } = useRef(
+        new Array(smokeCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.0,
                 1.0 + Math.random() * 0.5,
@@ -50,11 +50,11 @@ const ParticleSystem = ({ active, config }) => {
             scale: 0.5 + Math.random() * 1.0,
             life: Math.random(),
             opacityMod: Math.random()
-        }));
-    }, [smokeCount]);
+        }))
+    );
 
-    const heatParticles = useMemo(() => {
-        return new Array(heatCount).fill().map(() => ({
+    const { current: heatParticles } = useRef(
+        new Array(heatCount).fill().map(() => ({
             position: new Vector3(
                 (Math.random() - 0.5) * 1.0,
                 -1.0 + Math.random() * 0.5,
@@ -64,8 +64,8 @@ const ParticleSystem = ({ active, config }) => {
             scale: 0.1 + Math.random() * 0.15,
             life: Math.random(),
             wobbleOffset: Math.random() * Math.PI * 2
-        }));
-    }, [heatCount]);
+        }))
+    );
 
     const dummy = useMemo(() => new Object3D(), []);
 

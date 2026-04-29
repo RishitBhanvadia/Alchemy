@@ -71,41 +71,40 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
-    const pos = new Float32Array(particleCount * 3);
-    const vel = new Float32Array(particleCount * 3);
-    const life = new Float32Array(particleCount);
-    const col = new Float32Array(particleCount * 3);
-    const sz = new Float32Array(particleCount);
+  const { current: positions } = useRef(new Float32Array(particleCount * 3));
+  const { current: velocities } = useRef(new Float32Array(particleCount * 3));
+  const { current: lifetimes } = useRef(new Float32Array(particleCount));
+  const { current: colors } = useRef(new Float32Array(particleCount * 3));
+  const { current: sizes } = useRef(new Float32Array(particleCount));
 
+  // Run initialization once or on config change
+  useEffect(() => {
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
       // Start at origin (will be offset by position prop via group)
-      pos[i3] = 0;
-      pos[i3 + 1] = 0;
-      pos[i3 + 2] = 0;
+      positions[i3] = 0;
+      positions[i3 + 1] = 0;
+      positions[i3 + 2] = 0;
 
       // Initial velocity
       const v = config.velocityFn();
-      vel[i3] = v[0];
-      vel[i3 + 1] = v[1];
-      vel[i3 + 2] = v[2];
+      velocities[i3] = v[0];
+      velocities[i3 + 1] = v[1];
+      velocities[i3 + 2] = v[2];
 
       // Stagger lifetimes so particles don't all spawn at once
-      life[i] = Math.random() * config.lifetime;
+      lifetimes[i] = Math.random() * config.lifetime;
 
       // Color
-      col[i3] = config.color.r;
-      col[i3 + 1] = config.color.g;
-      col[i3 + 2] = config.color.b;
+      colors[i3] = config.color.r;
+      colors[i3 + 1] = config.color.g;
+      colors[i3 + 2] = config.color.b;
 
       // Size
-      sz[i] = config.size * (0.5 + Math.random() * 0.5);
+      sizes[i] = config.size * (0.5 + Math.random() * 0.5);
     }
-
-    return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
-  }, [particleCount, config]);
+  }, [particleCount, config, positions, velocities, lifetimes, colors, sizes]);
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
