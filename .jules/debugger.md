@@ -7,3 +7,8 @@
 **Bug:** A React hook `react-hooks/rules-of-hooks` violation was reported during code review.
 **Root Cause:** An early return (`if (isTouchDevice) return null;`) was placed before the `useEffect` hook in `CursorFollower.jsx`, causing conditional execution of the hook.
 **Learning:** Always ensure early return statements in React components are placed after all hook declarations to satisfy the rules of hooks.
+
+## 2024-04-30 - Fix React ESLint Errors
+**Bug:** CI checks failed due to various ESLint errors, including `jsx-a11y/anchor-is-valid`, `jsx-a11y/aria-role`, and unused variables.
+**Root Cause:** Interactive elements used `<a>` tags with `href="#"` instead of `<button>`s. The `RoleCard` component accepted a `role` prop which clashed with the DOM ARIA `role` attribute.
+**Learning:** Always use `<button>` tags for interactive actions instead of blank anchor tags to satisfy a11y standards. Avoid using `role` as a custom prop name in React components to prevent false positives from `jsx-a11y` rules.
