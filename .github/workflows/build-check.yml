@@ -2,13 +2,13 @@
 name: Build Check
 
 on:
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-client:
@@ -40,10 +40,10 @@ jobs:
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          node -e "try { require('./server.js'); setTimeout(() => process.exit(0), 2000); } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder
           GEMINI_API_KEY: placeholder
-          PORT: 5001
+          PORT: 5002
           NODE_ENV: test
