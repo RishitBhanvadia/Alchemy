@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-const StudentAnalyticsChart = lazy(() => import('../components/StudentAnalyticsChart'));
+import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
@@ -502,21 +502,19 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <Suspense fallback={<SkeletonBlock width="100%" height="300px" />}>
-          <StudentAnalyticsChart
-            scores={experimentScores}
-            experimentName={
-              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-            }
-            noDataMessage={
-              !selectedExperiment
-                ? "Select an experiment type above to see score distribution."
-                : experimentScores.length === 0
-                  ? "No students have completed this experiment yet."
-                  : undefined
-            }
-          />
-        </Suspense>
+        <StudentAnalyticsChart
+          scores={experimentScores}
+          experimentName={
+            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+          }
+          noDataMessage={
+            !selectedExperiment
+              ? "Select an experiment type above to see score distribution."
+              : experimentScores.length === 0
+                ? "No students have completed this experiment yet."
+                : undefined
+          }
+        />
       </section>
       </main>
     </div>
