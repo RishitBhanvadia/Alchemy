@@ -508,9 +508,9 @@ export default function TeacherDashboard({ analytics = false }) {
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
           }
           noDataMessage={
-            !selectedExperiment 
+            !selectedExperiment
               ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
+              : experimentScores.length === 0
                 ? "No students have completed this experiment yet."
                 : undefined
           }
