@@ -8,7 +8,8 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { Bot, ClipboardList } from 'lucide-react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -211,11 +212,12 @@ const Lab3D = () => {
  
             {/* History Panel Toggle */}
             <button 
-                className={`history-toggle ${isHistoryOpen ? 'active' : ''}`}
+                className={`history-toggle flex items-center justify-center ${isHistoryOpen ? 'active' : ''}`}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
                 title="Experiment History"
+                aria-label={isHistoryOpen ? "Close Experiment History" : "Open Experiment History"}
             >
-                📋
+                <ClipboardList size={24} color={isHistoryOpen ? "#fff" : "currentColor"} />
             </button>
  
             <AnimatePresence>
@@ -434,11 +436,12 @@ const Lab3D = () => {
  
             {/* AI Tutor Integration */}
             <button 
-                className="ai-toggle-button"
+                className="ai-toggle-button flex items-center justify-center"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
+                aria-label="Open AI Tutor Panel"
             >
-                🤖
+                <Bot size={28} color="white" />
             </button>
  
             <AiTutorPanel 
