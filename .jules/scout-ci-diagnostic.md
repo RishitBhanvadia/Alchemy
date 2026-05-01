@@ -12,3 +12,6 @@
    - `client/src/components/auth/RoleCard.jsx`: Unused `Check` import.
 
 These issues are documented here for the appropriate agent to resolve.
+
+3. **Server Build Job Timeout:** The `build-server` CI job hangs and times out after 6 hours. This is because the inline check script (`node -e "try { require('./server.js') }..."`) executes `app.listen()` inside `server.js` and never exits.
+   - *Fix:* Modify the inline script in `build-check.yml` to include a timeout or forced exit (`setTimeout(() => process.exit(0), 2000);`) so it verifies syntax/startup without blocking the CI runner.
