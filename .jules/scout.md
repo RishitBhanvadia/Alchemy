@@ -1,0 +1,4 @@
+## 2024-05-01 - EdTech Workflow Gap in Virtual Labs
+**Market Insight:** Top virtual labs (Labster, PraxiLabs) consistently include comprehensive export/reporting features for educators to evaluate student work outside the platform, and often include safety procedural checks (like a PPE "gate") prior to experiments to mimic real-world compliance.
+**Codebase Match:** Alchemistry currently logs experiments in the Supabase database and displays them in a `History` component (`client/src/pages/history.jsx`), but completely lacks an export functionality (e.g., CSV). It also lacks pre-experiment safety checks in `client/src/pages/Lab3D.jsx`.
+**Opportunity:** Add a CSV Export button to the `History` component using a simple mapping function, and add a quick "PPE confirmation" modal before initiating a 3D reaction, directly improving its viability for classroom assessment and standard safety education.
