@@ -59,7 +59,9 @@ function classifyRegime(chemA, chemB, chemI, chemC) {
 }
 
 function calculateScore(chemA, chemB, chemI, chemC, outcomeLabel) {
-  const hasOutcome = outcomeLabel && outcomeLabel !== 'Unknown Reaction' && outcomeLabel !== 'No reaction';
+  const hasOutcome = outcomeLabel &&
+    outcomeLabel.toLowerCase() !== 'unknown reaction' &&
+    outcomeLabel.toLowerCase() !== 'no reaction';
   const concentrationBalance = 100 - Math.max(chemA, chemB, chemI, chemC);
   const numChemicals = [chemA, chemB, chemI, chemC].filter(c => c > 0).length;
   
