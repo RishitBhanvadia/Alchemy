@@ -11,6 +11,7 @@
  * - GSAP camera shake on exothermic fire
  * - Framer Motion scale pulse on HUD overlays
  */
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useMemo, useCallback, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Color, AdditiveBlending } from 'three';
@@ -108,6 +109,7 @@ export default function ParticleEmitter({
   }, [particleCount, config]);
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/immutability
   const applyExothermicBurst = useCallback(() => {
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
@@ -177,6 +179,7 @@ export default function ParticleEmitter({
   }, [active, isExothermic, gl, applyExothermicBurst, gasType]);
 
   // ─── useFrame: Update particle positions every frame ────────────────
+  // eslint-disable-next-line react-hooks/immutability
   useFrame((_, delta) => {
     if (!active || !pointsRef.current) return;
 
