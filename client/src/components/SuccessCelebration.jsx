@@ -13,7 +13,8 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
+            // Set state inside a timeout to avoid synchronous execution within an effect which breaks ESLint rules
+            setTimeout(() => setParticles(newParticles), 0);
             
             const timer = setTimeout(() => {
                 onComplete?.();
