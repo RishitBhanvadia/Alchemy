@@ -19,22 +19,40 @@ exports.getAnalytics = async (req, res) => {
       throw dbError;
     }
 
-    const analytics = await Promise.all(
-      (classrooms || []).map(async (cls) => {
-        const studentIds = (cls.memberships || []).map(m => m.student_id);
-        
-        let logs = [];
-        if (studentIds.length > 0) {
-          const { data: experimentLogs } = await supabase
-            .from('experiment_results')
-            .select('id, outcome_label, score, experiment_type, created_at')
-            .in('user_id', studentIds)
-            .order('created_at', { ascending: false })
-            .limit(500);
-          logs = experimentLogs || [];
-        }
+    // Collect all student IDs across all classrooms
+    const allStudentIdsSet = new Set();
+    (classrooms || []).forEach(cls => {
+      (cls.memberships || []).forEach(m => {
+        if (m.student_id) allStudentIdsSet.add(m.student_id);
+      });
+    });
+    const allStudentIds = Array.from(allStudentIdsSet);
 
-        const uniqueStudents = new Set(studentIds).size;
+    // Fetch all logs in a single query
+    let allLogs = [];
+    if (allStudentIds.length > 0) {
+      const { data: experimentLogs, error: logsError } = await supabase
+        .from('experiment_results')
+        .select('id, outcome_label, score, experiment_type, created_at, user_id')
+        .in('user_id', allStudentIds)
+        .order('created_at', { ascending: false })
+        .limit(5000); // Increase limit to accommodate multiple classrooms
+
+      if (logsError) {
+        console.error('[getAnalytics] DB error fetching logs:', logsError.message);
+      } else {
+        allLogs = experimentLogs || [];
+      }
+    }
+
+    const analytics = (classrooms || []).map((cls) => {
+        const studentIds = (cls.memberships || []).map(m => m.student_id);
+        const studentIdsSet = new Set(studentIds);
+        
+        // Filter logs for students in this specific classroom
+        const logs = allLogs.filter(log => studentIdsSet.has(log.user_id));
+
+        const uniqueStudents = studentIdsSet.size;
         const avgScore = logs.length > 0
           ? Math.round(logs.reduce((sum, l) => sum + (l.score || 0), 0) / logs.length)
           : 0;
@@ -53,8 +71,7 @@ exports.getAnalytics = async (req, res) => {
             date: l.created_at,
           })),
         };
-      })
-    );
+      });
 
     return success(res, { classrooms: analytics });
   } catch (err) {
