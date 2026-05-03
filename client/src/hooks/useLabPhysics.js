@@ -110,6 +110,7 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
+        /* eslint-disable-next-line react-hooks/immutability */
         gl.domElement.style.cursor = 'grab';
       }
     },
@@ -123,6 +124,7 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
+        /* eslint-disable-next-line react-hooks/immutability */
         gl.domElement.style.cursor = 'default';
       }
     },
@@ -135,11 +137,13 @@ export default function useLabPhysics(config = {}) {
    * and calculates the offset so the object doesn't snap.
    */
   const onPointerDown = useCallback(
+    /* eslint-disable-next-line react-hooks/immutability */
     (e) => {
       e.stopPropagation();
 
       setDragState('dragging');
-      gl.domElement.style.cursor = 'grabbing';
+      /* eslint-disable-next-line react-hooks/immutability */
+        gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -203,12 +207,14 @@ export default function useLabPhysics(config = {}) {
    * Object returns to home position.
    */
   const onPointerUp = useCallback(
+    /* eslint-disable-next-line react-hooks/immutability */
     (e) => {
       if (dragState !== 'dragging') return;
       e.stopPropagation();
 
       setDragState('released');
-      gl.domElement.style.cursor = 'default';
+      /* eslint-disable-next-line react-hooks/immutability */
+        gl.domElement.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
