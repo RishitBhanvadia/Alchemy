@@ -8,7 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState, useCallback, useMemo } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -129,7 +129,7 @@ const Lab3D = () => {
         return () => clearTimeout(timer);
     }, [chemA, chemB, chemI, chemC, reactionState, setCurrentHint]);
 
-    const handlePlayClick = async () => {
+    const handlePlayClick = useCallback(async () => {
         if (isLoading || reactionState === 'loading') return;
         
         setCurrentHint(null);
@@ -169,32 +169,31 @@ const Lab3D = () => {
             
             toast.error(userMessage);
         }
-    };
+    }, [isLoading, reactionState, setCurrentHint, initiateReaction, fetchHistory]);
 
-    const handleResetLab = () => {
+    const handleResetLab = useCallback(() => {
         reset();
         setIsResultOpen(false);
         setShowCelebration(false); // Reset celebration on lab reset
         toast.success("Lab reset complete.");
-    };
+    }, [reset]);
 
-    const handleAskAI = () => {
+    const handleAskAI = useCallback(() => {
         setIsResultOpen(false);
         setIsAiOpen(true);
         // We could also pre-fill the AI chat here if desired
-    };
+    }, []);
 
-    function onOrNot() {
+    const onOrNot = useCallback(() => {
         let sum = 0;
         if (chemA > 0) sum += 1;
         if (chemB > 0) sum += 1;
         if (chemI > 0) sum += 1;
         if (chemC > 0) sum += 1;
         return sum >= 2;
-    }
+    }, [chemA, chemB, chemI, chemC]);
 
-
-    const isPlayDisabled = !(onOrNot());
+    const isPlayDisabled = useMemo(() => !(onOrNot()), [onOrNot]);
 
     return (
         <motion.div 
