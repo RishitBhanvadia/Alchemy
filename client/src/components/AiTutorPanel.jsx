@@ -1,4 +1,4 @@
-import logger from "../../utils/logger";
+import logger from "../utils/logger";
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLabStore from '../store/labStore';
