@@ -1,0 +1,4 @@
+## 2024-05-04 - Virtual Chemistry Lab Competitor Analysis
+**Market Insight:** Products like ChemCollective, Labster, and PhET Interactive Simulations dominate the virtual chemistry lab market. Key features include CSV data export, interactive guided tutorials/onboarding, realistic transfer physics for lab equipment, and deep learning analytics/dashboards for teachers.
+**Codebase Match:** Alchemistry currently lacks data export (CSV/PDF) for lab results and history, an interactive guided tutorial (the AI tutor is conversational, but there is no step-by-step UI onboarding), and realistic physics/transfer modes (only basic React Three Fiber drag/drop exist, lacking precise measuring tools).
+**Opportunity:** The most implementable, high-impact features are CSV export for experiment history, and adding an interactive introductory tutorial/tour to the 3D lab environment.
