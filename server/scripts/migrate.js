@@ -15,17 +15,7 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
-
-function classifyRegime(conc_a, conc_b) {
-    const acidBaseSum = conc_a + conc_b;
-    if (acidBaseSum > 0) {
-        const ratio = conc_a / acidBaseSum;
-        if (ratio > 0.65) return 'ACID_DOMINANT';
-        if (ratio < 0.35) return 'BASE_DOMINANT';
-        return 'NEUTRAL';
-    }
-    return 'NONE';
-}
+const { classifyRegime } = require('../utils/regimeClassifier');
 
 function deriveThermalEffect(result) {
     if (!result) return 'neutral';
@@ -57,7 +47,7 @@ const migrate = async () => {
         for (const item of localData) {
             const key = `${item.reaction_id}`;
             if (!uniqueRecords.has(key)) {
-                const regime = classifyRegime(item.conc_a, item.conc_b);
+                const regime = classifyRegime(item.conc_a || 0, item.conc_b || 0, item.conc_i || 0, item.conc_c || 0);
                 const thermalEffect = deriveThermalEffect(item.result);
                 const isDangerous = determineDanger(item.result, item.gas);
                 

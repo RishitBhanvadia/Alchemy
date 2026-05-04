@@ -42,20 +42,28 @@ function computeReactionId(chemA, chemB, chemI, chemC, PRESENCE_THRESHOLD = 5) {
   return hash % 1000;
 }
 
-function classifyRegime(chemA, chemB, chemI, chemC) {
-  const max = Math.max(chemA, chemB, chemI, chemC);
-  const sum = chemA + chemB + chemI + chemC;
+function classifyRegime(chem_a, chem_b, chem_i = 0, chem_c = 0) {
+  const acidBaseSum = chem_a + chem_b;
   
-  if (sum === 0) return 'EMPTY';
-  if (chemA >= 60 && chemA >= max) return 'ACID_DOMINANT';
-  if (chemB >= 60 && chemB >= max) return 'BASE_DOMINANT';
-  if (chemI >= 60 && chemI >= max) return 'INDICATOR_DOMINANT';
-  if (chemC >= 60 && chemC >= max) return 'CATALYST_DOMINANT';
+  // Handle Catalyst dominance (C present, A+B minimal)
+  if (chem_c > 20 && acidBaseSum < 20) {
+    return 'CATALYST_DOMINANT';
+  }
   
-  if (chemA > 30 && chemB > 30) return 'ACID_BASE_BALANCED';
-  if (chemI > 30 && (chemA > 20 || chemB > 20)) return 'INDICATOR_ACTIVE';
+  // Handle Indicator dominance (I present, others minimal)
+  if (chem_i > 30 && acidBaseSum < 20 && chem_c < 20) {
+    return 'INDICATOR_DOMINANT';
+  }
+
+  // Handle Acid-Base dominance (A+B combinations)
+  if (acidBaseSum > 0) {
+    const ratio = chem_a / acidBaseSum;
+    if (ratio > 0.65) return 'ACID_DOMINANT';
+    if (ratio < 0.35) return 'BASE_DOMINANT';
+    return 'NEUTRAL';
+  }
   
-  return 'MIXED';
+  return 'NONE';
 }
 
 function calculateScore(chemA, chemB, chemI, chemC, outcomeLabel) {
