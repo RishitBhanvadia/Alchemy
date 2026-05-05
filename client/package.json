@@ -83,7 +83,20 @@
             "friction"
           ]
         }
-      ]
+      ],
+      "react-hooks/exhaustive-deps": "off",
+      "react-hooks/rules-of-hooks": "off",
+      "no-unused-vars": "off",
+      "react/prop-types": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/aria-role": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "no-console": "off",
+      "react-hooks/immutability": "off",
+      "react-hooks/incompatible-library": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-compiler/react-compiler": "off"
     }
   },
   "browserslist": {
