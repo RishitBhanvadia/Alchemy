@@ -213,7 +213,7 @@ const Lab3D = () => {
             <button 
                 className={`history-toggle ${isHistoryOpen ? 'active' : ''}`}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
-                title="Experiment History"
+                data-tooltip="Experiment History"
             >
                 📋
             </button>
@@ -436,7 +436,7 @@ const Lab3D = () => {
             <button 
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
-                title="Ask AI Tutor"
+                data-tooltip="Ask AI Tutor"
             >
                 🤖
             </button>
