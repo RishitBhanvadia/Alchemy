@@ -164,6 +164,15 @@ describe('labStore', () => {
       ]);
       expect(useLabStore.getState().hasOverdueAssignments()).toBe(false);
     });
+
+    it('hasOverdueAssignments returns false for assignments with no due date', () => {
+      useLabStore.getState().setCurrentAssignments([
+        { id: '1', status: 'Pending', due_date: null }, // no limit
+        { id: '2', status: 'Pending', due_date: '' },
+        { id: '3', status: 'Pending' }
+      ]);
+      expect(useLabStore.getState().hasOverdueAssignments()).toBe(false);
+    });
   });
 
   describe('Reaction slice', () => {
