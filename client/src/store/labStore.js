@@ -65,7 +65,7 @@ export const useLabStore = create((set, get) => ({
     const assignments = get().currentAssignments;
     const now = new Date();
     return assignments.some(
-      (a) => a.status === 'Pending' && new Date(a.due_date) < now
+      (a) => a.status === 'Pending' && a.due_date && new Date(a.due_date) < now
     );
   },
 
