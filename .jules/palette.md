@@ -1,0 +1,3 @@
+## 2025-05-05 - Enhance form input accessibility with ARIA
+**Learning:** Custom input fields that conditionally render error messages below them are not automatically associated for screen readers. When an error appears, a sighted user sees it, but a screen reader user may not hear it because the `input` lacks an `aria-describedby` linking it to the error element, and `aria-invalid` to indicate the error state.
+**Action:** Always add `aria-invalid={!!error}` to the input, give the error message a unique `id`, and add `aria-describedby` to the input pointing to that `id`. Additionally, adding `role="alert"` to the error message container ensures it is announced when it appears dynamically.
