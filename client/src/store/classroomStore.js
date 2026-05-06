@@ -96,7 +96,9 @@ const useClassroomStore = create((set, get) => ({
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'Not authenticated' };
 
-    const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const classCode = array[0].toString(36).substring(0, 6).toUpperCase().padStart(6, '0');
 
     const { data, error } = await supabase
       .from('classrooms')
