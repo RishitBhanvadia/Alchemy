@@ -1,0 +1,4 @@
+## 2024-05-18 - Auth Flow Tests Added
+**Gap:** The sign-up form components were missing crucial unit tests, especially the `SignUpForm`. This form orchestrates input validation, interaction with Supabase authentication, and UI error presentation.
+**Learning:** Testing forms that map multiple controlled input values (`e.target.name` via `handleChange`) with Testing Library and framer-motion children can be tricky. Native simulated clicking with `userEvent` on wrapper components requires targeting deeply nested elements that propagate the event upwards.
+**Pattern:** For complex controlled components with custom inputs, `fireEvent.change` combined with targeted queries (like `input[name="fullName"]`) directly drives exactly what the synthetic event handlers expect. `userEvent.click` combined with accessible text search effectively simulates clicking role buttons.
