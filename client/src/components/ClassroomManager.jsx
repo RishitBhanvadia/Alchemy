@@ -113,6 +113,7 @@ const ClassroomManager = () => {
                 <input 
                     type="text" 
                     placeholder="e.g. AP Chemistry Period 4" 
+                    aria-label="New classroom name"
                     data-testid="classroom-name-input"
                     value={newClassName}
                     onChange={(e) => setNewClassName(e.target.value)}
@@ -125,6 +126,7 @@ const ClassroomManager = () => {
                         type="button" 
                         onClick={() => setMeetingType(meetingType === 'zoom' ? 'none' : 'zoom')}
                         style={{...styles.meetingBtn, border: meetingType === 'zoom' ? '2px solid #00f3ff' : '1px solid rgba(255,255,255,0.2)'}}
+                        aria-pressed={meetingType === 'zoom'}
                     >
                         Zoom
                     </button>
@@ -132,6 +134,7 @@ const ClassroomManager = () => {
                         type="button" 
                         onClick={() => setMeetingType(meetingType === 'google' ? 'none' : 'google')}
                         style={{...styles.meetingBtn, border: meetingType === 'google' ? '2px solid #00f3ff' : '1px solid rgba(255,255,255,0.2)'}}
+                        aria-pressed={meetingType === 'google'}
                     >
                         Google
                     </button>
@@ -162,6 +165,7 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy class code"
                                     >
                                         📋
                                     </button>
@@ -174,12 +178,13 @@ const ClassroomManager = () => {
                                     <input 
                                         type="text" 
                                         placeholder="Paste meeting link here..."
+                                        aria-label="Meeting link"
                                         defaultValue={cls.meeting_link || ''}
                                         onBlur={(e) => updateMeetingLink(cls.id, e.target.value)}
                                         style={styles.linkInput}
                                     />
                                     {cls.meeting_link && (
-                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn}>
+                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn} title="Launch Meeting" aria-label="Launch Meeting">
                                             🚀
                                         </a>
                                     )}
@@ -202,6 +207,7 @@ const ClassroomManager = () => {
                                                     ? '#EF4444' 
                                                     : '#10B981'
                                             }}
+                                            aria-label={`${(cls.locked_chemicals || []).includes(chem) ? 'Unlock' : 'Lock'} ${chem}`}
                                         >
                                             {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
                                         </button>
