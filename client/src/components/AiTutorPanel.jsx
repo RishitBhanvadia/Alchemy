@@ -4,6 +4,8 @@ import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
 
+import PropTypes from "prop-types";
+
 const AiTutorPanel = ({ isOpen, onClose }) => {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -161,3 +163,8 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
 };
 
 export default AiTutorPanel;
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
