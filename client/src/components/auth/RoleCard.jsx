@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, FlaskConical, Check } from 'lucide-react';
+import { GraduationCap, FlaskConical } from 'lucide-react';
 
-const RoleCard = ({ role, selected, onSelect }) => {
-  const isStudent = role === 'student';
+const RoleCard = ({ userRole, role, selected, onSelect }) => {
+  const actualRole = userRole || role;
+  const isStudent = actualRole === 'student';
   const Icon = isStudent ? GraduationCap : FlaskConical;
   const title = isStudent ? 'Student' : 'Teacher';
   const description = isStudent 
