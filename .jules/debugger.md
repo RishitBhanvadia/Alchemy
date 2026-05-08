@@ -1,4 +1,4 @@
-## 2023-10-27 - [Duplicate useState Declarations in esbuild]
-**Bug:** `vite build` failed during the build pipeline with esbuild throwing "The symbol 'clicking' has already been declared" and similar errors.
-**Root Cause:** There were duplicate `useState` hook declarations for `clicking` and `hovering` located back-to-back in `CursorFollower.jsx`, and an early return before the hooks causing potential hook rule violations.
-**Learning:** During `vite build`, esbuild strictly enforces variable declarations and will throw build-breaking errors (e.g., 'The symbol [name] has already been declared') if there are duplicate hooks or variables within a component's scope. Ensure components are cleanly formatted, hooks are not duplicated, and early returns follow the rules of hooks.
+## 2023-10-27 - [CI Background Server Timeout]
+**Bug:** The `build-server` job in GitHub Actions hangs and eventually times out (exceeding 6h).
+**Root Cause:** The verification script (`node -e "require('./server.js')"`) starts the Express server, which keeps the Node.js event loop alive indefinitely waiting for connections, thus causing the GitHub Actions step to hang.
+**Learning:** When running persistent background servers in CI verification scripts, always implement an explicit timeout or exit condition (e.g., `setTimeout(() => process.exit(0), 1000);`) to prevent hanging pipelines.
