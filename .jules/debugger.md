@@ -1,4 +1,4 @@
-## 2023-10-27 - [Invalid ARIA Roles in Custom Components]
-**Bug:** React `jsx-a11y/aria-role` lint errors in `SignUpForm.jsx` caused by passing a custom prop named `role` to a custom component.
-**Root Cause:** When a custom React component passes a prop named `role` down, React directly maps it to the HTML `role` attribute on rendered DOM nodes if not explicitly destructured. If the value is not a standard W3C ARIA role (e.g. "student"), it results in accessibility linting errors.
-**Learning:** Avoid using HTML-reserved attributes like `role` as custom prop names in components. Use specific names like `userRole` to prevent implicit invalid DOM attribute mapping.
+## 2023-10-27 - [Node.js Environment Mismatches in CI]
+**Bug:** CI pipelines failing on `vite build` due to `@tailwindcss/oxide` native binding errors ("Cannot find native binding").
+**Root Cause:** The GitHub Actions pipelines were hardcoded to use Node.js 18. Modern Vite plugins and tools (like `@tailwindcss/oxide`) have started requiring newer Node.js versions (20+) and their native C++ bindings fail to compile or link correctly under Node.js 18.
+**Learning:** Ensure CI environments align with memory prerequisites (Node.js 20 or higher) for projects utilizing modern Vite and Tailwind dependencies. Always bump `actions/setup-node` `node-version` keys simultaneously across all CI workflow files.
