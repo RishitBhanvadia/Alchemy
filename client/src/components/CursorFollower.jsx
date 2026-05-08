@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
-    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
