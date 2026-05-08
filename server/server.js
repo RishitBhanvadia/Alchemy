@@ -97,7 +97,7 @@ const corsOptions = {
         if (!origin) return callback(null, true);
         
         // allow local config + dynamic vercel preview URLs
-        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+        if (allowedOrigins.indexOf(origin) !== -1) {
             return callback(null, true);
         }
         

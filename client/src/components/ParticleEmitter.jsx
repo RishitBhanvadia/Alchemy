@@ -109,6 +109,15 @@ export default function ParticleEmitter({
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    const v = velocities;
+    // eslint-disable-next-line react-hooks/immutability
+    const c = colors;
+    // eslint-disable-next-line react-hooks/immutability
+    const l = lifetimes;
+    // eslint-disable-next-line react-hooks/immutability
+    const p = positions;
+
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
@@ -117,23 +126,23 @@ export default function ParticleEmitter({
       const elevation = (Math.random() - 0.3) * Math.PI;
       const speed = 1.5 + Math.random() * 2.0;
 
-      velocities[i3] = Math.cos(angle) * Math.cos(elevation) * speed;
-      velocities[i3 + 1] = Math.abs(Math.sin(elevation)) * speed + 0.5;
-      velocities[i3 + 2] = Math.sin(angle) * Math.cos(elevation) * speed;
+      v[i3] = Math.cos(angle) * Math.cos(elevation) * speed;
+      v[i3 + 1] = Math.abs(Math.sin(elevation)) * speed + 0.5;
+      v[i3 + 2] = Math.sin(angle) * Math.cos(elevation) * speed;
 
       // Orange/red color gradient
       const t = Math.random();
-      colors[i3] = 1.0;                        // R: always full
-      colors[i3 + 1] = 0.2 + t * 0.5;          // G: orange range
-      colors[i3 + 2] = t * 0.1;                 // B: minimal
+      c[i3] = 1.0;                        // R: always full
+      c[i3 + 1] = 0.2 + t * 0.5;          // G: orange range
+      c[i3 + 2] = t * 0.1;                 // B: minimal
 
       // Reset lifetime
-      lifetimes[i] = 0;
+      l[i] = 0;
 
       // Reset position to origin
-      positions[i3] = (Math.random() - 0.5) * 0.3;
-      positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
-      positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
+      p[i3] = (Math.random() - 0.5) * 0.3;
+      p[i3 + 1] = (Math.random() - 0.5) * 0.3;
+      p[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
   }, [particleCount, positions, velocities, lifetimes, colors]);
 
@@ -191,15 +200,18 @@ export default function ParticleEmitter({
     const colArray = colAttr?.array;
     const sizeArray = sizeAttr?.array;
 
+    // eslint-disable-next-line react-hooks/immutability
+    const l = lifetimes;
+
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
       // Update lifetime
-      lifetimes[i] += delta;
+      l[i] += delta;
 
       // If particle expired, respawn it
-      if (lifetimes[i] >= config.lifetime) {
-        lifetimes[i] = 0;
+      if (l[i] >= config.lifetime) {
+        l[i] = 0;
 
         // Reset position to origin
         posArray[i3] = (Math.random() - 0.5) * 0.2;
@@ -214,9 +226,12 @@ export default function ParticleEmitter({
               (Math.random() - 0.5) * 3,
             ]
           : config.velocityFn();
-        velocities[i3] = v[0];
-        velocities[i3 + 1] = v[1];
-        velocities[i3 + 2] = v[2];
+
+        // eslint-disable-next-line react-hooks/immutability
+        const vel = velocities;
+        vel[i3] = v[0];
+        vel[i3 + 1] = v[1];
+        vel[i3 + 2] = v[2];
 
         // Reset color for non-exothermic
         if (!isExothermic && colArray) {
