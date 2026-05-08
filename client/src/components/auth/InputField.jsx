@@ -2,6 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onChange, onBlur, error, name, disabled }) => {
+  const errorId = `${name}-error`;
+
   return (
     <div className="space-y-2">
       <label htmlFor={name} className="block text-[11px] font-medium text-lab-muted tracking-[0.1em] uppercase ml-1">
@@ -18,6 +20,8 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
           name={name}
           id={name}
           disabled={disabled}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
           className={`w-full bg-lab-input border rounded-xl py-3.5 pl-11 pr-4 text-white text-sm placeholder-lab-placeholder outline-none transition-all duration-200 ${
             error 
             ? 'border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.15)]' 
@@ -32,6 +36,8 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
       <AnimatePresence>
         {error && (
           <motion.p
+            id={errorId}
+            role="alert"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
