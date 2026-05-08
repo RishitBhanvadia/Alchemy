@@ -72,3 +72,4 @@ jobs:
       if: always()
       with:
         files: ./client/coverage/*.xml
+        token: ${{ secrets.CODECOV_TOKEN }}
