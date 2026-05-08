@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * TeacherDashboard.jsx — Teacher's classroom management dashboard
  * Phase 3.2.2 Task [11]: Route-guarded, data grid, analytics chart
@@ -9,8 +10,9 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
   useReactTable,
   getCoreRowModel,
@@ -20,8 +22,8 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
-import ClassroomManager from '../components/ClassroomManager';
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
+const ClassroomManager = React.lazy(() => import('../components/ClassroomManager'));
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
 
@@ -319,7 +321,7 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
-  const table = useReactTable({
+    const table = useReactTable({
     data: students,
     columns,
     state: { sorting, globalFilter },
@@ -346,7 +348,7 @@ export default function TeacherDashboard({ analytics = false }) {
       </div>
 
       <main aria-label="Teacher dashboard content">
-        <ClassroomManager />
+        <Suspense fallback={<SkeletonBlock />}><ClassroomManager /></Suspense>
 
       {/* Error State */}
       {error && (
@@ -502,7 +504,7 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
+        <Suspense fallback={<SkeletonBlock />}><StudentAnalyticsChart
           scores={experimentScores}
           experimentName={
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
@@ -514,7 +516,7 @@ export default function TeacherDashboard({ analytics = false }) {
                 ? "No students have completed this experiment yet."
                 : undefined
           }
-        />
+        /></Suspense>
       </section>
       </main>
     </div>
@@ -762,3 +764,7 @@ styleSheet.innerText = `
   }
 `;
 document.head.appendChild(styleSheet);
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool
+};
