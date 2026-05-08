@@ -41,6 +41,8 @@ export default defineConfig({
                     'vendor-three': ['three', 'three-mesh-bvh'],
                     'vendor-r3f': ['@react-three/fiber', '@react-three/drei'],
                     'vendor-animation': ['framer-motion', 'gsap'],
+                    'vendor-charts': ['recharts'],
+                    'vendor-table': ['@tanstack/react-table'],
                 },
                 assetFileNames: 'assets/[name]-[hash][extname]',
                 chunkFileNames: 'chunks/[name]-[hash].js',
