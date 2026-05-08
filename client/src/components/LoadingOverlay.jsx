@@ -46,3 +46,7 @@ const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
 };
 
 export default LoadingOverlay;
+
+LoadingOverlay.propTypes = {
+  message: PropTypes.string
+};

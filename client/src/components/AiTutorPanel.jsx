@@ -4,6 +4,8 @@ import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
 import './AiTutorPanel.css';
 
+import PropTypes from "prop-types";
+
 const AiTutorPanel = ({ isOpen, onClose }) => {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +64,6 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
-      console.error('AI Tutorial error:', error);
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
@@ -88,7 +89,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         >
           <div className="ai-tutor-header">
             <h2>Gemini Flash Tutor</h2>
-            <button className="close-button" onClick={onClose}>×</button>
+            <button className="close-button" onClick={onClose} aria-label="Close tutor">×</button>
           </div>
 
           <div className="current-context">
@@ -162,3 +163,8 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
 };
 
 export default AiTutorPanel;
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};
