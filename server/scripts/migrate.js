@@ -1,4 +1,4 @@
-const supabase = require('../supabaseClient');
+const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,7 +13,7 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
     process.exit(1);
 }
 
-// const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
 
 function classifyRegime(conc_a, conc_b) {

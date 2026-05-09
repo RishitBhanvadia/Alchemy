@@ -1,6 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-const supabase = require('../supabaseClient');
+const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -12,7 +12,7 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-// const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const ALLOWED_OUTCOMES = [
   'No Reaction', 'Neutralisation / Salt Water',
