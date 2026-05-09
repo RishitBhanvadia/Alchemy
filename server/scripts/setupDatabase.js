@@ -1,4 +1,4 @@
-const { createClient } = require('@supabase/supabase-js');
+const supabase = require('../supabaseClient');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
@@ -10,7 +10,7 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
     process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+// const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
 
 const addColumnsAndMigrate = async () => {
     try {
