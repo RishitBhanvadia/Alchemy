@@ -8,7 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -184,17 +184,12 @@ const Lab3D = () => {
         // We could also pre-fill the AI chat here if desired
     };
 
-    function onOrNot() {
-        let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
-        return sum >= 2;
+    function hasEnoughChemicals() {
+        return [chemA, chemB, chemI, chemC].filter(c => c > 0).length >= 2;
     }
 
 
-    const isPlayDisabled = !(onOrNot());
+    const isPlayDisabled = !(hasEnoughChemicals());
 
     return (
         <motion.div 
@@ -427,7 +422,7 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {!hasEnoughChemicals() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
                     </div>
                 </div>
             </div>
