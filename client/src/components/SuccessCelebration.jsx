@@ -13,7 +13,7 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
+            setTimeout(() => setParticles(newParticles), 0);
             
             const timer = setTimeout(() => {
                 onComplete?.();
@@ -21,7 +21,8 @@ const SuccessCelebration = ({ active, onComplete }) => {
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [active, onComplete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [active]);
 
     return (
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

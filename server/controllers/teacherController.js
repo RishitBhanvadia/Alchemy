@@ -35,8 +35,9 @@ exports.getAnalytics = async (req, res) => {
         }
 
         const uniqueStudents = new Set(studentIds).size;
-        const avgScore = logs.length > 0
-          ? Math.round(logs.reduce((sum, l) => sum + (l.score || 0), 0) / logs.length)
+        const validScores = logs.map(l => l.score || 0).filter(s => s >= 0);
+        const avgScore = validScores.length > 0
+          ? Math.round(validScores.reduce((sum, score) => sum + score, 0) / validScores.length)
           : 0;
 
         return {
