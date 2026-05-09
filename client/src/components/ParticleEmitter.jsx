@@ -71,7 +71,9 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
+  const arraysRef = useRef(null);
+
+  if (!arraysRef.current || arraysRef.current.particleCount !== particleCount) {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
     const life = new Float32Array(particleCount);
@@ -104,11 +106,14 @@ export default function ParticleEmitter({
       sz[i] = config.size * (0.5 + Math.random() * 0.5);
     }
 
-    return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
-  }, [particleCount, config]);
+    arraysRef.current = { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz, particleCount };
+  }
+
+  const { positions, velocities, lifetimes, colors, sizes } = arraysRef.current;
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
+    const { positions, velocities, lifetimes, colors } = arraysRef.current;
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
@@ -135,7 +140,7 @@ export default function ParticleEmitter({
       positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
       positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
-  }, [particleCount, positions, velocities, lifetimes, colors]);
+  }, [particleCount]);
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
   useEffect(() => {
@@ -178,6 +183,7 @@ export default function ParticleEmitter({
 
   // ─── useFrame: Update particle positions every frame ────────────────
   useFrame((_, delta) => {
+    const { lifetimes, velocities } = arraysRef.current;
     if (!active || !pointsRef.current) return;
 
     const geometry = pointsRef.current.geometry;
