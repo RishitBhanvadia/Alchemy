@@ -1,9 +1,7 @@
-const { createClient } = require('@supabase/supabase-js');
+const supabase = require('../supabaseClient');
 const { success, error } = require('../utils/response');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 exports.getTitrationData = async (req, res) => {
     try {
