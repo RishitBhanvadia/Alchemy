@@ -24,27 +24,11 @@ const Lab = () => {
 
 
   function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
+    if (chemA > 0) return SetTColor('#05B9C4');
+    if (chemB > 0) return SetTColor('#04CE7E');
+    if (chemC > 0) return SetTColor('#FBC2E3');
+    if (chemD > 0) return SetTColor('#DAA520');
+    SetTColor("");
   }
 
   useLayoutEffect(() => {
@@ -110,7 +94,7 @@ const Lab = () => {
     change_tip();
   };
 
-  const useHandlePlayClick = () => {
+  const handlePlayClick = () => {
     // Prevent double-clicks
     if (isLoading) return;
     
@@ -129,16 +113,11 @@ const Lab = () => {
     }, 1500);
   };
 
-  function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
+  function hasEnoughChemicals() {
+    return [chemA, chemB, chemC, chemD].filter(c => c > 0).length >= 2;
   }
 
-  const isPlayDisabled = !(onOrNot());
+  const isPlayDisabled = !(hasEnoughChemicals());
 
 
 
@@ -246,7 +225,7 @@ const Lab = () => {
           className={`action-button ${!isPlayDisabled && !isLoading ? 'active' : ''}`}
           data-testid="initiate-reaction-btn"
           disabled={isPlayDisabled || isLoading}
-          onClick={useHandlePlayClick}
+          onClick={handlePlayClick}
         >
           {!isLoading ? 'INITIATE REACTION' : 'PROCESSING...'}
         </button>
