@@ -10,6 +10,7 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase credentials in environment variables.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const WebSocket = require('ws');
+const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false }, realtime: { transport: WebSocket } });
 
 module.exports = supabase;
