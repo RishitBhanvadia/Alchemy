@@ -14,11 +14,23 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+  let na = Math.round((a / total) * 100);
+  let nb = Math.round((b / total) * 100);
+  let ni = Math.round((i / total) * 100);
+  let nc = Math.round((c / total) * 100);
+
+  // Distribute the rounding remainder to the largest non-zero component
+  // to ensure sum is exactly 100 without creating matter
+  const diff = 100 - (na + nb + ni + nc);
+  if (diff !== 0) {
+    const maxVal = Math.max(na, nb, ni, nc);
+    if (na === maxVal) na += diff;
+    else if (nb === maxVal) nb += diff;
+    else if (ni === maxVal) ni += diff;
+    else nc += diff;
+  }
+
+  return [na, nb, ni, nc];
 }
 
 function classifyRegime(a, b) {
@@ -124,3 +136,8 @@ exports.calculateResult = async (req, res) => {
     return res.status(500).json({ error: 'Server error during calculation.' });
   }
 };
+
+// Export internally for unit testing
+if (process.env.NODE_ENV === 'test') {
+  exports._normalise = normalise;
+}
