@@ -136,3 +136,8 @@ exports.calculateResult = async (req, res) => {
     return res.status(500).json({ error: 'Server error during calculation.' });
   }
 };
+
+// Export internally for unit testing
+if (process.env.NODE_ENV === 'test') {
+  exports._normalise = normalise;
+}
