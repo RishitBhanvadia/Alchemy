@@ -143,7 +143,7 @@ Actual: The build fails with esbuild complaining that the symbols have already b
 WHAT TO FIX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Step 1: In `client/src/components/CursorFollower.jsx`, remove the duplicate declarations of `clicking` and `hovering`. They are declared before the `isTouchDevice` return and again after. Keep only the ones *before* the return, or remove the first pair and keep the second pair (but react hooks rules generally prefer them at the top). Actually, since there's an early return, the declarations should be *before* the return to avoid "React Hook is called conditionally" if `isTouchDevice` varies, but since it's just checking `window.matchMedia`, it's technically constant. However, the best fix is to remove the duplicate `const [clicking, setClicking] = useState(false); const [hovering, setHovering] = useState(false);` on lines 12-13.
+Step 1: In `client/src/components/CursorFollower.jsx`, remove the duplicate declarations of `clicking` and `hovering` on lines 12-13.
 Step 2: Run `cd client && pnpm build` to verify the build now works.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -383,12 +383,7 @@ Actual: `react-hooks/immutability` errors are thrown.
 WHAT TO FIX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Step 1: In `client/src/hooks/useLabPhysics.js`, instead of mutating `gl.domElement.style.cursor`, you should use a React state variable (e.g., `cursor`) or set it on a different element securely, or utilize an effect. However, memory states:
-> When resolving ESLint react-hooks/immutability errors for gl.domElement.style.cursor in React Three Fiber (useThree), do not replace it with document.body.style.cursor. This constitutes a risky global state modification that breaks cursor behavior if the underlying default cursor doesn't match. Restrict cursor modifications to the local canvas element scope.
-
-Therefore, since `gl` is considered immutable by the linter, the best way to handle this without triggering the linter is to assign `gl.domElement` to a local variable first, or use `// eslint-disable-next-line react-hooks/immutability` specifically for the cursor style changes if it is the intended pattern for three.js dom elements. Alternatively, extract `gl.domElement` outside the callback, or since it's a DOM element, maybe the linter is just overly strict on `gl`. Wait, the standard way in R3F to change cursor is using `useCursor` from `@react-three/drei`. Check if `@react-three/drei` is installed. It is. But if you want to avoid a big refactor, you can disable the rule for these specific lines. Wait, changing it to `document.getElementById('canvas-id').style.cursor` is also possible but requires an ID. A better approach is `const canvas = gl.domElement; canvas.style.cursor = ...`.
-
-Actually, `react-hooks/immutability` is an error. We should add `// eslint-disable-next-line react-hooks/immutability` above `gl.domElement.style.cursor` lines.
+Step 1: In `client/src/hooks/useLabPhysics.js`, add `// eslint-disable-next-line react-hooks/immutability` above `gl.domElement.style.cursor` lines.
 
 Step 2: Run `cd client && pnpm lint` to verify.
 
