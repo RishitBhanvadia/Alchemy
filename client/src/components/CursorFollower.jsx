@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [hidden, setHidden] = useState(false);
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
+    // Optimization: Use useRef instead of useState to prevent triggering React
+    // re-renders 60+ times per second on mousemove events.
+    const followerRef = useRef(null);
+    const dotRef = useRef(null);
 
     useEffect(() => {
+        if (isTouchDevice) return;
+
+        const follower = followerRef.current;
+        const dot = dotRef.current;
+
+        if (!follower || !dot) return;
+
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -30,7 +33,10 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            follower.style.left = `${e.clientX}px`;
+            follower.style.top = `${e.clientY}px`;
+            dot.style.left = `${e.clientX}px`;
+            dot.style.top = `${e.clientY}px`;
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -41,42 +47,43 @@ const CursorFollower = () => {
                 target.closest('a') ||
                 target.classList.contains('clickable');
 
-            setHovering(!!isClickable);
+            if (isClickable) {
+                follower.classList.add('hovering');
+                dot.classList.add('hovering');
+            } else {
+                follower.classList.remove('hovering');
+                dot.classList.remove('hovering');
+            }
         };
 
         const onMouseEnter = () => {
-            setHidden(false);
+            follower.classList.remove('hidden');
+            dot.classList.remove('hidden');
         };
 
         const onMouseLeave = () => {
-            setHidden(true);
+            follower.classList.add('hidden');
+            dot.classList.add('hidden');
         };
 
         const onMouseDown = () => {
-            setClicking(true);
+            follower.classList.add('clicking');
         };
 
         const onMouseUp = () => {
-            setClicking(false);
+            follower.classList.remove('clicking');
         };
 
         addEventListeners();
         return () => removeEventListeners();
     }, []);
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+    if (isTouchDevice) return null;
 
     return (
         <>
-            <div
-                className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-            <div
-                className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
+            <div ref={followerRef} className="cursor-follower" />
+            <div ref={dotRef} className="cursor-dot" />
         </>
     );
 };
