@@ -1,0 +1,4 @@
+## 2025-02-27 - Replace useState with useRef for High-Frequency Events
+**Bottleneck:** The custom cursor component `CursorFollower.jsx` was using `useState` to track the cursor's `position`, `hidden`, `clicking`, and `hovering` states inside a `mousemove` event listener. This caused a full component re-render on every single pixel movement, severely degrading runtime performance.
+**Impact:** Eliminated hundreds of unnecessary React re-renders per second during mouse movement.
+**Learning:** For high-frequency DOM events (like `mousemove` for custom cursors), use `useRef` to maintain references to DOM nodes and manipulate their inline styles and class lists directly (`ref.current.style.left`, `ref.current.classList.add`) instead of relying on React state, to bypass the React rendering cycle entirely.
