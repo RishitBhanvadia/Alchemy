@@ -79,7 +79,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose}>
+    <div style={styles.overlay} onClick={handleClose} aria-hidden="true">
       <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
         {meetingData ? (
           /* ── Success: show code card ── */
