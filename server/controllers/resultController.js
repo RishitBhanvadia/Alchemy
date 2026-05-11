@@ -14,11 +14,30 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  const percentages = [
+    { key: 'a', val: (a / total) * 100 },
+    { key: 'b', val: (b / total) * 100 },
+    { key: 'i', val: (i / total) * 100 },
+    { key: 'c', val: (c / total) * 100 }
+  ];
+
+  percentages.forEach(p => p.round = Math.round(p.val));
+
+  const sum = percentages.reduce((acc, curr) => acc + curr.round, 0);
+  const remainder = 100 - sum;
+
+  if (remainder !== 0) {
+      let maxObj = percentages.reduce((max, obj) => obj.val > max.val ? obj : max, percentages[0]);
+      maxObj.round += remainder;
+  }
+
+  return [
+    percentages.find(x => x.key === 'a').round,
+    percentages.find(x => x.key === 'b').round,
+    percentages.find(x => x.key === 'i').round,
+    percentages.find(x => x.key === 'c').round
+  ];
 }
 
 function classifyRegime(a, b) {
