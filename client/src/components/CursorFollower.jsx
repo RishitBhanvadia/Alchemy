@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
@@ -9,7 +9,7 @@ const CursorFollower = () => {
     const dotRef = useRef(null);
 
     // We only need to store if it's touch device to return null at the end, but useEffect must be unconditionally called
-    const [touch, setTouch] = useState(isTouchDevice);
+    const touch = isTouchDevice;
 
     useEffect(() => {
         if (touch) return;
@@ -76,7 +76,7 @@ const CursorFollower = () => {
 
         addEventListeners();
         return () => removeEventListeners();
-    }, [touch]);
+    }, []);
 
     if (touch) return null;
 
