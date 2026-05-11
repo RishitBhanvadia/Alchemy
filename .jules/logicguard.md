@@ -1,0 +1,4 @@
+## 2024-05-11 - Hallucinated values during percentage normalization
+**Bug:** The chemical mixing logic would incorrectly attribute a non-zero concentration (e.g., 1%) to a chemical that was originally 0% (e.g. catalyst) when other active chemicals summed to an amount resulting in a fractional remainder (like 33.3%, 33.3%, 33.3%, 0%).
+**Root Cause:** The logic normalized concentrations by using `Math.round()` on the first three chemicals and simply subtracting their sum from 100 for the fourth. If the first three rounded down, the remaining percentage was blindly dumped into the fourth chemical, regardless of its original value.
+**Learning:** When normalizing an array of percentages to sum exactly to 100, calculate each rounded percentage independently using `Math.round()` and distribute the remainder (`100 - sum`) to the largest value. This minimizes relative error and prevents 'hallucinating' non-zero values for elements that originally had a zero value.

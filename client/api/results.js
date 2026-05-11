@@ -84,10 +84,27 @@ export default async function handler(req, res) {
     const total = chem_a + chem_b + chem_i + chem_c;
     if (total === 0) return res.status(400).json({ error: 'All chemicals are at 0%.' });
 
-    chem_a = Math.round((chem_a / total) * 100);
-    chem_b = Math.round((chem_b / total) * 100);
-    chem_i = Math.round((chem_i / total) * 100);
-    chem_c = 100 - chem_a - chem_b - chem_i;
+    const percentages = [
+      { key: 'a', val: (chem_a / total) * 100 },
+      { key: 'b', val: (chem_b / total) * 100 },
+      { key: 'i', val: (chem_i / total) * 100 },
+      { key: 'c', val: (chem_c / total) * 100 }
+    ];
+
+    percentages.forEach(p => p.round = Math.round(p.val));
+
+    const sum = percentages.reduce((acc, curr) => acc + curr.round, 0);
+    const remainder = 100 - sum;
+
+    if (remainder !== 0) {
+        let maxObj = percentages.reduce((max, obj) => obj.val > max.val ? obj : max, percentages[0]);
+        maxObj.round += remainder;
+    }
+
+    chem_a = percentages.find(x => x.key === 'a').round;
+    chem_b = percentages.find(x => x.key === 'b').round;
+    chem_i = percentages.find(x => x.key === 'i').round;
+    chem_c = percentages.find(x => x.key === 'c').round;
 
     const reaction_id = computeReactionId(chem_a, chem_b, chem_i, chem_c);
     if (reaction_id === 0) return res.status(400).json({ error: 'No active chemicals detected above threshold.' });
