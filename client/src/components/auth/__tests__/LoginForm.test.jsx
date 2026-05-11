@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import LoginForm from '../LoginForm';
 import { supabase } from '../../../supabaseClient';
 import toast from 'react-hot-toast';
@@ -26,14 +27,38 @@ vi.mock('framer-motion', async () => {
   const React = require('react');
   const actual = await vi.importActual('framer-motion');
 
+  const MockButton = React.forwardRef((props, ref) => {
+    // eslint-disable-next-line no-unused-vars, react/prop-types
+    const { whileHover, whileTap, ...rest } = props;
+    return <button ref={ref} {...rest} />;
+  });
+  MockButton.displayName = 'MotionButton';
+
+  const MockDiv = React.forwardRef((props, ref) => {
+    // eslint-disable-next-line no-unused-vars, react/prop-types
+    const { animate, transition, initial, exit, ...rest } = props;
+    return <div ref={ref} {...rest} />;
+  });
+  MockDiv.displayName = 'MotionDiv';
+
+  const MockP = React.forwardRef((props, ref) => {
+    // eslint-disable-next-line no-unused-vars, react/prop-types
+    const { animate, transition, initial, exit, ...rest } = props;
+    return <p ref={ref} {...rest} />;
+  });
+  MockP.displayName = 'MotionP';
+
+  // eslint-disable-next-line react/prop-types
+  const MockAnimatePresence = ({ children }) => <>{children}</>;
+
   return {
     ...actual,
     motion: {
-      button: React.forwardRef(({ whileHover, whileTap, ...props }, ref) => <button ref={ref} {...props} />),
-      div: React.forwardRef(({ animate, transition, initial, exit, ...props }, ref) => <div ref={ref} {...props} />),
-      p: React.forwardRef(({ animate, transition, initial, exit, ...props }, ref) => <p ref={ref} {...props} />),
+      button: MockButton,
+      div: MockDiv,
+      p: MockP,
     },
-    AnimatePresence: ({ children }) => <>{children}</>,
+    AnimatePresence: MockAnimatePresence,
   };
 });
 
@@ -56,13 +81,12 @@ describe('LoginForm Component', () => {
   it('validates email format', async () => {
     render(<LoginForm />);
 
-    // To hit email format error we need to bypass empty string logic for email.
+    const user = userEvent.setup();
     const emailInput = screen.getAllByRole('textbox')[0];
     const passwordInput = screen.getByPlaceholderText('••••••••');
 
-    // Simulate user typing a completely wrong email format
-    fireEvent.change(emailInput, { target: { name: 'email', value: 'invalid-email-format' } });
-    fireEvent.change(passwordInput, { target: { name: 'password', value: 'password123' } });
+    await user.type(emailInput, 'invalidemail');
+    await user.type(passwordInput, 'password123');
 
     // Click submit using userEvent to ensure full synthetic cycle
     fireEvent.submit(screen.getByRole('button', { name: /access lab/i }).closest('form'));
@@ -78,11 +102,12 @@ describe('LoginForm Component', () => {
 
     render(<LoginForm />);
 
+    const user = userEvent.setup();
     const emailInput = screen.getAllByRole('textbox')[0];
     const passwordInput = screen.getByPlaceholderText('••••••••');
 
-    fireEvent.change(emailInput, { target: { name: 'email', value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { name: 'password', value: 'password123' } });
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
 
     fireEvent.submit(screen.getByRole('button', { name: /access lab/i }).closest('form'));
 
@@ -103,11 +128,12 @@ describe('LoginForm Component', () => {
 
     render(<LoginForm />);
 
+    const user = userEvent.setup();
     const emailInput = screen.getAllByRole('textbox')[0];
     const passwordInput = screen.getByPlaceholderText('••••••••');
 
-    fireEvent.change(emailInput, { target: { name: 'email', value: 'wrong@example.com' } });
-    fireEvent.change(passwordInput, { target: { name: 'password', value: 'wrongpass' } });
+    await user.type(emailInput, 'wrong@example.com');
+    await user.type(passwordInput, 'wrongpass');
 
     fireEvent.submit(screen.getByRole('button', { name: /access lab/i }).closest('form'));
 
@@ -124,11 +150,12 @@ describe('LoginForm Component', () => {
 
     render(<LoginForm />);
 
+    const user = userEvent.setup();
     const emailInput = screen.getAllByRole('textbox')[0];
     const passwordInput = screen.getByPlaceholderText('••••••••');
 
-    fireEvent.change(emailInput, { target: { name: 'email', value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { name: 'password', value: 'password123' } });
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
 
     fireEvent.submit(screen.getByRole('button', { name: /access lab/i }).closest('form'));
 

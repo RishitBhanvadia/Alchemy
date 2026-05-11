@@ -62,7 +62,7 @@ const SignUpForm = ({ onTabSwitch }) => {
       if (authError) throw authError;
 
       toast.success('Registration successful! Verify your email to begin.');
-      onTabSwitch('login');
+      if (onTabSwitch) onTabSwitch('login');
     } catch (err) {
       toast.error(err.message || 'Initialization failed.');
     } finally {
@@ -124,14 +124,15 @@ const SignUpForm = ({ onTabSwitch }) => {
         <h3 className="text-center text-[11px] font-medium text-lab-muted tracking-[0.15em] uppercase">
           Select Your Lab Role
         </h3>
-        <div className="flex gap-3">
+        {/* eslint-disable-next-line jsx-a11y/aria-role */}
+        <div className="flex gap-3" role="group">
           <RoleCard 
-            role="student" 
+            userRole="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
+            userRole="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />
