@@ -63,18 +63,18 @@ const CursorFollower = () => {
 
     if (isTouchDevice) return null;
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+    const cursorClasses = ["cursor-follower", hidden ? "hidden" : "", clicking ? "clicking" : "", hovering ? "hovering" : ""].filter(Boolean).join(" ");
+    const dotClasses = ["cursor-dot", hidden ? "hidden" : "", hovering ? "hovering" : ""].filter(Boolean).join(" ");
 
     return (
         <>
             <div
                 className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ left: position.x + "px", top: position.y + "px" }}
             />
             <div
                 className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                style={{ left: position.x + "px", top: position.y + "px" }}
             />
         </>
     );
