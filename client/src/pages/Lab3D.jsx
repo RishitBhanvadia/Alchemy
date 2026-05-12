@@ -184,17 +184,13 @@ const Lab3D = () => {
         // We could also pre-fill the AI chat here if desired
     };
 
-    function onOrNot() {
-        let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
-        return sum >= 2;
+    function canInitiateReaction() {
+        const activeChemicalsCount = [chemA, chemB, chemI, chemC].filter(chem => chem > 0).length;
+        return activeChemicalsCount >= 2;
     }
 
 
-    const isPlayDisabled = !(onOrNot());
+    const isPlayDisabled = !(canInitiateReaction());
 
     return (
         <motion.div 
@@ -427,7 +423,7 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {!canInitiateReaction() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
                     </div>
                 </div>
             </div>
