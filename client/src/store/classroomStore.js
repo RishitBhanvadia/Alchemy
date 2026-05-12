@@ -96,7 +96,10 @@ const useClassroomStore = create((set, get) => ({
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'Not authenticated' };
 
-    const classCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Security Fix: CSPRNG for classroom join codes
+    const classCode = Array.from(window.crypto.getRandomValues(new Uint8Array(6)))
+      .map(x => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[x % 36])
+      .join('');
 
     const { data, error } = await supabase
       .from('classrooms')

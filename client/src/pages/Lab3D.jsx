@@ -8,7 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -122,6 +122,7 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Failed to fetch AI hint:", error);
             }
         }, 800);
@@ -156,6 +157,7 @@ const Lab3D = () => {
                 setIsLoading(false);
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Reaction failed:", error);
             setIsLoading(false);
             toast.dismiss();
@@ -277,9 +279,11 @@ const Lab3D = () => {
                                 const canvas = gl.domElement;
                                 canvas.addEventListener('webglcontextlost', (e) => {
                                     e.preventDefault();
+                                    // eslint-disable-next-line no-console
                                     console.warn('[Lab3D] WebGL context lost — attempting recovery');
                                 }, false);
                                 canvas.addEventListener('webglcontextrestored', () => {
+                                    // eslint-disable-next-line no-console
                                     console.warn('[Lab3D] WebGL context restored');
                                 }, false);
                             }}
