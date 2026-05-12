@@ -1,0 +1,4 @@
+## 2026-05-12 - Integrated Quizzes and Real-Case Scenarios
+**Market Insight:** Competitors like PraxiLabs and Labster heavily integrate quizzes to test student knowledge directly within the virtual lab experience, and they structure experiments around solving "real-case problems" (like an acidic lake contamination).
+**Codebase Match:** Alchemistry currently has assignments and a post-reaction `ResultModal.jsx`, but lacks integrated quizzes to verify the student's understanding of the reaction that just occurred.
+**Opportunity:** We can build an interactive quiz component into the `ResultModal.jsx` to assess knowledge immediately after a reaction is completed, turning a sandbox experience into an evaluated educational module.
