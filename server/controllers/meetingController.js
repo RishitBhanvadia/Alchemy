@@ -21,6 +21,7 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 function generateCode() {
   let code = '';
   for (let i = 0; i < 6; i++) {
+    // Security Fix: CSPRNG for meeting IDs
     code += CHARS.charAt(crypto.randomInt(0, CHARS.length));
   }
   return code;

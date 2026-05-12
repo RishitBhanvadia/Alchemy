@@ -13,10 +13,12 @@ const CanvasContainer = ({ children, style, ...props }) => {
 
         const onContextLost = (e) => {
             e.preventDefault();
+            // eslint-disable-next-line no-console
             console.warn('[CanvasContainer] WebGL context lost — will attempt restore');
         };
 
         const onContextRestored = () => {
+            // eslint-disable-next-line no-console
             console.warn('[CanvasContainer] WebGL context restored');
         };
 

@@ -6,6 +6,7 @@ function generateClassCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = '';
   for (let i = 0; i < 5; i++) {
+    // Security Fix: CSPRNG for classroom join codes
     code += chars.charAt(crypto.randomInt(0, chars.length));
   }
   return code;
