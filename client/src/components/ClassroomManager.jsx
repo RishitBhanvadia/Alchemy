@@ -162,7 +162,6 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
-                                        aria-label="Copy join code"
                                     >
                                         📋
                                     </button>
@@ -194,7 +193,6 @@ const ClassroomManager = () => {
                                         <button 
                                             key={chem}
                                             onClick={() => toggleChemicalLock(cls.id, chem, cls.locked_chemicals || [])}
-                                            aria-label={(cls.locked_chemicals || []).includes(chem) ? `Unlock ${chem}` : `Lock ${chem}`}
                                             style={{
                                                 ...styles.chemBtn,
                                                 background: (cls.locked_chemicals || []).includes(chem) 
