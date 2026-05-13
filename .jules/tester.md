@@ -1,0 +1,4 @@
+## 2025-05-13 - Testing Zustand Stores with Supabase Auth
+**Gap:** The primary `authStore.js` (Zustand state for user authentication) was completely untested, possessing less than 4% statement coverage. This included untested behavior around login initialization, logout handling, state clearing upon external events, and profile data generation (via dynamic Supabase inserts).
+**Learning:** The testing gap allowed for potential regression in core authentication handling and store resets. Testing it exposed complex interactions with dynamically imported sibling stores upon logout to prevent circular dependencies.
+**Pattern:** Mock the `supabase` client heavily, specifically simulating async operations and callbacks like `onAuthStateChange`. By saving the event listener callback argument manually in a test file, we can then artificially trigger `SIGNED_IN` and `SIGNED_OUT` auth events and verify the Zustand store side-effects react properly to global state changes.
