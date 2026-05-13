@@ -14,11 +14,31 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  const values = [
+    { key: 'a', val: a, pct: Math.round((a / total) * 100) },
+    { key: 'b', val: b, pct: Math.round((b / total) * 100) },
+    { key: 'i', val: i, pct: Math.round((i / total) * 100) },
+    { key: 'c', val: c, pct: Math.round((c / total) * 100) }
+  ];
+
+  let sum = values.reduce((acc, curr) => acc + curr.pct, 0);
+  let remainder = 100 - sum;
+
+  if (remainder !== 0) {
+    values.sort((x, y) => y.val - x.val);
+    values[0].pct += remainder;
+  }
+
+  // Restore original order
+  const result = {
+    a: values.find(v => v.key === 'a').pct,
+    b: values.find(v => v.key === 'b').pct,
+    i: values.find(v => v.key === 'i').pct,
+    c: values.find(v => v.key === 'c').pct
+  };
+
+  return [result.a, result.b, result.i, result.c];
 }
 
 function classifyRegime(a, b) {
