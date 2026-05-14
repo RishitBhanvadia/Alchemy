@@ -26,3 +26,9 @@
 **Root Cause:**
 1. Code structure incorrectly assumed hooks could follow functional state exits within `CursorFollower.jsx` without consequence. React enforces uniform hook declaration ordering globally per render tree.
 **Learning:** All `useEffect`, `useState`, `useCallback` block mappings inside functional components MUST occur prior to conditional returning components mapping.
+
+## 2026-05-14 - Fix GitHub CI Server Test Hang
+**Bug:** The GitHub Actions `build-server` action hung for exactly 6 hours, triggering a failure timeout.
+**Root Cause:**
+1. The CI pipeline used `node -e "try { require('./server.js') } ..."` to verify Express server syntax, but didn't cleanly exit. The `app.listen()` inside `server.js` keeps the Node.js event loop alive indefinitely.
+**Learning:** Any CLI scripts invoking express initialization servers without automated exit configurations MUST invoke programmatic aborts (e.g. `setTimeout(() => process.exit(0), 1000);`) prior to importing files, preserving build limits from locking indefinitely.
