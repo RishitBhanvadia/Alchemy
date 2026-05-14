@@ -13,3 +13,16 @@
 1. Default github action templates used old syntax targeting Node 18, preventing modern Next.js/Tailwind configs from parsing correctly.
 2. Abstract ARIA rules were violated because a prop simply named `role` was misconstrued by ESLint rules as an HTML property on components instead of a property mapped inside logic.
 **Learning:** For repositories leveraging Tailwindv4 or modern frontend tools, Node configurations in GitHub Actions MUST be explicitly declared as 20 or higher. Also, when creating custom components expecting a generic "role", explicitly prefix the prop name (e.g. `userRole`) to prevent collision with React `jsx-a11y` DOM parsers.
+
+
+## 2026-05-14 - Fix Conditional React Hook Render Failure
+**Bug:** A React Hooks invariant was violated because `useState` / `useEffect` blocks were being initialized downstream of a conditional `return` logic exit (`if (isTouchDevice) return null;`).
+**Root Cause:**
+1. Code structure incorrectly assumed hooks could follow functional state exits within `CursorFollower.jsx` without consequence. React enforces uniform hook declaration ordering globally per render tree.
+**Learning:** All `useEffect`, `useState`, `useCallback` block mappings inside functional components MUST occur prior to conditional returning components mapping.
+
+## 2026-05-14 - Fix Conditional React Hook Render Failure
+**Bug:** A React Hooks invariant was violated because `useState` / `useEffect` blocks were being initialized downstream of a conditional `return` logic exit (`if (isTouchDevice) return null;`).
+**Root Cause:**
+1. Code structure incorrectly assumed hooks could follow functional state exits within `CursorFollower.jsx` without consequence. React enforces uniform hook declaration ordering globally per render tree.
+**Learning:** All `useEffect`, `useState`, `useCallback` block mappings inside functional components MUST occur prior to conditional returning components mapping.
