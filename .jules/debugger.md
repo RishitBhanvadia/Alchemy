@@ -4,3 +4,12 @@
 1. A `@import "tailwindcss";` rule preceded standard `@import url()` fonts config in `index.css`, violating standard CSS import order requirements.
 2. A component `CursorFollower.jsx` was breaking Rules of Hooks by creating `useState` blocks directly under an early conditional exit line (`if (isTouchDevice) return null;`) while also duplicating existing variables defined a few lines higher.
 **Learning:** Always check both variable bindings matching file scopes (linting would highlight variables redeclared within block) and make sure css `url()` imports precede library expansions in v4 Tailwind.
+
+## 2026-05-14 - Fix GitHub CI Checking Pipeline Failures
+**Bug:** The GitHub Actions CI pipeline failed primarily because:
+1. Build workflows were using Node 18, causing npm to download packages incompatible with the required version bounds (specifically Tailwind `oxide` needing `>=20`), raising an `EBADENGINE` crash during build.
+2. The testing logs indicated unused imports and unapproved `aria-role` assignments failing strictly-configured ESLint rules.
+**Root Cause:**
+1. Default github action templates used old syntax targeting Node 18, preventing modern Next.js/Tailwind configs from parsing correctly.
+2. Abstract ARIA rules were violated because a prop simply named `role` was misconstrued by ESLint rules as an HTML property on components instead of a property mapped inside logic.
+**Learning:** For repositories leveraging Tailwindv4 or modern frontend tools, Node configurations in GitHub Actions MUST be explicitly declared as 20 or higher. Also, when creating custom components expecting a generic "role", explicitly prefix the prop name (e.g. `userRole`) to prevent collision with React `jsx-a11y` DOM parsers.
