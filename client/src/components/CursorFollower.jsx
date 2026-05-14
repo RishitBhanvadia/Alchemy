@@ -6,8 +6,6 @@ const CursorFollower = () => {
     const cursorRef = useRef(null);
     const dotRef = useRef(null);
 
-    if (isTouchDevice) return null;
-
     useEffect(() => {
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
@@ -72,6 +70,8 @@ const CursorFollower = () => {
         addEventListeners();
         return () => removeEventListeners();
     }, []);
+
+    if (isTouchDevice) return null;
 
     return (
         <>
