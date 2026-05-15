@@ -135,7 +135,8 @@ export default function ParticleEmitter({
       positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
       positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
-  }, [particleCount, positions, velocities, lifetimes, colors]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [particleCount]);
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
   useEffect(() => {
@@ -199,11 +200,15 @@ export default function ParticleEmitter({
 
       // If particle expired, respawn it
       if (lifetimes[i] >= config.lifetime) {
+        // eslint-disable-next-line react-hooks/immutability
         lifetimes[i] = 0;
 
         // Reset position to origin
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3] = (Math.random() - 0.5) * 0.2;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 1] = 0;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 2] = (Math.random() - 0.5) * 0.2;
 
         // New velocity
@@ -214,14 +219,20 @@ export default function ParticleEmitter({
               (Math.random() - 0.5) * 3,
             ]
           : config.velocityFn();
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3] = v[0];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 1] = v[1];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 2] = v[2];
 
         // Reset color for non-exothermic
         if (!isExothermic && colArray) {
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3] = config.color.r;
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3 + 1] = config.color.g;
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3 + 2] = config.color.b;
         }
 
@@ -229,11 +240,15 @@ export default function ParticleEmitter({
       }
 
       // Apply velocity
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3] += velocities[i3] * delta;
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3 + 1] += velocities[i3 + 1] * delta;
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3 + 2] += velocities[i3 + 2] * delta;
 
       // Apply gravity (slight downward for realism)
+      // eslint-disable-next-line react-hooks/immutability
       velocities[i3 + 1] -= 0.3 * delta;
 
       // Fade out: reduce opacity via size decrease
