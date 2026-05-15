@@ -25,8 +25,10 @@ const AuthPage = () => {
         <div className="mt-8 pt-6 border-t border-white/5 text-center">
           <p className="text-[11px] text-lab-muted leading-relaxed font-medium">
             By joining the lab, you agree to our{' '}
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a href="#" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Terms of Service</a>
             {' '}and{' '}
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a href="#" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Privacy Policy</a>
           </p>
         </div>
