@@ -27,8 +27,6 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            // OPTIMIZATION: directly update DOM styles using refs instead of triggering
-            // a full React component re-render on every high-frequency mouse movement
             if (cursorRef.current) {
                 cursorRef.current.style.left = `${e.clientX}px`;
                 cursorRef.current.style.top = `${e.clientY}px`;
