@@ -1,3 +1,3 @@
-## 2025-02-14 - Direct DOM Mutation for High-Frequency React Events
-**Learning:** In React components tracking high-frequency events (like `mousemove` for custom cursors), relying on `useState` setters triggers full component re-renders on every pixel move, leading to severe performance degradation.
-**Action:** Use `useRef` to maintain references to DOM nodes and directly manipulate their styles (e.g., `element.style.left`) instead of triggering React state updates.
+## 2024-03-22 - Direct DOM Mutation for High-Frequency Events
+**Learning:** In React, updating state (`useState`) on high-frequency events like `mousemove` triggers a full component render cycle for every pixel moved. For a custom cursor component (`CursorFollower`), this creates massive CPU overhead and jank since the component only needs to visually move.
+**Action:** Use `useRef` to hold a reference to the DOM node and directly mutate its styles (`ref.current.style.left = ...`) instead of using state to bypass the React render cycle entirely. Also ensure hook rules aren't broken by early returns before applying this refactor.
