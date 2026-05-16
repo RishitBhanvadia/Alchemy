@@ -1,0 +1,4 @@
+## 2024-05-16 - CursorFollower Performance Optimization
+**Bottleneck:** The custom `CursorFollower` component was using `useState` to track the x/y coordinates of the mouse on every single `mousemove` event, which fires extremely frequently. This was triggering constant, unnecessary re-renders of the component and potentially its descendants.
+**Impact:** Significantly reduced main thread work and rendering thrash. By eliminating constant React re-renders, the UI responds to user input and plays animations much more smoothly, leading to better perceived performance.
+**Learning:** For high-frequency DOM events like `mousemove` that only need to update simple visual properties (like the position of a custom cursor), it is much more performant to use `useRef` to get a direct reference to the DOM node and directly mutate its `.style` properties (e.g., `element.style.left = ...`) instead of relying on React state and the reconciliation cycle.
