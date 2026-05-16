@@ -16,3 +16,6 @@
 ## 2024-05-15 - Node version in GitHub Actions
 **Learning:** Node.js 18 in GitHub Actions causes native binding errors with `@tailwindcss/oxide`. It must be updated to Node 20.
 **Action:** Updated `build-check.yml` and `ci.yml` to use `node-version: 20`.
+## 2024-05-15 - Express server startup timeout
+**Learning:** When testing Express server startup in CI (e.g. `require("./server.js")`), the server stays alive, causing jobs to hang (6-hour timeout). A `setTimeout` must be used to forcefully exit.
+**Action:** Added `setTimeout(() => process.exit(0), 1000);` to the `build-check.yml` node check.
