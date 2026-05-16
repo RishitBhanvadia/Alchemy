@@ -11,6 +11,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
+import { hasSufficientReactants } from '../utils/validationUtils';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
@@ -184,17 +185,7 @@ const Lab3D = () => {
         // We could also pre-fill the AI chat here if desired
     };
 
-    function onOrNot() {
-        let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
-        return sum >= 2;
-    }
-
-
-    const isPlayDisabled = !(onOrNot());
+    const isPlayDisabled = !hasSufficientReactants([chemA, chemB, chemI, chemC]);
 
     return (
         <motion.div 
@@ -427,7 +418,7 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {isPlayDisabled && <p className="note-warn">Mix at least 2 chemicals to start</p>}
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import feso4 from '../assets/feso4.png'
 import cuso4 from '../assets/cuso4.png'
 import nacl from '../assets/nacl.png'
 import "./lab.css"
+import { hasSufficientReactants } from "../utils/validationUtils";
 
 
 const Lab = () => {
@@ -129,16 +130,7 @@ const Lab = () => {
     }, 1500);
   };
 
-  function onOrNot() {
-    var sum = 0;
-    if (chemA > 0) sum += 1;
-    if (chemB > 0) sum += 1;
-    if (chemC > 0) sum += 1;
-    if (chemD > 0) sum += 1;
-    return sum >= 2;
-  }
-
-  const isPlayDisabled = !(onOrNot());
+  const isPlayDisabled = !hasSufficientReactants([chemA, chemB, chemC, chemD]);
 
 
 
