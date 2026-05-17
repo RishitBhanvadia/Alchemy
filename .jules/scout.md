@@ -1,0 +1,4 @@
+## 2026-05-17 - Educational Workflows Over Open Sandboxes
+**Market Insight:** Top virtual labs (Labster, PhET) are highly structured with guided objectives, checklists, and contextual assessments, whereas pure open sandboxes struggle with student retention.
+**Codebase Match:** Alchemistry currently provides an open 3D sandbox in `Lab3D.jsx` with basic controls and a general AI tutor, but lacks guided step-by-step instructions.
+**Opportunity:** Implementing an `ExperimentGuide` component that overlays structured steps will bridge the gap between our high-quality 3D rendering and the structured learning workflows expected in the EdTech market.
