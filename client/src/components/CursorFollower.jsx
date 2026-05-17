@@ -8,7 +8,6 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-
     useEffect(() => {
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);

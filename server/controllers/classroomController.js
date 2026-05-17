@@ -1,6 +1,14 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
-const { generateCode } = require('../utils/codeGenerator');
+
+function generateClassCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 5; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
 
 exports.createClassroom = async (req, res) => {
   try {
@@ -10,7 +18,7 @@ exports.createClassroom = async (req, res) => {
     let existing;
     
     do {
-      classCode = generateCode(5);
+      classCode = generateClassCode();
       const { data } = await supabase
         .from('classrooms')
         .select('id')
