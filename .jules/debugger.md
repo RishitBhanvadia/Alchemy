@@ -1,0 +1,4 @@
+## 2024-05-17 - Fix React Hook Rule Violation and Build Errors
+**Bug:** A duplicate `useState` declaration and an early return placed before a `useEffect` hook in `CursorFollower.jsx` caused a Vite build failure and violated the Rules of Hooks. Additionally, incorrect `@import` ordering in `index.css` broke the esbuild process.
+**Root Cause:** A merge conflict or copy-paste error likely duplicated the `useState` calls and misplaced the early return `if (isTouchDevice) return null;` before the `useEffect`. In Tailwind CSS v4, `@import url(...)` must precede the Tailwind import.
+**Learning:** Always verify hook placement to ensure hooks are called unconditionally at the top level, and place standard CSS `@imports` strictly before Tailwind CSS v4 `@import` statements to prevent Vite build breakages.
