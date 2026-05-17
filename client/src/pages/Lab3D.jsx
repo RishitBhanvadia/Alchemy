@@ -270,7 +270,7 @@ const Lab3D = () => {
                             }}
                             onCreated={({ gl }) => {
                                 const canvas = gl.domElement;
-                                canvas.addEventListener('webglcontextlost', (event) => { event.preventDefault(); return null;
+                                canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault();
 
                                 }, false);
                             }}
