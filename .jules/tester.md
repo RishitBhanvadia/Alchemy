@@ -1,0 +1,4 @@
+## 2024-05-17 - authStore test setup
+**Gap:** The critical `authStore.js` file, which handles session logic and user profile creation, was completely untested (1.8% coverage).
+**Learning:** Testing dynamic store imports used in the logout flow requires intercepting the `import()` calls to prevent unhandled rejections or false positives. Mocking `window.location` in a JSDOM environment requires overriding the property descriptor using `Object.defineProperty` since it is non-configurable.
+**Pattern:** For `window.location` mocks, use `Object.defineProperty(window, 'location', { value: ... })` instead of `delete window.location`. For dynamic imports in same-level directories, strictly double check relative paths in `vi.mock` (e.g., `vi.mock('../labStore')` rather than `./labStore`) so that Vitest successfully intercepts the runtime `import('./labStore')` calls within the tested module.
