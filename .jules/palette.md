@@ -1,4 +1,4 @@
 
-## 2024-05-17 - Fix ARIA role conflicts and keyboard accessibility in custom form components
-**Learning:** React components that take a user's literal "role" (like "student" or "teacher") as a prop should be named something like `userRole`. Naming the prop `role` conflicts with HTML/ARIA attributes and fails the `jsx-a11y/aria-role` lint check when passed to underlying elements. Custom interactive elements like framer-motion divs also need `role="button"`, `tabIndex={0}`, and keyboard handlers (`onKeyDown` for Space/Enter) to be accessible to keyboard navigation in forms.
-**Action:** Always verify custom components functioning as buttons or selectors have full keyboard support and don't reuse reserved HTML attributes for custom props.
+## 2024-05-17 - Address CI ESLint Failures Safely
+**Learning:** Fixing eslint errors requires careful attention to React semantics. When replacing dummy `<a>` tags with `<button>`, ensure they don't break expected anchor behaviors if they act as external links, but for internal actions, `<button>` is correct. When silencing `no-static-element-interactions` on `div` overlays, adding `role="presentation"` correctly indicates to screen readers that the `onClick` is for layout management (like closing a modal) and not an interactive widget. Be careful not to delete used state variables when fixing Rules of Hooks errors.
+**Action:** Always verify variables aren't used elsewhere before removing them to satisfy a linter, and use `role="presentation"` for non-interactive click-catching overlays.
