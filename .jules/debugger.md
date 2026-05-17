@@ -1,0 +1,11 @@
+## 2024-05-17 - Fix React Hook Rule Violation and Build Errors
+**Bug:** A duplicate `useState` declaration and an early return placed before a `useEffect` hook in `CursorFollower.jsx` caused a Vite build failure and violated the Rules of Hooks. Additionally, incorrect `@import` ordering in `index.css` broke the esbuild process.
+**Root Cause:** A merge conflict or copy-paste error likely duplicated the `useState` calls and misplaced the early return `if (isTouchDevice) return null;` before the `useEffect`. In Tailwind CSS v4, `@import url(...)` must precede the Tailwind import.
+**Learning:** Always verify hook placement to ensure hooks are called unconditionally at the top level, and place standard CSS `@imports` strictly before Tailwind CSS v4 `@import` statements to prevent Vite build breakages.## 2026-05-17 - Fix CI Build Failures: Node Version & Lint Errors
+**Bug:** The GitHub Actions CI pipeline failed during the `npm run build` and `npm run lint` steps due to an `npm` bug with Node.js 18 causing native binding errors for optional dependencies like `@tailwindcss/oxide`, along with multiple ESLint errors (unused variables, invalid ARIA roles, and invalid anchor tags).
+**Root Cause:** The project workflows were using Node 18, which has known issues with modern Vite/Tailwind ecosystems. Additionally, standard codebase churn introduced minor linting issues that failed the strict CI checks.
+**Learning:** Always keep CI workflow Node versions updated (v20+) to match local development environments and avoid native dependency binding errors. Ensure empty `<a href="#">` tags are replaced with semantically correct `<button type="button">` elements to pass accessibility linters.
+## 2026-05-17 - Fix CI Server Timeout Error
+**Bug:** The GitHub Actions CI pipeline failed via timeout (6 hours) in the `build-server` workflow job.
+**Root Cause:** Testing Express server startup using `require('./server.js')` caused the process to stay alive indefinitely, blocking the CI runner.
+**Learning:** Always wrap the execution of a long-running server instance in CI test scripts with a timeout to forcefully exit (e.g., `setTimeout(() => process.exit(0), 1000);`) to prevent job hangs.
