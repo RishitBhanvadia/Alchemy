@@ -161,3 +161,10 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
 };
 
 export default AiTutorPanel;
+
+import PropTypes from 'prop-types';
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};

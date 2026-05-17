@@ -104,3 +104,13 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
 };
 
 export default ResultModal;
+
+import PropTypes from 'prop-types';
+
+ResultModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  result: PropTypes.object,
+  onReset: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAskAI: PropTypes.func.isRequired
+};
