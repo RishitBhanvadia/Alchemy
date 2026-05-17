@@ -14,11 +14,25 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  let na = Math.round((a / total) * 100);
+  let nb = Math.round((b / total) * 100);
+  let ni = Math.round((i / total) * 100);
+  let nc = Math.round((c / total) * 100);
+
+  const sum = na + nb + ni + nc;
+  if (sum !== 100) {
+    const diff = 100 - sum;
+    // Find the largest value to add the remainder to, preserving 0s
+    const values = [na, nb, ni, nc];
+    const maxVal = Math.max(...values);
+    if (na === maxVal) na += diff;
+    else if (nb === maxVal) nb += diff;
+    else if (ni === maxVal) ni += diff;
+    else nc += diff;
+  }
+
+  return [na, nb, ni, nc];
 }
 
 function classifyRegime(a, b) {
