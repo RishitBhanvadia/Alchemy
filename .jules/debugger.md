@@ -10,3 +10,7 @@
 **Bug:** The CI pipeline was failing because `@import "tailwindcss";` appeared before `@import url(...)` in `index.css`, violating CSS syntax rules and causing `vite build` to crash. Additionally, GitHub Actions warned about Node 20 deprecation.
 **Root Cause:** In Tailwind CSS v4, the `@import "tailwindcss";` directive must appear *after* native `@import url(...)` statements for fonts.
 **Learning:** Always put native CSS `@import url(...)` before the Tailwind v4 `@import "tailwindcss";` directive. Maintain CI workflow files by proactively upgrading `node-version` to supported versions (e.g. 20.x).
+## 2026-05-18 - [Fix CI server hang]
+**Bug:** The GitHub Actions CI `build-server` job was timing out after 6 hours when requiring `server.js`.
+**Root Cause:** The `server.js` script starts an Express server which keeps the Node.js process alive indefinitely, causing the CI runner to hang.
+**Learning:** When testing server startup in CI using `require('./server.js')`, always include a timeout (e.g. `setTimeout(() => process.exit(0), 1000)`) to forcefully exit the process and prevent the job from hanging.
