@@ -1,0 +1,4 @@
+## 2026-05-18 - [Accessibility Improvements in Authentication]
+**Bug:** The authentication components (AuthPage, LoginForm) had invalid `href="#"` anchor tags which causes jarring scrolling behavior when clicked, leading to `jsx-a11y/anchor-is-valid` errors. Additionally, `SignUpForm` passed 'student' and 'teacher' as values to the `role` prop of `RoleCard`, which triggered `jsx-a11y/aria-role` because those are invalid ARIA roles.
+**Root Cause:** Using anchor tags as generic clickable text elements without valid destinations, and reusing the HTML `role` attribute keyword as a custom prop name.
+**Learning:** To prevent accessibility lint errors, always use `<button type="button">` for click handlers that don't navigate, using utility classes like `bg-transparent border-none p-0 cursor-pointer` to keep link-like styling. Never use HTML/ARIA reserved attributes like `role` for custom component prop names (use `userRole` instead).
