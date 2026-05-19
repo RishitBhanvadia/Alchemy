@@ -41,21 +41,14 @@ jobs:
     
     - name: Run client tests
       working-directory: ./client
-      run: npx vitest run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
+      run: npx vitest run
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
-    
-    - name: Upload Test logs
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: vitest-logs
-        path: ./client/vitest-log.txt
 
     - name: Generate coverage
       working-directory: ./client
-      run: npm run test:coverage -- --run
+      run: npx vitest run --coverage
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
@@ -68,7 +61,7 @@ jobs:
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       if: always()
       with:
-        files: ./client/coverage/*.xml
+        file: ./client/coverage/lcov.info
