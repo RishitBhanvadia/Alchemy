@@ -18,6 +18,8 @@ const crypto = require('crypto');
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
+// Security: Use crypto.randomInt instead of Math.random to prevent attackers
+// from predicting the sequence and joining meetings uninvited
 function generateCode() {
   let code = '';
   for (let i = 0; i < 6; i++) {

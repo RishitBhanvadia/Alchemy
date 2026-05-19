@@ -2,6 +2,8 @@ const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const crypto = require('crypto');
 
+// Security: Use crypto.randomInt instead of Math.random to prevent attackers
+// from predicting the sequence and guessing classroom join codes
 function generateClassCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = '';
