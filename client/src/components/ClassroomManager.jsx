@@ -162,6 +162,7 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy class join code"
                                     >
                                         📋
                                     </button>
@@ -179,7 +180,7 @@ const ClassroomManager = () => {
                                         style={styles.linkInput}
                                     />
                                     {cls.meeting_link && (
-                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn}>
+                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn} aria-label="Start meeting">
                                             🚀
                                         </a>
                                     )}
