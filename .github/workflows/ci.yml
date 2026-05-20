@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
     
     steps:
     - name: Checkout code
@@ -43,7 +43,7 @@ jobs:
       working-directory: ./client
       run: npm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
       env:
-        VITE_SUPABASE_URL: https://placeholder.supabase.co
+        VITE_SUPABASE_URL: http://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Upload Test logs
@@ -57,14 +57,14 @@ jobs:
       working-directory: ./client
       run: npm run test:coverage -- --run
       env:
-        VITE_SUPABASE_URL: https://placeholder.supabase.co
+        VITE_SUPABASE_URL: http://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Build client
       working-directory: ./client
       run: npm run build
       env:
-        VITE_SUPABASE_URL: https://placeholder.supabase.co
+        VITE_SUPABASE_URL: http://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Upload coverage to Codecov
