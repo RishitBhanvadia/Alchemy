@@ -1,0 +1,4 @@
+## 2024-05-20 - Add critical testing for authStore missing tests
+**Gap:** Critical authentication state logic in `authStore.js` was entirely untested. `authStore.js` had less than 2% lines covered, missing tests for session initialization, login state changes, profile fetching and the fallback profile creation block if trigger doesn't fire.
+**Learning:** Auth state is fundamental. Having no test coverage meant regressions in auth state changes could be easily introduced and missed. By adding tests for the auth store and mocking `supabase.auth` and `supabase.from`, the coverage dramatically increased and ensured core logic (such as creating profiles if `PGRST116` error happens) works correctly.
+**Pattern:** Mocking the chained structure of supabase calls (`supabase.from().select().eq().single()`) using `vi.fn().mockReturnValue()` is effective for testing the various state branches inside zustand stores connected to supabase without relying on actual DB connection.
