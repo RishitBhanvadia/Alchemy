@@ -1,0 +1,4 @@
+## 2024-05-18 - First insights
+**Market Insight:** Virtual chemistry labs (like Labster, PraxiLabs, Beyond Labz) share key differentiators, specifically realistic simulated environments, multi-subject workflows, guided tutorials, and gamified assessments.
+**Codebase Match:** The `Alchemistry` application is a 3D simulated virtual chemistry lab using Three.js and React. It features experiment modules like Organic, Inorganic, and Titration. It already has some realistic simulation with chemical mixing (Acid, Base, Indicator, Catalyst). The app has `ReactionResult` log and a 3D Lab space.
+**Opportunity:** The Alchemistry app has a basic structure, but competitors in this space tend to excel by providing **guided tutorials/walkthroughs** for first-time users, **exportable experiment reports**, and **quiz/assessment integrations** directly after experiments.
