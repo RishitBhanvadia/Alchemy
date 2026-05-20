@@ -172,6 +172,7 @@ app.use((err, req, res, next) => {
 
   if (res.headersSent) return next(err);
 
+n}
   res.status(err.status || 500).json({
     success: false,
     error: {
@@ -183,9 +184,17 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+let server;
+if (process.env.NODE_ENV === 'test') {
+    server = app.listen(PORT, '0.0.0.0', () => {
+        logger.info(`Server running on port ${PORT}`);
+    });
+    setTimeout(() => server.close(() => process.exit(0)), 1000);
+} else {
+    server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
-});
+    });
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
