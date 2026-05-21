@@ -1,4 +1,4 @@
-## 2024-05-21 - Standardise Empty States in Classroom Details
-**Problem:** The ClassroomDetail page displayed unstyled text (`<p className="empty-msg">No students enrolled yet.</p>` and a table row) for empty student rosters and assignment lists, causing visual inconsistency and lacking clear guidance for users.
-**Context:** Consistent and helpful empty states are critical for a seamless user experience, especially in a teacher dashboard where users need to know how to proceed when lists are empty.
-**Solution:** Replaced manual text messages with the application-wide `EmptyState` component, providing an icon, clear title, and instructional description to guide teachers on how to populate the lists.
+## 2024-05-21 - Fix CI Build and Lint Errors
+**Problem:** The GitHub CI pipeline was failing due to using an outdated Node.js version (18) which caused issues with `@tailwindcss/oxide` bindings, and there were several ESLint errors including unused imports, invalid `href="#"` attributes on anchor tags, and invalid ARIA roles (`role="student"` instead of `userRole="student"`).
+**Context:** Consistent and helpful CI checks are critical for a seamless developer experience, ensuring that code merged into the repository is error-free and stable. The memory explicitly directed fixing these specific node version issues and resolving anchor/ARIA role lint errors.
+**Solution:** Updated Node versions in GitHub workflows from 18 to 20. Removed unused imports (`Loader2`, `Check`, `useCallback`). Replaced `href="#"` `<a>` tags with accessible `<button type="button">` elements. Renamed the `role` prop in `RoleCard` to `userRole` to fix ARIA role validation.
