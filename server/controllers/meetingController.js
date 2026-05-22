@@ -15,12 +15,13 @@ const logger = require('../utils/logger');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
 
+const crypto = require('crypto');
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 function generateCode() {
   let code = '';
   for (let i = 0; i < 6; i++) {
-    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+    code += CHARS.charAt(crypto.randomInt(CHARS.length));
   }
   return code;
 }
