@@ -162,8 +162,9 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy class code"
                                     >
-                                        📋
+                                        <span aria-hidden="true">📋</span>
                                     </button>
                                 </div>
                             </div>
@@ -177,10 +178,11 @@ const ClassroomManager = () => {
                                         defaultValue={cls.meeting_link || ''}
                                         onBlur={(e) => updateMeetingLink(cls.id, e.target.value)}
                                         style={styles.linkInput}
+                                        aria-label="Meeting link"
                                     />
                                     {cls.meeting_link && (
-                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn}>
-                                            🚀
+                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn} aria-label="Launch meeting">
+                                            <span aria-hidden="true">🚀</span>
                                         </a>
                                     )}
                                 </div>
