@@ -6,3 +6,8 @@
 **Before:** CI workflows (`build-check.yml` and `ci.yml`) were hardcoded to use Node.js 18.x, which caused build failures due to `@tailwindcss/oxide` incompatibility.
 **Issue:** Hardcoded, deprecated Node versions caused unresolvable pipeline failures.
 **Learning:** Always keep GitHub Actions runner Node versions updated to >=20.x for Vite/Tailwind v4+ projects to avoid native binding errors.
+
+## 2024-05-22 - CI Configuration Refactoring
+**Before:** Workflow files (`ci.yml`, `build-check.yml`, `deploy-check.yml`) used hardcoded Node versions and long-running server scripts that caused jobs to hang indefinitely.
+**Issue:** Hardcoded Node versions caused native dependencies like `@tailwindcss/oxide` to fail on Node 18, and `server.js` startup scripts in CI hung because they didn't exit after a successful load.
+**Learning:** For continuous integration health, ensure all workflows use updated Node versions matching local environments, and specifically add explicit exit commands (`setTimeout(() => process.exit(0), 1000)`) when testing long-running server startups in CI scripts.
