@@ -1,62 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../supabaseClient";
 import { toast } from "react-hot-toast";
+import useClassroomStore from "../store/classroomStore";
 
 import "./dashboard.css";
 
 const Dashboard = () => {
     const [joinCode, setJoinCode] = useState("");
     const [loading, setLoading] = useState(false);
+    const joinClassroom = useClassroomStore((state) => state.joinClassroom);
 
     const handleJoinClassroom = async (e) => {
         e.preventDefault();
         if (!joinCode.trim()) return;
 
         setLoading(true);
-        try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) throw new Error("Please log in first");
+        const result = await joinClassroom(joinCode);
 
-            // Find classroom by code
-            const { data: className, error: classError } = await supabase
-                .from('classrooms')
-                .select('id, class_name')
-                .eq('class_code', joinCode.toUpperCase())
-                .single();
-
-            if (classError || !className) throw new Error("Invalid class code");
-
-            // Check if already in classroom
-            const { data: existing } = await supabase
-                .from('class_memberships')
-                .select('*')
-                .eq('classroom_id', className.id)
-                .eq('student_id', user.id)
-                .single();
-
-            if (existing) {
+        if (result.error) {
+            if (result.error === 'Already a member') {
                 toast("You are already in this classroom");
-                setJoinCode("");
-                return;
+            } else {
+                toast.error(result.error);
             }
-
-            // Join classroom
-            const { error: joinError } = await supabase
-                .from('class_memberships')
-                .insert([
-                    { classroom_id: className.id, student_id: user.id }
-                ]);
-
-            if (joinError) throw joinError;
-
-            toast.success(`Joined ${className.class_name}!`);
-            setJoinCode("");
-        } catch (error) {
-            toast.error(error.message);
-        } finally {
-            setLoading(false);
+        } else if (result.success) {
+            toast.success(`Joined ${result.classroomName}!`);
         }
+
+        setJoinCode("");
+        setLoading(false);
     };
     return (
         <div className="dashboard-page scene_element scene_element--fadein">
