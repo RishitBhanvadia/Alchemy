@@ -1,7 +1,4 @@
-
-## $(date +%Y-%m-%d) - Fix Vite/esbuild Build Failures in React Client
-**Bug:** The client build failed with two distinct errors: one related to duplicate variable declarations in `CursorFollower.jsx` (`The symbol "clicking" has already been declared`) and one related to CSS `@import` ordering in `index.css` (`@import rules must precede all rules aside from @charset and @layer statements`).
-**Root Cause:**
-1. In `CursorFollower.jsx`, an early return (`if (isTouchDevice) return null;`) was placed between two identical sets of `useState` declarations. The second set of declarations caused syntax errors. Furthermore, the early return violated React's Rules of Hooks because `useState` and `useEffect` were conditionally bypassed.
-2. In `index.css`, the native CSS `@import` for Google Fonts was placed below the `@import "tailwindcss";` directive, violating esbuild's CSS parsing rules which require native `@import`s to precede all other rules except `@charset` and `@layer`.
-**Learning:** Always ensure native CSS `@import`s are placed at the very top of the entry CSS file, particularly when using Vite and Tailwind CSS v4. Additionally, ensure all React Hooks are called unconditionally before any early return statements to prevent hook ordering bugs and build errors.
+## 2026-05-22 - Fix Node.js deprecation in CI workflows
+**Bug:** The GitHub Actions CI check suite failed with Node.js 20 deprecation warnings and process exits.
+**Root Cause:** The GitHub workflows were explicitly setting the Node.js version to `18` or `18.x`, which relies on deprecated `setup-node` versions and triggers underlying build failures with packages that require `node >= 20`, causing the check suite to exit with code 1.
+**Learning:** Always specify supported Node.js LTS versions in CI workflows (e.g., `24.x`) to prevent deprecation failures and ensure compatibility with newer dependencies.
