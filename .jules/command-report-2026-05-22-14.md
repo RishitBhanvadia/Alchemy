@@ -1,6 +1,6 @@
 # 👁️ Command Report
 **Date:** $(date -u +"%Y-%m-%d %H:%M UTC")
-**Branch Reviewed:** origin/main
+**Branch Reviewed:** main
 **Status:** 🚨 CRITICAL
 **Triggered by:** CI Failure Investigation
 
