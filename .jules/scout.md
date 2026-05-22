@@ -1,0 +1,4 @@
+## 2024-05-15 - Initial Market Research
+**Market Insight:** Virtual chemistry labs (like Labster, PhET, ChemCollective) often focus heavily on real-world applications, structured learning paths (escape rooms, scenario-based activities), safety training, and collaborative tools.
+**Codebase Match:** The app has a strong 3D environment and basic modules (organic, titration, inorganic), but lacks structured onboarding, safety training, and gamified or collaborative elements which top competitors use to boost engagement.
+**Opportunity:** Adding structured tutorials/safety checks before experiments, gamified scenario-based challenges (e.g., "Escape the Lab" or real-world problem-solving), and enhanced data visualization/export tools based on the existing history tracking would significantly elevate the app to competitor standards.
