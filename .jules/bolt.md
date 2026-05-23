@@ -1,3 +1,6 @@
 ## 2024-05-30 - Code-splitting Heavy Dashboard Dependencies
 **Learning:** Statically importing heavy charting libraries (like `recharts` used in `StudentAnalyticsChart`) into high-level route components (`TeacherDashboard.jsx`) significantly bloats the initial JavaScript bundle, degrading initial load performance. Additionally, watch out for global event listeners running unconditionally on platforms where they aren't needed (e.g. `mousemove` on touch devices).
 **Action:** Use `React.lazy` and `React.Suspense` to dynamically import heavy chart components so they are split into separate chunks and only downloaded when rendered. Always wrap such dynamic imports with a fallback UI. For global event listeners, add early returns inside `useEffect` (e.g., `if (isTouchDevice) return;`) to prevent unnecessary attachment without violating React hook rules.
+## 2024-05-30 - Removing unused imports
+**Learning:** React hooks like `useCallback` that are imported but never used will trigger ESLint failures in strict CI environments, breaking the build even if the code works perfectly locally.
+**Action:** Always ensure unused imports (like `useCallback`, `useMemo`, etc.) are removed before committing, especially when refactoring or modifying components. Use `npm run lint` locally to catch these errors before CI does.
