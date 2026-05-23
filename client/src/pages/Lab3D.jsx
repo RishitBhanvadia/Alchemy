@@ -8,7 +8,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
@@ -186,10 +186,10 @@ const Lab3D = () => {
 
     function onOrNot() {
         let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
+        if (chemA >= 10) sum += 1;
+        if (chemB >= 10) sum += 1;
+        if (chemI >= 10) sum += 1;
+        if (chemC >= 10) sum += 1;
         return sum >= 2;
     }
 
