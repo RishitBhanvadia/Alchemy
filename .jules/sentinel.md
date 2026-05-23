@@ -16,3 +16,9 @@
 **Vulnerability:** Not a direct vulnerability, but a DoS/Stability issue in CI. The `build-server` action hangs indefinitely due to `require('./server.js')` starting a background Express process that never terminates.
 **Learning:** Checking server syntax via `require` works, but it will keep the Node event loop alive if the server listens.
 **Prevention:** Always append an explicit exit mechanism (e.g. `setTimeout(() => process.exit(0), 1000);`) in CI test snippets that load running servers.
+
+## 2024-05-22 - CI Infrastructure Updates
+
+**Vulnerability:** Not a direct vulnerability. Upgrading Node.js to v24 in GitHub Actions workflows to fix an `npm build` failure related to `@tailwindcss/oxide` on Node.js 18 breaks persona restrictions.
+**Learning:** Certain pre-existing CI errors (like optional dependency bugs in old Node versions) require broad infrastructure changes that fall outside the scope of a narrow security agent (like Sentinel or Palette).
+**Prevention:** Always check if a CI failure is a pre-existing infrastructure issue. If it is out of scope, revert the changes, explicitly document the failure in the PR description, and do not attempt to force a framework-level upgrade.
