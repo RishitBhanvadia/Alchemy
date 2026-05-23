@@ -1,0 +1,4 @@
+## 2024-05-15 - Initial Research Insight
+**Market Insight:** Top virtual labs like PhET, Labster, and ChemCollective emphasize not just the core simulations (mixing chemicals) but the pedagogical surrounding: real-time data plotting (graphs, temperature curves), immediate in-context help/tutorials, assessment/quizzes within the lab, and guided pathways (scaffolded learning).
+**Codebase Match:** Alchemistry currently has standalone lab views (`/lab`, `/titration`, `/Lab3D`), an `AiTutorPanel`, and student/teacher dashboards. However, it seems to lack structured, guided experiment flows (scaffolding), real-time graphing of variables like temperature vs time, and in-lab micro-assessments.
+**Opportunity:** Adding a `Guided Experiment` mode with step-by-step instructions and real-time data visualizations (e.g., using the existing `recharts` dependency) would align Alchemistry with top market players.
