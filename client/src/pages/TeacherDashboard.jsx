@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
@@ -502,7 +502,7 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
+        <React.Suspense fallback={<div style={{ padding: "2rem", textAlign: "center", color: "#888" }}>Loading analytics...</div>}><StudentAnalyticsChart
           scores={experimentScores}
           experimentName={
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
@@ -515,6 +515,7 @@ export default function TeacherDashboard({ analytics = false }) {
                 : undefined
           }
         />
+        </React.Suspense>
       </section>
       </main>
     </div>
