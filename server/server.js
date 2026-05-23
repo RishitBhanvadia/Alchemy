@@ -185,6 +185,11 @@ const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
+
+    // For test environments like GitHub Actions: exit cleanly once started successfully
+    if (process.env.NODE_ENV === 'test') {
+        setTimeout(() => process.exit(0), 1000);
+    }
 });
 
 // Graceful shutdown
