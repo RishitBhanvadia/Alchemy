@@ -1,0 +1,4 @@
+## 2026-05-24 - Fix Frontend Reaction Initiation Threshold Logic
+**Bug:** The frontend `Lab3D.jsx` component allows a reaction to be initiated when chemical concentrations are strictly greater than 0, while the backend `computeReactionId` expects chemical concentrations to be >= 10 (`PRESENCE_THRESHOLD`) to be active. If 2 chemicals are added at levels between 1 and 9, the reaction is allowed on the frontend but results in an unexpected / algorithmic output or "Water" fallback because the backend considers them absent.
+**Root Cause:** The `onOrNot` function in `Lab3D.jsx` uses `> 0` to count active chemicals, which is out of sync with the backend's `PRESENCE_THRESHOLD = 10`.
+**Learning:** Always ensure client-side validation logic matches server-side expectations, particularly regarding threshold limits for input processing.
