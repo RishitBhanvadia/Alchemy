@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const SuccessCelebration = ({ active, onComplete }) => {
     const [particles, setParticles] = useState([]);
@@ -13,13 +14,18 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
+
+            // Fix: avoid triggering cascading renders by deferring state update slightly
+            const spawnTimer = setTimeout(() => setParticles(newParticles), 0);
             
             const timer = setTimeout(() => {
                 onComplete?.();
                 setParticles([]);
             }, 3000);
-            return () => clearTimeout(timer);
+            return () => {
+                clearTimeout(spawnTimer);
+                clearTimeout(timer);
+            };
         }
     }, [active, onComplete]);
 
@@ -63,6 +69,11 @@ const SuccessCelebration = ({ active, onComplete }) => {
             </AnimatePresence>
         </div>
     );
+};
+
+SuccessCelebration.propTypes = {
+    active: PropTypes.bool.isRequired,
+    onComplete: PropTypes.func,
 };
 
 export default SuccessCelebration;
