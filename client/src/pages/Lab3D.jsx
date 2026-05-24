@@ -186,10 +186,10 @@ const Lab3D = () => {
 
     function onOrNot() {
         let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
+        if (chemA >= 10) sum += 1;
+        if (chemB >= 10) sum += 1;
+        if (chemI >= 10) sum += 1;
+        if (chemC >= 10) sum += 1;
         return sum >= 2;
     }
 
