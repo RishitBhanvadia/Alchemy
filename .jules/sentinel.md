@@ -1,0 +1,4 @@
+## 2024-05-24 - [CRITICAL] Fix insecure random number generator for codes
+**Vulnerability:** Insecure use of `Math.random()` to generate meeting and classroom codes, leading to predictability and potential unauthorized access.
+**Learning:** `Math.random()` is not cryptographically secure and should never be used for security-sensitive operations like generating access codes, passwords, or tokens.
+**Prevention:** Always use a Cryptographically Secure Random Number Generator (CSRNG) such as `crypto.randomInt` from Node's built-in `crypto` module when generating random numbers for security-critical values.
