@@ -19,6 +19,7 @@ vi.mock('../../supabaseClient', () => ({
     supabase: {
         auth: {
             signInWithPassword: vi.fn(),
+            signUp: vi.fn(),
         },
     },
 }));
@@ -44,19 +45,26 @@ describe('Login Component', () => {
         );
     };
 
-    it('should render login form', () => {
+    it('should render login form by default', () => {
         renderLogin();
         expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /access lab/i })).toBeInTheDocument();
     });
 
-    it('should have submit button', () => {
+    it('should switch to signup tab and render signup form', async () => {
         renderLogin();
-        const submitButton = screen.getByRole('button', { name: /access lab/i });
-        expect(submitButton).toBeInTheDocument();
+
+        const signUpTab = screen.getByRole('button', { name: 'Sign Up' });
+        fireEvent.click(signUpTab);
+
+        await waitFor(() => {
+            expect(screen.getByLabelText(/Full Name/i)).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: /initialize account/i })).toBeInTheDocument();
+        });
     });
 
-    it('should handle form submission', async () => {
+    it('should handle form submission for login', async () => {
         supabase.auth.signInWithPassword.mockResolvedValue({
             data: { user: { id: '123', email: 'test@example.com' } },
             error: null,
