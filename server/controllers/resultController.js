@@ -41,7 +41,7 @@ exports.calculateResult = async (req, res) => {
     const [na, nb, ni, nc] = normalised || [0, 0, 0, 0];
 
     // Compute lookup keys
-    const reaction_id = computeReactionId(na, nb, ni, nc, 5);
+    const reaction_id = computeReactionId(na, nb, ni, nc);
     const regime = classifyRegime(na, nb);
 
     // Query — try exact regime match first
