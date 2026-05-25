@@ -6,9 +6,10 @@ const CursorFollower = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
 
-    if (isTouchDevice) return null;
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
+
+    if (isTouchDevice) return null;
 
     useEffect(() => {
         const addEventListeners = () => {
