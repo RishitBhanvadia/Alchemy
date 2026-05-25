@@ -1,0 +1,4 @@
+## 2025-03-01 - Mocking Supabase Chains in Zustand Stores
+**Gap:** The critical user authentication flow in `authStore.js` (including session initialization and logout) was untested due to complex nested Supabase chaining operations, leaving regressions in user session handling uncaught.
+**Learning:** Testing stores with Supabase integration requires correctly mimicking nested chains (e.g., `supabase.from().select().eq().single()`) without hitting real databases or timing out tests, which previously prevented proper store coverage.
+**Pattern:** Mock the `supabase` client and simulate its nested response chaining at the top of the test suite (using Vitest's `vi.mock` and `vi.fn`) to return mock results, enabling comprehensive unit testing of auth store workflows in isolation.
