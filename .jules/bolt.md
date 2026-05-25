@@ -1,0 +1,3 @@
+## 2024-05-25 - Redundant N+1 queries in React Component State
+**Learning:** Found a component making redundant API calls for data it already had fetched in a separate useEffect and stored in state. By reusing the existing component state instead of re-fetching the same relational data, significant load times and unnecessary queries can be saved without altering functionality.
+**Action:** Always check if required IDs or relational data are already present in component state from a parent or sibling query before writing a new database query.

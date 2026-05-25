@@ -254,37 +254,17 @@ export default function TeacherDashboard({ analytics = false }) {
       try {
         setLoading(true);
 
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        // Get teacher's classrooms
-        const { data: classrooms, error: classError } = await supabase
-          .from('classrooms')
-          .select('id')
-          .eq('teacher_id', user.id);
-
-        if (classError || !classrooms || classrooms.length === 0) {
+        // ⚡ Bolt Optimisation: Instead of running 3 sequential database queries
+        // (getUser -> getClassrooms -> getClassMemberships) to get student IDs,
+        // we reuse the `students` array that was already fetched in the parent component scope.
+        // This eliminates redundant network requests and significantly speeds up the dashboard load time.
+        if (students.length === 0) {
           setExperimentScores([]);
           setLoading(false);
           return;
         }
 
-        const classroomIds = classrooms.map((c) => c.id);
-
-        // Get students in those classrooms
-        const { data: studentData, error: studentError } = await supabase
-          .from('class_memberships')
-          .select('student_id')
-          .in('classroom_id', classroomIds);
-
-        if (studentError || !studentData || studentData.length === 0) {
-          setExperimentScores([]);
-          setLoading(false);
-          return;
-        }
-
-        const studentIds = studentData.map((s) => s.student_id);
+        const studentIds = students.map((s) => s.id);
 
         // Fetch experiment counts for students in teacher's classrooms
         let query = supabase
@@ -316,7 +296,7 @@ export default function TeacherDashboard({ analytics = false }) {
     }
 
     fetchScores();
-  }, [selectedExperiment, startDate, endDate]);
+  }, [selectedExperiment, startDate, endDate, students]);
 
   // ─── Table Instance ───────────────────────────────────────────────
   const table = useReactTable({
