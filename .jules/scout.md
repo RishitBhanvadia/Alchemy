@@ -1,0 +1,4 @@
+## 2026-05-25 - Virtual Lab Market Insights
+**Market Insight:** Top competitors (like Labster and ChemCollective) heavily utilize gamified storytelling (e.g., "Escape Room" scenarios) and explicit state visualization (showing which components are aqueous, solid, or gas in real-time) to improve engagement and conceptual understanding.
+**Codebase Match:** The current Alchemistry app provides a 3D sandbox (`Lab3D.jsx`) but lacks guided narrative scenarios. Additionally, while it shows product formulas, it does not provide granular state visualization (e.g., solid vs aqueous) in the result modal (`ResultModal.jsx`).
+**Opportunity:** Introduce modular, storyline-driven lab tasks and integrate state indicators into the existing `ResultModal.jsx` and chemical tooltips to close the engagement gap.
