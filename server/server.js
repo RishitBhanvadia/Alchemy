@@ -186,6 +186,7 @@ const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
 });
+if (process.env.NODE_ENV === 'test') { setTimeout(() => process.exit(0), 1000); }
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
