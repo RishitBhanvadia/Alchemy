@@ -192,10 +192,7 @@ process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Closing server gracefully...');
   server.close(() => {
     logger.info('Server closed.');
-    process.exit(0);
   });
-  // Force close after 10 seconds
-  setTimeout(() => process.exit(1), 10000);
 });
 
 process.on('SIGINT', () => process.emit('SIGTERM'));

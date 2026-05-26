@@ -22,7 +22,6 @@
     "gsap": "^3.12.1",
     "html-encoding-sniffer": "^6.0.0",
     "loglevel": "^1.9.2",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.6.0",
@@ -122,6 +121,8 @@
     "lucide-react": "^1.7.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
+    "prop-types": "^15.8.1",
+    "supertest": "^7.2.2",
     "tailwindcss": "^4.2.2",
     "vite": "^6.1.0",
     "vitest": "^4.0.18"
