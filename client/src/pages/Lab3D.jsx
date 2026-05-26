@@ -186,10 +186,10 @@ const Lab3D = () => {
 
     function onOrNot() {
         let sum = 0;
-        if (chemA > 0) sum += 1;
-        if (chemB > 0) sum += 1;
-        if (chemI > 0) sum += 1;
-        if (chemC > 0) sum += 1;
+        if (chemA >= 10) sum += 1;
+        if (chemB >= 10) sum += 1;
+        if (chemI >= 10) sum += 1;
+        if (chemC >= 10) sum += 1;
         return sum >= 2;
     }
 
@@ -427,7 +427,7 @@ const Lab3D = () => {
                                 </>
                             ) : "INITIATE REACTION"}
                         </button>
-                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals to start</p>}
+                        {!onOrNot() && <p className="note-warn">Mix at least 2 chemicals (≥10%) to start</p>}
                     </div>
                 </div>
             </div>
