@@ -2,8 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GraduationCap, FlaskConical, Check } from 'lucide-react';
 
-const RoleCard = ({ role, selected, onSelect }) => {
-  const isStudent = role === 'student';
+const RoleCard = ({ userRole, selected, onSelect }) => {
+  const isStudent = userRole === 'student';
   const Icon = isStudent ? GraduationCap : FlaskConical;
   const title = isStudent ? 'Student' : 'Teacher';
   const description = isStudent 
@@ -11,11 +11,22 @@ const RoleCard = ({ role, selected, onSelect }) => {
     : 'Manage labs and track student progress.';
   const iconColor = isStudent ? '#a78bfa' : '#06b6d4';
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelect(userRole);
+    }
+  };
+
   return (
     <motion.div
       whileHover={{ y: -2, borderColor: 'rgba(255,255,255,0.12)' }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(role)}
+      onClick={() => onSelect(userRole)}
+      onKeyDown={handleKeyDown}
+      role="radio"
+      aria-checked={selected}
+      tabIndex={0}
       className={`relative flex-1 cursor-pointer p-5 rounded-2xl border transition-all duration-300 text-center group ${
         selected 
         ? 'bg-lab-purple/10 border-lab-purple/70 shadow-lab-role-selected' 
