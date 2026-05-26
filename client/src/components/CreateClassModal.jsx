@@ -16,6 +16,20 @@ import { createZoomMeeting, createGoogleMeeting, getGoogleAuthUrl } from '../uti
 import useAuthStore from '../store/authStore';
 
 const CreateClassModal = ({ isOpen, onClose }) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, handleClose]);
+
   const [loading, setLoading] = useState(false);
   const [meetingData, setMeetingData] = useState(null); // { code, meetingUrl, platform }
   const profile = useAuthStore(state => state.profile);
@@ -79,8 +93,9 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div style={styles.overlay} role="presentation">
+      <div style={styles.modal} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard

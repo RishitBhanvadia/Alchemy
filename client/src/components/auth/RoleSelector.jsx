@@ -21,7 +21,7 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4" role="radiogroup">
       {roles.map((role) => {
         const Icon = role.icon;
         const isActive = selectedRole === role.id;
@@ -29,6 +29,15 @@ const RoleSelector = ({ selectedRole, setSelectedRole, error }) => {
         return (
           <motion.div
             key={role.id}
+            role="radio"
+            aria-checked={isActive}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedRole(role.id);
+              }
+            }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedRole(role.id)}
