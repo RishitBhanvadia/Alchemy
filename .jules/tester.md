@@ -1,0 +1,4 @@
+## 2024-05-26 - Add auth flow tests
+**Gap:** Authentication flow (Zustand `authStore.js`) was largely untested, missing coverage for critical session initialization, sign in/out state transitions, and error handling for missing profiles.
+**Learning:** Auth stores built on Supabase heavily rely on asynchronous side effects and event subscriptions (`onAuthStateChange`), requiring careful mocking of multiple Supabase API endpoints (`getSession`, `signOut`, `from`) and correct handling of callback subscriptions to accurately simulate the complete auth lifecycle and avoid circular dependencies during testing.
+**Pattern:** Mock Supabase client deeply, extract callback using `mock.callback = () => authCallback` from `onAuthStateChange`, and manually trigger auth events to simulate sign-in/sign-out updates within the test environment.
