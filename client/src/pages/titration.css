@@ -15,7 +15,7 @@
 .titration-container {
     display: flex;
     width: 95%;
-    max-max-width: 1400px;
+    max-width: 1400px;
   width: 100%;
     height: 85vh;
     gap: 30px;
@@ -24,7 +24,7 @@
 /* Left Control Panel */
 .titration-controls {
     flex: 1;
-    max-max-width: 400px;
+    max-width: 400px;
   width: 100%;
     display: flex;
     flex-direction: column;
