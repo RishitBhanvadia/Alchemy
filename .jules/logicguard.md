@@ -1,0 +1,4 @@
+## 2026-05-27 - Inverted Reaction ID Calculation Multipliers
+**Bug:** The `computeReactionId` function incorrectly multiplied the indicator (chem_i) by 100 and catalyst (chem_c) by 1000, reversing the logic from reactionHash.js.
+**Root Cause:** The multipliers in the backend controller `server/controllers/resultController.js` were mismatched with the client/util mappings where indicator = 1000 and catalyst = 100.
+**Learning:** Always double-check matching magic numbers or weightings when migrating or separating shared pure logic between utilities and controllers, as these can easily be inverted manually.
