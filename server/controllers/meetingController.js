@@ -12,6 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
+const crypto = require('crypto');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
 
@@ -20,7 +21,7 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 function generateCode() {
   let code = '';
   for (let i = 0; i < 6; i++) {
-    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+    code += CHARS.charAt(crypto.randomInt(0, CHARS.length));
   }
   return code;
 }
