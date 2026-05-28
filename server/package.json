@@ -23,6 +23,7 @@
     "twilio": "^4.13.0"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
     "jest": "^30.2.0",
     "supertest": "^7.2.2"
   }
