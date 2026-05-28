@@ -1,15 +1,6 @@
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
-
-function computeReactionId(a, b, i, c) {
-  const THRESHOLD = 5; // Lower threshold (5%) for fuzzy matching
-  let id = 0;
-  if (a >= THRESHOLD) id += 1;
-  if (b >= THRESHOLD) id += 10;
-  if (i >= THRESHOLD) id += 100;
-  if (c >= THRESHOLD) id += 1000;
-  return id;
-}
+const { computeReactionId } = require('../utils/reactionHash');
 
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
@@ -50,7 +41,8 @@ exports.calculateResult = async (req, res) => {
     const [na, nb, ni, nc] = normalised || [0, 0, 0, 0];
 
     // Compute lookup keys
-    const reaction_id = computeReactionId(na, nb, ni, nc);
+    const THRESHOLD = 5; // Lower threshold (5%) for fuzzy matching
+    const reaction_id = computeReactionId(na, nb, ni, nc, THRESHOLD);
     const regime = classifyRegime(na, nb);
 
     // Query — try exact regime match first

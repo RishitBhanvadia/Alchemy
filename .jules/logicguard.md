@@ -1,0 +1,4 @@
+## 2026-05-28 - Reaction ID Mapping Mismatch
+**Bug:** The `computeReactionId` function was duplicated in `server/controllers/resultController.js` and incorrectly mapped `chem_i` to `100` and `chem_c` to `1000`. This caused indicator/catalyst combinations to query the wrong `reaction_id` in the database, breaking reaction lookup logic.
+**Root Cause:** A duplicated helper function became out-of-sync with the single source of truth in `server/utils/reactionHash.js`, where `chem_i` was correctly mapped to `1000` and `chem_c` to `100`.
+**Learning:** Never duplicate hashing/ID generation functions. If a calculation is used to index into a database, always import the canonical implementation. When threshold requirements differ across usage sites, use optional parameters instead of cloning the logic.
