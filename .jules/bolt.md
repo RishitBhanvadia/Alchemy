@@ -1,0 +1,3 @@
+## 2025-02-18 - Lazy load heavy charting libraries
+**Learning:** The 'recharts' library is a heavy dependency. Always lazy load charting components (like StudentAnalyticsChart) using React.lazy and Suspense when they are not in the critical rendering path to reduce the initial JS bundle size.
+**Action:** Use React.lazy for charting components and wrap them in React.Suspense with a SkeletonBlock fallback. Do not reference bottom-defined const styles in newly added structural wrappers like React.Suspense fallbacks. Use inline styles or existing components (e.g., <SkeletonBlock />) to prevent variable hoisting issues and undefined reference errors.
