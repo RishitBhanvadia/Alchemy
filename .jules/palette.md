@@ -1,0 +1,3 @@
+## 2024-05-28 - Add ARIA labels to icon-only buttons
+**Learning:** Floating action buttons (FABs) and icon-only utility buttons in custom 3D applications or complex UIs often miss accessible names. Even if a `title` attribute is present, it's not consistently announced by all screen readers and isn't a substitute for `aria-label`. Toggle buttons also need `aria-expanded` to communicate their current state.
+**Action:** Always verify that icon-only buttons (`<button>🤖</button>`, `<button>📋</button>`) have an explicit `aria-label` attribute. If the button toggles a panel or menu, also include `aria-expanded={isOpen}` to indicate its state to assistive technologies.
