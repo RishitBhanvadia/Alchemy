@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const validateEnv = require('./config/validateEnv');
-validateEnv(); // exits process if any required var is missing
+if (process.env.NODE_ENV !== "test") { validateEnv(); }
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -129,7 +129,9 @@ app.use((req, res, next) => {
             status: res.statusCode,
             duration,
         });
+});
     });
+});
     next();
 });
 
@@ -169,6 +171,7 @@ app.use((err, req, res, next) => {
     error: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
+});
 
   if (res.headersSent) return next(err);
 
@@ -192,12 +195,9 @@ process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Closing server gracefully...');
   server.close(() => {
     logger.info('Server closed.');
-    process.exit(0);
-  });
-  // Force close after 10 seconds
-  setTimeout(() => process.exit(1), 10000);
-});
 
+  });
+});
 process.on('SIGINT', () => process.emit('SIGTERM'));
 
 // Handle unhandled Promise rejections
