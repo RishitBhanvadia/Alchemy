@@ -129,7 +129,9 @@ app.use((req, res, next) => {
             status: res.statusCode,
             duration,
         });
+});
     });
+});
     next();
 });
 
@@ -169,6 +171,7 @@ app.use((err, req, res, next) => {
     error: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
+});
 
   if (res.headersSent) return next(err);
 
@@ -195,7 +198,6 @@ process.on('SIGTERM', () => {
 
   });
 });
-
 process.on('SIGINT', () => process.emit('SIGTERM'));
 
 // Handle unhandled Promise rejections
