@@ -1,0 +1,4 @@
+## 2024-05-24 - Market Gap: Guided Learning Paths
+**Market Insight:** Top virtual lab competitors like Labster and Futuclass do not just offer open sandboxes; they structure learning into gamified or guided modules (e.g., 5-10 minute puzzles or guided experiments) that connect theory to observation, complete with teacher dashboards and assessment tools.
+**Codebase Match:** The Alchemistry app is currently heavily focused on an open 3D sandbox (`Lab3D.jsx`) where students mix chemicals freely. There are separate routes for specific types (`titration`, `organic`, `inorganic`), but the core interaction is sandbox-based.
+**Opportunity:** Introduce structured, guided learning paths (or "missions") that wrap around the existing sandbox. This leverages the current Three.js simulations but adds educational structure, aligning with market expectations for high-school/middle-school education software.
