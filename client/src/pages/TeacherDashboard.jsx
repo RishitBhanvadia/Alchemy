@@ -90,6 +90,24 @@ const EXPERIMENT_OPTIONS = [
   { value: 'organic', label: 'Organic Chemistry' },
 ];
 
+// ─── Helper: Fetch Teacher's Classroom IDs ────────────────────────────────────
+async function getTeacherClassroomIds(supabase) {
+  // Get current user
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Not authenticated');
+
+  // Fetch classrooms owned by this teacher
+  const { data: classrooms, error: classError } = await supabase
+    .from('classrooms')
+    .select('id')
+    .eq('teacher_id', user.id);
+
+  if (classError) throw classError;
+  if (!classrooms || classrooms.length === 0) return [];
+
+  return classrooms.map((c) => c.id);
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TeacherDashboard({ analytics = false }) {
@@ -145,30 +163,16 @@ export default function TeacherDashboard({ analytics = false }) {
         setLoading(true);
         setError(null);
 
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          setError('Not authenticated');
-          setLoading(false);
-          return;
-        }
+        // Re-use helper to get classroom IDs
+        const classroomIds = await getTeacherClassroomIds(supabase);
 
-        // Fetch classrooms owned by this teacher
-        const { data: classrooms, error: classError } = await supabase
-          .from('classrooms')
-          .select('id, class_name')
-          .eq('teacher_id', user.id);
-
-        if (classError) throw classError;
-        if (!classrooms || classrooms.length === 0) {
+        if (classroomIds.length === 0) {
           setStudents([]);
           setLoading(false);
           return;
         }
 
-        const classroomIds = classrooms.map((c) => c.id);
-
-        // Fetch students in those classrooms with profile data
+        // Fetch students with profile data in those classrooms
         const { data: studentData, error: studentError } = await supabase
           .from('class_memberships')
           .select(`
@@ -183,10 +187,9 @@ export default function TeacherDashboard({ analytics = false }) {
           .in('classroom_id', classroomIds);
 
         if (studentError) throw studentError;
-
-        // Collect all student IDs
-        const studentIds = (studentData || []).map(r => r.student_id);
         
+        const studentIds = (studentData || []).map(r => r.student_id);
+
         // OPTIMIZATION: Fetch all experiment counts in ONE query instead of N+1
         let expDataByStudent = {};
         if (studentIds.length > 0) {
@@ -254,23 +257,13 @@ export default function TeacherDashboard({ analytics = false }) {
       try {
         setLoading(true);
 
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const classroomIds = await getTeacherClassroomIds(supabase);
 
-        // Get teacher's classrooms
-        const { data: classrooms, error: classError } = await supabase
-          .from('classrooms')
-          .select('id')
-          .eq('teacher_id', user.id);
-
-        if (classError || !classrooms || classrooms.length === 0) {
+        if (classroomIds.length === 0) {
           setExperimentScores([]);
           setLoading(false);
           return;
         }
-
-        const classroomIds = classrooms.map((c) => c.id);
 
         // Get students in those classrooms
         const { data: studentData, error: studentError } = await supabase
