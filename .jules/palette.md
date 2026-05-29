@@ -1,0 +1,3 @@
+## 2026-05-29 - Custom Role Selector Keyboard Accessibility
+**Learning:** Custom visually designed role selectors (cards) will cause accessibility lint errors if they use the prop name `role` since it conflicts with the native HTML `role` attribute when passed down. In addition, to be keyboard accessible, the container must use `role="radiogroup"` and the items `role="radio"` with proper `tabIndex`, `aria-checked`, `focus-visible` styling, and `onKeyDown` listeners for Space and Enter keys.
+**Action:** When creating custom radio buttons or selectable cards, use a prop like `roleType`, add `role="radiogroup"` to the wrapper, and add `role="radio"`, `aria-checked`, `tabIndex={0}`, and an `onKeyDown` handler to the individual items.
