@@ -80,7 +80,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
 
   return (
     <div style={styles.overlay} onClick={handleClose} role="presentation">
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabIndex={0} onKeyDown={(e) => e.stopPropagation()}>
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
