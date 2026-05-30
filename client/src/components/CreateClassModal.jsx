@@ -85,6 +85,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
+      onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }}
     >
       <div
         style={styles.modal}
