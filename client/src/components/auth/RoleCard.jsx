@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, FlaskConical, Check } from 'lucide-react';
+import { GraduationCap, FlaskConical } from 'lucide-react';
 
-const RoleCard = ({ role, selected, onSelect }) => {
-  const isStudent = role === 'student';
+const RoleCard = ({ roleType, selected, onSelect }) => {
+  const isStudent = roleType === 'student';
   const Icon = isStudent ? GraduationCap : FlaskConical;
   const title = isStudent ? 'Student' : 'Teacher';
   const description = isStudent 
@@ -15,11 +15,11 @@ const RoleCard = ({ role, selected, onSelect }) => {
     <motion.div
       whileHover={{ y: -2, borderColor: 'rgba(255,255,255,0.12)' }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(role)}
+      onClick={() => onSelect(roleType)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onSelect(role);
+          onSelect(roleType);
         }
       }}
       role="radio"
