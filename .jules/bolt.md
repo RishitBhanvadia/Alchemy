@@ -5,3 +5,7 @@
 ## 2024-05-18 - SyntaxError duplicate declaration
 **Learning:** Destructuring assignment or multiple declarations of the same variable name using `let` or `const` in the same scope will cause a SyntaxError (Parsing error: Identifier has already been declared).
 **Action:** When refactoring or making modifications using merge_diff, double-check for duplicate state declarations in React components.
+
+## 2024-05-18 - Unused imports in React
+**Learning:** Having an imported but unused module or hook (like `useCallback`) violates ESLint rules and fails strict CI builds.
+**Action:** Always clean up unused imports from components, particularly from `react`, after completing refactoring or when you notice ESLint errors complaining about defined but never used variables.
