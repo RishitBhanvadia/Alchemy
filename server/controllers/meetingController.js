@@ -12,6 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
+const googleAuthService = require('../services/googleAuthService');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
 
@@ -65,11 +66,6 @@ async function saveMeetingSession(code, meetingUrl, platform, teacherId) {
   if (dbError) throw dbError;
   return data;
 }
-
-// ─── In-memory store for Google OAuth tokens (per teacher) ────────────────────
-// In production, store these encrypted in the database.
-
-const googleTokenStore = new Map();
 
 // ─── Zoom: Server-to-Server OAuth Token ──────────────────────────────────────
 
@@ -225,36 +221,11 @@ exports.googleAuthCallback = async (req, res) => {
     // Decode state to get teacher ID and redirect URI
     const { teacherId, redirectUri } = JSON.parse(Buffer.from(state, 'base64').toString());
 
-    const clientId = process.env.GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-
     // Exchange authorization code for tokens
-    const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        code,
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUri,
-        grant_type: 'authorization_code',
-      }),
-    });
-
-    if (!tokenRes.ok) {
-      const body = await tokenRes.text();
-      logger.error('[Google] Token exchange failed:', body);
-      throw new Error(`Google token exchange failed: ${tokenRes.status}`);
-    }
-
-    const tokens = await tokenRes.json();
+    const tokens = await googleAuthService.exchangeAuthCodeForTokens(code, redirectUri);
 
     // Store tokens in memory keyed by teacher ID
-    googleTokenStore.set(teacherId, {
-      accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
-      expiresAt: Date.now() + (tokens.expires_in * 1000),
-    });
+    googleAuthService.setTokens(teacherId, tokens);
 
     logger.info(`[Google] OAuth tokens stored for teacher ${teacherId}`);
 
@@ -276,7 +247,7 @@ exports.googleAuthCallback = async (req, res) => {
 exports.createGoogleMeeting = async (req, res) => {
   try {
     const teacherId = req.user.id;
-    const storedTokens = googleTokenStore.get(teacherId);
+    const storedTokens = googleAuthService.getTokens(teacherId);
 
     if (!storedTokens) {
       return error(res, 'NO_GOOGLE_AUTH', 'Google not connected. Please authorize Google first.', 401);
@@ -285,25 +256,14 @@ exports.createGoogleMeeting = async (req, res) => {
     // Check if token is expired, attempt refresh
     let accessToken = storedTokens.accessToken;
     if (Date.now() >= storedTokens.expiresAt && storedTokens.refreshToken) {
-      const refreshRes = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          client_id: process.env.GOOGLE_CLIENT_ID,
-          client_secret: process.env.GOOGLE_CLIENT_SECRET,
-          refresh_token: storedTokens.refreshToken,
-          grant_type: 'refresh_token',
-        }),
-      });
-
-      if (refreshRes.ok) {
-        const refreshData = await refreshRes.json();
+      try {
+        const refreshData = await googleAuthService.refreshAccessToken(storedTokens.refreshToken);
         accessToken = refreshData.access_token;
         storedTokens.accessToken = accessToken;
         storedTokens.expiresAt = Date.now() + (refreshData.expires_in * 1000);
-      } else {
+      } catch (err) {
         // Token refresh failed — teacher needs to re-auth
-        googleTokenStore.delete(teacherId);
+        googleAuthService.clearTokens(teacherId);
         return error(res, 'TOKEN_EXPIRED', 'Google auth expired. Please re-authorize.', 401);
       }
     }
