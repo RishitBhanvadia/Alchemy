@@ -79,10 +79,9 @@ export const createZoomMeeting = () => {
   return api.post('/meetings/zoom');
 };
 
-/** Get the Google OAuth redirect URL (server-side route) */
-export const getGoogleAuthUrl = (teacherId) => {
-  const baseUrl = import.meta.env.VITE_API_URL || '/api';
-  return `${baseUrl}/meetings/google/auth?teacherId=${encodeURIComponent(teacherId)}`;
+/** Get the Google OAuth redirect URL via authenticated API call */
+export const getGoogleAuthUrl = () => {
+  return api.get('/meetings/google/auth-url');
 };
 
 /** Create a Google Meet via Calendar API (teacher only, requires OAuth first) */
