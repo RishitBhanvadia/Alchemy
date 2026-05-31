@@ -20,8 +20,10 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
+
+// Lazy load the heavy StudentAnalyticsChart component
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
 
@@ -502,19 +504,26 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
-          scores={experimentScores}
-          experimentName={
-            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-          }
-          noDataMessage={
-            !selectedExperiment 
-              ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
-                ? "No students have completed this experiment yet."
-                : undefined
-          }
-        />
+        <React.Suspense fallback={
+          <div style={{...styles.loadingState, minHeight: '350px'}}>
+            <div style={styles.spinner}></div>
+            <p>Loading analytics chart...</p>
+          </div>
+        }>
+          <StudentAnalyticsChart
+            scores={experimentScores}
+            experimentName={
+              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+            }
+            noDataMessage={
+              !selectedExperiment
+                ? "Select an experiment type above to see score distribution."
+                : experimentScores.length === 0
+                  ? "No students have completed this experiment yet."
+                  : undefined
+            }
+          />
+        </React.Suspense>
       </section>
       </main>
     </div>
