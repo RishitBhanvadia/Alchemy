@@ -24,6 +24,7 @@ import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
 
+// OPTIMIZATION: Lazy load heavy charting component to reduce initial JS bundle size
 const StudentAnalyticsChart = lazy(() => import('../components/StudentAnalyticsChart'));
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
