@@ -9,3 +9,7 @@
 ## 2024-05-18 - Unused imports in React
 **Learning:** Having an imported but unused module or hook (like `useCallback`) violates ESLint rules and fails strict CI builds.
 **Action:** Always clean up unused imports from components, particularly from `react`, after completing refactoring or when you notice ESLint errors complaining about defined but never used variables.
+
+## 2024-05-18 - Rules of Hooks
+**Learning:** `useEffect` and other React hooks must be called at the top level of a component. Conditionally returning early (e.g. `if (isTouchDevice) return null;`) before a hook call violates the Rules of Hooks and causes ESLint errors (`react-hooks/rules-of-hooks`).
+**Action:** Ensure all early returns in functional components are placed *after* all hook calls.
