@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { vi, describe, beforeEach, it, expect } from 'vitest';
 import SignUpForm from '../SignUpForm';
 import { supabase } from '../../../supabaseClient';
 import toast from 'react-hot-toast';
