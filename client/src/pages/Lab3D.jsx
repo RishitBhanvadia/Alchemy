@@ -214,6 +214,7 @@ const Lab3D = () => {
                 className={`history-toggle ${isHistoryOpen ? 'active' : ''}`}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
                 title="Experiment History"
+                aria-label="Toggle experiment history"
             >
                 📋
             </button>
