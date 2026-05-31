@@ -64,8 +64,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         window.history.replaceState({}, '', url);
       } else {
         // Need to authenticate first — redirect to Google OAuth
-        const authUrl = getGoogleAuthUrl(profile?.id);
-        window.location.href = authUrl;
+        const response = await getGoogleAuthUrl();
+        window.location.href = response.authUrl || response.data.authUrl;
         return; // Page will navigate away
       }
     } catch (err) {
