@@ -183,7 +183,8 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+if (require.main === module) {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
 });
 
@@ -201,6 +202,10 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => process.emit('SIGTERM'));
 
 // Handle unhandled Promise rejections
+}
+
+module.exports = app;
+
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled Rejection', { reason: reason?.toString() });
 });
