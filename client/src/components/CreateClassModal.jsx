@@ -18,8 +18,6 @@ import useAuthStore from '../store/authStore';
 const CreateClassModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [meetingData, setMeetingData] = useState(null); // { code, meetingUrl, platform }
-  const profile = useAuthStore(state => state.profile);
-
   // Reset state when modal closes
   const handleClose = () => {
     setMeetingData(null);
@@ -64,8 +62,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         window.history.replaceState({}, '', url);
       } else {
         // Need to authenticate first — redirect to Google OAuth
-        const authUrl = getGoogleAuthUrl(profile?.id);
-        window.location.href = authUrl;
+        const response = await getGoogleAuthUrl();
+        window.location.href = response.url;
         return; // Page will navigate away
       }
     } catch (err) {

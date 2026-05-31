@@ -1,0 +1,4 @@
+## 2024-06-01 - Fix IDOR in Google Auth Route
+**Vulnerability:** Unauthenticated IDOR and potential CSRF in the Google OAuth initiation flow (`/api/meetings/google/auth`). An attacker could provide arbitrary `teacherId` query parameters to initiate auth flows on behalf of other users.
+**Learning:** OAuth initialization flows that associate third-party credentials with local user accounts must be authenticated endpoints that derive the target account ID from the secure session (e.g., `req.user.id`), not untrusted client input.
+**Prevention:** Always require authentication (`requireAuth`) for credential-linking endpoints. Use HMAC signatures on OAuth `state` payloads to ensure the state parameters (`teacherId`, `redirectUri`) cannot be tampered with between the initiation and callback phases.
