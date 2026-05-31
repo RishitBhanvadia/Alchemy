@@ -13,3 +13,7 @@
 ## 2024-05-18 - Rules of Hooks
 **Learning:** `useEffect` and other React hooks must be called at the top level of a component. Conditionally returning early (e.g. `if (isTouchDevice) return null;`) before a hook call violates the Rules of Hooks and causes ESLint errors (`react-hooks/rules-of-hooks`).
 **Action:** Ensure all early returns in functional components are placed *after* all hook calls.
+
+## 2024-05-18 - Server tests hanging
+**Learning:** Calling `app.listen()` directly inside an Express server file that is also imported for testing (e.g. using `supertest`) causes the process to hang indefinitely and fail tests.
+**Action:** Always wrap `app.listen()` inside an `if (require.main === module)` block and make sure to export the `app` instance using `module.exports = app;`.
