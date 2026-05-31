@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import MeetingCodeCard from './MeetingCodeCard';
 import { createZoomMeeting, createGoogleMeeting, getGoogleAuthUrl } from '../utils/api';
-import useAuthStore from '../store/authStore';
 
 const CreateClassModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
