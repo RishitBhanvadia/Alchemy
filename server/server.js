@@ -183,8 +183,13 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
+// Handle unhandled Promise rejections
+// Handle unhandled Promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection', { reason: reason?.toString() });
+});
+
 if (require.main === module) {
-  if (require.main === module) {
   const server = app.listen(PORT, '0.0.0.0', () => {
       logger.info(`Server running on port ${PORT}`);
   });
@@ -204,8 +209,3 @@ if (require.main === module) {
 }
 
 module.exports = app;
-
-// Handle unhandled Promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection', { reason: reason?.toString() });
-});
