@@ -4,7 +4,6 @@
     width: 100%;
     min-height: 100vh;
   min-height: 100dvh;
-  height: 100dvh;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,7 +25,6 @@
 /* Chemical Rack (Left Panel) */
 .chemical-rack {
     max-width: 350px;
-  width: 100%;
     height: 80%;
     margin-left: 50px;
     z-index: 10;
@@ -136,7 +134,6 @@
     position: relative;
     /* This needs to be the reference for absolute positioning */
     max-width: 500px;
-  width: 100%;
     height: 500px;
     display: flex;
     justify-content: center;
@@ -216,7 +213,6 @@
 /* Right Status Panel */
 .status-panel {
     max-width: 300px;
-  width: 100%;
     height: 60%;
     margin-right: 50px;
     z-index: 10;

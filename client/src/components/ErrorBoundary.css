@@ -5,16 +5,14 @@
     justify-content: center;
     height: 100vh;
   height: 100dvh;
-    width: 100vw;
+    width: 100%;
     background: var(--color-bg-primary, #0A0A1A);
     padding: var(--spacing-lg, 24px);
     box-sizing: border-box;
 }
 
 .error-card {
-    max-max-width: 500px;
-  width: 100%;
-    width: 100%;
+    max-width: 500px;
     padding: var(--spacing-xl, 48px);
     text-align: center;
     display: flex;

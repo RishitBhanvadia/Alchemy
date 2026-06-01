@@ -1,7 +1,6 @@
 .classroom-detail-page {
     min-height: 100vh;
   min-height: 100dvh;
-  height: 100dvh;
     padding: 100px 40px 40px;
     display: flex;
     flex-direction: column;
@@ -11,8 +10,7 @@
 
 .detail-header {
     width: 100%;
-    max-max-width: 1400px;
-  width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px 30px;
     display: flex;
@@ -64,8 +62,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-lg);
     width: 100%;
-    max-max-width: 1400px;
-  width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -267,8 +264,7 @@
 
 .assignment-modal {
     width: 100%;
-    max-max-width: 500px;
-  width: 100%;
+    max-width: 500px;
     padding: 30px;
     display: flex;
     flex-direction: column;
