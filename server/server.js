@@ -96,8 +96,8 @@ const corsOptions = {
         // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
-        // allow local config + dynamic vercel preview URLs
-        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+        // strictly allow configured origins
+        if (allowedOrigins.indexOf(origin) !== -1) {
             return callback(null, true);
         }
         
