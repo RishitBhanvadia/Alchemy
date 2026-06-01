@@ -9,6 +9,7 @@
  *  - joinMeeting:         Looks up meeting code → returns URL if not expired
  */
 
+const crypto = require('crypto');
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
@@ -167,21 +168,17 @@ exports.createZoomMeeting = async (req, res) => {
 };
 
 /**
- * GET /api/meetings/google/auth?teacherId=xxx
- * Redirects the teacher to Google OAuth consent screen.
- * Note: This is a browser redirect, so no auth middleware — teacherId is passed as query param.
+ * GET /api/meetings/google/auth-url
+ * Securely generates the Google Auth URL.
  */
-exports.googleAuthRedirect = (req, res) => {
+exports.getAuthUrl = (req, res) => {
   try {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     if (!clientId) {
       return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID in .env', 500);
     }
 
-    const { teacherId } = req.query;
-    if (!teacherId) {
-      return error(res, 'VALIDATION_ERROR', 'teacherId query parameter is required.', 400);
-    }
+    const teacherId = req.user.id;
 
     // Build the server callback URL dynamically
     const protocol = req.protocol;
@@ -189,9 +186,17 @@ exports.googleAuthRedirect = (req, res) => {
     const redirectUri = `${protocol}://${host}/api/meetings/google/callback`;
 
     // Store redirect URI and teacher ID in state for the callback
+    const stateObj = { teacherId, redirectUri };
+    const stateStr = JSON.stringify(stateObj);
+
+    // Create an HMAC signature of the state to prevent CSRF/tampering
+    const hmac = crypto.createHmac('sha256', process.env.GOOGLE_CLIENT_SECRET);
+    hmac.update(stateStr);
+    const signature = hmac.digest('hex');
+
     const state = Buffer.from(JSON.stringify({
-      teacherId,
-      redirectUri,
+      ...stateObj,
+      signature
     })).toString('base64');
 
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
@@ -203,10 +208,10 @@ exports.googleAuthRedirect = (req, res) => {
     authUrl.searchParams.set('prompt', 'consent');
     authUrl.searchParams.set('state', state);
 
-    return res.redirect(authUrl.toString());
+    return success(res, { url: authUrl.toString() });
   } catch (err) {
-    logger.error('[googleAuthRedirect]', err.message);
-    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to initiate Google auth.', 500);
+    logger.error('[getAuthUrl]', err.message);
+    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to generate Google auth URL.', 500);
   }
 };
 
@@ -222,8 +227,19 @@ exports.googleAuthCallback = async (req, res) => {
       return error(res, 'INVALID_CALLBACK', 'Missing authorization code or state.', 400);
     }
 
-    // Decode state to get teacher ID and redirect URI
-    const { teacherId, redirectUri } = JSON.parse(Buffer.from(state, 'base64').toString());
+    // Decode state to get teacher ID, redirect URI, and signature
+    const { teacherId, redirectUri, signature } = JSON.parse(Buffer.from(state, 'base64').toString());
+
+    // Verify HMAC signature
+    const stateStr = JSON.stringify({ teacherId, redirectUri });
+    const hmac = crypto.createHmac('sha256', process.env.GOOGLE_CLIENT_SECRET);
+    hmac.update(stateStr);
+    const expectedSignature = hmac.digest('hex');
+
+    if (signature !== expectedSignature) {
+      logger.error('[Google] Invalid state signature detected');
+      return error(res, 'INVALID_STATE', 'Invalid state signature.', 400);
+    }
 
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
