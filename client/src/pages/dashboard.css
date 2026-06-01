@@ -2,7 +2,6 @@
     width: 100%;
     min-height: 100vh;
   min-height: 100dvh;
-  height: 100dvh;
     display: flex;
     background: transparent;
     position: relative;
@@ -29,8 +28,7 @@
 .dashboard-container {
     width: 95%;
     /* Increased width usage */
-    max-max-width: 1200px;
-  width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     /* Center container */
     display: flex;
@@ -93,7 +91,6 @@
     /* Slightly smaller radius */
     backdrop-filter: blur(10px);
     max-width: 220px;
-  width: 100%;
     /* Reduced width */
     flex-grow: 0;
     /* Prevent over-growing */
@@ -155,7 +152,6 @@
 
 .module-card:hover .card-glow {
     max-width: 300px;
-  width: 100%;
     height: 300px;
 }
 
