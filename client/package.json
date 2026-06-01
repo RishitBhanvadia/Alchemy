@@ -124,6 +124,7 @@
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "vite": "^6.1.0",
+    "vite-bundle-visualizer": "^1.2.1",
     "vitest": "^4.0.18"
   }
 }
