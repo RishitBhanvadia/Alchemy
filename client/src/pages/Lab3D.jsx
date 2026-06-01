@@ -11,6 +11,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
+import apiClient from '../utils/apiClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
@@ -113,13 +114,11 @@ const Lab3D = () => {
 
         const timer = setTimeout(async () => {
             try {
-                const res = await fetch('/api/ai/hint', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
+                const res = await apiClient.get('/ai/hint', {
+                    params: { chem_a: chemA, chem_b: chemB, chem_c: chemC, chem_i: chemI }
                 });
-                const data = await res.json();
-                if (data.hint) {
-                    setCurrentHint(data.hint);
+                if (res.data?.data?.hint) {
+                    setCurrentHint(res.data.data.hint);
                 }
             } catch (error) {
                 console.error("Failed to fetch AI hint:", error);

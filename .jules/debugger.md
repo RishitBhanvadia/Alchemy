@@ -1,0 +1,4 @@
+2026-06-01 - Fix AI Hint Fetch Request
+**Bug:** The AI Hint request in the 3D lab environment was failing due to a relative fetch url (`/api/ai/hint`) being used directly instead of the configured `apiClient`. This caused network errors as the frontend dev server wasn't properly routing the request, and the required query parameters (chemical concentrations) were missing from the request entirely.
+**Root Cause:** The `fetch` API was used directly with a relative path instead of using the centralized Axios `apiClient` that handles the `baseURL`, and the request body did not include the chemical concentrations that the backend expects as query parameters.
+**Learning:** Always use the centralized `apiClient` wrapper for all API requests to ensure the correct `baseURL` and token configurations are applied. Additionally, always verify the backend controller's expected parameters (e.g., query params vs body params) when implementing frontend API calls.
