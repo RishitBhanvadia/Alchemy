@@ -96,8 +96,8 @@ const corsOptions = {
         // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
-        // allow local config + dynamic vercel preview URLs
-        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+        // strictly allow configured origins
+        if (allowedOrigins.indexOf(origin) !== -1) {
             return callback(null, true);
         }
         
@@ -183,9 +183,14 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
+let server;
+if (require.main === module) {
+  server = app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
