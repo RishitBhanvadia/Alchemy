@@ -149,14 +149,14 @@ const { requireAuth, requireRole } = require('./middleware/authMiddleware');
 // Authenticated routes
 app.use('/api/results', requireAuth, resultRoutes);
 app.use('/api/titration', requireAuth, titrationRoutes);
-app.use('/api/ai', requireAuth, aiRoutes);
+app.use('/api/ai', aiLimiter, requireAuth, aiRoutes);
 app.use('/api/experiments', requireAuth, experimentRoutes);
 
 // Role-specific routes
 app.use('/api/classroom', requireAuth, requireRole('teacher'), classroomRoutes);
 app.use('/api/teacher', requireAuth, requireRole('teacher'), teacherRoutes);
 app.use('/api/student', requireAuth, requireRole('student'), experimentRoutes);
-app.use('/api/auth', requireAuth, profileRoutes);
+app.use('/api/auth', authLimiter, requireAuth, profileRoutes);
 
 // Meeting routes (auth middleware applied inside the router per-route)
 app.use('/api/meetings', meetingRoutes);
