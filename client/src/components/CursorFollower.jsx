@@ -29,19 +29,27 @@ const CursorFollower = () => {
             document.removeEventListener("mouseup", onMouseUp);
         };
 
+        let rafId;
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+            // ⚡ Bolt Optimisation: Throttle mousemove events to prevent massive React re-renders.
+            // Expected Impact: Reduces state updates from 1000+ fps to a maximum of 60fps (display refresh rate).
+            rafId = requestAnimationFrame(() => {
+                setPosition({ x: e.clientX, y: e.clientY });
 
-            // Check if hovering over clickable elements
-            const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                // Check if hovering over clickable elements
+                const target = e.target;
+                const isClickable =
+                    target?.tagName?.toLowerCase() === 'button' ||
+                    target?.tagName?.toLowerCase() === 'a' ||
+                    target?.closest?.('button') ||
+                    target?.closest?.('a') ||
+                    target?.classList?.contains('clickable');
 
-            setHovering(!!isClickable);
+                setHovering(!!isClickable);
+            });
         };
 
         const onMouseEnter = () => {
@@ -61,7 +69,12 @@ const CursorFollower = () => {
         };
 
         addEventListeners();
-        return () => removeEventListeners();
+        return () => {
+            removeEventListeners();
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+        };
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
