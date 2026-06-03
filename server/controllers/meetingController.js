@@ -3,7 +3,7 @@
  *
  * Endpoints:
  *  - createZoomMeeting:   Server-to-Server OAuth → instant Zoom meeting
- *  - googleAuthRedirect:  Redirects teacher to Google OAuth consent
+ *  - getGoogleAuthUrl:    Returns Google OAuth consent screen URL
  *  - googleAuthCallback:  Exchanges auth code for tokens, stores per-user
  *  - createGoogleMeeting: Uses stored tokens to create Calendar event w/ Meet link
  *  - joinMeeting:         Looks up meeting code → returns URL if not expired
@@ -167,20 +167,20 @@ exports.createZoomMeeting = async (req, res) => {
 };
 
 /**
- * GET /api/meetings/google/auth?teacherId=xxx
- * Redirects the teacher to Google OAuth consent screen.
- * Note: This is a browser redirect, so no auth middleware — teacherId is passed as query param.
+ * GET /api/meetings/google/auth-url
+ * Returns the Google OAuth consent screen URL.
+ * Requires auth middleware to identify the teacher.
  */
-exports.googleAuthRedirect = (req, res) => {
+exports.getGoogleAuthUrl = (req, res) => {
   try {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     if (!clientId) {
       return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID in .env', 500);
     }
 
-    const { teacherId } = req.query;
+    const teacherId = req.user?.id;
     if (!teacherId) {
-      return error(res, 'VALIDATION_ERROR', 'teacherId query parameter is required.', 400);
+      return error(res, 'UNAUTHORIZED', 'Authentication required.', 401);
     }
 
     // Build the server callback URL dynamically
@@ -203,10 +203,10 @@ exports.googleAuthRedirect = (req, res) => {
     authUrl.searchParams.set('prompt', 'consent');
     authUrl.searchParams.set('state', state);
 
-    return res.redirect(authUrl.toString());
+    return success(res, { authUrl: authUrl.toString() });
   } catch (err) {
-    logger.error('[googleAuthRedirect]', err.message);
-    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to initiate Google auth.', 500);
+    logger.error('[getGoogleAuthUrl]', err.message);
+    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to generate Google auth URL.', 500);
   }
 };
 
