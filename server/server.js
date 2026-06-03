@@ -1,11 +1,6 @@
-if (require.main === module) {
-  if (process.env.NODE_ENV !== 'production') {
-      require('dotenv').config();
-  }
-  const validateEnv = require('./config/validateEnv');
-  validateEnv(); // exits process if any required var is missing
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
 }
-validateEnv(); // exits process if any required var is missing
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -33,21 +28,18 @@ const generalLimiter = rateLimit({
     legacyHeaders: false,
     message: { success: false, error: { code: 'RATE_LIMITED', message: 'Too many requests. Please slow down.' } }
 });
-}
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 10,
     message: { success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait 15 minutes.' } }
 });
-}
 
 const aiLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     max: 30,
     message: { success: false, error: { code: 'RATE_LIMITED', message: 'AI rate limit reached. Please wait before asking more questions.' } }
 });
-}
 
 app.use('/api', generalLimiter);
 
@@ -135,24 +127,18 @@ app.use((req, res, next) => {
             status: res.statusCode,
             duration,
         });
-}
     });
-}
     next();
 });
-}
 
 // Health Check & Root Route
 app.get('/', (req, res) => {
     res.status(200).send("Alchemy Backend is Active 🧪");
 });
-}
 
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date() });
-}
 });
-}
 
 const { requireAuth, requireRole } = require('./middleware/authMiddleware');
 
@@ -181,7 +167,6 @@ app.use((err, req, res, next) => {
     error: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
-}
 
   if (res.headersSent) return next(err);
 
@@ -192,19 +177,14 @@ app.use((err, req, res, next) => {
       message: 'An unexpected error occurred.',
     }
   });
-}
 });
-}
 
 const PORT = process.env.PORT || 5000;
 
 if (require.main === module) {
-    const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
-}
+  const validateEnv = require('./config/validateEnv');
+  validateEnv(); // exits process if any required var is missing
 
-if (require.main === module) {
   const server = app.listen(PORT, '0.0.0.0', () => {
       logger.info(`Server running on port ${PORT}`);
   });
