@@ -1,0 +1,4 @@
+## 2025-06-03 - Fix Catalyst/Indicator reaction_id Calculation
+**Bug:** The `computeReactionId` function inside `server/controllers/resultController.js` incorrectly calculated the reaction_id because it assigned the weight of 100 to indicator and 1000 to catalyst.
+**Root Cause:** The `computeReactionId(a, b, i, c)` function in `server/controllers/resultController.js` had `i` mapped to 100 and `c` mapped to 1000. However, the true source of truth, `server/utils/reactionHash.js` has `c` mapped to 100 and `i` mapped to 1000. This mismatch caused incorrect lookup values in the database, resulting in the app showing incorrect reaction states.
+**Learning:** Always verify local duplication of hash/ID calculation logic against the canonical utility function (`server/utils/reactionHash.js`) to ensure positional weights match the defined specification.

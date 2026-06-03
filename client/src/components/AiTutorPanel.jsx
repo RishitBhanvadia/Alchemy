@@ -62,7 +62,6 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
-      console.error('AI Tutorial error:', error);
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
@@ -162,3 +161,9 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
 };
 
 export default AiTutorPanel;
+
+import PropTypes from 'prop-types';
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+};

@@ -24,6 +24,7 @@ import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
+import PropTypes from 'prop-types';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
@@ -231,7 +232,6 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
-        console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
         setLoading(false);
@@ -309,7 +309,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Use the actual scores from DB
         setExperimentScores((data || []).map((log) => log.score || 0));
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        // Ignore error
       } finally {
         setLoading(false);
       }
@@ -762,3 +762,7 @@ styleSheet.innerText = `
   }
 `;
 document.head.appendChild(styleSheet);
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool
+};
