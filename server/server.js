@@ -1,8 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
-const validateEnv = require('./config/validateEnv');
-validateEnv(); // exits process if any required var is missing
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -149,14 +147,14 @@ const { requireAuth, requireRole } = require('./middleware/authMiddleware');
 // Authenticated routes
 app.use('/api/results', requireAuth, resultRoutes);
 app.use('/api/titration', requireAuth, titrationRoutes);
-app.use('/api/ai', requireAuth, aiRoutes);
+app.use('/api/ai', aiLimiter, requireAuth, aiRoutes);
 app.use('/api/experiments', requireAuth, experimentRoutes);
 
 // Role-specific routes
 app.use('/api/classroom', requireAuth, requireRole('teacher'), classroomRoutes);
 app.use('/api/teacher', requireAuth, requireRole('teacher'), teacherRoutes);
 app.use('/api/student', requireAuth, requireRole('student'), experimentRoutes);
-app.use('/api/auth', requireAuth, profileRoutes);
+app.use('/api/auth', authLimiter, requireAuth, profileRoutes);
 
 // Meeting routes (auth middleware applied inside the router per-route)
 app.use('/api/meetings', meetingRoutes);
@@ -183,24 +181,31 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+  const validateEnv = require('./config/validateEnv');
+  validateEnv(); // exits process if any required var is missing
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM received. Closing server gracefully...');
-  server.close(() => {
-    logger.info('Server closed.');
-    process.exit(0);
+  const server = app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`Server running on port ${PORT}`);
   });
-  // Force close after 10 seconds
-  setTimeout(() => process.exit(1), 10000);
-});
 
-process.on('SIGINT', () => process.emit('SIGTERM'));
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM received. Closing server gracefully...');
+    server.close(() => {
+      logger.info('Server closed.');
+      process.exit(0);
+    });
+    // Force close after 10 seconds
+    setTimeout(() => process.exit(1), 10000);
+  });
 
-// Handle unhandled Promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection', { reason: reason?.toString() });
-});
+  process.on('SIGINT', () => process.emit('SIGTERM'));
+
+  // Handle unhandled Promise rejections
+  process.on('unhandledRejection', (reason, promise) => {
+    logger.error('Unhandled Rejection', { reason: reason?.toString() });
+  });
+}
+
+module.exports = app;
