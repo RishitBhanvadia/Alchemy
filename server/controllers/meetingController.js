@@ -167,21 +167,18 @@ exports.createZoomMeeting = async (req, res) => {
 };
 
 /**
- * GET /api/meetings/google/auth?teacherId=xxx
- * Redirects the teacher to Google OAuth consent screen.
- * Note: This is a browser redirect, so no auth middleware — teacherId is passed as query param.
+ * GET /api/meetings/google/auth-url
+ * Returns the Google OAuth consent screen URL.
+ * Secure API endpoint — uses req.user.id instead of query param to prevent CSRF/auth bypass.
  */
-exports.googleAuthRedirect = (req, res) => {
+exports.getGoogleAuthUrl = (req, res) => {
   try {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     if (!clientId) {
       return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID in .env', 500);
     }
 
-    const { teacherId } = req.query;
-    if (!teacherId) {
-      return error(res, 'VALIDATION_ERROR', 'teacherId query parameter is required.', 400);
-    }
+    const teacherId = req.user.id;
 
     // Build the server callback URL dynamically
     const protocol = req.protocol;
@@ -203,10 +200,10 @@ exports.googleAuthRedirect = (req, res) => {
     authUrl.searchParams.set('prompt', 'consent');
     authUrl.searchParams.set('state', state);
 
-    return res.redirect(authUrl.toString());
+    return success(res, { url: authUrl.toString() });
   } catch (err) {
-    logger.error('[googleAuthRedirect]', err.message);
-    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to initiate Google auth.', 500);
+    logger.error('[getGoogleAuthUrl]', err.message);
+    return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to generate Google auth URL.', 500);
   }
 };
 

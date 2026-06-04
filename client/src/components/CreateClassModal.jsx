@@ -13,12 +13,12 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import MeetingCodeCard from './MeetingCodeCard';
 import { createZoomMeeting, createGoogleMeeting, getGoogleAuthUrl } from '../utils/api';
-import useAuthStore from '../store/authStore';
+
 
 const CreateClassModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [meetingData, setMeetingData] = useState(null); // { code, meetingUrl, platform }
-  const profile = useAuthStore(state => state.profile);
+
 
   // Reset state when modal closes
   const handleClose = () => {
@@ -63,9 +63,9 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         url.searchParams.delete('google_auth');
         window.history.replaceState({}, '', url);
       } else {
-        // Need to authenticate first — redirect to Google OAuth
-        const authUrl = getGoogleAuthUrl(profile?.id);
-        window.location.href = authUrl;
+        // Need to authenticate first — get URL via API and redirect
+        const response = await getGoogleAuthUrl();
+        window.location.href = response.data.url;
         return; // Page will navigate away
       }
     } catch (err) {
