@@ -1,0 +1,4 @@
+## 2025-02-20 - Build Failure Due To Duplicate Declarations
+**Bug:** The client application failed to build (`pnpm build`) because of duplicate state declarations (`clicking` and `hovering`) in `CursorFollower.jsx`. This was accompanied by a conditional `return null` that was placed *before* the hooks in violation of the Rules of Hooks.
+**Root Cause:** A merging error or accidental copy-paste in `CursorFollower.jsx` introduced redundant state variables (`const [clicking, setClicking] = useState(false); const [hovering, setHovering] = useState(false);`). Additionally, `if (isTouchDevice) return null;` was placed before `useEffect` hooks, triggering a linter warning about hooks order (or would have dynamically, although it also crashed the build purely on syntax due to duplicate `const`).
+**Learning:** Always verify hook placement (no conditional returns before hooks) and watch for duplicate variables, as they immediately crash the Vite (`esbuild`) compilation.
