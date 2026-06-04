@@ -1,0 +1,4 @@
+## 2025-02-18 - LogicGuard: Fix positional weights for computeReactionId
+**Bug:** The `computeReactionId` function in `server/controllers/resultController.js` calculated the `reaction_id` incorrectly by assigning a weight of 100 to the indicator and 1000 to the catalyst. This reversed their contributions to the reaction ID, leading to the wrong result output from the database when looking up specific combinations.
+**Root Cause:** A logic error where the local duplicated implementation in the controller inverted the weights compared to the canonical version in `server/utils/reactionHash.js`.
+**Learning:** Always refer to and use the canonical implementation of a hash/ID calculator, or ensure duplicated implementations are tightly synchronized to the canonical source to avoid mismatched calculations.
