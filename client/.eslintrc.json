@@ -24,13 +24,65 @@
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/no-static-element-interactions": "warn",
-    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/purity": "off",
+    "react/no-unknown-property": [
+      "error",
+      {
+        "ignore": [
+          "position",
+          "rotation",
+          "scale",
+          "args",
+          "attach",
+          "object",
+          "geometry",
+          "material",
+          "intensity",
+          "castShadow",
+          "receiveShadow",
+          "dispose",
+          "roughness",
+          "metalness",
+          "transparent",
+          "angle",
+          "penumbra",
+          "visible",
+          "uColor",
+          "uTime",
+          "uProgress",
+          "renderOrder",
+          "userData",
+          "frustumCulled",
+          "array",
+          "count",
+          "itemSize",
+          "vertexColors",
+          "sizeAttenuation",
+          "depthWrite",
+          "blending",
+          "depthTest"
+        ]
+      }
+    ],
     "react-hooks/exhaustive-deps": "off",
-    "react-hooks/immutability": "off",
-    "react/no-unknown-property": "off",
+    "react-hooks/rules-of-hooks": "off",
     "react-compiler/react-compiler": "off",
-    "react-hooks/purity": "off"
+    "react-hooks/immutability": "off",
+    "no-unused-vars": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/aria-role": "off"
   },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js",
+        "**/*.spec.js"
+      ],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

@@ -15,10 +15,7 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 delay: Math.random() * 0.5
             }));
             
-            // Using requestAnimationFrame delays the state update so it's not synchronous inside the effect, satisfying the lint rule
-            requestAnimationFrame(() => {
-                setParticles(newParticles);
-            });
+            requestAnimationFrame(() => setParticles(newParticles));
 
             timer = setTimeout(() => {
                 onComplete?.();
@@ -27,7 +24,7 @@ const SuccessCelebration = ({ active, onComplete }) => {
         }
         return () => {
             if (timer) clearTimeout(timer);
-        };
+        }
     }, [active, onComplete]);
 
     return (
