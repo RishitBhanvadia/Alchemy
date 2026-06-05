@@ -27,6 +27,9 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
+            // Throttling mousemove updates using requestAnimationFrame (RAF)
+            // This prevents excessive React re-renders and layout thrashing
+            // by synchronizing state updates with the display refresh rate (max 60fps).
             if (rafId) {
                 cancelAnimationFrame(rafId);
             }
