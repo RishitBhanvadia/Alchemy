@@ -1,3 +1,4 @@
+import EmptyState from "../components/EmptyState";
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from "framer-motion";
 import "./Lab3D.css";
@@ -241,7 +242,13 @@ const Lab3D = () => {
                                     </div>
                                 </div>
                             ))}
-                            {historyLogs.length === 0 && <p className="empty-history">No experiments run yet.</p>}
+                            {historyLogs.length === 0 && (
+                                <EmptyState
+                                    icon="⚗️"
+                                    title="No experiments run yet"
+                                    description="Start mixing chemicals to see your results here."
+                                />
+                            )}
                         </div>
                     </motion.div>
                 )}

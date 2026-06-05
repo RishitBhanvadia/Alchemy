@@ -1,0 +1,4 @@
+## 2024-06-05 - Empty States for History Panels
+**Problem:** In the Lab3D view, the experiment history side panel uses a plain paragraph tag "No experiments run yet." for its empty state, whereas other parts of the application (like TeacherDashboard, StudentDashboard, History page) use a beautifully styled `<EmptyState>` component with an icon and clear message.
+**Context:** Consistent empty states are critical for maintaining visual hierarchy and keeping the app cohesive for the user. When a user first enters the 3D lab, the history panel is empty. Showing a generic unstyled text string creates visual friction and breaks the "glassmorphism" aesthetic established in the rest of the application.
+**Solution:** Replaced the plain text empty state in `Lab3D.jsx`'s `history-list` block with the standard `<EmptyState>` component, matching the design system and giving a consistent experience when no logs exist yet.
