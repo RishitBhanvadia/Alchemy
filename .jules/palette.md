@@ -1,3 +1,0 @@
-## 2024-06-05 - ARIA Role Prop Conflicts and Keyboard A11y
-**Learning:** Custom component props named `role` (e.g., in `RoleCard`) can conflict with standard HTML ARIA attributes, causing `jsx-a11y/aria-role` ESLint errors. Additionally, interactive custom elements without semantic tags must have `role="button"`, `tabIndex`, and keyboard event handlers. Furthermore, empty or hash-only anchor tags trigger `jsx-a11y/anchor-is-valid` errors and should be replaced with styled `<button type="button">` elements.
-**Action:** Rename such conflicting props to `roleType` to resolve the conflict. When making custom divs interactive, ensure keyboard accessibility is fully implemented. Replace invalid anchor tags with buttons.
