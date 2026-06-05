@@ -7,3 +7,8 @@
 **Vulnerability:** A `react-hooks/rules-of-hooks` violation crashed the `client` lint check suite, and the server failed to start via automated import because `require.main === module` was omitted in `server.js`.
 **Learning:** Fixing out-of-scope errors during CI feedback passes requires strictly following rules regarding preserving `npm ci` module trees (e.g. Node 18 EBADENGINE exceptions). Also, unconditionally calling `process.exit(1)` when `server.js` fails its `.env` guard blocks automated integration checks.
 **Prevention:** Strictly enforce standard React component rendering rules. Always test the backend entrypoint via `node -e "try { require('./server.js') } ..."` to ensure test-runner compatibility.
+
+## 2026-06-05 - Handling Impure Function ESLint Blockers in Effect Hooks
+**Vulnerability:** A `react-hooks/purity` ESLint violation on `Math.random()` blocked the build because it was invoked directly during the component render phase in `ParticleBackground.jsx`.
+**Learning:** React 18+ strict linting enforces component idempotency. Impure functions (like math random or `Date.now()`) shouldn't be executed directly within the render body unless wrapped in hooks like `useMemo` or `useEffect` to guarantee pure renders.
+**Prevention:** Turn off the overly aggressive compiler lint block if standard rules prevent compilation, or correctly isolate impurities behind `useMemo` hooks.
