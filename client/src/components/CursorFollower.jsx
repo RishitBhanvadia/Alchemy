@@ -8,11 +8,9 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
     useEffect(() => {
+        let rafId = null;
+
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -30,18 +28,23 @@ const CursorFollower = () => {
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+            rafId = requestAnimationFrame(() => {
+                setPosition({ x: e.clientX, y: e.clientY });
 
-            // Check if hovering over clickable elements
-            const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+                // Check if hovering over clickable elements
+                const target = e.target;
+                const isClickable =
+                    target.tagName.toLowerCase() === 'button' ||
+                    target.tagName.toLowerCase() === 'a' ||
+                    target.closest('button') ||
+                    target.closest('a') ||
+                    target.classList.contains('clickable');
 
-            setHovering(!!isClickable);
+                setHovering(!!isClickable);
+            });
         };
 
         const onMouseEnter = () => {
@@ -61,8 +64,15 @@ const CursorFollower = () => {
         };
 
         addEventListeners();
-        return () => removeEventListeners();
+        return () => {
+            removeEventListeners();
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+        };
     }, []);
+
+    if (isTouchDevice) return null;
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
