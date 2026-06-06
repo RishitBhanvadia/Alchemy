@@ -71,7 +71,10 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
+  // Store these in a ref to avoid ESLint immutability errors inside useFrame and useCallback
+  const physicsDataRef = useRef(null);
+
+  const { positions, colors, sizes } = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
     const life = new Float32Array(particleCount);
@@ -107,8 +110,24 @@ export default function ParticleEmitter({
     return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
   }, [particleCount, config]);
 
+  useEffect(() => {
+    physicsDataRef.current = { positions, velocities: new Float32Array(particleCount * 3), lifetimes: new Float32Array(particleCount), colors, sizes };
+
+    // Initialize velocities and lifetimes since they aren't returned from memo anymore
+    for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        const v = config.velocityFn();
+        physicsDataRef.current.velocities[i3] = v[0];
+        physicsDataRef.current.velocities[i3 + 1] = v[1];
+        physicsDataRef.current.velocities[i3 + 2] = v[2];
+        physicsDataRef.current.lifetimes[i] = Math.random() * config.lifetime;
+    }
+  }, [positions, colors, sizes, particleCount, config]);
+
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
+    if (!physicsDataRef.current) return;
+    const { velocities: velArray, colors: colArray, positions: posArray, lifetimes: lifeArray } = physicsDataRef.current;
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
@@ -117,25 +136,33 @@ export default function ParticleEmitter({
       const elevation = (Math.random() - 0.3) * Math.PI;
       const speed = 1.5 + Math.random() * 2.0;
 
-      velocities[i3] = Math.cos(angle) * Math.cos(elevation) * speed;
-      velocities[i3 + 1] = Math.abs(Math.sin(elevation)) * speed + 0.5;
-      velocities[i3 + 2] = Math.sin(angle) * Math.cos(elevation) * speed;
+      if (velArray) {
+        velArray[i3] = Math.cos(angle) * Math.cos(elevation) * speed;
+        velArray[i3 + 1] = Math.abs(Math.sin(elevation)) * speed + 0.5;
+        velArray[i3 + 2] = Math.sin(angle) * Math.cos(elevation) * speed;
+      }
 
       // Orange/red color gradient
-      const t = Math.random();
-      colors[i3] = 1.0;                        // R: always full
-      colors[i3 + 1] = 0.2 + t * 0.5;          // G: orange range
-      colors[i3 + 2] = t * 0.1;                 // B: minimal
+      if (colArray) {
+        const t = Math.random();
+        colArray[i3] = 1.0;                        // R: always full
+        colArray[i3 + 1] = 0.2 + t * 0.5;          // G: orange range
+        colArray[i3 + 2] = t * 0.1;                 // B: minimal
+      }
 
       // Reset lifetime
-      lifetimes[i] = 0;
+      if (lifeArray) {
+        lifeArray[i] = 0;
+      }
 
       // Reset position to origin
-      positions[i3] = (Math.random() - 0.5) * 0.3;
-      positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
-      positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
+      if (posArray) {
+        posArray[i3] = (Math.random() - 0.5) * 0.3;
+        posArray[i3 + 1] = (Math.random() - 0.5) * 0.3;
+        posArray[i3 + 2] = (Math.random() - 0.5) * 0.3;
+      }
     }
-  }, [particleCount, positions, velocities, lifetimes, colors]);
+  }, [particleCount]);
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
   useEffect(() => {
@@ -191,15 +218,18 @@ export default function ParticleEmitter({
     const colArray = colAttr?.array;
     const sizeArray = sizeAttr?.array;
 
+    if (!physicsDataRef.current) return;
+    const { velocities: velData, lifetimes: lifeData } = physicsDataRef.current;
+
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
       // Update lifetime
-      lifetimes[i] += delta;
+      lifeData[i] += delta;
 
       // If particle expired, respawn it
-      if (lifetimes[i] >= config.lifetime) {
-        lifetimes[i] = 0;
+      if (lifeData[i] >= config.lifetime) {
+        lifeData[i] = 0;
 
         // Reset position to origin
         posArray[i3] = (Math.random() - 0.5) * 0.2;
@@ -214,9 +244,9 @@ export default function ParticleEmitter({
               (Math.random() - 0.5) * 3,
             ]
           : config.velocityFn();
-        velocities[i3] = v[0];
-        velocities[i3 + 1] = v[1];
-        velocities[i3 + 2] = v[2];
+        velData[i3] = v[0];
+        velData[i3 + 1] = v[1];
+        velData[i3 + 2] = v[2];
 
         // Reset color for non-exothermic
         if (!isExothermic && colArray) {
@@ -229,15 +259,15 @@ export default function ParticleEmitter({
       }
 
       // Apply velocity
-      posArray[i3] += velocities[i3] * delta;
-      posArray[i3 + 1] += velocities[i3 + 1] * delta;
-      posArray[i3 + 2] += velocities[i3 + 2] * delta;
+      posArray[i3] += velData[i3] * delta;
+      posArray[i3 + 1] += velData[i3 + 1] * delta;
+      posArray[i3 + 2] += velData[i3 + 2] * delta;
 
       // Apply gravity (slight downward for realism)
-      velocities[i3 + 1] -= 0.3 * delta;
+      velData[i3 + 1] -= 0.3 * delta;
 
       // Fade out: reduce opacity via size decrease
-      const lifeRatio = lifetimes[i] / config.lifetime;
+      const lifeRatio = lifeData[i] / config.lifetime;
       const fadeOut = 1.0 - lifeRatio;
 
       if (sizeArray) {
