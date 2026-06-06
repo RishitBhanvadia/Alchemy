@@ -2,7 +2,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const validateEnv = require('./config/validateEnv');
-validateEnv(); // exits process if any required var is missing
+if (require.main === module) {
+    validateEnv(); // exits process if any required var is missing
+}
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -183,17 +185,26 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
+let server;
+if (require.main === module) {
+    server = app.listen(PORT, '0.0.0.0', () => {
+        logger.info(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received. Closing server gracefully...');
-  server.close(() => {
-    logger.info('Server closed.');
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed.');
+      process.exit(0);
+    });
+  } else {
     process.exit(0);
-  });
+  }
   // Force close after 10 seconds
   setTimeout(() => process.exit(1), 10000);
 });
