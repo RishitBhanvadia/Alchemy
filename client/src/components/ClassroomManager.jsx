@@ -162,6 +162,7 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy class code"
                                     >
                                         📋
                                     </button>

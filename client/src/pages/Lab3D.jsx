@@ -214,6 +214,7 @@ const Lab3D = () => {
                 className={`history-toggle ${isHistoryOpen ? 'active' : ''}`}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
                 title="Experiment History"
+                aria-label="Toggle Experiment History"
             >
                 📋
             </button>
@@ -352,6 +353,7 @@ const Lab3D = () => {
                                 className="chem-slider"
                                 disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#EF4444' }}
+                                aria-label="Hydrochloric Acid concentration"
                             />
                         </div>
  
@@ -371,6 +373,7 @@ const Lab3D = () => {
                                 className="chem-slider"
                                 disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#6366F1' }} // Blue for Base
+                                aria-label="Sodium Hydroxide concentration"
                             />
                         </div>
  
@@ -390,6 +393,7 @@ const Lab3D = () => {
                                 className="chem-slider"
                                 disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#10B981' }} // Green for Indicator
+                                aria-label="Bromothymol Blue concentration"
                             />
                         </div>
  
@@ -409,6 +413,7 @@ const Lab3D = () => {
                                 className="chem-slider"
                                 disabled={reactionState === 'loading'}
                                 style={{ '--chem-thumb-color': '#F59E0B' }} // Orange for Catalyst
+                                aria-label="Manganese Dioxide concentration"
                             />
                         </div>
                     </div>
@@ -437,6 +442,7 @@ const Lab3D = () => {
                 className="ai-toggle-button"
                 onClick={() => setIsAiOpen(true)}
                 title="Ask AI Tutor"
+                aria-label="Ask AI Tutor"
             >
                 🤖
             </button>
