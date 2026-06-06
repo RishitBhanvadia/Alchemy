@@ -1,0 +1,4 @@
+## 2025-06-06 - Optimize high-frequency mousemove event in CursorFollower
+**Bottleneck:** High-frequency `mousemove` DOM event in `CursorFollower.jsx` was synchronously triggering React state updates without throttling, causing severe layout thrashing.
+**Impact:** Significantly reduced main thread blocking and layout thrashing by deferring updates, improving overall responsiveness and framerates, especially during interactions.
+**Learning:** Wrapping high-frequency state updates like `mousemove` in a `requestAnimationFrame` callback and ensuring proper cleanup via `cancelAnimationFrame(rafId)` prevents excessive React re-renders and smooths out rendering performance.
