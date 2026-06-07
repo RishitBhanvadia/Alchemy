@@ -71,6 +71,7 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
+  const arraysRef = useRef(null);
   const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
@@ -104,11 +105,18 @@ export default function ParticleEmitter({
       sz[i] = config.size * (0.5 + Math.random() * 0.5);
     }
 
-    return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
+    const result = { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
+    return result;
   }, [particleCount, config]);
+
+  useEffect(() => {
+    arraysRef.current = { positions, velocities, lifetimes, colors, sizes };
+  }, [positions, velocities, lifetimes, colors, sizes]);
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
+    if (!arraysRef.current) return;
+    const { positions, velocities, lifetimes, colors } = arraysRef.current;
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
@@ -178,7 +186,8 @@ export default function ParticleEmitter({
 
   // ─── useFrame: Update particle positions every frame ────────────────
   useFrame((_, delta) => {
-    if (!active || !pointsRef.current) return;
+    if (!active || !pointsRef.current || !arraysRef.current) return;
+    const { velocities, lifetimes } = arraysRef.current;
 
     const geometry = pointsRef.current.geometry;
     const posAttr = geometry.getAttribute('position');
