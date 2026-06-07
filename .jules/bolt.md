@@ -1,0 +1,3 @@
+## 2024-06-07 - Throttle high-frequency cursor state updates
+**Learning:** High-frequency DOM events like `mousemove` trigger excessive React state updates, leading to layout thrashing and severe performance degradation, especially with custom cursor followers.
+**Action:** Always wrap state updates triggered by high-frequency events (e.g., `mousemove`, `scroll`) in a `requestAnimationFrame` callback. Ensure to cache and cancel the animation frame ID (`cancelAnimationFrame`) on unmount and subsequent rapid fires to prevent memory leaks. Also learned that early returns like `if (isTouchDevice) return null;` must be placed after all React hooks to prevent `react-hooks/rules-of-hooks` violations.
