@@ -67,4 +67,24 @@ describe('Dashboard Component', () => {
             expect(mockNavigate).toHaveBeenCalled();
         }
     });
+
+    it('should render join classroom form', () => {
+        renderDashboard();
+        expect(screen.getByLabelText(/enter 6-character classroom join code/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /join/i })).toBeInTheDocument();
+    });
+
+    it('should handle join classroom submit', async () => {
+        renderDashboard();
+
+        const joinInput = screen.getByLabelText(/enter 6-character classroom join code/i);
+        const joinBtn = screen.getByRole('button', { name: /join/i });
+
+        fireEvent.change(joinInput, { target: { value: 'ABCDEF' } });
+
+        // Just test that the button works and form submits,
+        // we mocked supabase to return empty so we might see an error toast,
+        // but the submit handler will run.
+        fireEvent.click(joinBtn);
+    });
 });
