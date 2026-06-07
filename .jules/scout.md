@@ -1,0 +1,4 @@
+## 2024-05-18 - Alchemistry Market Research
+**Market Insight:** The virtual chemistry lab market is split between highly narrative-driven simulations (Labster) and free-form experimentation (Unreal Chemist). A key feature in top platforms is the ability to reference chemical properties (periodic table) and log observations *during* the interactive simulation.
+**Codebase Match:** Alchemistry has a strong 3D foundation but lacks in-experiment reference tools and observation logging, relying mostly on post-experiment result pages.
+**Opportunity:** Adding an interactive periodic table overlay and an observation notebook directly within the `Lab3D` view will significantly bridge the gap between Alchemistry and market leaders like ChemLab and Unreal Chemist, using relatively low-effort React overlays on top of the existing Three.js canvas.
