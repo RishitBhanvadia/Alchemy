@@ -71,7 +71,7 @@ export default function ParticleEmitter({
   const particleCount = config.count;
 
   // ─── Initialize particle data ───────────────────────────────────────
-  const { positions, velocities, lifetimes, colors, sizes } = useMemo(() => {
+  const arrays = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
     const vel = new Float32Array(particleCount * 3);
     const life = new Float32Array(particleCount);
@@ -107,8 +107,11 @@ export default function ParticleEmitter({
     return { positions: pos, velocities: vel, lifetimes: life, colors: col, sizes: sz };
   }, [particleCount, config]);
 
+  const arraysRef = useRef(arrays);
+
   // ─── Apply exothermic burst ─────────────────────────────────────────
   const applyExothermicBurst = useCallback(() => {
+    const { velocities, colors, lifetimes, positions } = arraysRef.current;
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
@@ -135,7 +138,7 @@ export default function ParticleEmitter({
       positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
       positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
-  }, [particleCount, positions, velocities, lifetimes, colors]);
+  }, [particleCount]);
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
   useEffect(() => {
@@ -179,6 +182,8 @@ export default function ParticleEmitter({
   // ─── useFrame: Update particle positions every frame ────────────────
   useFrame((_, delta) => {
     if (!active || !pointsRef.current) return;
+
+    const { velocities, lifetimes } = arraysRef.current;
 
     const geometry = pointsRef.current.geometry;
     const posAttr = geometry.getAttribute('position');
@@ -265,19 +270,19 @@ export default function ParticleEmitter({
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={positions}
+          array={arrays.positions}
           count={particleCount}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          array={colors}
+          array={arrays.colors}
           count={particleCount}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-size"
-          array={sizes}
+          array={arrays.sizes}
           count={particleCount}
           itemSize={1}
         />
