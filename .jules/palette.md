@@ -1,0 +1,3 @@
+## 2024-06-07 - Accessible Icon and Toggle Buttons
+**Learning:** Found multiple instances where icon-only buttons (like delete or copy) and visual toggle buttons (like chemical locks) lacked proper screen reader context and states in `ClassroomManager.jsx` and `ClassroomDetail.jsx`. Toggle states were visually indicated via icons or classes but not semantically exposed.
+**Action:** Always add explicit `aria-label`s to icon-only buttons. For toggle buttons, use `aria-pressed` to reflect state dynamically, provide an explicit `aria-label` describing the action, and use `aria-hidden="true"` on the purely decorative visual icons so screen readers do not announce confusing emojis.
