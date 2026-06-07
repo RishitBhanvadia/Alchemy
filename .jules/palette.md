@@ -1,0 +1,3 @@
+## 2024-06-06 - [Missing aria-labels on icon-only buttons and sliders]
+**Learning:** Icon-only buttons and range sliders often lack descriptive labels, relying solely on visual context or `title` attributes. While `title` attributes provide tooltips for mouse users, they do not consistently provide accessible names for screen readers. Explicit `aria-label` attributes must be added to ensure these interactive elements are properly announced by assistive technologies.
+**Action:** Always add explicit `aria-label` attributes to icon-only buttons (e.g. `📋` or `🤖`) and `input type="range"` sliders to ensure they are accessible.
