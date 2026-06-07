@@ -162,8 +162,9 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy join code"
                                     >
-                                        📋
+                                        <span aria-hidden="true">📋</span>
                                     </button>
                                 </div>
                             </div>
@@ -202,8 +203,10 @@ const ClassroomManager = () => {
                                                     ? '#EF4444' 
                                                     : '#10B981'
                                             }}
+                                            aria-pressed={(cls.locked_chemicals || []).includes(chem)}
+                                            aria-label={`${(cls.locked_chemicals || []).includes(chem) ? 'Unlock' : 'Lock'} ${chem}`}
                                         >
-                                            {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
+                                            <span aria-hidden="true">{(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'}</span> {chem}
                                         </button>
                                     ))}
                                     <button 

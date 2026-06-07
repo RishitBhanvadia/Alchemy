@@ -159,8 +159,10 @@ const ClassroomDetail = () => {
                                 key={chem}
                                 className={`lock-btn ${classroom.locked_chemicals?.includes(chem) ? 'locked' : 'unlocked'}`}
                                 onClick={() => handleToggleChem(chem)}
+                                aria-pressed={classroom.locked_chemicals?.includes(chem)}
+                                aria-label={`${classroom.locked_chemicals?.includes(chem) ? 'Unlock' : 'Lock'} ${chem}`}
                             >
-                                <span className="lock-icon">{classroom.locked_chemicals?.includes(chem) ? '🔒' : '🔓'}</span>
+                                <span className="lock-icon" aria-hidden="true">{classroom.locked_chemicals?.includes(chem) ? '🔒' : '🔓'}</span>
                                 <span className="lock-label">{chem}</span>
                             </button>
                         ))}
@@ -193,7 +195,7 @@ const ClassroomDetail = () => {
                                         <td>{asgn.required_score}%</td>
                                         <td>{asgn.due_date ? new Date(asgn.due_date).toLocaleDateString() : 'No Limit'}</td>
                                         <td>
-                                            <button className="del-btn" onClick={() => deleteAssignment(asgn.id)}>🗑️</button>
+                                            <button className="del-btn" onClick={() => deleteAssignment(asgn.id)} aria-label={`Delete assignment ${asgn.title}`} title="Delete assignment">🗑️</button>
                                         </td>
                                     </tr>
                                 ))}
