@@ -9,8 +9,6 @@ const CursorFollower = () => {
     const [hovering, setHovering] = useState(false);
 
     if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -29,8 +27,11 @@ const CursorFollower = () => {
             document.removeEventListener("mouseup", onMouseUp);
         };
 
+        let rafId;
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                setPosition({ x: e.clientX, y: e.clientY });
 
             // Check if hovering over clickable elements
             const target = e.target;
@@ -41,7 +42,8 @@ const CursorFollower = () => {
                 target.closest('a') ||
                 target.classList.contains('clickable');
 
-            setHovering(!!isClickable);
+                setHovering(!!isClickable);
+            });
         };
 
         const onMouseEnter = () => {

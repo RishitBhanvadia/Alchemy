@@ -1,0 +1,4 @@
+## 2024-06-08 - Throttle high-frequency cursor state updates
+**Bottleneck:** The `CursorFollower` component in the frontend updates React state (`setPosition` and `setHovering`) synchronously on every `mousemove` event without throttling. This triggers synchronous renders at a very high frequency and can severely degrade performance or cause layout thrashing.
+**Impact:** Using `requestAnimationFrame` and canceling previous frames ensures the React state updates match the display refresh rate (usually 60fps) and do not queue up unnecessary renders.
+**Learning:** For continuous high-frequency events like `mousemove` and `scroll`, wrap the React state updates (e.g. `setPosition`) inside `requestAnimationFrame` and `cancelAnimationFrame` to throttle updates and prevent performance degradation.
