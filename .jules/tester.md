@@ -1,0 +1,4 @@
+## 2026-06-08 - Added tests for authStore
+**Gap:** Authentication state management (Zustand authStore) lacks unit testing and coverage, masking potential bugs in user session handling.
+**Learning:** Zustand stores interacting heavily with async external services (Supabase) and subscriptions can be complex to test without proper isolated mocking, potentially leading to race conditions in auth flows.
+**Pattern:** Mock Supabase completely with vi.mock, use spyOn and mockResolvedValue for complex API and subscription behavior, and use exact assert values to check the Zustand internal states during the auth flow.
