@@ -16,12 +16,14 @@ const EmptyState = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      role="status"
+      aria-live="polite"
     >
-      <div className="empty-state-icon">{icon}</div>
+      <div className="empty-state-icon" aria-hidden="true">{icon}</div>
       <h3 className="empty-state-title">{title}</h3>
       <p className="empty-state-description">{description}</p>
       {actionLabel && onAction && (
-        <button className="empty-state-action" onClick={onAction}>
+        <button className="empty-state-action" onClick={onAction} aria-label={actionLabel}>
           {actionLabel}
         </button>
       )}
