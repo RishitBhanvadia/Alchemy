@@ -21,14 +21,6 @@ describe('resultController logic', () => {
       }
     };
 
-    // Normalised total: 20 -> na = 50, nb = 0, ni = 50, nc = 0
-    // Reaction ID with na >= 5 and ni >= 5 using reactionHash should be 1000 (i) + 1 (a) = 1001.
-    // If we duplicate the logic locally incorrectly with 100 instead of 1000 for indicator, it gets 101.
-    // The current bug is it duplicates logic AND uses THRESHOLD = 5 instead of 10.
-
-    // Actually the memory note says:
-    // "The computeReactionId utility in server/utils/reactionHash.js serves as the canonical source for reaction positional weights (e.g., acid=1, base=10, catalyst=100, indicator=1000) and accepts a configurable threshold parameter. Ensure any context-specific calculations import and use this utility rather than duplicating the logic."
-
     const jsonMock = jest.fn();
     const res = {
       status: jest.fn().mockReturnThis(),
