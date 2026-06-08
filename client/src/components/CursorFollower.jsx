@@ -9,6 +9,8 @@ const CursorFollower = () => {
     const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
+        if (isTouchDevice) return;
+
         let rafId;
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
