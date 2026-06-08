@@ -11,6 +11,7 @@ const CursorFollower = () => {
     useEffect(() => {
         if (isTouchDevice) return;
 
+        // Throttling mousemove with requestAnimationFrame limits state updates to the display refresh rate
         let rafId;
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
