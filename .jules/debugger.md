@@ -1,0 +1,4 @@
+## 2024-06-09 - Fix React Hook conditional call in CursorFollower
+**Bug:** The `useEffect` hook in `client/src/components/CursorFollower.jsx` was being called conditionally because it was placed after an early return (`if (isTouchDevice) return null;`). This violates the Rules of Hooks and causes a React compilation/linting error (`react-hooks/rules-of-hooks`). There was also a syntax parsing error due to duplicate variable declarations for `clicking` and `hovering`.
+**Root Cause:** The early return for touch devices was placed before the `useEffect` and duplicate `useState` declarations were present.
+**Learning:** Always ensure `useEffect` and other React hooks are called at the top level of a component, before any conditional returns. When resolving `react-hooks/rules-of-hooks` errors, carefully inspect the position of early returns relative to hooks.
