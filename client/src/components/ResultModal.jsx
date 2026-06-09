@@ -12,6 +12,7 @@ import './ResultModal.css';
  * @param {function} onClose - Callback to close modal without reset
  * @param {function} onAskAI - Callback to open AI tutor with context
  */
+import PropTypes from "prop-types";
 const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
   if (!isOpen || !result) return null;
 
@@ -104,3 +105,4 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
 };
 
 export default ResultModal;
+ResultModal.propTypes = { isOpen: PropTypes.bool.isRequired, result: PropTypes.object, onReset: PropTypes.func.isRequired, onClose: PropTypes.func.isRequired, onAskAI: PropTypes.func };
