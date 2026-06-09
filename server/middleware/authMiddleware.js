@@ -1,54 +1,59 @@
 const { createClient } = require('@supabase/supabase-js');
+const { error } = require('../utils/response');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY
-);
-
-const unauthorized = (res, message = 'Unauthorised — no token.') => {
-  return res.status(401).json({ success: false, error: { code: 'UNAUTHORISED', message } });
-};
-
-const forbidden = (res, message) => {
-  return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message } });
-};
-
-const serverError = (res, message = 'Internal server error during role validation.') => {
-  return res.status(500).json({ success: false, error: { code: 'INTERNAL_ERROR', message } });
-};
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || 'placeholder';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 exports.requireAuth = async (req, res, next) => {
-  const token = req.headers.authorization?.replace('Bearer ', '');
-  if (!token) return unauthorized(res, 'No auth token provided.');
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return error(res, 'UNAUTHORIZED', 'No authorization header provided.', 401);
+        }
 
-  try {
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) throw error || new Error('User not found');
+        const token = authHeader.split(' ')[1];
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
-    req.user = user;
-    next();
-  } catch (err) {
-    console.error('[requireAuth]', err.message);
-    return unauthorized(res, 'Invalid or expired token.');
-  }
+        if (authError || !user) {
+            console.error('[requireAuth]', authError?.message || 'No user found');
+            return error(res, 'UNAUTHORIZED', 'Invalid or expired token.', 401);
+        }
+
+        req.user = user;
+        next();
+    } catch (err) {
+        console.error('[requireAuth]', err.message);
+        return error(res, 'INTERNAL_ERROR', 'Authentication failed due to server error.', 500);
+    }
 };
 
-exports.requireRole = (role) => async (req, res, next) => {
-  try {
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', req.user.id)
-      .single();
+exports.requireRole = (role) => {
+    return async (req, res, next) => {
+        try {
+            if (!req.user) {
+                return error(res, 'UNAUTHORIZED', 'Authentication required.', 401);
+            }
 
-    if (error || !profile || profile.role !== role) {
-      return forbidden(res, `Access restricted to ${role} role only.`);
-    }
-    
-    req.profile = profile;
-    next();
-  } catch (err) {
-    console.error('[requireRole]', err.message);
-    return serverError(res);
-  }
+            const { data: profile, error: dbError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', req.user.id)
+                .single();
+
+            if (dbError) {
+                console.error('[requireRole] Profile fetch error:', dbError.message);
+                return error(res, 'INTERNAL_ERROR', 'Failed to fetch user role.', 500);
+            }
+
+            if (!profile || profile.role !== role) {
+                return error(res, 'FORBIDDEN', `Access denied. Requires ${role} role.`, 403);
+            }
+
+            next();
+        } catch (err) {
+            console.error('[requireRole]', err.message);
+            return error(res, 'INTERNAL_ERROR', 'Role verification failed.', 500);
+        }
+    };
 };

@@ -69,6 +69,7 @@ const ParticleSystem = ({ active, config }) => {
 
     const dummy = useMemo(() => new Object3D(), []);
 
+    // eslint-disable-next-line react-hooks/immutability
     useFrame((state, delta) => {
         if (!active) return;
 

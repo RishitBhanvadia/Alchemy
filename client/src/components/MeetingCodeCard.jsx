@@ -11,6 +11,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
+import PropTypes from "prop-types";
 const MeetingCodeCard = ({ code, meetingUrl, platform, onClose }) => {
   const [copied, setCopied] = useState(false);
 
@@ -164,3 +165,4 @@ const styles = {
 };
 
 export default MeetingCodeCard;
+MeetingCodeCard.propTypes = { code: PropTypes.string, meetingUrl: PropTypes.string, platform: PropTypes.string, onClose: PropTypes.func };
