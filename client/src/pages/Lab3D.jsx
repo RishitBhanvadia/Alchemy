@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
+import EmptyState from "../components/EmptyState";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
@@ -241,7 +242,14 @@ const Lab3D = () => {
                                     </div>
                                 </div>
                             ))}
-                            {historyLogs.length === 0 && <p className="empty-history">No experiments run yet.</p>}
+                            {historyLogs.length === 0 && (
+                                <EmptyState
+                                    icon="🧪"
+                                    title="No experiments yet"
+                                    description="Your experiment history will appear here."
+                                    className="lab3d-empty-history"
+                                />
+                            )}
                         </div>
                     </motion.div>
                 )}
