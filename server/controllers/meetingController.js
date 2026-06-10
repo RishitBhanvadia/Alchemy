@@ -12,9 +12,18 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
-const { generateSecureCode } = require('../utils/cryptoUtils');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
+
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+function generateCode() {
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+  }
+  return code;
+}
 
 /**
  * Generates a unique 6-char code by checking Supabase for collisions.
@@ -22,7 +31,7 @@ const { generateSecureCode } = require('../utils/cryptoUtils');
  */
 async function generateUniqueCode() {
   for (let attempt = 0; attempt < 10; attempt++) {
-    const code = generateSecureCode(6);
+    const code = generateCode();
     const { data } = await supabase
       .from('meeting_sessions')
       .select('id')

@@ -2,7 +2,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const validateEnv = require('./config/validateEnv');
-validateEnv(); // exits process if any required var is missing
+if (require.main === module) {
+  validateEnv(); // exits process if any required var is missing
+}
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -183,9 +185,16 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+let server;
+if (require.main === module) {
+  server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
-});
+  });
+} else {
+  // In test environment, tests might call app.listen themselves, or just use app
+  server = { close: (cb) => cb && cb() };
+}
+module.exports = app;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
