@@ -2,3 +2,7 @@
 **Problem:** Invalid CSS properties `min-max-width` and `max-max-width` were found across multiple CSS files, likely causing layout issues or being ignored by browsers.
 **Context:** This was an unintentional typo or search/replace error in the codebase that affected responsive layouts.
 **Solution:** Fixed by globally replacing `min-max-width` with `min-width` and `max-max-width` with `max-width` using bash.
+## 2026-06-10 - Fix invalid ARIA roles, click handlers without key events, and anchor-is-valid issues
+**Problem:** CI failed due to ESLint errors: empty `<a href="#">`, invalid ARIA roles in `SignUpForm.jsx`, and missing keydown events on interactive divs in `CreateClassModal.jsx`.
+**Context:** The linter enforces strict a11y standards.
+**Solution:** Fixed by changing `<a href="#">` to `<button type="button">`, using valid ARIA roles (`role="button"`), and adding `onKeyDown` with `tabIndex={0}` to interactive elements.
