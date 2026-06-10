@@ -80,14 +80,6 @@ This argument is a function which may reassign or mutate `gl` after render, whic
 /app/client/src/components/CursorFollower.jsx
   65:8  warning  React Hook useEffect has a missing dependency: 'isTouchDevice'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
-/app/client/src/components/EmptyState.jsx
-   6:3  warning  'icon' is missing in props validation         react/prop-types
-   7:3  warning  'title' is missing in props validation        react/prop-types
-   8:3  warning  'description' is missing in props validation  react/prop-types
-   9:3  warning  'actionLabel' is missing in props validation  react/prop-types
-  10:3  warning  'onAction' is missing in props validation     react/prop-types
-  11:3  warning  'className' is missing in props validation    react/prop-types
-
 /app/client/src/components/LoadingOverlay.jsx
   5:27  warning  'message' is missing in props validation  react/prop-types
 
@@ -525,5 +517,5 @@ This API returns functions which cannot be memoized without leading to stale UI.
   16:39  warning  'requiredRole' is missing in props validation  react/prop-types
   25:5   warning  Unexpected console statement                   no-console
 
-✖ 141 problems (19 errors, 122 warnings)
+✖ 135 problems (19 errors, 116 warnings)
 
