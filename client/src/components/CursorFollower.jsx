@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
@@ -7,10 +7,8 @@ const CursorFollower = () => {
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
+    const rafId = useRef(null);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -27,9 +25,12 @@ const CursorFollower = () => {
             document.removeEventListener("mouseleave", onMouseLeave);
             document.removeEventListener("mousedown", onMouseDown);
             document.removeEventListener("mouseup", onMouseUp);
+            if (rafId.current) cancelAnimationFrame(rafId.current);
         };
 
         const onMouseMove = (e) => {
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+            rafId.current = requestAnimationFrame(() => {
             setPosition({ x: e.clientX, y: e.clientY });
 
             // Check if hovering over clickable elements
@@ -42,6 +43,7 @@ const CursorFollower = () => {
                 target.classList.contains('clickable');
 
             setHovering(!!isClickable);
+            });
         };
 
         const onMouseEnter = () => {
@@ -61,11 +63,23 @@ const CursorFollower = () => {
         };
 
         addEventListeners();
+
+
+
+
+    if (isTouchDevice) return null;
+
         return () => removeEventListeners();
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+
+
+
+
+
+    if (isTouchDevice) return null;
 
     return (
         <>
