@@ -1,0 +1,4 @@
+## 2025-06-10 - Fix Build Failures from Duplicate Declarations and CSS Imports
+**Bug:** Client build was failing due to two issues: duplicate variable declarations (`clicking`, `hovering`) in `CursorFollower.jsx`, and incorrect CSS `@import` ordering (`@import url(...)` coming after `@import "tailwindcss";`).
+**Root Cause:** A merge conflict or copy-paste error caused identical `useState` declarations to appear twice in `CursorFollower.jsx`, which caused `esbuild` to fail with "symbol has already been declared". Additionally, Tailwind v4 requires standard CSS imports like `@import url(...)` to precede `@import "tailwindcss";`.
+**Learning:** Always ensure standard CSS `@import` statements are placed at the very top of the stylesheet before package imports like `@import "tailwindcss";`. Also, watch out for duplicate variable declarations and ensure early returns happen *after* all hooks to satisfy React hooks rules.
