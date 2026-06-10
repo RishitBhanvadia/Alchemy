@@ -1,0 +1,3 @@
+## 2025-02-28 - Avoid Nested Interactive Elements in React Router NavLinks
+**Learning:** In the Alchemistry repository, `NavLink` components from `react-router-dom` are rendered as `<a>` tags. Nesting `<button>` elements inside them creates invalid HTML and breaks keyboard and screen reader accessibility (the "interactive element within an interactive element" anti-pattern).
+**Action:** When creating icon-only navigation links using `NavLink`, use styled `<span>` tags instead of `<button>`s for the visual wrapper. Ensure the parent `NavLink` has an `aria-label` and `title`, and add `aria-hidden="true"` to any purely decorative `<i>` icons inside.
