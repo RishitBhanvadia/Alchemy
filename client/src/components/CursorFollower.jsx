@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CursorFollower.css';
 
 const CursorFollower = () => {
@@ -7,10 +7,9 @@ const CursorFollower = () => {
     const [hidden, setHidden] = useState(false);
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
+    const rafId = useRef(null);
 
     if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -27,21 +26,30 @@ const CursorFollower = () => {
             document.removeEventListener("mouseleave", onMouseLeave);
             document.removeEventListener("mousedown", onMouseDown);
             document.removeEventListener("mouseup", onMouseUp);
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
         };
 
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
 
-            // Check if hovering over clickable elements
-            const target = e.target;
-            const isClickable =
-                target.tagName.toLowerCase() === 'button' ||
-                target.tagName.toLowerCase() === 'a' ||
-                target.closest('button') ||
-                target.closest('a') ||
-                target.classList.contains('clickable');
+            rafId.current = requestAnimationFrame(() => {
+                setPosition({ x: e.clientX, y: e.clientY });
 
-            setHovering(!!isClickable);
+                // Check if hovering over clickable elements
+                const target = e.target;
+                const isClickable =
+                    target.tagName.toLowerCase() === 'button' ||
+                    target.tagName.toLowerCase() === 'a' ||
+                    target.closest('button') ||
+                    target.closest('a') ||
+                    target.classList.contains('clickable');
+
+                setHovering(!!isClickable);
+            });
         };
 
         const onMouseEnter = () => {

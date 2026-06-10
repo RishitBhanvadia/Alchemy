@@ -197,7 +197,7 @@
 }
 
 .action-button {
-    min-max-width: 240px;
+    max-width: 240px;
   width: 100%;
     padding: 16px 32px;
     font-size: 1.2rem;
