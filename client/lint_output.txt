@@ -74,10 +74,8 @@ This argument is a function which may reassign or mutate `gl` after render, whic
   65:7   warning  Unexpected console statement              no-console
 
 /app/client/src/components/CreateClassModal.jsx
-  82:5  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
-  82:5  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
-  83:7  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
-  83:7  warning  Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+  83:7  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+  83:7  error    Non-interactive elements should not be assigned mouse or keyboard event listeners               jsx-a11y/no-noninteractive-element-interactions
 
 /app/client/src/components/CursorFollower.jsx
   65:8  warning  React Hook useEffect has a missing dependency: 'isTouchDevice'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -334,13 +332,9 @@ Calling setState synchronously within an effect body causes cascading renders th
   4:108  warning  'disabled' is missing in props validation     react/prop-types
 
 /app/client/src/components/auth/RoleCard.jsx
-   3:39  error    'Check' is defined but never used          no-unused-vars
-   5:21  warning  'userRole' is missing in props validation  react/prop-types
-   5:21  error    'userRole' is defined but never used       no-unused-vars
-   5:31  warning  'selected' is missing in props validation  react/prop-types
-   5:41  warning  'onSelect' is missing in props validation  react/prop-types
-   6:21  error    'role' is not defined                      no-undef
-  18:31  error    'role' is not defined                      no-undef
+  5:21  warning  'userRole' is missing in props validation  react/prop-types
+  5:31  warning  'selected' is missing in props validation  react/prop-types
+  5:41  warning  'onSelect' is missing in props validation  react/prop-types
 
 /app/client/src/components/auth/RoleSelector.jsx
   5:25  warning  'selectedRole' is missing in props validation     react/prop-types
@@ -531,5 +525,5 @@ This API returns functions which cannot be memoized without leading to stale UI.
   16:39  warning  'requiredRole' is missing in props validation  react/prop-types
   25:5   warning  Unexpected console statement                   no-console
 
-✖ 147 problems (22 errors, 125 warnings)
+✖ 141 problems (19 errors, 122 warnings)
 
