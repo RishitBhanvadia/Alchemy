@@ -183,7 +183,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+module.exports = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`Server running on port ${PORT}`);
 });
 
