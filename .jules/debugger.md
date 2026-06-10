@@ -1,0 +1,14 @@
+## 2025-06-10 - Fix Build Failures from Duplicate Declarations and CSS Imports
+**Bug:** Client build was failing due to two issues: duplicate variable declarations (`clicking`, `hovering`) in `CursorFollower.jsx`, and incorrect CSS `@import` ordering (`@import url(...)` coming after `@import "tailwindcss";`).
+**Root Cause:** A merge conflict or copy-paste error caused identical `useState` declarations to appear twice in `CursorFollower.jsx`, which caused `esbuild` to fail with "symbol has already been declared". Additionally, Tailwind v4 requires standard CSS imports like `@import url(...)` to precede `@import "tailwindcss";`.
+**Learning:** Always ensure standard CSS `@import` statements are placed at the very top of the stylesheet before package imports like `@import "tailwindcss";`. Also, watch out for duplicate variable declarations and ensure early returns happen *after* all hooks to satisfy React hooks rules.
+
+## 2025-06-10 - Fix ESLint jsx-a11y errors and unused imports breaking CI
+**Bug:** The GitHub Actions CI pipeline was failing during `pnpm run lint` due to several issues: unused imports (e.g., `useCallback` in `Lab3D.jsx`, `Check` in `RoleCard.jsx`), empty anchor tags without valid hrefs (`AuthPage.jsx`, `LoginForm.jsx`), and invalid ARIA roles triggered by prop collisions (`SignUpForm.jsx` passing `role` to a custom component).
+**Root Cause:** ESLint enforces strict accessibility rules (`jsx-a11y/anchor-is-valid`) which reject empty anchors (`<a href="#">`). It also enforces `jsx-a11y/aria-role` checks on the `role` attribute, which mistakenly caught custom React props named `role` passed to non-DOM elements like `<RoleCard role="...">`. Unused imports also triggered `no-unused-vars` which are treated as errors in CI.
+**Learning:** Always use `<button type="button">` instead of `<a href="#">` for purely interactive elements that do not navigate to a new page. To prevent `jsx-a11y/aria-role` false positives on custom React components, avoid naming custom props `role`; instead use names like `userRole`. Always configure linter plugins to strip unused imports automatically, or verify them manually before pushing.
+
+## 2025-06-10 - Fix CI Job Timeouts for Node servers
+**Bug:** The `build-server` CI job was timing out after 6 hours when running a startup check script (`node -e "require('./server.js')"`).
+**Root Cause:** The `app.listen()` and `validateEnv()` methods were executing unconditionally when `server.js` was required/imported. This caused Node to initialize the HTTP daemon and keep the process alive indefinitely.
+**Learning:** Always wrap application startup logic (like `app.listen` and hard environment validation) in an `if (require.main === module)` block in Node.js applications. This ensures the server only boots as a daemon when executed directly (e.g., `node server.js`), and allows modules to be safely imported by tests or CI hooks without blocking exit.
