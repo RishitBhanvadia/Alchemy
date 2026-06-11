@@ -140,6 +140,7 @@ export default function ParticleEmitter({
   /* eslint-enable react-hooks/immutability */
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
+  /* eslint-disable react-hooks/immutability */
   useEffect(() => {
     if (active && isExothermic && !hasShaken.current) {
       hasShaken.current = true;
@@ -177,6 +178,7 @@ export default function ParticleEmitter({
       hasShaken.current = false;
     }
   }, [active, isExothermic, gl, applyExothermicBurst, gasType]);
+  /* eslint-enable react-hooks/immutability */
 
   // ─── useFrame: Update particle positions every frame ────────────────
   /* eslint-disable react-hooks/immutability */
