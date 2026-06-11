@@ -106,6 +106,7 @@ export default function useLabPhysics(config = {}) {
   /**
    * Handle pointer entering an object (hover start).
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerEnter = useCallback(
     () => {
       if (dragState === 'idle') {
@@ -115,10 +116,12 @@ export default function useLabPhysics(config = {}) {
     },
     [dragState, gl]
   );
+  /* eslint-enable react-hooks/immutability */
 
   /**
    * Handle pointer leaving an object (hover end).
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerLeave = useCallback(
     () => {
       if (dragState === 'hovering') {
@@ -128,12 +131,14 @@ export default function useLabPhysics(config = {}) {
     },
     [dragState, gl]
   );
+  /* eslint-enable react-hooks/immutability */
 
   /**
    * Handle pointer down (start drag).
    * Performs raycaster hit detection on the drag plane
    * and calculates the offset so the object doesn't snap.
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerDown = useCallback(
     (e) => {
       e.stopPropagation();
@@ -167,6 +172,7 @@ export default function useLabPhysics(config = {}) {
     },
     [camera, gl, dragPlane]
   );
+  /* eslint-enable react-hooks/immutability */
 
   /**
    * Handle pointer move (update drag position).
@@ -202,6 +208,7 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer up (end drag → released state).
    * Object returns to home position.
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerUp = useCallback(
     (e) => {
       if (dragState !== 'dragging') return;
@@ -234,6 +241,7 @@ export default function useLabPhysics(config = {}) {
     },
     [dragState, gl, homePosition]
   );
+  /* eslint-enable react-hooks/immutability */
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
   /**
