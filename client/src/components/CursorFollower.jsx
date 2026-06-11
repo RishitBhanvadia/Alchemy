@@ -8,9 +8,8 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
+
     if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
         const addEventListeners = () => {
