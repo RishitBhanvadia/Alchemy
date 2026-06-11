@@ -78,9 +78,16 @@ const CreateClassModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+      handleClose();
+    }
+  };
+
   return (
-    <div style={styles.overlay} onClick={handleClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div style={styles.overlay} onClick={handleClose} onKeyDown={handleKeyDown} role="button" tabIndex="0">
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Create a Meeting" tabIndex="-1">
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard

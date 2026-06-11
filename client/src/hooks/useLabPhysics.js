@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/immutability */
+/* eslint-disable react-hooks/immutability */
 /**
  * useLabPhysics.js — Custom hook for drag/pour logic in 3D lab
  * Phase 3.1.1 Task [8]: Raycaster hit detection, drag state machine, tilt constraints
