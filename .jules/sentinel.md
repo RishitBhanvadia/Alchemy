@@ -1,0 +1,4 @@
+## 2024-06-11 - Replace Math.random with crypto.randomInt for secure code generation
+**Vulnerability:** The codebase was using `Math.random()` to generate alphanumeric codes for meeting sessions and classrooms. `Math.random()` is not cryptographically secure, meaning its outputs can be predictable, potentially allowing an attacker to guess meeting or classroom codes and join unauthorized sessions.
+**Learning:** `Math.random()` is sufficient for non-security-critical randomness (like animations or simple UI randomness), but should never be used for generating sensitive tokens, codes, or identifiers where predictability is a security risk.
+**Prevention:** Always use Node.js's built-in `crypto` module (specifically `crypto.randomInt()`) or a robust library like `uuid` or `nanoid` (when configured securely) for generating secure pseudo-random values.
