@@ -1,3 +1,4 @@
+import logger from './utils/logger';
 import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { lazy, Suspense, useEffect } from 'react';
@@ -61,7 +62,7 @@ function App() {
     if (!loading && user && profile && location.pathname === '/login') {
 
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
-      console.log('Redirecting to:', target, 'Profile role:', profile.role);
+      logger.log('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
     }
   }, [user, profile, loading, location.pathname, navigate]);
