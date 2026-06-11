@@ -78,9 +78,9 @@ const LoginForm = () => {
           disabled={loading}
         />
         <div className="flex justify-end mt-2">
-          <a href="#" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
+          <button type="button" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline appearance-none bg-transparent border-none p-0 m-0 cursor-pointer">
             Forgot password?
-          </a>
+          </button>
         </div>
       </div>
 
