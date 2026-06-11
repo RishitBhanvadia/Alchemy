@@ -17,7 +17,7 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
-      - run: cd client && npm ci
+      - run: cd client && npm install
       - run: cd client && npm run build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
