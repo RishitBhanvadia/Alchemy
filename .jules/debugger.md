@@ -6,3 +6,7 @@
 **Bug:** The GitHub Actions CI pipeline failed due to strict ESLint configurations treating `jsx-a11y/no-static-element-interactions` and `jsx-a11y/click-events-have-key-events` as errors.
 **Root Cause:** `div` elements used as visual overlays and modal containers in `CreateClassModal.jsx` had `onClick` handlers attached (for closing and stopping propagation) without corresponding keyboard event handlers or explicit ARIA roles.
 **Learning:** When using non-native interactive container elements (like modal overlays) to intercept clicks for purely visual behaviors, always add `role="presentation"` to explicitly declare they are not semantic interactive controls. This prevents accessibility linters from flagging them for missing keyboard support.
+## 2024-05-18 - Fix ESLint jsx-a11y errors on Modal Overlays
+**Bug:** The GitHub Actions CI pipeline failed due to strict ESLint configurations treating `jsx-a11y/no-static-element-interactions` and `jsx-a11y/click-events-have-key-events` as errors.
+**Root Cause:** `div` elements used as visual overlays and modal containers in `CreateClassModal.jsx` had `onClick` handlers attached (for closing and stopping propagation) without corresponding keyboard event handlers or explicit ARIA roles.
+**Learning:** When using non-native interactive container elements (like modal overlays) to intercept clicks for purely visual behaviors, always add `role="presentation"` to explicitly declare they are not semantic interactive controls. This prevents accessibility linters from flagging them for missing keyboard support.
