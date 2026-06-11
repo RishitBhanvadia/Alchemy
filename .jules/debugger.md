@@ -1,0 +1,4 @@
+## 2024-05-18 - Fix ESLint CI Failures
+**Bug:** The GitHub Actions CI pipeline failed due to strict ESLint configurations treating `no-unused-vars`, `jsx-a11y/anchor-is-valid`, `jsx-a11y/aria-role`, and `react-hooks/rules-of-hooks` as errors.
+**Root Cause:** The codebase contained unused imports, empty anchor tags acting as buttons, conflicting custom prop names with native ARIA roles (e.g., `role` instead of `userRole`), and conditional early returns placed before `useEffect` declarations.
+**Learning:** In strict ESLint environments, all hooks must be declared unconditionally at the top of the component to prevent `react-hooks/rules-of-hooks`. Accessibility rules (`jsx-a11y`) must be strictly followed, ensuring custom component props do not conflict with native HTML attributes (like `role`). Finally, `no-console` warnings are non-blocking and can be safely ignored.
