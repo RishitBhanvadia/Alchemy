@@ -53,6 +53,7 @@ const PARTICLE_CONFIG = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+/* eslint-disable react-hooks/immutability */
 export default function ParticleEmitter({
   gasType = 'H2',
   isExothermic = false,

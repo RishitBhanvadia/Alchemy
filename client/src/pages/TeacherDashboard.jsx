@@ -106,6 +106,17 @@ export default function TeacherDashboard({ analytics = false }) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setGlobalFilter(searchTerm);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
   
   // Date Range State
   const [startDate, setStartDate] = useState(() => {
@@ -362,8 +373,8 @@ export default function TeacherDashboard({ analytics = false }) {
           type="text"
           placeholder="🔍 Search students..."
           data-testid="student-search-input"
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div style={styles.studentCount} className="studentCount">
           {students.length} student{students.length !== 1 ? 's' : ''}
