@@ -10,6 +10,6 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase credentials in environment variables.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl || 'http://localhost:54321', supabaseKey || 'placeholder');
 
 module.exports = supabase;
