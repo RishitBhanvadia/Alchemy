@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useHistoryStore from "../store/historyStore";
@@ -36,7 +37,8 @@ const formatDate = (dateString) => {
     }) + ` at ${time}`;
 };
 
-const HistoryRow = React.memo(({ exp }) => (
+
+const HistoryRow = React.memo(function HistoryRow({ exp }) { return (
     <tr>
         <td>
             <div className="outcome-cell">
@@ -63,7 +65,24 @@ const HistoryRow = React.memo(({ exp }) => (
             ))}
         </td>
     </tr>
-));
+)});
+
+
+HistoryRow.displayName = 'HistoryRow';
+HistoryRow.propTypes = {
+    exp: PropTypes.shape({
+        id: PropTypes.string,
+        color: PropTypes.string,
+        outcome_label: PropTypes.string,
+        created_at: PropTypes.string,
+        experiment_type: PropTypes.string,
+        chem_a: PropTypes.number,
+        chem_b: PropTypes.number,
+        chem_i: PropTypes.number,
+        chem_c: PropTypes.number,
+    }).isRequired,
+};
+
 
 const History = () => {
     const navigate = useNavigate();
@@ -128,3 +147,17 @@ const History = () => {
 };
 
 export default History;
+
+HistoryRow.propTypes = {
+    exp: PropTypes.shape({
+        id: PropTypes.string,
+        color: PropTypes.string,
+        outcome_label: PropTypes.string,
+        created_at: PropTypes.string,
+        experiment_type: PropTypes.string,
+        chem_a: PropTypes.number,
+        chem_b: PropTypes.number,
+        chem_i: PropTypes.number,
+        chem_c: PropTypes.number,
+    }).isRequired,
+};
