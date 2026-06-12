@@ -21,6 +21,7 @@ import {
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
 import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
+import PropTypes from 'prop-types';
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
@@ -520,6 +521,10 @@ export default function TeacherDashboard({ analytics = false }) {
     </div>
   );
 }
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool
+};
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 

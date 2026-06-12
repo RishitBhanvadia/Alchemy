@@ -162,8 +162,9 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label="Copy meeting code"
                                     >
-                                        📋
+                                        <span aria-hidden="true">📋</span>
                                     </button>
                                 </div>
                             </div>
@@ -189,23 +190,28 @@ const ClassroomManager = () => {
                             <div style={styles.chemControls}>
                                 <p style={styles.label}>Lock Chemicals for Students:</p>
                                 <div style={styles.chemButtons}>
-                                    {['HCl', 'NaOH', 'Ph', 'FeCl3'].map(chem => (
-                                        <button 
-                                            key={chem}
-                                            onClick={() => toggleChemicalLock(cls.id, chem, cls.locked_chemicals || [])}
-                                            style={{
-                                                ...styles.chemBtn,
-                                                background: (cls.locked_chemicals || []).includes(chem) 
-                                                    ? 'rgba(239, 68, 68, 0.3)' 
-                                                    : 'rgba(16, 185, 129, 0.2)',
-                                                borderColor: (cls.locked_chemicals || []).includes(chem) 
-                                                    ? '#EF4444' 
-                                                    : '#10B981'
-                                            }}
-                                        >
-                                            {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
-                                        </button>
-                                    ))}
+                                    {['HCl', 'NaOH', 'Ph', 'FeCl3'].map(chem => {
+                                        const isLocked = (cls.locked_chemicals || []).includes(chem);
+                                        return (
+                                            <button
+                                                key={chem}
+                                                onClick={() => toggleChemicalLock(cls.id, chem, cls.locked_chemicals || [])}
+                                                style={{
+                                                    ...styles.chemBtn,
+                                                    background: isLocked
+                                                        ? 'rgba(239, 68, 68, 0.3)'
+                                                        : 'rgba(16, 185, 129, 0.2)',
+                                                    borderColor: isLocked
+                                                        ? '#EF4444'
+                                                        : '#10B981'
+                                                }}
+                                                aria-label={`${isLocked ? 'Unlock' : 'Lock'} ${chem} for students`}
+                                                aria-pressed={isLocked}
+                                            >
+                                                <span aria-hidden="true">{isLocked ? '🔒' : '🔓'}</span> {chem}
+                                            </button>
+                                        );
+                                    })}
                                     <button 
                                         className="action-button active"
                                         onClick={() => navigate(`/teacher/classroom/${cls.id}`)}

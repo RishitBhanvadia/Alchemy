@@ -13,11 +13,10 @@ const CanvasContainer = ({ children, style, ...props }) => {
 
         const onContextLost = (e) => {
             e.preventDefault();
-            console.warn('[CanvasContainer] WebGL context lost — will attempt restore');
         };
 
         const onContextRestored = () => {
-            console.warn('[CanvasContainer] WebGL context restored');
+            // Restore logic if needed
         };
 
         canvas.addEventListener('webglcontextlost', onContextLost, false);
