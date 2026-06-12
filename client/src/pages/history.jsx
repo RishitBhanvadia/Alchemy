@@ -5,6 +5,66 @@ import EmptyState from "../components/EmptyState";
 import SkeletonBlock from "../components/SkeletonBlock";
 import "./history.css";
 
+const getChemicalBadges = (exp) => {
+    const badges = [];
+    if (exp.chem_a > 0) badges.push({ chem: 'HCl', color: '#EF4444' });
+    if (exp.chem_b > 0) badges.push({ chem: 'NaOH', color: '#6366F1' });
+    if (exp.chem_i > 0) badges.push({ chem: 'BTB', color: '#10B981' });
+    if (exp.chem_c > 0) badges.push({ chem: 'MnO₂', color: '#F59E0B' });
+    return badges;
+};
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
+    const isYesterday = new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
+
+    const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    if (isToday) {
+        return `Today at ${time}`;
+    }
+    if (isYesterday) {
+        return `Yesterday at ${time}`;
+    }
+
+    return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    }) + ` at ${time}`;
+};
+
+const HistoryRow = React.memo(({ exp }) => (
+    <tr>
+        <td>
+            <div className="outcome-cell">
+                <span
+                    className="outcome-dot"
+                    style={{ backgroundColor: exp.color || '#6366F1' }}
+                ></span>
+                <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
+            </div>
+        </td>
+        <td className="date-cell">{formatDate(exp.created_at)}</td>
+        <td className="type-cell">
+            <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
+        </td>
+        <td className="chemicals-cell">
+            {getChemicalBadges(exp).map((badge, idx) => (
+                <span
+                    key={idx}
+                    className="chem-badge"
+                    style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
+                >
+                    {badge.chem}
+                </span>
+            ))}
+        </td>
+    </tr>
+));
+
 const History = () => {
     const navigate = useNavigate();
     
@@ -15,37 +75,6 @@ const History = () => {
     useEffect(() => {
         fetch();
     }, [fetch]);
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const now = new Date();
-        const isToday = date.toDateString() === now.toDateString();
-        const isYesterday = new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
-        
-        const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-        
-        if (isToday) {
-            return `Today at ${time}`;
-        }
-        if (isYesterday) {
-            return `Yesterday at ${time}`;
-        }
-        
-        return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        }) + ` at ${time}`;
-    };
-
-    const getChemicalBadges = (exp) => {
-        const badges = [];
-        if (exp.chem_a > 0) badges.push({ chem: 'HCl', color: '#EF4444' });
-        if (exp.chem_b > 0) badges.push({ chem: 'NaOH', color: '#6366F1' });
-        if (exp.chem_i > 0) badges.push({ chem: 'BTB', color: '#10B981' });
-        if (exp.chem_c > 0) badges.push({ chem: 'MnO₂', color: '#F59E0B' });
-        return badges;
-    };
 
     return (
         <div className="history-page">
@@ -86,32 +115,7 @@ const History = () => {
                                 </thead>
                                 <tbody>
                                     {logs.map((exp) => (
-                                        <tr key={exp.id}>
-                                            <td>
-                                                <div className="outcome-cell">
-                                                    <span 
-                                                        className="outcome-dot" 
-                                                        style={{ backgroundColor: exp.color || '#6366F1' }}
-                                                    ></span>
-                                                    <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
-                                                </div>
-                                            </td>
-                                            <td className="date-cell">{formatDate(exp.created_at)}</td>
-                                            <td className="type-cell">
-                                                <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
-                                            </td>
-                                            <td className="chemicals-cell">
-                                                {getChemicalBadges(exp).map((badge, idx) => (
-                                                    <span 
-                                                        key={idx} 
-                                                        className="chem-badge"
-                                                        style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
-                                                    >
-                                                        {badge.chem}
-                                                    </span>
-                                                ))}
-                                            </td>
-                                        </tr>
+                                        <HistoryRow key={exp.id} exp={exp} />
                                     ))}
                                 </tbody>
                             </table>

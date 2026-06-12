@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -27,60 +27,6 @@ import EmptyState from '../components/EmptyState';
 
 // ─── Column Definitions ──────────────────────────────────────────────────────
 
-const columns = [
-  {
-    accessorKey: 'display_name',
-    header: 'Student Name',
-    cell: (info) => info.getValue() || 'Unknown',
-  },
-  {
-    accessorKey: 'total_xp',
-    header: 'Total XP',
-    cell: (info) => (
-      <span style={styles.xpBadge}>{info.getValue() ?? 0}</span>
-    ),
-  },
-  {
-    accessorKey: 'badges_earned',
-    header: 'Badges Earned',
-    cell: (info) => {
-      const count = info.getValue() ?? 0;
-      return <span>{'🏅'.repeat(Math.min(count, 5))} {count}</span>;
-    },
-  },
-  {
-    accessorKey: 'experiments_completed',
-    header: 'Experiments',
-    cell: (info) => info.getValue() ?? 0,
-  },
-  {
-    accessorKey: 'last_active',
-    header: 'Status',
-    cell: (info) => {
-      const val = info.getValue();
-      if (!val) return <span style={{ color: '#666' }}>Never</span>;
-      const date = new Date(val);
-      const now = new Date();
-      
-      // Check if active in last 60 seconds
-      const diffMs = now - date;
-      if (diffMs < 60000) {
-        return (
-          <span style={{ color: '#00f3ff', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span className="presence-dot"></span> In Lab
-          </span>
-        );
-      }
-
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      if (diffDays === 0) return <span style={{ color: '#00ff88' }}>Today</span>;
-      if (diffDays === 1) return <span style={{ color: '#88cc44' }}>Yesterday</span>;
-      if (diffDays <= 7) return <span style={{ color: '#cccc00' }}>{diffDays}d ago</span>;
-      return <span style={{ color: '#888' }}>{date.toLocaleDateString()}</span>;
-    },
-  },
-];
-
 // ─── Experiment Options ──────────────────────────────────────────────────────
 
 const EXPERIMENT_OPTIONS = [
@@ -93,6 +39,61 @@ const EXPERIMENT_OPTIONS = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TeacherDashboard({ analytics = false }) {
+  // ─── Column Definitions ──────────────────────────────────────────────────────
+  const columns = useMemo(() => [
+    {
+      accessorKey: 'display_name',
+      header: 'Student Name',
+      cell: (info) => info.getValue() || 'Unknown',
+    },
+    {
+      accessorKey: 'total_xp',
+      header: 'Total XP',
+      cell: (info) => (
+        <span style={styles.xpBadge}>{info.getValue() ?? 0}</span>
+      ),
+    },
+    {
+      accessorKey: 'badges_earned',
+      header: 'Badges Earned',
+      cell: (info) => {
+        const count = info.getValue() ?? 0;
+        return <span>{'🏅'.repeat(Math.min(count, 5))} {count}</span>;
+      },
+    },
+    {
+      accessorKey: 'experiments_completed',
+      header: 'Experiments',
+      cell: (info) => info.getValue() ?? 0,
+    },
+    {
+      accessorKey: 'last_active',
+      header: 'Status',
+      cell: (info) => {
+        const val = info.getValue();
+        if (!val) return <span style={{ color: '#666' }}>Never</span>;
+        const date = new Date(val);
+        const now = new Date();
+
+        // Check if active in last 60 seconds
+        const diffMs = now - date;
+        if (diffMs < 60000) {
+          return (
+            <span style={{ color: '#00f3ff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span className="presence-dot"></span> In Lab
+            </span>
+          );
+        }
+
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        if (diffDays === 0) return <span style={{ color: '#00ff88' }}>Today</span>;
+        if (diffDays === 1) return <span style={{ color: '#88cc44' }}>Yesterday</span>;
+        if (diffDays <= 7) return <span style={{ color: '#cccc00' }}>{diffDays}d ago</span>;
+        return <span style={{ color: '#888' }}>{date.toLocaleDateString()}</span>;
+      },
+    },
+  ], []);
+
   const navigate = useNavigate();
   const profile = useAuthStore(state => state.profile);
   const role = profile?.role;
