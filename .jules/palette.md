@@ -1,0 +1,3 @@
+## 2024-06-12 - Accessible Icon-Only Interactive Elements
+**Learning:** React elements utilizing native emojis as the sole interactive indicator (like 📋 for copy, 🚀 for launch, or 🔒/🔓 for lock states) are read literally by screen readers, creating confusing navigation experiences for users relying on assistive technology.
+**Action:** When implementing icon-only buttons or interactive links using emojis, always wrap the emoji inside a `<span aria-hidden="true">` to hide the literal character, and provide an explicit, contextual `aria-label` on the parent interactive element. For toggle buttons, also ensure the active state is conveyed using `aria-pressed`.

@@ -162,8 +162,9 @@ const ClassroomManager = () => {
                                         onClick={() => copyToClipboard(cls.class_code)}
                                         style={styles.copyButton}
                                         title="Copy code"
+                                        aria-label={`Copy join code for ${cls.class_name}`}
                                     >
-                                        📋
+                                        <span aria-hidden="true">📋</span>
                                     </button>
                                 </div>
                             </div>
@@ -179,8 +180,8 @@ const ClassroomManager = () => {
                                         style={styles.linkInput}
                                     />
                                     {cls.meeting_link && (
-                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn}>
-                                            🚀
+                                        <a href={cls.meeting_link} target="_blank" rel="noreferrer" style={styles.launchBtn} aria-label={`Launch ${cls.meeting_type} meeting`}>
+                                            <span aria-hidden="true">🚀</span>
                                         </a>
                                     )}
                                 </div>
@@ -202,8 +203,10 @@ const ClassroomManager = () => {
                                                     ? '#EF4444' 
                                                     : '#10B981'
                                             }}
+                                            aria-label={`Toggle lock for ${chem}`}
+                                            aria-pressed={(cls.locked_chemicals || []).includes(chem)}
                                         >
-                                            {(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'} {chem}
+                                            <span aria-hidden="true">{(cls.locked_chemicals || []).includes(chem) ? '🔒' : '🔓'}</span> {chem}
                                         </button>
                                     ))}
                                     <button 
