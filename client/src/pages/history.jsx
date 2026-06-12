@@ -37,39 +37,38 @@ const formatDate = (dateString) => {
     }) + ` at ${time}`;
 };
 
+const HistoryRowComponent = ({ exp }) => {
+    return (
+        <tr>
+            <td>
+                <div className="outcome-cell">
+                    <span
+                        className="outcome-dot"
+                        style={{ backgroundColor: exp.color || '#6366F1' }}
+                    ></span>
+                    <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
+                </div>
+            </td>
+            <td className="date-cell">{formatDate(exp.created_at)}</td>
+            <td className="type-cell">
+                <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
+            </td>
+            <td className="chemicals-cell">
+                {getChemicalBadges(exp).map((badge, idx) => (
+                    <span
+                        key={idx}
+                        className="chem-badge"
+                        style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
+                    >
+                        {badge.chem}
+                    </span>
+                ))}
+            </td>
+        </tr>
+    );
+};
 
-const HistoryRow = React.memo(function HistoryRow({ exp }) { return (
-    <tr>
-        <td>
-            <div className="outcome-cell">
-                <span
-                    className="outcome-dot"
-                    style={{ backgroundColor: exp.color || '#6366F1' }}
-                ></span>
-                <span className="outcome-label">{exp.outcome_label || 'Mixing Chemicals...'}</span>
-            </div>
-        </td>
-        <td className="date-cell">{formatDate(exp.created_at)}</td>
-        <td className="type-cell">
-            <span className="type-badge">{exp.experiment_type || 'Lab Experiment'}</span>
-        </td>
-        <td className="chemicals-cell">
-            {getChemicalBadges(exp).map((badge, idx) => (
-                <span
-                    key={idx}
-                    className="chem-badge"
-                    style={{ backgroundColor: `${badge.color}20`, borderColor: badge.color }}
-                >
-                    {badge.chem}
-                </span>
-            ))}
-        </td>
-    </tr>
-)});
-
-
-HistoryRow.displayName = 'HistoryRow';
-HistoryRow.propTypes = {
+HistoryRowComponent.propTypes = {
     exp: PropTypes.shape({
         id: PropTypes.string,
         color: PropTypes.string,
@@ -83,6 +82,8 @@ HistoryRow.propTypes = {
     }).isRequired,
 };
 
+const HistoryRow = React.memo(HistoryRowComponent);
+HistoryRow.displayName = 'HistoryRow';
 
 const History = () => {
     const navigate = useNavigate();
@@ -147,17 +148,3 @@ const History = () => {
 };
 
 export default History;
-
-HistoryRow.propTypes = {
-    exp: PropTypes.shape({
-        id: PropTypes.string,
-        color: PropTypes.string,
-        outcome_label: PropTypes.string,
-        created_at: PropTypes.string,
-        experiment_type: PropTypes.string,
-        chem_a: PropTypes.number,
-        chem_b: PropTypes.number,
-        chem_i: PropTypes.number,
-        chem_c: PropTypes.number,
-    }).isRequired,
-};
