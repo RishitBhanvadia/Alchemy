@@ -161,11 +161,23 @@
   padding: 12px;
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.mini-log-item.success-log {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.mini-log-item.neutral-log {
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 .mini-log-item:hover {
   background: rgba(255, 255, 255, 0.05);
+  transform: translateX(4px);
 }
 
 .log-icon {

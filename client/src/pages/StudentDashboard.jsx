@@ -209,7 +209,7 @@ const StudentDashboard = () => {
                                         {recentExperiments.map((exp, idx) => (
                                             <motion.div 
                                                 key={exp.id}
-                                                className="mini-log-item"
+                                                className={`mini-log-item ${exp.outcome_label ? 'success-log' : 'neutral-log'}`}
                                                 initial={{ x: 20, opacity: 0 }}
                                                 animate={{ x: 0, opacity: 1 }}
                                                 transition={{ delay: 0.1 * idx }}
