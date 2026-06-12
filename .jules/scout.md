@@ -1,0 +1,4 @@
+## 2025-06-12 - Market Gap: Integrated Assessment and Lab Data Collection
+**Market Insight:** Leading virtual lab competitors like PraxiLabs and Beyond Labz heavily emphasize integrated student assessment (pre/post-lab quizzes) and structured data collection (digital lab notebooks/graphing) alongside their 3D simulations. This bridges the gap between gamified simulation and academic rigor.
+**Codebase Match:** Alchemistry has a strong 3D environment (`Lab3D.jsx`) and a robust history tracking system (`useHistoryStore`), but currently lacks an interface for students to record their own observations or answer assessment questions during the lab.
+**Opportunity:** Adding an integrated Lab Notebook and Pre/Post-lab quizzes will significantly increase the educational value of the app, making it more comparable to market leaders while leveraging existing state management and database structures.
