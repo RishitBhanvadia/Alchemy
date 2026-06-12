@@ -1,0 +1,2 @@
+The rule for memory:
+"If GitHub Actions CI fails in the Alchemistry client during `vite build` or `vitest` execution with a 'Cannot find native binding' error related to `@tailwindcss/oxide` and optional dependencies, it is likely a transient runner caching issue affecting `vite.config.js` compilation. Do not attempt to modify package dependency files; instead, proceed with your submission to trigger a fresh CI run."
