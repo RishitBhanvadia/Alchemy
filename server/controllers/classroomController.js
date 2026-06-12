@@ -1,13 +1,9 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
+const { generateSecureCode } = require('../utils/random');
 
 function generateClassCode() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = '';
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
+  return generateSecureCode(5);
 }
 
 exports.createClassroom = async (req, res) => {
