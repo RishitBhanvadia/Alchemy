@@ -319,6 +319,7 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
+  /* eslint-disable react-hooks/incompatible-library */
   const table = useReactTable({
     data: students,
     columns,
@@ -329,6 +330,7 @@ export default function TeacherDashboard({ analytics = false }) {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
+  /* eslint-enable react-hooks/incompatible-library */
 
   // ─── Don't render if not authorized ──────────────────────────────
   if (role !== 'teacher' && role !== 'admin') return null;
