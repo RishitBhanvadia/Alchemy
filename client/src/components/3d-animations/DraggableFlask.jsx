@@ -34,6 +34,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const intersection = useRef(new Vector3());
     const offset = useRef(new Vector3());
 
+    /* eslint-disable react-hooks/immutability */
     const handlePointerDown = useCallback((e) => {
         if (locked) {
             toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
@@ -41,7 +42,6 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
         e.stopPropagation();
         
-        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'grabbing';
         dragActive.current = true;
 
@@ -62,6 +62,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
     }, [camera, gl, label, locked]);
+    /* eslint-enable react-hooks/immutability */
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -91,11 +92,11 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
     }, [camera, gl, position]);
 
+    /* eslint-disable react-hooks/immutability */
     const handlePointerUp = useCallback((e) => {
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
@@ -108,6 +109,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
     }, [gl, position]);
+    /* eslint-enable react-hooks/immutability */
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
