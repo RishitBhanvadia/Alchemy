@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const JoinClassroom = ({ onJoined, profileId }) => {
     const [code, setCode] = useState('');
@@ -105,6 +106,11 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             </form>
         </motion.div>
     );
+};
+
+JoinClassroom.propTypes = {
+    onJoined: PropTypes.func.isRequired,
+    profileId: PropTypes.string.isRequired
 };
 
 export default JoinClassroom;

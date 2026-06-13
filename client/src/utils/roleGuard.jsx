@@ -1,7 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import useAuthStore from '../store/authStore';
 import LoadingOverlay from '../components/LoadingOverlay';
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired
+};
 
 // Blocks unauthenticated users
 export function PrivateRoute({ children }) {
@@ -11,6 +16,11 @@ export function PrivateRoute({ children }) {
   if (!user) return <Navigate to="/login" replace />;
   return children;
 }
+
+RoleRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  requiredRole: PropTypes.string.isRequired
+};
 
 // Blocks users without the required role
 export function RoleRoute({ children, requiredRole }) {

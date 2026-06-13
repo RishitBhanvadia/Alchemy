@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onChange, onBlur, error, name, disabled }) => {
   return (
@@ -43,6 +44,19 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
       </AnimatePresence>
     </div>
   );
+};
+
+InputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
+  error: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
 };
 
 export default InputField;

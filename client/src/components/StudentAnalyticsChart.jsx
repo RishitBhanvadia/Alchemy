@@ -161,6 +161,12 @@ StudentAnalyticsChart.propTypes = {
 
 StudentAnalyticsChart.displayName = 'StudentAnalyticsChart';
 
+StudentAnalyticsChart.propTypes = {
+  scores: PropTypes.array,
+  experimentName: PropTypes.string,
+  noDataMessage: PropTypes.string
+};
+
 export default StudentAnalyticsChart;
 
 // ─── Inline Styles ──────────────────────────────────────────────────────────
