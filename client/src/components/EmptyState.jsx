@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './EmptyState.css';
+import PropTypes from 'prop-types';
 
 const EmptyState = ({ 
   icon = '📭', 
@@ -27,6 +28,15 @@ const EmptyState = ({
       )}
     </motion.div>
   );
+};
+
+EmptyState.propTypes = {
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.elementType, PropTypes.node]),
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  actionLabel: PropTypes.string,
+  onAction: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default EmptyState;

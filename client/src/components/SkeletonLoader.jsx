@@ -1,10 +1,16 @@
 
 import React from 'react';
 import './SkeletonLoader.css';
+import PropTypes from 'prop-types';
 
 const SkeletonItem = ({ className, style }) => (
     <div className={`skeleton-item ${className || ''}`} style={style}></div>
 );
+
+SkeletonItem.propTypes = {
+  className: PropTypes.string,
+  style: PropTypes.object,
+};
 
 export const LabSkeleton = () => (
     <div className="skeleton-container lab-skeleton">
