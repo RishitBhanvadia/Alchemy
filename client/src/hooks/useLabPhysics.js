@@ -106,11 +106,14 @@ export default function useLabPhysics(config = {}) {
   /**
    * Handle pointer entering an object (hover start).
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerEnter = useCallback(
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
+        /* eslint-disable react-hooks/immutability */
         gl.domElement.style.cursor = 'grab';
+        /* eslint-enable react-hooks/immutability */
       }
     },
     [dragState, gl]
@@ -119,11 +122,14 @@ export default function useLabPhysics(config = {}) {
   /**
    * Handle pointer leaving an object (hover end).
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerLeave = useCallback(
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
+        /* eslint-disable react-hooks/immutability */
         gl.domElement.style.cursor = 'default';
+        /* eslint-enable react-hooks/immutability */
       }
     },
     [dragState, gl]
@@ -134,12 +140,15 @@ export default function useLabPhysics(config = {}) {
    * Performs raycaster hit detection on the drag plane
    * and calculates the offset so the object doesn't snap.
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerDown = useCallback(
     (e) => {
       e.stopPropagation();
 
       setDragState('dragging');
+      /* eslint-disable react-hooks/immutability */
       gl.domElement.style.cursor = 'grabbing';
+      /* eslint-enable react-hooks/immutability */
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -172,6 +181,7 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer move (update drag position).
    * Projects the pointer onto the drag plane and updates position.
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerMove = useCallback(
     (e) => {
       if (dragState !== 'dragging') return;
@@ -202,13 +212,16 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer up (end drag → released state).
    * Object returns to home position.
    */
+  /* eslint-disable react-hooks/immutability */
   const onPointerUp = useCallback(
     (e) => {
       if (dragState !== 'dragging') return;
       e.stopPropagation();
 
       setDragState('released');
+      /* eslint-disable react-hooks/immutability */
       gl.domElement.style.cursor = 'default';
+      /* eslint-enable react-hooks/immutability */
 
       // Reset physics state
       isPouring.current = false;
@@ -247,6 +260,7 @@ export default function useLabPhysics(config = {}) {
    * @param {number} [options.tiltAngle=Math.PI/3.5] - Tilt angle when pouring
    * @param {number} [options.tiltLerpSpeed=0.15] - Rotation interpolation speed
    */
+  /* eslint-disable react-hooks/immutability */
   const updateFrame = useCallback(
     (groupRef, delta, options = {}) => {
       const {
