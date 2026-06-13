@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SkeletonBlock.css';
 
 const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', className = '' }) => {
@@ -12,6 +13,13 @@ const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', 
       }}
     />
   );
+};
+
+SkeletonBlock.propTypes = {
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  borderRadius: PropTypes.string,
+  className: PropTypes.string
 };
 
 export const SkeletonText = ({ lines = 3, className = '' }) => {
@@ -28,6 +36,11 @@ export const SkeletonText = ({ lines = 3, className = '' }) => {
   );
 };
 
+SkeletonText.propTypes = {
+  lines: PropTypes.number,
+  className: PropTypes.string
+};
+
 export const SkeletonCard = ({ className = '' }) => {
   return (
     <div className={`skeleton-card ${className}`}>
@@ -38,6 +51,10 @@ export const SkeletonCard = ({ className = '' }) => {
   );
 };
 
+SkeletonCard.propTypes = {
+  className: PropTypes.string
+};
+
 export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
   return (
     <div className={`skeleton-table-row ${className}`}>
@@ -46,6 +63,11 @@ export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
       ))}
     </div>
   );
+};
+
+SkeletonTableRow.propTypes = {
+  columns: PropTypes.number,
+  className: PropTypes.string
 };
 
 export default SkeletonBlock;
