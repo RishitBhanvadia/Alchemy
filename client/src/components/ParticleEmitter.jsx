@@ -177,6 +177,7 @@ export default function ParticleEmitter({
   }, [active, isExothermic, gl, applyExothermicBurst, gasType]);
 
   // ─── useFrame: Update particle positions every frame ────────────────
+  /* eslint-disable react-hooks/immutability */
   useFrame((_, delta) => {
     if (!active || !pointsRef.current) return;
 

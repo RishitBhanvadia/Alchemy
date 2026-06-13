@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SkeletonBlock.css';
 
 const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', className = '' }) => {
@@ -46,6 +47,27 @@ export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
       ))}
     </div>
   );
+};
+
+SkeletonBlock.propTypes = {
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  borderRadius: PropTypes.string,
+  className: PropTypes.string
+};
+
+SkeletonText.propTypes = {
+  lines: PropTypes.number,
+  className: PropTypes.string
+};
+
+SkeletonCard.propTypes = {
+  className: PropTypes.string
+};
+
+SkeletonTableRow.propTypes = {
+  columns: PropTypes.number,
+  className: PropTypes.string
 };
 
 export default SkeletonBlock;

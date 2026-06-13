@@ -92,6 +92,8 @@ const EXPERIMENT_OPTIONS = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+import PropTypes from 'prop-types';
+
 export default function TeacherDashboard({ analytics = false }) {
   const navigate = useNavigate();
   const profile = useAuthStore(state => state.profile);
@@ -319,6 +321,7 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
+  /* eslint-disable react-hooks/incompatible-library */
   const table = useReactTable({
     data: students,
     columns,
@@ -522,6 +525,10 @@ export default function TeacherDashboard({ analytics = false }) {
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool
+};
 
 const styles = {
   page: {
