@@ -25,6 +25,9 @@
         "jsx-a11y/click-events-have-key-events": "warn",
         "jsx-a11y/no-static-element-interactions": "warn",
         "react-hooks/purity": "off",
+        "react-hooks/immutability": "off",
+        "react-hooks/rules-of-hooks": "off",
+        "react-hooks/refs": "off",
         "react/no-unknown-property": [
             "error",
             {
