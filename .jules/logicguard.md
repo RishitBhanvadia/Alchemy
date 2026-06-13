@@ -1,0 +1,4 @@
+## YYYY-MM-DD - Fix Regime Classification and Reaction Hash Duplication
+**Bug:** Regime classification in `regimeClassifier.js` returned early for any acid/base presence, shadowing Catalyst/Indicator regimes. Also, `resultController.js` duplicated and used incorrect logic for `classifyRegime` and `computeReactionId`.
+**Root Cause:** The `acidBaseSum > 0` block was evaluated before `CATALYST_DOMINANT` and `INDICATOR_DOMINANT` checks in `regimeClassifier.js`. `resultController.js` failed to use the canonical utilities, implementing a divergent version of the logic that ignores `chem_i` and `chem_c`.
+**Learning:** Always evaluate specific threshold-based regimes (like Catalyst or Indicator dominance) before generic existence checks. Centralize logic in canonical utility files to prevent divergence across controllers.
