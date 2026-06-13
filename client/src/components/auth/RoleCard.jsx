@@ -15,7 +15,7 @@ const RoleCard = ({ userRole, selected, onSelect }) => {
     <motion.div
       whileHover={{ y: -2, borderColor: 'rgba(255,255,255,0.12)' }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(role)}
+      onClick={() => onSelect(userRole)}
       className={`relative flex-1 cursor-pointer p-5 rounded-2xl border transition-all duration-300 text-center group ${
         selected 
         ? 'bg-lab-purple/10 border-lab-purple/70 shadow-lab-role-selected' 
