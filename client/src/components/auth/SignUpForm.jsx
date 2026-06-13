@@ -5,6 +5,7 @@ import { User, Mail, Lock, ShieldCheck } from 'lucide-react';
 import InputField from './InputField';
 import CTAButton from './CTAButton';
 import RoleCard from './RoleCard';
+import PropTypes from 'prop-types';
 
 const SignUpForm = ({ onTabSwitch }) => {
   const [formData, setFormData] = useState({
@@ -148,6 +149,10 @@ const SignUpForm = ({ onTabSwitch }) => {
       </div>
     </form>
   );
+};
+
+SignUpForm.propTypes = {
+  onTabSwitch: PropTypes.func.isRequired
 };
 
 export default SignUpForm;
