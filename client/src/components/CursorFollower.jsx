@@ -62,7 +62,7 @@ const CursorFollower = () => {
         if (isTouchDevice) return null;
 
     return () => removeEventListeners();
-    }, []);
+    }, [isTouchDevice]);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
