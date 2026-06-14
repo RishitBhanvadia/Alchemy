@@ -34,7 +34,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const intersection = useRef(new Vector3());
     const offset = useRef(new Vector3());
 
-    const handlePointerDown = useCallback((e) => {
+    const handlePointerDown = useCallback(
+    /* eslint-disable react-hooks/immutability */(e) => {
         if (locked) {
             toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
             return;
@@ -91,7 +92,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
     }, [camera, gl, position]);
 
-    const handlePointerUp = useCallback((e) => {
+    const handlePointerUp = useCallback(
+    /* eslint-disable react-hooks/immutability */(e) => {
         if (!dragActive.current) return;
         e.stopPropagation();
 
