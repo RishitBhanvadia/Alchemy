@@ -1,0 +1,80 @@
+import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import tailwindcore from '@tailwindcss/vite';
+
+
+export default defineConfig({
+    plugins: [
+        react(),
+        tailwindcore(),
+    ],
+
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5000',
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path, // do not rewrite — keep /api prefix
+            },
+        },
+    },
+    resolve: {
+        alias: {
+            'react': path.resolve(__dirname, 'node_modules/react'),
+            'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
+        },
+    },
+    build: {
+        outDir: 'build',
+        target: 'es2020',
+        minify: 'esbuild',
+        sourcemap: false,
+        cssCodeSplit: true,
+        chunkSizeWarningLimit: 1000,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-react-core': ['react', 'react-dom', 'react-router-dom'],
+                    'vendor-three': ['three', 'three-mesh-bvh'],
+                    'vendor-r3f': ['@react-three/fiber', '@react-three/drei'],
+                    'vendor-animation': ['framer-motion', 'gsap'],
+                    'vendor-charts': ['recharts', '@tanstack/react-table'],
+                },
+                assetFileNames: 'assets/[name]-[hash][extname]',
+                chunkFileNames: 'chunks/[name]-[hash].js',
+                entryFileNames: '[name]-[hash].js',
+            },
+        },
+    },
+    optimizeDeps: {
+        include: ['react', 'react-dom', 'zustand', 'axios'],
+        exclude: ['@react-three/rapier'],
+    },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/test/setup.js',
+        exclude: [
+            ...configDefaults.exclude,
+            'tests/**',
+        ],
+        coverage: {
+            provider: 'v8',
+            reporter: ['text', 'json', 'html', 'lcov', 'cobertura'],
+            exclude: [
+                'node_modules/',
+                'src/test/',
+                '**/*.config.js',
+                '**/dist/**',
+            ],
+        },
+        server: {
+            deps: {
+                inline: ['@exodus/bytes', 'html-encoding-sniffer']
+            }
+        }
+    }
+});

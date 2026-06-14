@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @theme {
   --color-lab-black: #080810;
@@ -15,7 +16,7 @@
   --font-display: "Space Grotesk", sans-serif;
 
   --background-image-ion-gradient: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #06b6d4 100%);
-  
+
   --shadow-lab-card: 0 0 0 1px rgba(99,58,255,0.15), 0 20px 60px rgba(0,0,0,0.6), 0 0 80px rgba(99,58,255,0.08) inset;
   --shadow-lab-button: 0 4px 20px rgba(124,58,237,0.5), 0 1px 0 rgba(255,255,255,0.1) inset;
   --shadow-lab-button-hover: 0 8px 30px rgba(124,58,237,0.7);
@@ -67,8 +68,8 @@
 
   /* CRITICAL: Overriding browser autofill light backgrounds */
   input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
-  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px #13131f inset !important;
     -webkit-text-fill-color: white !important;
@@ -78,8 +79,8 @@
 
 /* Grid Overlay */
 .lab-grid {
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), 
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
   background-size: 30px 30px;
 }
