@@ -1,0 +1,4 @@
+## 2023-10-27 - Test User Authentication
+**Gap:** The critical user authentication state management flow (`useAuthStore`) had missing tests, posing a major risk to application security and user experience.
+**Learning:** In Zustand stores heavily integrated with Supabase, it is essential to deeply mock the Supabase client methods (`getSession`, `from`, `onAuthStateChange`) and the corresponding data structures (like chains `from().select().eq().single()`) to accurately test the store's behaviour across sign-in, sign-out, session restoration, and auto-registration logic.
+**Pattern:** Setup a robust `vi.mock` for the external SDK (Supabase), initialize the Zustand store state in `beforeEach`, and verify store changes (using `useAuthStore.getState()`) after triggering store methods or firing mocked callbacks.
