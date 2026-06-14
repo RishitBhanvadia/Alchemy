@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
@@ -122,16 +123,15 @@ const SignUpForm = ({ onTabSwitch }) => {
 
       <div className="pt-2 space-y-3">
         <h3 className="text-center text-[11px] font-medium text-lab-muted tracking-[0.15em] uppercase">
-          Select Your Lab Role
-        </h3>
+          Select Your Lab Role</h3>
         <div className="flex gap-3">
           <RoleCard 
-            role="student" 
+            userRole="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
+            userRole="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />

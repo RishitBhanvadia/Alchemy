@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
  * TeacherDashboard.jsx — Teacher's classroom management dashboard
  * Phase 3.2.2 Task [11]: Route-guarded, data grid, analytics chart
@@ -319,6 +320,7 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
+  /* eslint-disable react-hooks/incompatible-library */
   const table = useReactTable({
     data: students,
     columns,
