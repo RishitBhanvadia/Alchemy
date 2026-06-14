@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SkeletonBlock.css';
 
 const SkeletonBlock = ({ width = '100%', height = '20px', borderRadius = '8px', className = '' }) => {
@@ -46,6 +47,64 @@ export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
       ))}
     </div>
   );
+};
+
+SkeletonBlock.propTypes = {
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  borderRadius: PropTypes.string,
+  className: PropTypes.string
+};
+
+export const SkeletonText = ({ lines = 3, className = '' }) => {
+  return (
+    <div className={`skeleton-text-container ${className}`}>
+      {Array.from({ length: lines }).map((_, i) => (
+        <SkeletonBlock
+          key={i}
+          width={i === lines - 1 ? '70%' : '100%'}
+          height="16px"
+          className="skeleton-text-line"
+        />
+      ))}
+    </div>
+  );
+};
+
+SkeletonText.propTypes = {
+  lines: PropTypes.number,
+  className: PropTypes.string
+};
+
+export const SkeletonCard = ({ className = '' }) => {
+  return (
+    <div className={`skeleton-card ${className}`}>
+      <SkeletonBlock height="120px" borderRadius="12px" className="skeleton-card-img" />
+      <div className="skeleton-card-content">
+        <SkeletonBlock width="60%" height="24px" className="skeleton-card-title" />
+        <SkeletonText lines={2} />
+      </div>
+    </div>
+  );
+};
+
+SkeletonCard.propTypes = {
+  className: PropTypes.string
+};
+
+export const SkeletonTableRow = ({ columns = 4, className = '' }) => {
+  return (
+    <div className={`skeleton-table-row ${className}`}>
+      {Array.from({ length: columns }).map((_, i) => (
+        <SkeletonBlock key={i} width="100%" height="20px" />
+      ))}
+    </div>
+  );
+};
+
+SkeletonTableRow.propTypes = {
+  columns: PropTypes.number,
+  className: PropTypes.string
 };
 
 export default SkeletonBlock;
