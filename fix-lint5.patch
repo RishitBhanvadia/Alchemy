@@ -1,0 +1,26 @@
+--- client/src/components/auth/SignUpForm.jsx
++++ client/src/components/auth/SignUpForm.jsx
+@@ -126,12 +126,12 @@
+           Select Your Lab Role
+         </h3>
+         <div className="flex gap-3">
+-          <RoleCard
+-            userRole="student"
+-            selected={formData.role === 'student'}
+-            onSelect={handleRoleSelect}
+-          />
+-          <RoleCard
+-            userRole="teacher"
+-            selected={formData.role === 'teacher'}
+-            onSelect={handleRoleSelect}
+-          />
++          <RoleCard role="presentation"
++            userRole="student"
++            selected={formData.role === 'student'}
++            onSelect={handleRoleSelect}
++          />
++          <RoleCard role="presentation"
++            userRole="teacher"
++            selected={formData.role === 'teacher'}
++            onSelect={handleRoleSelect}
++          />

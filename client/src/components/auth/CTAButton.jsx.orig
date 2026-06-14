@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, UserPlus, Atom } from 'lucide-react';
+import { ArrowRight, Loader2, UserPlus, Atom } from 'lucide-react';
 
 const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType }) => {
   const Icon = IconType === 'UserPlus' ? UserPlus : ArrowRight;
@@ -18,7 +18,7 @@ const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType
     >
       {/* Inner glow highlight */}
       <div className="absolute inset-0 border-t border-white/20 rounded-[14px] pointer-events-none" />
-      
+
       {loading ? (
         <motion.div
           animate={{ rotate: 360 }}

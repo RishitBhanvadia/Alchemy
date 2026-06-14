@@ -1,0 +1,22 @@
+--- client/src/components/auth/CTAButton.jsx
++++ client/src/components/auth/CTAButton.jsx
+@@ -1,6 +1,6 @@
+ import React from 'react';
+ import { motion } from 'framer-motion';
+-import { ArrowRight, Loader2, UserPlus, Atom } from 'lucide-react';
++import { ArrowRight, UserPlus, Atom } from 'lucide-react';
+
+ const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType }) => {
+   const Icon = IconType === 'UserPlus' ? UserPlus : ArrowRight;
+--- client/src/components/auth/LoginForm.jsx
++++ client/src/components/auth/LoginForm.jsx
+@@ -78,7 +78,7 @@
+         <div className="flex items-center justify-between mt-1">
+           <div />
+-          <a href="#" className="text-xs text-lab-cyan hover:text-lab-cyan/80 transition-colors font-medium">
++          <button type="button" className="text-xs text-lab-cyan hover:text-lab-cyan/80 transition-colors font-medium bg-transparent border-none p-0 cursor-pointer font-inherit">
+             Forgot password?
+-          </a>
++          </button>
+         </div>
+       </div>

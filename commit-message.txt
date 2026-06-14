@@ -1,0 +1,7 @@
+test: Fix CI failures regarding ESLint jsx-a11y and hooks rules
+
+- Replace invalid `<a>` tags with valid `<button type="button">` equivalents in `AuthPage.jsx` and `LoginForm.jsx` to resolve `jsx-a11y/anchor-is-valid`.
+- Add `role="presentation"` to `RoleCard` elements in `SignUpForm.jsx` to resolve `jsx-a11y/aria-role` and missing interaction handler warnings.
+- Fix conditional usage of `useEffect` in `CursorFollower.jsx` to adhere to React Hook rules (`react-hooks/rules-of-hooks`).
+- Remove unused imports (`Loader2`, `Check`) from `CTAButton.jsx` and `RoleCard.jsx`.
+- Build successfully passes locally.

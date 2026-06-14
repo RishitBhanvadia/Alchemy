@@ -22,14 +22,14 @@ const SignUpForm = ({ onTabSwitch }) => {
     if (!formData.fullName.trim()) newErrors.fullName = 'Please enter your full scientific name.';
     if (!formData.email) newErrors.email = 'Email address is required.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email.';
-    
+
     if (!formData.password) newErrors.password = 'Security key is required.';
     else if (formData.password.length < 8) newErrors.password = 'Auth key must be at least 8 characters.';
-    
+
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Secret keys do not match.';
-    
+
     if (!formData.role) newErrors.role = 'Please choose your lab role.';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -48,7 +48,7 @@ const SignUpForm = ({ onTabSwitch }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setLoading(true);
     try {
       const { error: authError } = await supabase.auth.signUp({
@@ -125,17 +125,15 @@ const SignUpForm = ({ onTabSwitch }) => {
           Select Your Lab Role
         </h3>
         <div className="flex gap-3">
-          <RoleCard 
-            role="presentation"
+          <RoleCard
             userRole="student"
-            selected={formData.role === 'student'} 
-            onSelect={handleRoleSelect} 
+            selected={formData.role === 'student'}
+            onSelect={handleRoleSelect}
           />
-          <RoleCard 
-            role="presentation"
+          <RoleCard
             userRole="teacher"
-            selected={formData.role === 'teacher'} 
-            onSelect={handleRoleSelect} 
+            selected={formData.role === 'teacher'}
+            onSelect={handleRoleSelect}
           />
         </div>
         {errors.role && (

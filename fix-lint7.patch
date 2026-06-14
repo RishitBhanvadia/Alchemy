@@ -1,0 +1,26 @@
+--- client/src/components/CursorFollower.jsx
++++ client/src/components/CursorFollower.jsx
+@@ -9,11 +9,11 @@
+     const [clicking, setClicking] = useState(false);
+     const [hovering, setHovering] = useState(false);
+
+-    if (isTouchDevice) return null;
+-
+     useEffect(() => {
++        if (isTouchDevice) return;
++
+         const addEventListeners = () => {
+             document.addEventListener("mousemove", onMouseMove);
+             document.addEventListener("mouseenter", onMouseEnter);
+             document.addEventListener("mouseleave", onMouseLeave);
+@@ -58,9 +58,11 @@
+
+         addEventListeners();
+         return () => removeEventListeners();
+-    }, []);
++    }, [isTouchDevice]);
++
++    if (isTouchDevice) return null;
+
+     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
+     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
