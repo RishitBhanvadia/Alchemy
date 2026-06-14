@@ -79,8 +79,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose} role="presentation" onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }} tabIndex={0}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="presentation" onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }} tabIndex={0}>
+    <div style={styles.overlay} onClick={handleClose} role="presentation" onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }} >
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="presentation" onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }} >
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
