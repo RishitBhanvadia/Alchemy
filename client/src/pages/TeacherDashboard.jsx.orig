@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -62,7 +62,7 @@ const columns = [
       if (!val) return <span style={{ color: '#666' }}>Never</span>;
       const date = new Date(val);
       const now = new Date();
-      
+
       // Check if active in last 60 seconds
       const diffMs = now - date;
       if (diffMs < 60000) {
@@ -107,7 +107,7 @@ export default function TeacherDashboard({ analytics = false }) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
+
   // Date Range State
   const [startDate, setStartDate] = useState(() => {
     const d = new Date();
@@ -187,7 +187,7 @@ export default function TeacherDashboard({ analytics = false }) {
 
         // Collect all student IDs
         const studentIds = (studentData || []).map(r => r.student_id);
-        
+
         // OPTIMIZATION: Fetch all experiment counts in ONE query instead of N+1
         let expDataByStudent = {};
         if (studentIds.length > 0) {
@@ -195,7 +195,7 @@ export default function TeacherDashboard({ analytics = false }) {
             .from('experiment_logs')
             .select('student_id, outcome_label')
             .in('student_id', studentIds);
-          
+
           // Group by student_id
           if (allExpData) {
             allExpData.forEach(exp => {
@@ -214,10 +214,10 @@ export default function TeacherDashboard({ analytics = false }) {
         const mapped = (studentData || []).map((row) => {
           const expData = expDataByStudent[row.student_id] || { count: 0, outcomes: new Set() };
           const expCount = expData.count;
-          
+
           // Calculate XP: 50 per experiment
           const xpFromExperiments = expCount * 50;
-          
+
           return {
             id: row.student_id,
             display_name: row.profiles?.display_name || 'Unknown Student',
@@ -509,9 +509,9 @@ export default function TeacherDashboard({ analytics = false }) {
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
           }
           noDataMessage={
-            !selectedExperiment 
+            !selectedExperiment
               ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
+              : experimentScores.length === 0
                 ? "No students have completed this experiment yet."
                 : undefined
           }

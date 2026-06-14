@@ -1,0 +1,4 @@
+## 2025-02-28 - Lazy Load Heavy Chart Components
+**Bottleneck:** The `TeacherDashboard` route bundle was excessively large (>400KB) because it synchronously imported the heavy `recharts` and `@tanstack/react-table` libraries, negatively impacting initial load times for users opening the dashboard.
+**Impact:** Initial bundle size for `TeacherDashboard` reduced significantly by code-splitting the heavy `StudentAnalyticsChart` and `ClassroomManager` components which import these libraries. They are only loaded when needed.
+**Learning:** In React applications, heavy third-party libraries (like charts and tables) used within specific components should be lazily loaded to avoid bloating the main bundle of the parent route, especially in dashboard views where charts might not be the primary immediate interaction point.
