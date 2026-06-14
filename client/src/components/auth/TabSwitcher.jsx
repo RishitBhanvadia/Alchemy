@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 const TabSwitcher = ({ activeTab, onTabChange }) => {
   return (
@@ -38,6 +39,11 @@ const TabSwitcher = ({ activeTab, onTabChange }) => {
       </button>
     </div>
   );
+};
+
+TabSwitcher.propTypes = {
+  activeTab: PropTypes.string.isRequired,
+  onTabChange: PropTypes.func.isRequired
 };
 
 export default TabSwitcher;

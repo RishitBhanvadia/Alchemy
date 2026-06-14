@@ -1,5 +1,6 @@
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SkeletonLoader.css';
 
 const SkeletonItem = ({ className, style }) => (
@@ -41,3 +42,8 @@ export const GenericSkeleton = () => (
         <SkeletonItem style={{ height: '400px' }} />
     </div>
 );
+
+SkeletonItem.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object
+};
