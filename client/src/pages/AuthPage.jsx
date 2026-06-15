@@ -25,9 +25,9 @@ const AuthPage = () => {
         <div className="mt-8 pt-6 border-t border-white/5 text-center">
           <p className="text-[11px] text-lab-muted leading-relaxed font-medium">
             By joining the lab, you agree to our{' '}
-            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors bg-transparent border-none p-0 cursor-pointer inline">Terms of Service</button>
+            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors hover:underline">Terms of Service</button>
             {' '}and{' '}
-            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors bg-transparent border-none p-0 cursor-pointer inline">Privacy Policy</button>
+            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors hover:underline">Privacy Policy</button>
           </p>
         </div>
       </AuthCard>
