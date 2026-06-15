@@ -5,6 +5,7 @@ import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
 import useAssignmentStore from '../store/assignmentStore';
 import LoadingOverlay from '../components/LoadingOverlay';
+import EmptyState from '../components/EmptyState';
 import logger from '../utils/logger';
 import './ClassroomDetail.css';
 
@@ -130,7 +131,7 @@ const ClassroomDetail = () => {
                     </div>
                     <div className="student-list">
                         {students.length === 0 ? (
-                            <p className="empty-msg">No students enrolled yet.</p>
+                            <EmptyState icon="👨‍🎓" title="No students yet" description="Students will appear here when they enroll." />
                         ) : (
                             students.map(stu => (
                                 <div key={stu.id} className="student-card glass-card">
@@ -199,7 +200,9 @@ const ClassroomDetail = () => {
                                 ))}
                                 {assignments.length === 0 && (
                                     <tr>
-                                        <td colSpan="5" className="empty-row">No assignments created yet.</td>
+                                        <td colSpan="5" className="p-0 border-none">
+                                            <EmptyState icon="📋" title="No assignments yet" description="Create assignments to track student progress." />
+                                        </td>
                                     </tr>
                                 )}
                             </tbody>
