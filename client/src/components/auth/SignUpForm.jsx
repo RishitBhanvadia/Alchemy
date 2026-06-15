@@ -124,7 +124,7 @@ const SignUpForm = ({ onTabSwitch }) => {
         <h3 className="text-center text-[11px] font-medium text-lab-muted tracking-[0.15em] uppercase">
           Select Your Lab Role
         </h3>
-        <div className="flex gap-3">
+        <div className="flex gap-3" role="group" aria-label="Select lab role">
           <RoleCard 
             role="student" 
             selected={formData.role === 'student'} 
