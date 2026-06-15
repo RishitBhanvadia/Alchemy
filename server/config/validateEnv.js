@@ -20,7 +20,9 @@ function validateEnv() {
     } else {
       console.error('\nProduction Tip: Ensure these variables are set in your Render environment settings dashboard.');
     }
-    process.exit(1); 
+    if (process.env.NODE_ENV !== 'test') {
+      process.exit(1);
+    }
   }
   console.log('✅ Environment variables validated.');
 }
