@@ -1,5 +1,5 @@
 # 👁️ Command Report
-**Date:** 2026-06-15 13:00 UTC
+**Date:** 2026-06-15 14:15 UTC
 **Branch Reviewed:** jules-13311292491632261745-200e1036
 **Status:** 🚨 CRITICAL
 **Triggered by:** Scheduled
@@ -12,7 +12,7 @@
 |----------------|--------|---------------------------------------|
 | Dependencies   | ✅     | node_modules present, packages installed    |
 | TypeScript     | ❌     | Typescript check failed because tsc could not be run directly without npm/npx  |
-| Lint           | ❌     | 9 errors, 123 warnings        |
+| Lint           | ❌     | 27 errors, 124 warnings        |
 | Tests          | ⚠️  | Client tests pass. Server tests passing. |
 | Build          | ❌  | Error: Transform failed with 4 errors |
 | Bundle Size    | ⚠️  | Build failed so couldn't be evaluated |
@@ -234,7 +234,7 @@ Multiple linting errors exist in the codebase.
 THE PROBLEM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The codebase has several linting errors, including invalid anchor tags, invalid ARIA roles, and unused variables. These need to be resolved to ensure code quality and accessibility.
+The codebase has several linting errors, including invalid anchor tags, invalid ARIA roles, unused variables, and React hook immutability issues. These need to be resolved to ensure code quality and accessibility.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EXACT ERROR OUTPUT
@@ -244,6 +244,86 @@ Command: `cd client && npm run lint`
 
 Output:
 ```
+/app/client/src/components/3d-animations/DraggableFlask.jsx
+  138:7  error  Error: Cannot modify local variables after render completes
+
+This argument is a function which may reassign or mutate `gl` after render, which can cause inconsistent behavior on subsequent renders. Consider using state instead.
+
+  136 |    */
+  137 |   const onPointerDown = useCallback(
+> 138 |     (e) => {
+      |     ^^^^^^^^
+> 139 |       e.stopPropagation();
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 140 |
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 166 |       }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 167 |     },
+      | ^^^^^^ This function may (indirectly) reassign or modify `gl` after render
+  168 |     [camera, gl, dragPlane]
+  169 |   );
+  170 |
+
+  140 |
+  141 |       setDragState('dragging');
+> 142 |       gl.domElement.style.cursor = 'grabbing';
+      |       ^^^^^^^^^^^^^^^^^^^ This modifies `gl`
+  143 |
+  144 |       // Raycaster hit detection on XY drag plane
+  145 |       const raycaster = e.raycaster || new Raycaster();                                                                                                   react-hooks/immutability
+  142:7  error  Error: This value cannot be modified
+
+Modifying a value returned from a hook is not allowed. Consider moving the modification into the hook where the value is constructed.
+
+  140 |
+  141 |       setDragState('dragging');
+> 142 |       gl.domElement.style.cursor = 'grabbing';
+      |       ^^^^^^^^^^^^^^^^^^^ `gl` cannot be modified
+  143 |
+  144 |       // Raycaster hit detection on XY drag plane
+  145 |       const raycaster = e.raycaster || new Raycaster();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/immutability
+  206:5  error  Error: Cannot modify local variables after render completes
+
+This argument is a function which may reassign or mutate `gl` after render, which can cause inconsistent behavior on subsequent renders. Consider using state instead.
+
+  204 |    */
+  205 |   const onPointerUp = useCallback(
+> 206 |     (e) => {
+      |     ^^^^^^^^
+> 207 |       if (dragState !== 'dragging') return;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |       e.stopPropagation();
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 233 |       setTimeout(() => setDragState('idle'), 100);
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 234 |     },
+      | ^^^^^^ This function may (indirectly) reassign or modify `gl` after render
+  235 |     [dragState, gl, homePosition]
+  236 |   );
+  237 |
+
+  209 |
+  210 |       setDragState('released');
+> 211 |       gl.domElement.style.cursor = 'default';
+      |       ^^^^^^^^^^^^^^^^^^^ This modifies `gl`
+  212 |
+  213 |       // Reset physics state
+  214 |       isPouring.current = false;  react-hooks/immutability
+  211:7  error  Error: This value cannot be modified
+
+Modifying a value returned from a hook is not allowed. Consider moving the modification into the hook where the value is constructed.
+
+  209 |
+  210 |       setDragState('released');
+> 211 |       gl.domElement.style.cursor = 'default';
+      |       ^^^^^^^^^^^^^^^^^^^ `gl` cannot be modified
+  212 |
+  213 |       // Reset physics state
+  214 |       isPouring.current = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/immutability
+
 /app/client/src/components/auth/CTAButton.jsx
   3:22  error    'Loader2' is defined but never used        no-unused-vars
 
@@ -268,6 +348,18 @@ Output:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 BROKEN FILE(S)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Primary file: `client/src/components/3d-animations/DraggableFlask.jsx`
+Location: Line 138-167, 206-234
+Current broken code:
+```jsx
+  const onPointerDown = useCallback(
+    (e) => {
+      e.stopPropagation();
+// ...
+      setDragState('dragging');
+      gl.domElement.style.cursor = 'grabbing';
+```
 
 Primary file: `client/src/components/auth/LoginForm.jsx`
 Location: Line 81
@@ -295,10 +387,11 @@ Current broken code:
 ROOT CAUSE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-There are three main causes:
+There are four main causes:
 1. `<a>` tags are used with `href="#"`, which violates accessibility rules.
 2. The `role` prop in `RoleCard.jsx` and `SignUpForm.jsx` conflicts with the ARIA role attribute, causing errors because "student" and "teacher" are not valid ARIA roles.
 3. Unused imports in `CTAButton.jsx`, `RoleCard.jsx`, and `Lab3D.jsx`.
+4. React hook immutability issues due to `gl.domElement.style.cursor` modification in `DraggableFlask.jsx`.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EXPECTED BEHAVIOUR
@@ -306,7 +399,7 @@ EXPECTED BEHAVIOUR
 
 Input: Run `npm run lint`
 Expected: 0 errors
-Actual: 9 errors
+Actual: 27 errors
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 WHAT TO FIX
@@ -315,7 +408,8 @@ WHAT TO FIX
 Step 1: Replace `<a href="#">` with `<button type="button">` in `LoginForm.jsx` and `AuthPage.jsx`.
 Step 2: Rename the `role` prop to `userRole` in `RoleCard.jsx` and `SignUpForm.jsx`.
 Step 3: Remove unused imports in `CTAButton.jsx`, `RoleCard.jsx`, and `Lab3D.jsx`.
-Step 4: Run `cd client && npm run lint | grep error` to confirm.
+Step 4: Fix the `gl.domElement.style.cursor` modifications in `DraggableFlask.jsx` using state instead of direct mutation.
+Step 5: Run `cd client && npm run lint | grep error` to confirm.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DO NOT CHANGE
