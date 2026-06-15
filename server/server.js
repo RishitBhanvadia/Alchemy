@@ -181,26 +181,29 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-
-const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM received. Closing server gracefully...');
-  server.close(() => {
-    logger.info('Server closed.');
-    process.exit(0);
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`Server running on port ${PORT}`);
   });
-  // Force close after 10 seconds
-  setTimeout(() => process.exit(1), 10000);
-});
 
-process.on('SIGINT', () => process.emit('SIGTERM'));
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM received. Closing server gracefully...');
+    server.close(() => {
+      logger.info('Server closed.');
+      process.exit(0);
+    });
+    // Force close after 10 seconds
+    setTimeout(() => process.exit(1), 10000);
+  });
 
-// Handle unhandled Promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection', { reason: reason?.toString() });
-});
+  process.on('SIGINT', () => process.emit('SIGTERM'));
+
+  // Handle unhandled Promise rejections
+  process.on('unhandledRejection', (reason, promise) => {
+    logger.error('Unhandled Rejection', { reason: reason?.toString() });
+  });
+}
+
+module.exports = app;
