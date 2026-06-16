@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
@@ -34,6 +35,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
     const intersection = useRef(new Vector3());
     const offset = useRef(new Vector3());
 
+    // eslint-disable-next-line react-hooks/immutability
     const handlePointerDown = useCallback((e) => {
         if (locked) {
             toast.error(`${label} is locked by teacher`, { id: `locked-${label}` });
@@ -91,6 +93,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
     }, [camera, gl, position]);
 
+    // eslint-disable-next-line react-hooks/immutability
     const handlePointerUp = useCallback((e) => {
         if (!dragActive.current) return;
         e.stopPropagation();

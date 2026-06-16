@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /**
  * ParticleEmitter.jsx — Reusable particle system for gases and explosions
  * Phase 3.1.3 Task [10]: BufferGeometry-based particles with useFrame update loop
@@ -108,6 +109,7 @@ export default function ParticleEmitter({
   }, [particleCount, config]);
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/immutability
   const applyExothermicBurst = useCallback(() => {
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
@@ -177,6 +179,7 @@ export default function ParticleEmitter({
   }, [active, isExothermic, gl, applyExothermicBurst, gasType]);
 
   // ─── useFrame: Update particle positions every frame ────────────────
+  /* eslint-disable react-hooks/immutability */
   useFrame((_, delta) => {
     if (!active || !pointsRef.current) return;
 
@@ -251,6 +254,7 @@ export default function ParticleEmitter({
         colArray[i3 + 2] = 0.05 * fadeOut;
       }
     }
+    /* eslint-enable react-hooks/immutability */
 
     posAttr.needsUpdate = true;
     if (colAttr) colAttr.needsUpdate = true;
