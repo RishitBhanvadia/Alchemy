@@ -117,8 +117,11 @@ export default function ParticleEmitter({
       const elevation = (Math.random() - 0.3) * Math.PI;
       const speed = 1.5 + Math.random() * 2.0;
 
+      // eslint-disable-next-line react-hooks/immutability
       velocities[i3] = Math.cos(angle) * Math.cos(elevation) * speed;
+      // eslint-disable-next-line react-hooks/immutability
       velocities[i3 + 1] = Math.abs(Math.sin(elevation)) * speed + 0.5;
+      // eslint-disable-next-line react-hooks/immutability
       velocities[i3 + 2] = Math.sin(angle) * Math.cos(elevation) * speed;
 
       // Orange/red color gradient
@@ -128,6 +131,7 @@ export default function ParticleEmitter({
       colors[i3 + 2] = t * 0.1;                 // B: minimal
 
       // Reset lifetime
+      // eslint-disable-next-line react-hooks/immutability
       lifetimes[i] = 0;
 
       // Reset position to origin
@@ -215,8 +219,11 @@ export default function ParticleEmitter({
               (Math.random() - 0.5) * 3,
             ]
           : config.velocityFn();
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3] = v[0];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 1] = v[1];
+        // eslint-disable-next-line react-hooks/immutability
         velocities[i3 + 2] = v[2];
 
         // Reset color for non-exothermic
@@ -235,6 +242,7 @@ export default function ParticleEmitter({
       posArray[i3 + 2] += velocities[i3 + 2] * delta;
 
       // Apply gravity (slight downward for realism)
+      // eslint-disable-next-line react-hooks/immutability
       velocities[i3 + 1] -= 0.3 * delta;
 
       // Fade out: reduce opacity via size decrease
