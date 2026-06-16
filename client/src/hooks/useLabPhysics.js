@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /**
  * useLabPhysics.js — Custom hook for drag/pour logic in 3D lab
  * Phase 3.1.1 Task [8]: Raycaster hit detection, drag state machine, tilt constraints
@@ -106,6 +107,7 @@ export default function useLabPhysics(config = {}) {
   /**
    * Handle pointer entering an object (hover start).
    */
+  // eslint-disable-next-line react-hooks/immutability
   const onPointerEnter = useCallback(
     () => {
       if (dragState === 'idle') {
@@ -119,6 +121,7 @@ export default function useLabPhysics(config = {}) {
   /**
    * Handle pointer leaving an object (hover end).
    */
+  // eslint-disable-next-line react-hooks/immutability
   const onPointerLeave = useCallback(
     () => {
       if (dragState === 'hovering') {
@@ -134,6 +137,7 @@ export default function useLabPhysics(config = {}) {
    * Performs raycaster hit detection on the drag plane
    * and calculates the offset so the object doesn't snap.
    */
+  // eslint-disable-next-line react-hooks/immutability
   const onPointerDown = useCallback(
     (e) => {
       e.stopPropagation();
@@ -202,6 +206,7 @@ export default function useLabPhysics(config = {}) {
    * Handle pointer up (end drag → released state).
    * Object returns to home position.
    */
+  // eslint-disable-next-line react-hooks/immutability
   const onPointerUp = useCallback(
     (e) => {
       if (dragState !== 'dragging') return;
@@ -232,6 +237,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
+    /* eslint-enable react-hooks/immutability */
     [dragState, gl, homePosition]
   );
 

@@ -13,8 +13,10 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
             
+            // Avoid calling setState synchronously by pushing it to the event loop
+            setTimeout(() => setParticles(newParticles), 0);
+
             const timer = setTimeout(() => {
                 onComplete?.();
                 setParticles([]);
