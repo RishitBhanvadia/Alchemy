@@ -135,6 +135,7 @@ export default function ParticleEmitter({
       positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
       positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [particleCount, positions, velocities, lifetimes, colors]);
 
   // ─── GSAP Camera Shake on Exothermic ────────────────────────────────
