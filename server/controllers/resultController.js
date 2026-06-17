@@ -17,8 +17,40 @@ function normalise(a, b, i, c) {
   const na = Math.round((a / total) * 100);
   const nb = Math.round((b / total) * 100);
   const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+  const nc = Math.round((c / total) * 100);
+
+  let sum = na + nb + ni + nc;
+  let diff = 100 - sum;
+
+  if (diff !== 0) {
+    const fractions = [
+      { key: 'na', val: na, frac: ((a / total) * 100) - na },
+      { key: 'nb', val: nb, frac: ((b / total) * 100) - nb },
+      { key: 'ni', val: ni, frac: ((i / total) * 100) - ni },
+      { key: 'nc', val: nc, frac: ((c / total) * 100) - nc }
+    ];
+
+    if (diff > 0) {
+      fractions.sort((x, y) => y.frac - x.frac);
+    } else {
+      fractions.sort((x, y) => x.frac - y.frac);
+    }
+
+    let remaining = Math.abs(diff);
+    for (let j = 0; j < remaining; j++) {
+      const item = fractions[j % 4];
+      if (diff > 0) item.val += 1;
+      else item.val -= 1;
+    }
+
+    return [
+      fractions.find(f => f.key === 'na').val,
+      fractions.find(f => f.key === 'nb').val,
+      fractions.find(f => f.key === 'ni').val,
+      fractions.find(f => f.key === 'nc').val
+    ];
+  }
+  return [na, nb, ni, nc];
 }
 
 function classifyRegime(a, b) {

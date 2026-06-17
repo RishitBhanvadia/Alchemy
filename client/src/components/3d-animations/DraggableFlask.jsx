@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';

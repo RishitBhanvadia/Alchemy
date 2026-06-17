@@ -5,12 +5,11 @@ const CursorFollower = () => {
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
+
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
+
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -67,6 +66,7 @@ const CursorFollower = () => {
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
 
+    if (isTouchDevice) return null;
     return (
         <>
             <div
