@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && !process.env.SUPABASE_URL) {
     require('dotenv').config();
 }
 const validateEnv = require('./config/validateEnv');
