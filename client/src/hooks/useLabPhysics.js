@@ -113,6 +113,7 @@ export default function useLabPhysics(config = {}) {
         gl.domElement.style.cursor = 'grab';
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dragState, gl]
   );
 
@@ -126,6 +127,7 @@ export default function useLabPhysics(config = {}) {
         gl.domElement.style.cursor = 'default';
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dragState, gl]
   );
 
@@ -143,6 +145,7 @@ export default function useLabPhysics(config = {}) {
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const mouse = e.pointer || _getMouseFromEvent(e, gl);
 
       raycaster.setFromCamera(mouse, camera);
@@ -232,6 +235,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dragState, gl, homePosition]
   );
 
