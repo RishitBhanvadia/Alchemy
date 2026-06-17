@@ -1,0 +1,182 @@
+
+> alchemy-client@0.1.0 lint
+> eslint src --ext .js,.jsx
+
+
+/app/client/src/components/EmptyState.jsx
+   6:3  warning  'icon' is missing in props validation         react/prop-types
+   7:3  warning  'title' is missing in props validation        react/prop-types
+   8:3  warning  'description' is missing in props validation  react/prop-types
+   9:3  warning  'actionLabel' is missing in props validation  react/prop-types
+  10:3  warning  'onAction' is missing in props validation     react/prop-types
+  11:3  warning  'className' is missing in props validation    react/prop-types
+
+/app/client/src/components/LoadingOverlay.jsx
+  5:27  warning  'message' is missing in props validation  react/prop-types
+
+/app/client/src/components/MeetingCodeCard.jsx
+  14:28  warning  'code' is missing in props validation        react/prop-types
+  14:34  warning  'meetingUrl' is missing in props validation  react/prop-types
+  14:46  warning  'platform' is missing in props validation    react/prop-types
+  14:56  warning  'onClose' is missing in props validation     react/prop-types
+  51:15  warning  'code.split' is missing in props validation  react/prop-types
+
+/app/client/src/components/ResultModal.jsx
+  15:24  warning  'isOpen' is missing in props validation                          react/prop-types
+  15:32  warning  'result' is missing in props validation                          react/prop-types
+  15:40  warning  'onReset' is missing in props validation                         react/prop-types
+  15:49  warning  'onClose' is missing in props validation                         react/prop-types
+  15:58  warning  'onAskAI' is missing in props validation                         react/prop-types
+  19:5   warning  'result.outcome_label' is missing in props validation            react/prop-types
+  20:5   warning  'result.product_formula' is missing in props validation          react/prop-types
+  21:5   warning  'result.color' is missing in props validation                    react/prop-types
+  22:5   warning  'result.state_change' is missing in props validation             react/prop-types
+  23:5   warning  'result.thermal_effect' is missing in props validation           react/prop-types
+  24:5   warning  'result.is_dangerous' is missing in props validation             react/prop-types
+  31:39  warning  'result.thermal_effect.includes' is missing in props validation  react/prop-types
+  31:87  warning  'result.thermal_effect.includes' is missing in props validation  react/prop-types
+  32:35  warning  'result.state_change.includes' is missing in props validation    react/prop-types
+  33:21  warning  'result.state_change.includes' is missing in props validation    react/prop-types
+  34:21  warning  'result.state_change.includes' is missing in props validation    react/prop-types
+  82:90  warning  'result.color.toLowerCase' is missing in props validation        react/prop-types
+
+/app/client/src/components/SkeletonBlock.jsx
+   4:26  warning  'width' is missing in props validation         react/prop-types
+   4:42  warning  'height' is missing in props validation        react/prop-types
+   4:59  warning  'borderRadius' is missing in props validation  react/prop-types
+   4:81  warning  'className' is missing in props validation     react/prop-types
+  17:32  warning  'lines' is missing in props validation         react/prop-types
+  17:43  warning  'className' is missing in props validation     react/prop-types
+  31:32  warning  'className' is missing in props validation     react/prop-types
+  41:36  warning  'columns' is missing in props validation       react/prop-types
+  41:49  warning  'className' is missing in props validation     react/prop-types
+
+/app/client/src/components/SkeletonLoader.jsx
+  5:25  warning  'className' is missing in props validation  react/prop-types
+  5:36  warning  'style' is missing in props validation      react/prop-types
+
+/app/client/src/components/StudentAnalyticsChart.jsx
+  61:79  warning  'noDataMessage' is missing in props validation  react/prop-types
+
+/app/client/src/components/SuccessCelebration.jsx
+  4:31  warning  'active' is missing in props validation      react/prop-types
+  4:39  warning  'onComplete' is missing in props validation  react/prop-types
+
+/app/client/src/components/auth/AuthCard.jsx
+  5:21  warning  'children' is missing in props validation  react/prop-types
+
+/app/client/src/components/auth/AuthPage.jsx
+  4:21  warning  'children' is missing in props validation  react/prop-types
+
+/app/client/src/components/auth/CTAButton.jsx
+  5:22  warning  'children' is missing in props validation  react/prop-types
+  5:32  warning  'onClick' is missing in props validation   react/prop-types
+  5:41  warning  'loading' is missing in props validation   react/prop-types
+  5:50  warning  'type' is missing in props validation      react/prop-types
+  5:67  warning  'icon' is missing in props validation      react/prop-types
+
+/app/client/src/components/auth/InputField.jsx
+  4:23   warning  'label' is missing in props validation        react/prop-types
+  4:30   warning  'icon' is missing in props validation         react/prop-types
+  4:42   warning  'type' is missing in props validation         react/prop-types
+  4:57   warning  'placeholder' is missing in props validation  react/prop-types
+  4:70   warning  'value' is missing in props validation        react/prop-types
+  4:77   warning  'onChange' is missing in props validation     react/prop-types
+  4:87   warning  'onBlur' is missing in props validation       react/prop-types
+  4:95   warning  'error' is missing in props validation        react/prop-types
+  4:102  warning  'name' is missing in props validation         react/prop-types
+  4:108  warning  'disabled' is missing in props validation     react/prop-types
+
+/app/client/src/components/auth/RoleCard.jsx
+  5:21  warning  'userRole' is missing in props validation  react/prop-types
+  5:31  warning  'selected' is missing in props validation  react/prop-types
+  5:41  warning  'onSelect' is missing in props validation  react/prop-types
+
+/app/client/src/components/auth/RoleSelector.jsx
+  5:25  warning  'selectedRole' is missing in props validation     react/prop-types
+  5:39  warning  'setSelectedRole' is missing in props validation  react/prop-types
+  5:56  warning  'error' is missing in props validation            react/prop-types
+
+/app/client/src/components/auth/SignUpForm.jsx
+  9:23  warning  'onTabSwitch' is missing in props validation  react/prop-types
+
+/app/client/src/components/auth/TabSwitcher.jsx
+  4:24  warning  'activeTab' is missing in props validation    react/prop-types
+  4:35  warning  'onTabChange' is missing in props validation  react/prop-types
+
+/app/client/src/components/student/JoinClassroom.jsx
+   6:26  warning  'onJoined' is missing in props validation   react/prop-types
+   6:36  warning  'profileId' is missing in props validation  react/prop-types
+  24:17  warning  Unexpected console statement                no-console
+  51:13  warning  Unexpected console statement                no-console
+
+/app/client/src/components/student/MyTeacherCard.jsx
+   4:26  warning  'classroom' is missing in props validation                       react/prop-types
+  21:13  warning  'classroom.class_name' is missing in props validation            react/prop-types
+  21:25  warning  'classroom.teacher' is missing in props validation               react/prop-types
+  48:31  warning  'classroom.teacher.avatar_url' is missing in props validation    react/prop-types
+  49:43  warning  'classroom.teacher.avatar_url' is missing in props validation    react/prop-types
+  49:68  warning  'classroom.teacher.display_name' is missing in props validation  react/prop-types
+  51:53  warning  'classroom.teacher.display_name' is missing in props validation  react/prop-types
+  57:35  warning  'classroom.teacher.display_name' is missing in props validation  react/prop-types
+  61:77  warning  'classroom.meeting_link' is missing in props validation          react/prop-types
+  66:24  warning  'classroom.meeting_link' is missing in props validation          react/prop-types
+  68:37  warning  'classroom.meeting_link' is missing in props validation          react/prop-types
+  89:39  warning  'classroom.meeting_type' is missing in props validation          react/prop-types
+
+/app/client/src/pages/Lab3D.jsx
+   71:17  warning  Unexpected console statement  no-console
+  125:17  warning  Unexpected console statement  no-console
+  159:13  warning  Unexpected console statement  no-console
+  280:37  warning  Unexpected console statement  no-console
+  283:37  warning  Unexpected console statement  no-console
+
+/app/client/src/pages/TeacherDashboard.jsx
+   95:44  warning  'analytics' is missing in props validation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/prop-types
+  234:9   warning  Unexpected console statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      no-console
+  312:9   warning  Unexpected console statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      no-console
+  322:17  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+  320 |
+  321 |   // ─── Table Instance ───────────────────────────────────────────────
+> 322 |   const table = useReactTable({
+      |                 ^^^^^^^^^^^^^ TanStack Table's `useReactTable()` API returns functions that cannot be memoized safely
+  323 |     data: students,
+  324 |     columns,
+  325 |     state: { sorting, globalFilter },  react-hooks/incompatible-library
+
+/app/client/src/store/assignmentStore.js
+   22:13  warning  Unexpected console statement  no-console
+   39:13  warning  Unexpected console statement  no-console
+   59:13  warning  Unexpected console statement  no-console
+   80:13  warning  Unexpected console statement  no-console
+  112:13  warning  Unexpected console statement  no-console
+  132:13  warning  Unexpected console statement  no-console
+
+/app/client/src/store/authStore.js
+  117:9  warning  Unexpected console statement  no-console
+  124:7  warning  Unexpected console statement  no-console
+  129:5  warning  Unexpected console statement  no-console
+
+/app/client/src/store/classroomStore.js
+  26:7  warning  Unexpected console statement  no-console
+  54:7  warning  Unexpected console statement  no-console
+
+/app/client/src/supabaseClient.js
+  15:9  warning  Unexpected console statement  no-console
+
+/app/client/src/utils/apiClient.js
+  25:5  warning  Unexpected console statement  no-console
+  46:9  warning  Unexpected console statement  no-console
+  55:7  warning  Unexpected console statement  no-console
+  60:7  warning  Unexpected console statement  no-console
+
+/app/client/src/utils/roleGuard.jsx
+   7:32  warning  'children' is missing in props validation      react/prop-types
+  16:29  warning  'children' is missing in props validation      react/prop-types
+  16:39  warning  'requiredRole' is missing in props validation  react/prop-types
+  25:5   warning  Unexpected console statement                   no-console
+
+✖ 114 problems (0 errors, 114 warnings)
