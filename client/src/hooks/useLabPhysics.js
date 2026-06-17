@@ -55,7 +55,7 @@ export default function useLabPhysics(config = {}) {
   const lockedObjectId = useRef(null);
 
   // ─── Three.js utilities ───────────────────────────────────────────────
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
 
   // Invisible drag plane (XY plane at z=0)
   const dragPlane = useMemo(
@@ -110,10 +110,10 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        document.body.style.cursor = 'grab';
+        gl.domElement.style.cursor = 'grab';
       }
     },
-    [dragState]
+    [dragState, gl]
   );
 
   /**
@@ -123,10 +123,10 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        document.body.style.cursor = 'default';
+        gl.domElement.style.cursor = 'default';
       }
     },
-    [dragState]
+    [dragState, gl]
   );
 
   /**
@@ -139,11 +139,11 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
-      document.body.style.cursor = 'grabbing';
+      gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
-      const mouse = e.pointer || _getMouseFromEvent(e);
+      const mouse = e.pointer || _getMouseFromEvent(e, gl);
 
       raycaster.setFromCamera(mouse, camera);
       raycaster.ray.intersectPlane(dragPlane, planeIntersection.current);
@@ -165,7 +165,7 @@ export default function useLabPhysics(config = {}) {
         }
       }
     },
-    [camera, dragPlane]
+    [camera, gl, dragPlane]
   );
 
   /**
@@ -179,7 +179,7 @@ export default function useLabPhysics(config = {}) {
 
       // Raycaster projection onto drag plane
       const raycaster = e.raycaster || new Raycaster();
-      const mouse = e.pointer || _getMouseFromEvent(e);
+      const mouse = e.pointer || _getMouseFromEvent(e, gl);
 
       raycaster.setFromCamera(mouse, camera);
       raycaster.ray.intersectPlane(dragPlane, planeIntersection.current);
@@ -195,7 +195,7 @@ export default function useLabPhysics(config = {}) {
       isPouring.current = computeIsPouring(newPos);
       isTilted.current = isPouring.current;
     },
-    [dragState, camera, dragPlane, homePosition, computeCanTilt, computeIsPouring]
+    [dragState, camera, gl, dragPlane, homePosition, computeCanTilt, computeIsPouring]
   );
 
   /**
@@ -208,7 +208,7 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
-      document.body.style.cursor = 'default';
+      gl.domElement.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
@@ -232,7 +232,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, homePosition]
+    [dragState, gl, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
@@ -333,10 +333,11 @@ export default function useLabPhysics(config = {}) {
 /**
  * Extract normalized mouse coordinates from a DOM event.
  * @param {Event} e - The pointer event
+ * @param {THREE.WebGLRenderer} gl - The renderer
  * @returns {THREE.Vector2}
  */
-function _getMouseFromEvent(e) {
-  const rect = document.body.getBoundingClientRect();
+function _getMouseFromEvent(e, gl) {
+  const rect = gl.domElement.getBoundingClientRect();
   return new Vector2(
     ((e.clientX - rect.left) / rect.width) * 2 - 1,
     -((e.clientY - rect.top) / rect.height) * 2 + 1

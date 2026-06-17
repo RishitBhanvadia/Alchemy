@@ -164,11 +164,3 @@ const styles = {
 };
 
 export default MeetingCodeCard;
-
-import PropTypes from 'prop-types';
-MeetingCodeCard.propTypes = {
-  code: PropTypes.string.isRequired,
-  meetingUrl: PropTypes.string.isRequired,
-  platform: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-};

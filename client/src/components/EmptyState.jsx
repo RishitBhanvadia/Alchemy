@@ -30,13 +30,3 @@ const EmptyState = ({
 };
 
 export default EmptyState;
-
-import PropTypes from 'prop-types';
-EmptyState.propTypes = {
-  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  title: PropTypes.string,
-  description: PropTypes.string,
-  actionLabel: PropTypes.string,
-  onAction: PropTypes.func,
-  className: PropTypes.string,
-};

@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 const validateEnv = require('./config/validateEnv');
+validateEnv(); // exits process if any required var is missing
 
 const express = require('express');
 const bodyParser = require("body-parser");
@@ -182,30 +183,24 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-if (require.main === module) {
-  validateEnv(); // exits process if any required var is missing
+const server = app.listen(PORT, '0.0.0.0', () => {
+    logger.info(`Server running on port ${PORT}`);
+});
 
-  const server = app.listen(PORT, '0.0.0.0', () => {
-      logger.info(`Server running on port ${PORT}`);
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received. Closing server gracefully...');
+  server.close(() => {
+    logger.info('Server closed.');
+    process.exit(0);
   });
+  // Force close after 10 seconds
+  setTimeout(() => process.exit(1), 10000);
+});
 
-  // Graceful shutdown
-  process.on('SIGTERM', () => {
-    logger.info('SIGTERM received. Closing server gracefully...');
-    server.close(() => {
-      logger.info('Server closed.');
-      process.exit(0);
-    });
-    // Force close after 10 seconds
-    setTimeout(() => process.exit(1), 10000);
-  });
+process.on('SIGINT', () => process.emit('SIGTERM'));
 
-  process.on('SIGINT', () => process.emit('SIGTERM'));
-
-  // Handle unhandled Promise rejections
-  process.on('unhandledRejection', (reason, promise) => {
-    logger.error('Unhandled Rejection', { reason: reason?.toString() });
-  });
-}
-
-module.exports = app;
+// Handle unhandled Promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection', { reason: reason?.toString() });
+});
