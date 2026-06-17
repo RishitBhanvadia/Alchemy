@@ -88,7 +88,7 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
         >
           <div className="ai-tutor-header">
             <h2>Gemini Flash Tutor</h2>
-            <button className="close-button" onClick={onClose}>×</button>
+            <button className="close-button" onClick={onClose} aria-label="Close tutor panel" title="Close tutor panel">×</button>
           </div>
 
           <div className="current-context">
