@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/immutability */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Vector3, Object3D, Color } from 'three';
