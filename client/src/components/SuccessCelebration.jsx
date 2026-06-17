@@ -13,13 +13,20 @@ const SuccessCelebration = ({ active, onComplete }) => {
                 color: ['#6366f1', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'][Math.floor(Math.random() * 5)],
                 delay: Math.random() * 0.5
             }));
-            setParticles(newParticles);
+
+            // Wait until next tick to avoid cascading render warning from React compiler
+            const setTimer = setTimeout(() => {
+                setParticles(newParticles);
+            }, 0);
             
             const timer = setTimeout(() => {
                 onComplete?.();
                 setParticles([]);
             }, 3000);
-            return () => clearTimeout(timer);
+            return () => {
+                clearTimeout(setTimer);
+                clearTimeout(timer);
+            };
         }
     }, [active, onComplete]);
 
