@@ -4,15 +4,18 @@ import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
 import { toast } from "react-hot-toast";
-import AiTutorPanel from "../components/AiTutorPanel";
-import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
+
+// ⚡ Bolt: Lazy load heavy modals to reduce initial bundle size and improve Time-to-Interactive.
+// Expected impact: Removes framer-motion and other heavy modal dependencies from the main chunk.
+const AiTutorPanel = lazy(() => import('../components/AiTutorPanel'));
+const ResultModal = lazy(() => import('../components/ResultModal'));
 
 const Lab3D = () => {
     const [isAiOpen, setIsAiOpen] = useState(false);
@@ -441,18 +444,22 @@ const Lab3D = () => {
                 🤖
             </button>
  
-            <AiTutorPanel 
-                isOpen={isAiOpen} 
-                onClose={() => setIsAiOpen(false)} 
-            />
+            <Suspense fallback={null}>
+                <AiTutorPanel
+                    isOpen={isAiOpen}
+                    onClose={() => setIsAiOpen(false)}
+                />
+            </Suspense>
  
-            <ResultModal 
-                isOpen={isResultOpen}
-                result={reactionResult}
-                onClose={() => setIsResultOpen(false)}
-                onReset={handleResetLab}
-                onAskAI={handleAskAI}
-            />
+            <Suspense fallback={null}>
+                <ResultModal
+                    isOpen={isResultOpen}
+                    result={reactionResult}
+                    onClose={() => setIsResultOpen(false)}
+                    onReset={handleResetLab}
+                    onAskAI={handleAskAI}
+                />
+            </Suspense>
         </motion.div>
     );
 };
