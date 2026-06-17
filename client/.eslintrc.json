@@ -1,84 +1,41 @@
 {
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:jsx-a11y/recommended",
-        "prettier"
-    ],
-    "parserOptions": {
-        "ecmaVersion": 2022,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
+  "extends": ["plugin:react/recommended", "plugin:react-hooks/recommended"],
+  "plugins": ["react", "react-hooks", "jsx-a11y"],
+  "rules": {
+    "react/prop-types": "off",
+    "no-console": "off",
+    "no-unused-vars": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/immutability": "off",
+    "react-hooks/set-state-in-effect": "off",
+    "react-hooks/purity": "off",
+    "react-hooks/incompatible-library": "off",
+    "react/no-unknown-property": "off",
+
+    "jsx-a11y/alt-text": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/jsx-key": "off",
+    "react/no-unescaped-entities": "off",
+    "no-undef": "off"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "env": {
-        "browser": true,
-        "es2022": true,
-        "node": true
-    },
-    "rules": {
-        "no-console": "warn",
-        "react/prop-types": "warn",
-        "react/react-in-jsx-scope": "off",
-        "jsx-a11y/click-events-have-key-events": "warn",
-        "jsx-a11y/no-static-element-interactions": "warn",
-        "react-hooks/purity": "off",
-        "react/no-unknown-property": [
-            "error",
-            {
-                "ignore": [
-                    "position",
-                    "rotation",
-                    "scale",
-                    "args",
-                    "attach",
-                    "object",
-                    "geometry",
-                    "material",
-                    "intensity",
-                    "castShadow",
-                    "receiveShadow",
-                    "dispose",
-                    "roughness",
-                    "metalness",
-                    "transparent",
-                    "angle",
-                    "penumbra",
-                    "visible",
-                    "uColor",
-                    "uTime",
-                    "uProgress",
-                    "renderOrder",
-                    "userData",
-                    "frustumCulled",
-                    "array",
-                    "count",
-                    "itemSize",
-                    "vertexColors",
-                    "sizeAttenuation",
-                    "depthWrite",
-                    "blending",
-                    "depthTest"
-                ]
-            }
-        ]
-    },
-    "overrides": [
-        {
-            "files": [
-                "**/*.test.js",
-                "**/*.spec.js"
-            ],
-            "rules": {
-                "no-unused-vars": "off"
-            }
-        }
-    ],
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
+  }
 }

@@ -246,7 +246,7 @@ export default function TeacherDashboard({ analytics = false }) {
   // ─── Fetch Experiment Scores ──────────────────────────────────────
   useEffect(() => {
     async function fetchScores() {
-      if (!selectedExperiment) {
+      if (!selectedExperiment || students.length === 0) {
         setExperimentScores([]);
         return;
       }
@@ -254,37 +254,7 @@ export default function TeacherDashboard({ analytics = false }) {
       try {
         setLoading(true);
 
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        // Get teacher's classrooms
-        const { data: classrooms, error: classError } = await supabase
-          .from('classrooms')
-          .select('id')
-          .eq('teacher_id', user.id);
-
-        if (classError || !classrooms || classrooms.length === 0) {
-          setExperimentScores([]);
-          setLoading(false);
-          return;
-        }
-
-        const classroomIds = classrooms.map((c) => c.id);
-
-        // Get students in those classrooms
-        const { data: studentData, error: studentError } = await supabase
-          .from('class_memberships')
-          .select('student_id')
-          .in('classroom_id', classroomIds);
-
-        if (studentError || !studentData || studentData.length === 0) {
-          setExperimentScores([]);
-          setLoading(false);
-          return;
-        }
-
-        const studentIds = studentData.map((s) => s.student_id);
+        const studentIds = students.map((s) => s.id);
 
         // Fetch experiment counts for students in teacher's classrooms
         let query = supabase
@@ -316,7 +286,7 @@ export default function TeacherDashboard({ analytics = false }) {
     }
 
     fetchScores();
-  }, [selectedExperiment, startDate, endDate]);
+  }, [selectedExperiment, startDate, endDate, students]);
 
   // ─── Table Instance ───────────────────────────────────────────────
   const table = useReactTable({

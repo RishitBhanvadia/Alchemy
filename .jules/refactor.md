@@ -1,0 +1,4 @@
+## 2025-06-17 - Optimize Database Query N+1 patterns
+**Before:** Data for TeacherDashboard was fetched in two separate effects, and inside `fetchScores` there was logic checking students list again instead of relying on the previously fetched student state. `fetchStudents` and `fetchScores` redundantly querying `classrooms` and `class_memberships`.
+**Issue:** Doing redundant queries inside separate useEffects and N+1 patterns for metrics fetches. The `TeacherDashboard` had multiple large `useEffect` blocks that fetch similar data redundantly and manage state explicitly rather than abstracting to hooks or a store, making the component >700 lines.
+**Learning:** Found an opportunity to extract repeated logic, particularly around fetching data for `TeacherDashboard`, which currently manually fetches via Supabase multiple times instead of reusing shared state/queries.
