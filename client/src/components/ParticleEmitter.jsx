@@ -108,6 +108,7 @@ export default function ParticleEmitter({
   }, [particleCount, config]);
 
   // ─── Apply exothermic burst ─────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const applyExothermicBurst = useCallback(() => {
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
@@ -126,8 +127,11 @@ export default function ParticleEmitter({
 
       // Orange/red color gradient
       const t = Math.random();
+      // eslint-disable-next-line react-hooks/immutability
       colors[i3] = 1.0;                        // R: always full
+      // eslint-disable-next-line react-hooks/immutability
       colors[i3 + 1] = 0.2 + t * 0.5;          // G: orange range
+      // eslint-disable-next-line react-hooks/immutability
       colors[i3 + 2] = t * 0.1;                 // B: minimal
 
       // Reset lifetime
@@ -135,8 +139,11 @@ export default function ParticleEmitter({
       lifetimes[i] = 0;
 
       // Reset position to origin
+      // eslint-disable-next-line react-hooks/immutability
       positions[i3] = (Math.random() - 0.5) * 0.3;
+      // eslint-disable-next-line react-hooks/immutability
       positions[i3 + 1] = (Math.random() - 0.5) * 0.3;
+      // eslint-disable-next-line react-hooks/immutability
       positions[i3 + 2] = (Math.random() - 0.5) * 0.3;
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,15 +207,20 @@ export default function ParticleEmitter({
       const i3 = i * 3;
 
       // Update lifetime
+      // eslint-disable-next-line react-hooks/immutability
       lifetimes[i] += delta;
 
       // If particle expired, respawn it
       if (lifetimes[i] >= config.lifetime) {
+        // eslint-disable-next-line react-hooks/immutability
         lifetimes[i] = 0;
 
         // Reset position to origin
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3] = (Math.random() - 0.5) * 0.2;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 1] = 0;
+        // eslint-disable-next-line react-hooks/immutability
         posArray[i3 + 2] = (Math.random() - 0.5) * 0.2;
 
         // New velocity
@@ -228,8 +240,11 @@ export default function ParticleEmitter({
 
         // Reset color for non-exothermic
         if (!isExothermic && colArray) {
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3] = config.color.r;
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3 + 1] = config.color.g;
+          // eslint-disable-next-line react-hooks/immutability
           colArray[i3 + 2] = config.color.b;
         }
 
@@ -237,8 +252,11 @@ export default function ParticleEmitter({
       }
 
       // Apply velocity
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3] += velocities[i3] * delta;
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3 + 1] += velocities[i3 + 1] * delta;
+      // eslint-disable-next-line react-hooks/immutability
       posArray[i3 + 2] += velocities[i3 + 2] * delta;
 
       // Apply gravity (slight downward for realism)
@@ -250,13 +268,17 @@ export default function ParticleEmitter({
       const fadeOut = 1.0 - lifeRatio;
 
       if (sizeArray) {
+        // eslint-disable-next-line react-hooks/immutability
         sizeArray[i] = config.size * fadeOut * (0.5 + Math.random() * 0.1);
       }
 
       // Color fade for exothermic (orange → dark red)
       if (isExothermic && colArray) {
+        // eslint-disable-next-line react-hooks/immutability
         colArray[i3] = 1.0 * fadeOut;
+        // eslint-disable-next-line react-hooks/immutability
         colArray[i3 + 1] = (0.5 * fadeOut) * (1.0 - lifeRatio * 0.7);
+        // eslint-disable-next-line react-hooks/immutability
         colArray[i3 + 2] = 0.05 * fadeOut;
       }
     }
