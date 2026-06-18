@@ -22,7 +22,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                 .maybeSingle();
 
             if (classError) {
-                // console.error('Classroom lookup error:', classError);
+                // // console.error('Classroom lookup error:', classError);
                 return toast.error('Failed to look up classroom. Please try again.');
             }
 
@@ -49,7 +49,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             setCode('');
             if (onJoined) onJoined();
         } catch (err) {
-            // console.error('Error joining classroom:', err);
+            // // console.error('Error joining classroom:', err);
             toast.error('Failed to join classroom. Please try again.');
         } finally {
             setLoading(false);
