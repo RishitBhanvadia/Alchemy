@@ -9,7 +9,7 @@
  * - StudentAnalyticsChart with experiment selector dropdown
  * - Responsive: card list on mobile < 768px
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
 import ClassroomManager from '../components/ClassroomManager';
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
@@ -502,7 +502,8 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
+        <Suspense fallback={<SkeletonBlock height="400px" />}>
+          <StudentAnalyticsChart
           scores={experimentScores}
           experimentName={
             EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
@@ -515,6 +516,7 @@ export default function TeacherDashboard({ analytics = false }) {
                 : undefined
           }
         />
+        </Suspense>
       </section>
       </main>
     </div>

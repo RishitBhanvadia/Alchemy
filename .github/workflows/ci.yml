@@ -41,17 +41,12 @@ jobs:
     
     - name: Run client tests
       working-directory: ./client
-      run: npm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
+      run: npm test -- --run
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
-    - name: Upload Test logs
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: vitest-logs
-        path: ./client/vitest-log.txt
+
 
     - name: Generate coverage
       working-directory: ./client
