@@ -1,37 +1,24 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import './ResultModal.css';
 
-/**
- * ResultModal Component
- * Displays the reaction outcome with modern UI components.
- * 
- * @param {boolean} isOpen - Controls visibility
- * @param {object} result - Reaction result data from backend
- * @param {function} onReset - Callback to reset the lab
- * @param {function} onClose - Callback to close modal without reset
- * @param {function} onAskAI - Callback to open AI tutor with context
- */
 const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
   if (!isOpen || !result) return null;
 
-  const { 
-    outcome_label, 
-    product_formula, 
-    color, 
-    state_change, 
-    thermal_effect, 
-    is_dangerous 
-  } = result;
+  // Determine styling based on outcome
+  const isSuccess = result.outcome_label === 'Success';
+  const isDanger = result.outcome_label === 'Danger' || result.is_dangerous;
+  const isNeutral = !isSuccess && !isDanger;
 
-  const dangerBadge = is_dangerous
-    ? { label: '⚠️ DANGEROUS', className: 'badge-danger' }
-    : { label: '✅ SAFE', className: 'badge-safe' };
+  const headerClass = isSuccess ? 'result-success' : isDanger ? 'result-danger' : 'result-neutral';
 
-  const thermalIcon = thermal_effect?.includes('Exothermic') ? '🔥' : thermal_effect?.includes('Endothermic') ? '❄️' : '💧';
-  const stateIcon = state_change?.includes('Gas') ? '💨' 
-    : state_change?.includes('Precipitate') ? '🌧️' 
-    : state_change?.includes('Colour') ? '🎨' : '💧';
+  // Format state changes and thermal effects for better display
+  const hasThermalEffect = result.thermal_effect && result.thermal_effect !== 'None';
+  const isExothermic = result.thermal_effect && result.thermal_effect.includes('Exothermic');
+  const isEndothermic = result.thermal_effect && result.thermal_effect.includes('Endothermic');
+  const isGasProduced = result.state_change && result.state_change.includes('Gas');
+  const isPrecipitateProduced = result.state_change && (result.state_change.includes('Precipitate') || result.state_change.includes('Solid'));
 
   return (
     <AnimatePresence>
@@ -40,67 +27,118 @@ const ResultModal = ({ isOpen, result, onReset, onClose, onAskAI }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose}
       >
         <motion.div 
-          className="result-modal-content"
-          initial={{ scale: 0.98, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.98, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          onClick={(e) => e.stopPropagation()}
+          className={`result-modal-content ${headerClass}`}
+          initial={{ scale: 0.9, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.9, y: 20 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         >
-          <div className="result-modal-header">
-            <h2 className="neon-glow">Reaction Complete</h2>
-            <div className={`result-badge ${dangerBadge.className}`}>
-              {dangerBadge.label}
+          <button className="result-close-btn" onClick={onClose}>×</button>
+
+          <div className="result-header">
+            <h2>{result.outcome_label}</h2>
+            <div className="result-product-formula">
+              {result.product_formula || 'Unknown Product'}
             </div>
           </div>
 
-          <div className="result-modal-body" data-testid="observation-panel">
-            <h3 className="outcome-name" data-testid="reaction-result">{outcome_label}</h3>
-            
-            <div className="result-stats">
-              {thermal_effect && (
-                <div className="stat-item" title="Thermal Effect">
-                  <span className="stat-icon">{thermalIcon}</span>
-                  <span className="stat-text">{thermal_effect}</span>
-                </div>
-              )}
-              {state_change && (
-                <div className="stat-item" title="State Change">
-                  <span className="stat-icon">{stateIcon}</span>
-                  <span className="stat-text">{state_change}</span>
-                </div>
-              )}
-            </div>
+          <div className="result-body">
+            <div className="result-properties-grid">
 
-            {product_formula && (
-              <div className="formula-box">
-                <span className="formula-label">Chemical Result</span>
-                <span className="formula-text">{product_formula}</span>
-                {color && <div className="color-preview" style={{ backgroundColor: color.toLowerCase().replace(/fading to/, '').trim() }} title={`Observed Color: ${color}`}></div>}
+              <div className="property-card">
+                <span className="property-icon">🎨</span>
+                <span className="property-label">Color</span>
+                <span className="property-value capitalize">{result.color}</span>
               </div>
-            )}
+
+              <div className="property-card">
+                <span className="property-icon">🔄</span>
+                <span className="property-label">State</span>
+                <span className="property-value">{result.state_change || 'No change'}</span>
+              </div>
+
+              <div className="property-card">
+                <span className="property-icon">🌡️</span>
+                <span className="property-label">Thermal</span>
+                <span className={`property-value ${isExothermic ? 'text-red-400' : isEndothermic ? 'text-blue-400' : ''}`}>
+                  {result.thermal_effect || 'None'}
+                </span>
+              </div>
+
+              <div className="property-card">
+                <span className="property-icon">⚠️</span>
+                <span className="property-label">Safety</span>
+                <span className={`property-value ${result.is_dangerous ? 'text-red-500 font-bold' : 'text-green-400'}`}>
+                  {result.is_dangerous ? 'Dangerous' : 'Safe'}
+                </span>
+              </div>
+
+            </div>
+
+            {/* Visual Indicators */}
+            <div className="visual-indicators">
+              {hasThermalEffect && (
+                <div className={`indicator-badge ${isExothermic ? 'badge-hot' : 'badge-cold'}`}>
+                  {isExothermic ? '🔥 Generates Heat' : '❄️ Absorbs Heat'}
+                </div>
+              )}
+              {isGasProduced && (
+                <div className="indicator-badge badge-gas">
+                  💨 Gas Evolution
+                </div>
+              )}
+              {isPrecipitateProduced && (
+                <div className="indicator-badge badge-solid">
+                  🪨 Precipitate Formed
+                </div>
+              )}
+              {/* Added dynamic color swatch if color is valid */}
+              {result.color && result.color.toLowerCase() !== 'colorless' && result.color.toLowerCase() !== 'clear' && (
+                 <div className="indicator-badge badge-color">
+                   <span
+                    className="color-swatch"
+                    style={{ backgroundColor: result.color.toLowerCase().replace(' ', '') }}
+                   ></span>
+                   {result.color}
+                 </div>
+              )}
+            </div>
+
+            <p className="result-description">
+              {result.description || "The reaction completed successfully according to the known chemical principles."}
+            </p>
           </div>
 
-          <div className="result-modal-footer">
-            <button className="modal-btn btn-ai" onClick={onAskAI}>
-              <span>🤖</span> Ask AI Tutor for Explanation
+          <div className="result-actions">
+            <button className="btn-secondary" onClick={onReset}>
+              Reset Equipment
             </button>
-            <div className="footer-actions-row">
-              <button className="modal-btn btn-secondary" onClick={onClose}>
-                Keep Experiment
-              </button>
-              <button className="modal-btn btn-reset" onClick={onReset}>
-                Reset Lab
-              </button>
-            </div>
+            <button className="btn-primary" onClick={onAskAI}>
+              Ask AI Tutor
+            </button>
           </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
   );
+};
+
+ResultModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  result: PropTypes.shape({
+    outcome_label: PropTypes.string,
+    is_dangerous: PropTypes.bool,
+    thermal_effect: PropTypes.string,
+    state_change: PropTypes.string,
+    product_formula: PropTypes.string,
+    color: PropTypes.string,
+    description: PropTypes.string,
+  }),
+  onReset: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onAskAI: PropTypes.func.isRequired,
 };
 
 export default ResultModal;
