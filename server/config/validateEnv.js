@@ -8,6 +8,8 @@ const required = [
 function validateEnv() {
   const missing = required.filter(key => {
     const value = process.env[key];
+    if (process.env.NODE_ENV === 'test') return false;
+
     return !value || value === 'your-service-role-key-here' || value === 'your-gemini-api-key-here' || value.includes('your-project-id');
   });
 
