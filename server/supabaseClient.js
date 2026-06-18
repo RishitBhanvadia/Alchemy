@@ -1,6 +1,8 @@
 const { createClient } = require('@supabase/supabase-js');
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+  try {
+    require('dotenv').config();
+  } catch (e) {}
 }
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -10,6 +12,6 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase credentials in environment variables.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseKey || 'placeholder');
 
 module.exports = supabase;
