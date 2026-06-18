@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SuccessCelebration = ({ active, onComplete }) => {
@@ -63,6 +64,12 @@ const SuccessCelebration = ({ active, onComplete }) => {
             </AnimatePresence>
         </div>
     );
+};
+
+
+SuccessCelebration.propTypes = {
+  active: PropTypes.bool.isRequired,
+  onComplete: PropTypes.func.isRequired
 };
 
 export default SuccessCelebration;

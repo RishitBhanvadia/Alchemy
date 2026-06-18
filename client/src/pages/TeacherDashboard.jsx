@@ -10,6 +10,7 @@
  * - Responsive: card list on mobile < 768px
  */
 import React, { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
