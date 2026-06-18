@@ -12,11 +12,7 @@ const isValid = supabaseUrl &&
 
 if (!isValid) {
     if (import.meta.env.MODE !== 'test') { // Only warn in development/production
-        console.warn(
-            '⚠️ Missing or invalid Supabase environment variables. ' +
-            'Authentication features will be disabled. ' +
-            'Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.'
-        );
+                // console.warn('⚠️ Missing or invalid Supabase environment variables. Authentication features will be disabled. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.');
     }
 }
 
