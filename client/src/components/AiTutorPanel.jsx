@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLabStore from '../store/labStore';
 import apiClient from '../utils/apiClient';
+import PropTypes from 'prop-types';
 import './AiTutorPanel.css';
 
 const AiTutorPanel = ({ isOpen, onClose }) => {
@@ -11,68 +12,53 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
   
   const chatHistory = useLabStore(state => state.chatHistory);
   const addChatMessage = useLabStore(state => state.addChatMessage);
-  const chemA = useLabStore(state => state.chemA);
-  const chemB = useLabStore(state => state.chemB);
-  const chemI = useLabStore(state => state.chemI);
-  const chemC = useLabStore(state => state.chemC);
-  const lastReactionResult = useLabStore(state => state.reactionResult);
+  const clearChatHistory = useLabStore(state => state.clearChatHistory);
 
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // Use deriveThermalState for current context context
+  const temperature = useLabStore(state => state.temperature);
+  const currentTemperature = temperature !== undefined && temperature !== null ? temperature : 25;
+  const isHeaterOn = useLabStore(state => state.isHeaterOn) || false;
 
+  // Auto-scroll to bottom of chat
   useEffect(() => {
-    scrollToBottom();
-  }, [chatHistory]);
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatHistory, isOpen]);
 
-  // Handle Escape key to close
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!question.trim()) return;
 
-  const handleAskTutor = async () => {
-    if (!question.trim() || isLoading) return;
-
-    const currentQuestion = question;
+    // Add user question to history
+    addChatMessage('user', question);
+    const currentQ = question;
     setQuestion('');
     setIsLoading(true);
-    
-    // Add student message to UI immediately
-    addChatMessage('student', currentQuestion);
 
     try {
-      const payload = {
-        chemicals: { 
-          chem_a: Math.round(chemA), 
-          chem_b: Math.round(chemB), 
-          chem_i: Math.round(chemI), 
-          chem_c: Math.round(chemC) 
-        },
-        reaction_outcome: lastReactionResult?.outcome || 'No reaction yet',
-        student_question: currentQuestion
-      };
+      // Build context string based on current lab state
+      const labContext = `
+        Current Environment:
+        Temperature: ${currentTemperature}°C
+        Heater: ${isHeaterOn ? 'ON' : 'OFF'}
+      `.trim();
 
-      const res = await apiClient.post('/ai/explain', payload);
+      // Pass context + question to AI API
+      const res = await apiClient.post('/ai/explain', {
+        context: labContext,
+        concept: currentQ
+      });
       
       if (res.data && res.data.explanation) {
         addChatMessage('tutor', res.data.explanation);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('AI Tutorial error:', error);
       addChatMessage('tutor', 'I am sorry, but I am having trouble connecting to my knowledge base right now. Please try again in a moment!');
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleAskTutor();
     }
   };
 
@@ -86,79 +72,69 @@ const AiTutorPanel = ({ isOpen, onClose }) => {
           exit={{ x: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
-          <div className="ai-tutor-header">
-            <h2>Gemini Flash Tutor</h2>
-            <button className="close-button" onClick={onClose}>×</button>
-          </div>
-
-          <div className="current-context">
-            <h4>Current Lab State</h4>
-            <div className="context-values">
-              <span className="context-badge">HCl: {Math.round(chemA)}%</span>
-              <span className="context-badge">NaOH: {Math.round(chemB)}%</span>
-              <span className="context-badge">BTB: {Math.round(chemI)}%</span>
-              <span className="context-badge">MnO₂: {Math.round(chemC)}%</span>
+          <div className="ai-header">
+            <h3>🧪 AI Lab Assistant</h3>
+            <div className="ai-header-actions">
+              <button
+                type="button"
+                className="clear-chat-btn"
+                onClick={clearChatHistory}
+                title="Clear Chat History"
+              >
+                🗑️
+              </button>
+              <button type="button" className="close-btn" onClick={onClose}>×</button>
             </div>
-            {lastReactionResult && (
-              <div style={{ marginTop: '8px' }}>
-                <span className="context-badge" style={{ background: 'rgba(99, 102, 241, 0.3)' }}>
-                  Outcome: {lastReactionResult.outcome}
-                </span>
-              </div>
-            )}
           </div>
 
-          <div className="chat-history">
+          <div className="ai-chat-history">
             {chatHistory.length === 0 ? (
-              <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '40px' }}>
-                <p>Hello! I&apos;m your AI Chemistry Tutor.</p>
-                <p>Ask me anything about the chemicals or reactions in the lab.</p>
+              <div className="ai-welcome-msg">
+                <p>Hello! I am your AI Lab Assistant.</p>
+                <p>Ask me questions about the current experiment, chemical reactions, or how to use the lab equipment.</p>
               </div>
             ) : (
-              chatHistory.map((msg, index) => (
-                <div key={index} className={`chat-message ${msg.role}`}>
-                  <div className="message-role">{msg.role === 'student' ? 'You' : 'Tutor'}</div>
-                  <div className="message-text">{msg.message}</div>
+              chatHistory.map((msg, idx) => (
+                <div key={idx} className={`chat-bubble ${msg.role}`}>
+                  <span className="chat-avatar">{msg.role === 'tutor' ? '🤖' : '🧑‍🔬'}</span>
+                  <div className="chat-content">
+                    {msg.text}
+                  </div>
                 </div>
               ))
             )}
             {isLoading && (
-              <div className="chat-message tutor">
-                <div className="message-role">Tutor</div>
-                <div className="spinner"></div>
+              <div className="chat-bubble tutor loading">
+                <span className="chat-avatar">🤖</span>
+                <div className="chat-content typing-indicator">
+                  <span></span><span></span><span></span>
+                </div>
               </div>
             )}
             <div ref={chatEndRef} />
           </div>
 
-          <div className="chat-input-area">
-            <textarea 
-              className="chat-input"
-              placeholder="Ask a question about the experiment..."
+          <form className="ai-input-area" onSubmit={handleSubmit}>
+            <input
+              type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              onKeyDown={handleKeyPress}
+              placeholder="Ask a question..."
               disabled={isLoading}
             />
-            <button 
-              className="ask-button"
-              onClick={handleAskTutor}
-              disabled={isLoading || !question.trim()}
-            >
-              {isLoading ? (
-                <>
-                  <div className="spinner"></div>
-                  Thinking...
-                </>
-              ) : (
-                'Ask Tutor'
-              )}
+            <button type="submit" disabled={isLoading || !question.trim()}>
+              Send
             </button>
-          </div>
+          </form>
         </motion.div>
       )}
     </AnimatePresence>
   );
+};
+
+AiTutorPanel.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AiTutorPanel;

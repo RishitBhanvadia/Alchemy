@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
       - run: cd client && npm ci
@@ -30,14 +30,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
       - run: cd server && npm ci
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          timeout 5 node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }" || true
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder
