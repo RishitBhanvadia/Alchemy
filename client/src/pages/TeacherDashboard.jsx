@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 /**
  * TeacherDashboard.jsx — Teacher's classroom management dashboard
  * Phase 3.2.2 Task [11]: Route-guarded, data grid, analytics chart
@@ -11,6 +10,7 @@ import PropTypes from 'prop-types';
  * - Responsive: card list on mobile < 768px
  */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import { useNavigate } from 'react-router-dom';
 import {
