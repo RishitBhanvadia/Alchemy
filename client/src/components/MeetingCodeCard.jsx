@@ -9,6 +9,7 @@
  */
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
 
 const MeetingCodeCard = ({ code, meetingUrl, platform, onClose }) => {
@@ -161,6 +162,14 @@ const styles = {
     fontSize: '0.75rem',
     marginTop: '1rem',
   },
+};
+
+
+MeetingCodeCard.propTypes = {
+  code: PropTypes.string.isRequired,
+  meetingUrl: PropTypes.string.isRequired,
+  platform: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 export default MeetingCodeCard;

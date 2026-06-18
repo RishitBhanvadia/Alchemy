@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import { User, Mail, Lock, ShieldCheck } from 'lucide-react';
@@ -126,12 +127,12 @@ const SignUpForm = ({ onTabSwitch }) => {
         </h3>
         <div className="flex gap-3">
           <RoleCard 
-            role="student" 
+            userRole="student"
             selected={formData.role === 'student'} 
             onSelect={handleRoleSelect} 
           />
           <RoleCard 
-            role="teacher" 
+            userRole="teacher"
             selected={formData.role === 'teacher'} 
             onSelect={handleRoleSelect} 
           />
@@ -148,6 +149,11 @@ const SignUpForm = ({ onTabSwitch }) => {
       </div>
     </form>
   );
+};
+
+
+SignUpForm.propTypes = {
+  onTabSwitch: PropTypes.func.isRequired
 };
 
 export default SignUpForm;

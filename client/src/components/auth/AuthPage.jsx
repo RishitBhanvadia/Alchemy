@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const AuthPage = ({ children }) => {
@@ -27,6 +28,11 @@ const AuthPage = ({ children }) => {
       </motion.div>
     </div>
   );
+};
+
+
+AuthPage.propTypes = {
+  children: PropTypes.node.isRequired
 };
 
 export default AuthPage;

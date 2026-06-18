@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
@@ -21,7 +22,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
                 .maybeSingle();
 
             if (classError) {
-                console.error('Classroom lookup error:', classError);
+                // // console.error('Classroom lookup error:', classError);
                 return toast.error('Failed to look up classroom. Please try again.');
             }
 
@@ -48,7 +49,7 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             setCode('');
             if (onJoined) onJoined();
         } catch (err) {
-            console.error('Error joining classroom:', err);
+            // // console.error('Error joining classroom:', err);
             toast.error('Failed to join classroom. Please try again.');
         } finally {
             setLoading(false);
@@ -105,6 +106,12 @@ const JoinClassroom = ({ onJoined, profileId }) => {
             </form>
         </motion.div>
     );
+};
+
+
+JoinClassroom.propTypes = {
+  onJoined: PropTypes.func.isRequired,
+  profileId: PropTypes.string
 };
 
 export default JoinClassroom;
