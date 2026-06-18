@@ -24,27 +24,11 @@ const Lab = () => {
 
 
   function change_tip() {
-    if (chemA > 0) {
-      SetTColor('#05B9C4');
-    }
-    else {
-      if (chemB > 0) {
-        SetTColor('#04CE7E');
-      }
-      else {
-        if (chemC > 0) {
-          SetTColor('#FBC2E3');
-        }
-        else {
-          if (chemD > 0) {
-            SetTColor('#DAA520');
-          }
-          else {
-            SetTColor("");
-          }
-        }
-      }
-    }
+    if (chemA > 0) return SetTColor('#05B9C4');
+    if (chemB > 0) return SetTColor('#04CE7E');
+    if (chemC > 0) return SetTColor('#FBC2E3');
+    if (chemD > 0) return SetTColor('#DAA520');
+    SetTColor("");
   }
 
   useLayoutEffect(() => {
