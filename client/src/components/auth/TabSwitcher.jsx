@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -41,3 +42,8 @@ const TabSwitcher = ({ activeTab, onTabChange }) => {
 };
 
 export default TabSwitcher;
+
+TabSwitcher.propTypes = {
+  activeTab: PropTypes.string.isRequired,
+  onTabChange: PropTypes.func.isRequired
+};

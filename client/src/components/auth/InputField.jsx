@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -46,3 +47,16 @@ const InputField = ({ label, icon: Icon, type = 'text', placeholder, value, onCh
 };
 
 export default InputField;
+
+InputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.elementType,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
+  error: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
+};

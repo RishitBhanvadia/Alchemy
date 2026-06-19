@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, UserPlus, Atom } from 'lucide-react';
+import { ArrowRight, UserPlus, Atom } from 'lucide-react';
 
 const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType }) => {
   const Icon = IconType === 'UserPlus' ? UserPlus : ArrowRight;
@@ -42,3 +43,11 @@ const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType
 };
 
 export default CTAButton;
+
+CTAButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  loading: PropTypes.bool,
+  type: PropTypes.string,
+  icon: PropTypes.elementType
+};

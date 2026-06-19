@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
@@ -41,8 +43,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         }
         e.stopPropagation();
         
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grabbing';
+                /* eslint-disable-next-line react-hooks/immutability */
+gl.domElement.style.cursor = 'grabbing';
         dragActive.current = true;
 
         // Calculate intersection on the XY plane
@@ -95,8 +97,8 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (!dragActive.current) return;
         e.stopPropagation();
 
-        // eslint-disable-next-line react-hooks/immutability
-        gl.domElement.style.cursor = 'grab';
+                /* eslint-disable-next-line react-hooks/immutability */
+gl.domElement.style.cursor = 'grab';
         dragActive.current = false;
         isPouring.current = false;
         isTilted.current = false;

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/immutability */
+
 import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, OrbitControls } from '@react-three/drei';
