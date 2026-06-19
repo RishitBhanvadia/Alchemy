@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import './CursorFollower.css';
+const fs = require('fs');
+const filePath = 'client/src/components/CursorFollower.jsx';
+let content = fs.readFileSync(filePath, 'utf8');
 
-const CursorFollower = () => {
-    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [hidden, setHidden] = useState(false);
-    const [clicking, setClicking] = useState(false);
+// The early return `if (isTouchDevice) return null;` is causing a hook violation.
+// We must move ALL hooks above this early return.
+
+const search = `    const [clicking, setClicking] = useState(false);
+    const [hovering, setHovering] = useState(false);
+
+    if (isTouchDevice) return null;`;
+
+const replace = `    const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
@@ -61,23 +66,21 @@ const CursorFollower = () => {
         return () => removeEventListeners();
     }, [isTouchDevice]);
 
+    if (isTouchDevice) return null;`;
+
+// But the file actually looks like this:
+/*
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [hidden, setHidden] = useState(false);
+    const [clicking, setClicking] = useState(false);
+    const [hovering, setHovering] = useState(false);
+
     if (isTouchDevice) return null;
 
-    const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
-    const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
+    useEffect(() => {
+*/
 
-    return (
-        <>
-            <div
-                className={cursorClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-            <div
-                className={dotClasses}
-                style={{ left: `${position.x}px`, top: `${position.y}px` }}
-            />
-        </>
-    );
-};
+content = content.replace('    if (isTouchDevice) return null;\n\n    useEffect(() => {\n', '    useEffect(() => {\n        if (isTouchDevice) return;\n');
+content = content.replace('    }, []);\n\n    const cursorClasses', '    }, [isTouchDevice]);\n\n    if (isTouchDevice) return null;\n\n    const cursorClasses');
 
-export default CursorFollower;
+fs.writeFileSync(filePath, content, 'utf8');
