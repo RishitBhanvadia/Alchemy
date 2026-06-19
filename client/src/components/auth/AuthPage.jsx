@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -30,3 +31,7 @@ const AuthPage = ({ children }) => {
 };
 
 export default AuthPage;
+
+AuthPage.propTypes = {
+  children: PropTypes.node.isRequired
+};

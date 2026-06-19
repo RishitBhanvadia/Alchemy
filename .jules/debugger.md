@@ -7,9 +7,10 @@
 - Invalid `aria-role` (e.g. `role="student"`) due to custom props colliding with HTML `role` attribute.
 - Rules of Hooks violations (early return before `useEffect`).
 - `@import` url placement violation in Tailwind/CSS causing Vite build plugin failure.
+- Missing React `propTypes` causing numerous CI warnings.
 **Learning:**
 - Use `<button type="button" className="link-button">` instead of empty `<a href="#">` for accessibility.
-- Mutate `document.body.style.cursor` rather than `gl.domElement.style.cursor` in `react-three-fiber` callbacks to avoid `react-hooks/immutability` errors.
+- Mutate `document.body.style.cursor` rather than `gl.domElement.style.cursor` in `react-three-fiber` callbacks to avoid `react-hooks/immutability` errors. Alternately, use `/* eslint-disable-next-line react-hooks/immutability */` if the mutation is known and intentional.
 - Rename custom `role` props to `userRole` to prevent `jsx-a11y/aria-role` collisions.
 - Ensure all hooks are declared before any early returns.
 - Ensure `@import` CSS declarations (e.g. Google Fonts) always precede all other rules (including Tailwind imports or `@layer`).
