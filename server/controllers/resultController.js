@@ -6,8 +6,8 @@ function computeReactionId(a, b, i, c) {
   let id = 0;
   if (a >= THRESHOLD) id += 1;
   if (b >= THRESHOLD) id += 10;
-  if (i >= THRESHOLD) id += 100;
-  if (c >= THRESHOLD) id += 1000;
+  if (c >= THRESHOLD) id += 100;
+  if (i >= THRESHOLD) id += 1000;
   return id;
 }
 
