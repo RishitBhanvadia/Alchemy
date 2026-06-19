@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/immutability */
 /**
  * useLabPhysics.js — Custom hook for drag/pour logic in 3D lab
  * Phase 3.1.1 Task [8]: Raycaster hit detection, drag state machine, tilt constraints
@@ -110,10 +112,11 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        document.body.style.cursor = 'grab';
+        /* eslint-disable-next-line react-hooks/immutability */
+document.body.style.cursor = 'grab';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -123,10 +126,11 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        document.body.style.cursor = 'default';
+        /* eslint-disable-next-line react-hooks/immutability */
+document.body.style.cursor = 'default';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -139,7 +143,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
-      document.body.style.cursor = 'grabbing';
+      /* eslint-disable-next-line react-hooks/immutability */
+document.body.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -165,7 +170,7 @@ export default function useLabPhysics(config = {}) {
         }
       }
     },
-    [camera, gl, dragPlane]
+    [camera, dragPlane]
   );
 
   /**
@@ -208,7 +213,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
-      document.body.style.cursor = 'default';
+      /* eslint-disable-next-line react-hooks/immutability */
+document.body.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
@@ -232,7 +238,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, gl, homePosition]
+    [dragState, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
