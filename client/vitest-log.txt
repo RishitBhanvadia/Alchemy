@@ -1,27 +1,27 @@
 
 [1m[30m[46m RUN [49m[39m[22m [36mv4.1.9 [39m[90m/app/client[39m
 
-[90mstderr[2m | src/components/__tests__/Navbar.test.jsx[2m > [22m[2mNavbar Component[2m > [22m[2mshould render navigation links for teacher (default)
-[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-
 [90mstderr[2m | src/pages/__tests__/Dashboard.test.jsx[2m > [22m[2mDashboard Component[2m > [22m[2mshould render dashboard title
 [22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
 
- [32m✓[39m src/components/__tests__/Navbar.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 105[2mms[22m[39m
- [32m✓[39m src/pages/__tests__/Dashboard.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+[90mstderr[2m | src/components/__tests__/Navbar.test.jsx[2m > [22m[2mNavbar Component[2m > [22m[2mshould render navigation links for teacher (default)
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ [32m✓[39m src/pages/__tests__/Dashboard.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/Navbar.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[32m 86[2mms[22m[39m
 [90mstderr[2m | src/pages/__tests__/Login.test.jsx[2m > [22m[2mLogin Component[2m > [22m[2mshould render login form
 [22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
 
- [32m✓[39m src/store/__tests__/labStore.test.js [2m([22m[2m31 tests[22m[2m)[22m[32m 27[2mms[22m[39m
- [32m✓[39m src/pages/__tests__/Login.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[33m 875[2mms[22m[39m
-     [33m[2m✓[22m[39m should have submit button [33m 454[2mms[22m[39m
- [32m✓[39m src/utils/__tests__/notifications.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/store/__tests__/labStore.test.js [2m([22m[2m31 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/pages/__tests__/Login.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[33m 762[2mms[22m[39m
+     [33m[2m✓[22m[39m should have submit button [33m 389[2mms[22m[39m
+ [32m✓[39m src/utils/__tests__/notifications.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 12[2mms[22m[39m
  [32m✓[39m src/utils/__tests__/logger.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m6 passed[39m[22m[90m (6)[39m
 [2m      Tests [22m [1m[32m48 passed[39m[22m[90m (48)[39m
-[2m   Start at [22m 08:38:59
-[2m   Duration [22m 4.52s[2m (transform 898ms, setup 2.08s, import 1.96s, tests 1.14s, environment 5.16s)[22m
+[2m   Start at [22m 09:02:00
+[2m   Duration [22m 4.38s[2m (transform 858ms, setup 2.12s, import 1.59s, tests 978ms, environment 5.36s)[22m
