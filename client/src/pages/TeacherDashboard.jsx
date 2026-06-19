@@ -20,8 +20,8 @@ import {
 } from '@tanstack/react-table';
 import { supabase } from '../supabaseClient';
 import useAuthStore from '../store/authStore';
-import StudentAnalyticsChart from '../components/StudentAnalyticsChart';
-import ClassroomManager from '../components/ClassroomManager';
+const StudentAnalyticsChart = React.lazy(() => import('../components/StudentAnalyticsChart'));
+const ClassroomManager = React.lazy(() => import('../components/ClassroomManager'));
 import SkeletonBlock from '../components/SkeletonBlock';
 import EmptyState from '../components/EmptyState';
 
@@ -346,7 +346,7 @@ export default function TeacherDashboard({ analytics = false }) {
       </div>
 
       <main aria-label="Teacher dashboard content">
-        <ClassroomManager />
+        <React.Suspense fallback={<SkeletonBlock />}><ClassroomManager /></React.Suspense>
 
       {/* Error State */}
       {error && (
@@ -502,19 +502,21 @@ export default function TeacherDashboard({ analytics = false }) {
           </div>
         </div>
 
-        <StudentAnalyticsChart
-          scores={experimentScores}
-          experimentName={
-            EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
-          }
-          noDataMessage={
-            !selectedExperiment 
-              ? "Select an experiment type above to see score distribution."
-              : experimentScores.length === 0 
-                ? "No students have completed this experiment yet."
-                : undefined
-          }
-        />
+        <React.Suspense fallback={<div style={{height: '350px'}}><SkeletonBlock /></div>}>
+          <StudentAnalyticsChart
+            scores={experimentScores}
+            experimentName={
+              EXPERIMENT_OPTIONS.find((o) => o.value === selectedExperiment)?.label || ''
+            }
+            noDataMessage={
+              !selectedExperiment
+                ? "Select an experiment type above to see score distribution."
+                : experimentScores.length === 0
+                  ? "No students have completed this experiment yet."
+                  : undefined
+            }
+          />
+        </React.Suspense>
       </section>
       </main>
     </div>
