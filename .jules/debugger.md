@@ -1,0 +1,4 @@
+## 2025-02-25 - Rules of Hooks Violation Masked as Parsing Error
+**Bug:** The Vite build crashed with `ERROR: The symbol "clicking" has already been declared` in `CursorFollower.jsx`.
+**Root Cause:** The `clicking` and `hovering` state variables were declared twice in the same scope. The second declaration happened immediately after an early return (`if (isTouchDevice) return null;`), which also violated the Rules of Hooks (hooks cannot be called after an early return).
+**Learning:** Duplicate variable declarations in React components can sometimes be a symptom of trying to fix a Rules of Hooks error incorrectly (e.g. by re-declaring state after an early return instead of moving the early return to the bottom). Always check the surrounding hook order when fixing "already declared" parsing errors.

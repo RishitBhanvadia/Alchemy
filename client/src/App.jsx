@@ -29,6 +29,7 @@ const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
 const ClassroomDetail = lazy(() => import("./pages/ClassroomDetail"));
 
 import useAuthStore from './store/authStore';
+import logger from './utils/logger';
 
 // Redirect root to correct dashboard based on role
 function RootRedirect() {
@@ -61,7 +62,7 @@ function App() {
     if (!loading && user && profile && location.pathname === '/login') {
 
       const target = (profile.role === 'teacher' || profile.role === 'admin') ? '/teacher' : '/student';
-      console.log('Redirecting to:', target, 'Profile role:', profile.role);
+      logger.info('Redirecting to:', target, 'Profile role:', profile.role);
       navigate(target, { replace: true });
     }
   }, [user, profile, loading, location.pathname, navigate]);
