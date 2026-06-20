@@ -17,8 +17,24 @@ function normalise(a, b, i, c) {
   const na = Math.round((a / total) * 100);
   const nb = Math.round((b / total) * 100);
   const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+  const nc = Math.round((c / total) * 100);
+
+  const arr = [na, nb, ni, nc];
+  let sum = na + nb + ni + nc;
+
+  if (sum !== 100) {
+      const diff = 100 - sum;
+      let maxIdx = 0;
+      let maxVal = arr[0];
+      for (let j = 1; j < 4; j++) {
+          if (arr[j] > maxVal) {
+              maxVal = arr[j];
+              maxIdx = j;
+          }
+      }
+      arr[maxIdx] += diff;
+  }
+  return arr;
 }
 
 function classifyRegime(a, b) {
