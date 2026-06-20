@@ -113,7 +113,7 @@ export default function useLabPhysics(config = {}) {
         document.body.style.cursor = 'grab';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -126,7 +126,7 @@ export default function useLabPhysics(config = {}) {
         document.body.style.cursor = 'default';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -165,7 +165,7 @@ export default function useLabPhysics(config = {}) {
         }
       }
     },
-    [camera, gl, dragPlane]
+    [camera, dragPlane, gl]
   );
 
   /**
@@ -195,7 +195,7 @@ export default function useLabPhysics(config = {}) {
       isPouring.current = computeIsPouring(newPos);
       isTilted.current = isPouring.current;
     },
-    [dragState, camera, gl, dragPlane, homePosition, computeCanTilt, computeIsPouring]
+    [dragState, camera, dragPlane, homePosition, computeCanTilt, computeIsPouring, gl]
   );
 
   /**
@@ -232,7 +232,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, gl, homePosition]
+    [dragState, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────

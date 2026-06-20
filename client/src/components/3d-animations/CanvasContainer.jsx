@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import PropTypes from 'prop-types';
+import logger from '../../utils/logger';
 
 /**
  * CanvasContainer — Shared wrapper for R3F Canvas.
@@ -13,11 +14,11 @@ const CanvasContainer = ({ children, style, ...props }) => {
 
         const onContextLost = (e) => {
             e.preventDefault();
-            console.warn('[CanvasContainer] WebGL context lost — will attempt restore');
+            logger.warn('[CanvasContainer] WebGL context lost — will attempt restore');
         };
 
         const onContextRestored = () => {
-            console.warn('[CanvasContainer] WebGL context restored');
+            logger.warn('[CanvasContainer] WebGL context restored');
         };
 
         canvas.addEventListener('webglcontextlost', onContextLost, false);
