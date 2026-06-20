@@ -40,6 +40,7 @@ const Sidebar = () => {
             <button
               className={`element_button lab_button ${selectedTab === "lab" ? "selected" : ""
                 }`}
+              aria-label="Go to Lab"
             >
               <i className="fa-solid fa-flask"></i>
             </button>
@@ -57,6 +58,7 @@ const Sidebar = () => {
             <button
               className={`element_button titration_button ${selectedTab === "titration" ? "selected" : ""
                 }`}
+              aria-label="Go to Titration"
             >
               <i className="fa-solid fa-flask-vial"></i>
             </button>
@@ -74,6 +76,7 @@ const Sidebar = () => {
             <button
               className={`element_button organic_button ${selectedTab === "organic" ? "selected" : ""
                 }`}
+              aria-label="Go to Organic Chemistry"
             >
               <i className="fa-solid fa-user-plus"></i>
             </button>
@@ -91,6 +94,7 @@ const Sidebar = () => {
             <button
               className={`element_button inorganic_button ${selectedTab === "inorganic" ? "selected" : ""
                 }`}
+              aria-label="Go to Inorganic Chemistry"
             >
               <i className="fa-solid fa-user-minus"></i>
             </button>
@@ -108,6 +112,7 @@ const Sidebar = () => {
             <button
               className={`element_button ${selectedTab === "history" ? "selected" : ""
                 }`}
+              aria-label="Go to History"
             >
               <i className="fa-solid fa-clock-rotate-left"></i>
             </button>
