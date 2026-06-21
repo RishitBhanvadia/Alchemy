@@ -1,13 +1,5 @@
 function classifyRegime(chem_a, chem_b, chem_i = 0, chem_c = 0) {
-  // Handle Acid-Base dominance (A+B combinations)
   const acidBaseSum = chem_a + chem_b;
-  
-  if (acidBaseSum > 0) {
-    const ratio = chem_a / acidBaseSum;
-    if (ratio > 0.65) return 'ACID_DOMINANT';
-    if (ratio < 0.35) return 'BASE_DOMINANT';
-    return 'NEUTRAL';
-  }
   
   // Handle Catalyst dominance (C present, A+B minimal)
   if (chem_c > 20 && acidBaseSum < 20) {
@@ -19,7 +11,15 @@ function classifyRegime(chem_a, chem_b, chem_i = 0, chem_c = 0) {
     return 'INDICATOR_DOMINANT';
   }
   
-  return 'NONE';
+  // Handle Acid-Base dominance (A+B combinations)
+  if (acidBaseSum >= 5) {
+    const ratio = chem_a / acidBaseSum;
+    if (ratio > 0.60) return 'ACID_DOMINANT';
+    if (ratio < 0.40) return 'BASE_DOMINANT';
+    return 'NEUTRAL';
+  }
+
+  return 'NEUTRAL'; // Too little to differentiate
 }
 
 module.exports = { classifyRegime };
