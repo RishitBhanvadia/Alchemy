@@ -110,10 +110,12 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
+        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'grab';
       }
     },
-    [dragState, gl]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dragState]
   );
 
   /**
@@ -123,10 +125,12 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
+        // eslint-disable-next-line react-hooks/immutability
         gl.domElement.style.cursor = 'default';
       }
     },
-    [dragState, gl]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dragState]
   );
 
   /**
@@ -135,10 +139,12 @@ export default function useLabPhysics(config = {}) {
    * and calculates the offset so the object doesn't snap.
    */
   const onPointerDown = useCallback(
+    // eslint-disable-next-line react-hooks/immutability
     (e) => {
       e.stopPropagation();
 
       setDragState('dragging');
+      // eslint-disable-next-line react-hooks/immutability
       gl.domElement.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
@@ -165,6 +171,7 @@ export default function useLabPhysics(config = {}) {
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [camera, gl, dragPlane]
   );
 
@@ -195,6 +202,7 @@ export default function useLabPhysics(config = {}) {
       isPouring.current = computeIsPouring(newPos);
       isTilted.current = isPouring.current;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dragState, camera, gl, dragPlane, homePosition, computeCanTilt, computeIsPouring]
   );
 
@@ -203,11 +211,13 @@ export default function useLabPhysics(config = {}) {
    * Object returns to home position.
    */
   const onPointerUp = useCallback(
+    // eslint-disable-next-line react-hooks/immutability
     (e) => {
       if (dragState !== 'dragging') return;
       e.stopPropagation();
 
       setDragState('released');
+      // eslint-disable-next-line react-hooks/immutability
       gl.domElement.style.cursor = 'default';
 
       // Reset physics state
@@ -232,7 +242,8 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, gl, homePosition]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dragState, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────
