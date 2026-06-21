@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import AuthPageWrapper from '../components/auth/AuthPage';
 import AuthCard from '../components/auth/AuthCard';

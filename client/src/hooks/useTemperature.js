@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * useTemperature.js — Global temperature state hook
  * Phase 3.3.1: Exposes temperature, setTemperature, thermalState

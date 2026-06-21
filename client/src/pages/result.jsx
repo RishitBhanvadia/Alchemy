@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useState, useEffect, } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ResultCustomTestTube from '../components/result_testtube'

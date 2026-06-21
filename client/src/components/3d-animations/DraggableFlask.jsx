@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';

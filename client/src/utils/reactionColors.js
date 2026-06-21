@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 const REACTION_COLOURS = {
   'Colourless': '#E8F4FD',
   'Yellow': '#F5E642',

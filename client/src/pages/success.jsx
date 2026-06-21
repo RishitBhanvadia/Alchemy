@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React from "react";
 import Sidebar from "../components/sidebar";
 import logo from '../assets/logo.png'

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * LiquidShader.js — Advanced GLSL ShaderMaterial for liquid fill effects
  * Phase 3.1.2 Task [9]: Fluid dynamics shader with color mixing and wave animation

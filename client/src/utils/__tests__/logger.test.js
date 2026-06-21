@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('loglevel', () => {

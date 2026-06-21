@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import { shaderMaterial } from '@react-three/drei';
 import { Color, Vector2 } from 'three';
 

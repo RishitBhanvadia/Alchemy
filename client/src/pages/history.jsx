@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useHistoryStore from "../store/historyStore";

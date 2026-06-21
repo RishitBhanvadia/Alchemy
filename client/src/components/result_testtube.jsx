@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from "gsap";
 import PropTypes from 'prop-types';

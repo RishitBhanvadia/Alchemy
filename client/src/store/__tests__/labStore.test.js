@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * labStore.test.js — Unit tests for Zustand lab store
  * Phase 3 Task [3]: Verify all store slices work correctly

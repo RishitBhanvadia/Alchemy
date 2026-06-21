@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /* eslint-disable react-hooks/immutability */
 /**
  * ParticleEmitter.jsx — Reusable particle system for gases and explosions

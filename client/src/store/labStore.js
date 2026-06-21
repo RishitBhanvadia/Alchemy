@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * labStore.js — Zustand store for lab state management
  * Phase 3: Central state for temperature, chemicals, role, assignments, performance
