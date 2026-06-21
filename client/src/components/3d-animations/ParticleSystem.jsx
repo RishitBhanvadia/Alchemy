@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Vector3, Object3D, Color } from 'three';

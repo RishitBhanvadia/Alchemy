@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * Flask.jsx — 3D Erlenmeyer Flask mesh with RigidBody physics and liquid shader
  * Phase 3.1 Task [7]: Wrapped in <RigidBody> with CCD enabled

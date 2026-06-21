@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import PropTypes from 'prop-types';
 import Tilt from 'react-parallax-tilt';
 

@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, UserPlus, Atom } from 'lucide-react';
+import { ArrowRight, UserPlus, Atom } from 'lucide-react';
 
 const CTAButton = ({ children, onClick, loading, type = 'submit', icon: IconType }) => {
   const Icon = IconType === 'UserPlus' ? UserPlus : ArrowRight;

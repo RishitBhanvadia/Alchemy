@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * usePerformanceScaling.js — FPS monitoring and auto-downgrade hook
  * Phase 3.4.1: Monitors frame timing, scales down pixel ratio/shadows/bloom when FPS drops

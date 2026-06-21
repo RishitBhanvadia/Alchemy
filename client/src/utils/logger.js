@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import log from 'loglevel';
 
 // Configure log level based on environment

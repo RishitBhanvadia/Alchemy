@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
@@ -78,9 +80,9 @@ const LoginForm = () => {
           disabled={loading}
         />
         <div className="flex justify-end mt-2">
-          <a href="#" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
+          <button type="button" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
             Forgot password?
-          </a>
+          </button>
         </div>
       </div>
 

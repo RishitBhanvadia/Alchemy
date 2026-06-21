@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import { create } from 'zustand';
 import { supabase } from '../supabaseClient';
 

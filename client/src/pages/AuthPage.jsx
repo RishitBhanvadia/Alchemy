@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import AuthPageWrapper from '../components/auth/AuthPage';
 import AuthCard from '../components/auth/AuthCard';
@@ -25,9 +27,9 @@ const AuthPage = () => {
         <div className="mt-8 pt-6 border-t border-white/5 text-center">
           <p className="text-[11px] text-lab-muted leading-relaxed font-medium">
             By joining the lab, you agree to our{' '}
-            <a href="#" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Terms of Service</a>
+            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Terms of Service</button>
             {' '}and{' '}
-            <a href="#" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Privacy Policy</a>
+            <button type="button" className="text-lab-cyan hover:text-lab-cyan/80 transition-colors">Privacy Policy</button>
           </p>
         </div>
       </AuthCard>

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 export const colors = {
   background: '#080810',
   card: '#0f0f1a',

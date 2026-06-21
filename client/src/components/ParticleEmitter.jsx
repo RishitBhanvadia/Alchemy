@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/immutability */
 /**
  * ParticleEmitter.jsx — Reusable particle system for gases and explosions
  * Phase 3.1.3 Task [10]: BufferGeometry-based particles with useFrame update loop

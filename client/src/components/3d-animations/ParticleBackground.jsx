@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 import React, { useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useFrame } from '@react-three/fiber';

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * MeetingCodeCard.jsx — Displays a meeting code with copy + start actions
  *

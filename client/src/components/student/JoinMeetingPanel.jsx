@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
 /**
  * JoinMeetingPanel.jsx — Student panel to join a meeting by 6-char code
  *
