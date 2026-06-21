@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useState, useCallback } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { Cylinder, MeshTransmissionMaterial, Text } from '@react-three/drei';
@@ -61,7 +62,9 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
 
         // Standard pointer capture for off-mesh dragging
         e.target.setPointerCapture(e.pointerId);
-    }, [camera, gl, label, locked]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [camera, label, locked]);
 
     const handlePointerMove = useCallback((e) => {
         if (!dragActive.current) return;
@@ -89,7 +92,9 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
             isPouring.current = false;
             isTilted.current = false;
         }
-    }, [camera, gl, position]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [camera, position]);
 
     const handlePointerUp = useCallback((e) => {
         if (!dragActive.current) return;

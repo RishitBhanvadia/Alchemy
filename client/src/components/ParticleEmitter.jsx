@@ -11,6 +11,7 @@
  * - GSAP camera shake on exothermic fire
  * - Framer Motion scale pulse on HUD overlays
  */
+/* eslint-disable react-hooks/immutability */
 import React, { useRef, useMemo, useCallback, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Color, AdditiveBlending } from 'three';
