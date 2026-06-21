@@ -79,8 +79,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose} role="presentation">
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="presentation">
+    <div style={styles.overlay} onClick={handleClose} onKeyDown={(e) => { if(e.key === 'Enter' || e.key === ' ') handleClose() }}>
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
@@ -92,7 +92,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         ) : (
           /* ── Selection: choose platform ── */
           <>
-            <button onClick={handleClose} role="presentation" style={styles.closeBtn} aria-label="Close">✕</button>
+            <button onClick={handleClose} style={styles.closeBtn} aria-label="Close">✕</button>
             <h2 style={styles.title}>Create a Meeting</h2>
             <p style={styles.subtitle}>Choose a platform to start a live class session</p>
 
