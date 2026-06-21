@@ -183,9 +183,17 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server running on port ${PORT}`);
-});
+let server;
+if (process.env.NODE_ENV !== 'test' && !process.env.TEST_MODE) {
+  server = app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`Server running on port ${PORT}`);
+  });
+} else {
+  // During tests, don't start the server immediately or allow it to be closed
+  server = { close: (cb) => cb && cb() };
+}
+
+module.exports = { app, server };
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

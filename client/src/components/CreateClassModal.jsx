@@ -79,7 +79,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose}>
+    <div style={styles.overlay} onClick={handleClose} onKeyDown={(e) => { if(e.key === 'Enter' || e.key === ' ') handleClose() }}>
       <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
         {meetingData ? (
           /* ── Success: show code card ── */
