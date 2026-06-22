@@ -114,6 +114,7 @@ async function fetchProfile(user) {
         .single();
       
       if (insertError) {
+        // eslint-disable-next-line no-console
         console.error('[authStore] Failed to create profile:', insertError.message, insertError.code);
         return null;
       }
@@ -121,11 +122,13 @@ async function fetchProfile(user) {
     }
     
     if (error) {
+      // eslint-disable-next-line no-console
       console.error('[authStore] Profile fetch error:', error.message, error.code);
     }
     
     return null;
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error('[authStore] fetchProfile exception:', err.message);
     return null;
   }

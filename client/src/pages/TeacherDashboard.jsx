@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
  * TeacherDashboard.jsx — Teacher's classroom management dashboard
  * Phase 3.2.2 Task [11]: Route-guarded, data grid, analytics chart
@@ -231,6 +232,7 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
@@ -309,6 +311,7 @@ export default function TeacherDashboard({ analytics = false }) {
         // Use the actual scores from DB
         setExperimentScores((data || []).map((log) => log.score || 0));
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
