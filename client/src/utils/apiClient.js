@@ -22,6 +22,7 @@ apiClient.interceptors.request.use(async (config) => {
       config.headers.Authorization = `Bearer ${session.access_token}`;
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching auth session for API request:', error);
   }
   return config;
@@ -43,6 +44,7 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         }
       } catch (refreshError) {
+        // eslint-disable-next-line no-console
         console.warn('Token refresh failed:', refreshError);
       }
       // If refresh failed, redirect to login
@@ -52,11 +54,13 @@ apiClient.interceptors.response.use(
     
     // Handle timeout errors with specific message
     if (error.code === 'ECONNABORTED') {
+      // eslint-disable-next-line no-console
       console.warn('Request timeout:', error.message);
     }
     
     // Handle network errors
     if (!navigator.onLine) {
+      // eslint-disable-next-line no-console
       console.warn('Network offline');
     }
     

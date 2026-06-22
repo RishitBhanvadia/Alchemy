@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
@@ -22,6 +23,7 @@ export function RoleRoute({ children, requiredRole }) {
   
   // If we have a user but no profile after loading, it's a fatal error for this route
   if (user && !profile) {
+    // eslint-disable-next-line no-console
     console.error('User authenticated but profile missing');
     return <Navigate to="/login" replace />;
   }
