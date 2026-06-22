@@ -63,9 +63,9 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         url.searchParams.delete('google_auth');
         window.history.replaceState({}, '', url);
       } else {
-        // Need to authenticate first — redirect to Google OAuth
-        const authUrl = getGoogleAuthUrl(profile?.id);
-        window.location.href = authUrl;
+        // Need to authenticate first — request secure auth URL
+        const response = await getGoogleAuthUrl();
+        window.location.href = response.data.authUrl || response.authUrl;
         return; // Page will navigate away
       }
     } catch (err) {

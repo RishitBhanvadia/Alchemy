@@ -1,0 +1,4 @@
+## 2025-02-28 - Login CSRF / Authorisation Bypass in OAuth Flow
+**Vulnerability:** The GET `/api/meetings/google/auth` endpoint was an unauthenticated redirect that accepted a `teacherId` in the query string. This allowed an attacker to either trick a victim into authorising the attacker's Google account (Login CSRF) or trick the system into binding the victim's Google account to the attacker's `teacherId` in the backend.
+**Learning:** OAuth flows that require user identification must be initiated from an authenticated context. When a full-page redirect is required and you cannot pass an Authorization header, the frontend should make an authenticated API call to retrieve the secure redirect URL dynamically.
+**Prevention:** Avoid unauthenticated GET redirects for sensitive flows. Return the OAuth redirect URL from an authenticated endpoint instead.
