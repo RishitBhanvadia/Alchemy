@@ -1,0 +1,4 @@
+## 2024-06-22 - Virtual Chemistry Lab Market Research
+**Market Insight:** Top virtual labs (Labster, PraxiLabs) heavily rely on structured, guided learning (step-by-step instructions and embedded theory) rather than just open sandboxes. They also provide integrated lab notebooks for data collection and post-lab quizzes to validate learning.
+**Codebase Match:** Alchemistry currently provides an excellent 3D sandbox with sliders, but lacks a guided mode, integrated theory panel, and a way for students to record structured observations. It already has an AI Tutor and experiment assignments, providing a strong foundation for these additions.
+**Opportunity:** Adding an interactive lab notebook (for logging observations) and a guided mode toggle in `Lab3D.jsx` will bridge the gap between open-ended exploration and structured curriculum requirements, making the tool more viable for educators.
