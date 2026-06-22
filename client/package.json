@@ -101,8 +101,8 @@
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.58.2",
-    "@tailwindcss/postcss": "^4.2.2",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@tailwindcss/vite": "^4.3.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -120,9 +120,9 @@
     "file-loader": "^6.2.0",
     "jsdom": "^28.1.0",
     "lucide-react": "^1.7.0",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.15",
     "prettier": "^3.8.1",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.3.1",
     "vite": "^6.1.0",
     "vitest": "^4.0.18"
   }
