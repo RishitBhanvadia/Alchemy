@@ -8,6 +8,7 @@
  *   onClose    - Callback to dismiss the card
  */
 
+import PropTypes from "prop-types";
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
@@ -164,3 +165,10 @@ const styles = {
 };
 
 export default MeetingCodeCard;
+
+MeetingCodeCard.propTypes = {
+  code: PropTypes.string.isRequired,
+  meetingUrl: PropTypes.string.isRequired,
+  platform: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired
+};
