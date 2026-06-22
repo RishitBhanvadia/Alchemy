@@ -1,0 +1,3 @@
+## 2025-03-01 - Fix N+1 Query Bottleneck in Analytics
+**Learning:** Found a critical performance bottleneck in `teacherController.js` where `Promise.all` and `.map` were used to perform a separate database query for each classroom to get `experiment_results`. This is an N+1 query problem. It scales poorly as the number of classrooms a teacher has increases.
+**Action:** When pulling relational data like logs for multiple parent entities (like classrooms or users), extract all unique IDs and perform a single batched query with Supabase using `.in('column', allIds)`. Group and map the fetched array to the respective entities in memory to drastically reduce the number of queries from `O(N)` to `O(1)`.
