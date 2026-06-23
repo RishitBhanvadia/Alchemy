@@ -31,7 +31,8 @@ exports.getAnalytics = async (req, res) => {
         .from('experiment_results')
         .select('id, outcome_label, score, experiment_type, created_at, user_id')
         .in('user_id', Array.from(allStudentIds))
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(1000); // Add a reasonable high limit for the batched query
       allLogs = experimentLogs || [];
     }
 
