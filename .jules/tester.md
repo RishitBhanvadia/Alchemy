@@ -1,0 +1,4 @@
+## 2025-02-28 - Test coverage for user sign-up flow
+**Gap:** The critical user authentication flow in `SignUpForm.jsx` had virtually zero test coverage (~2%), leaving complex validation logic and integration with Supabase unprotected against regressions.
+**Learning:** React components that use controlled inputs with specific `name` properties often require events correctly targeted by their underlying `name` attribute in unit tests, rather than general typing, to correctly trigger the state updates, especially in complex validation loops.
+**Pattern:** For `SignUpForm.test.jsx`, use specific `name` attribute queries or dispatch `fireEvent.change(input, { target: { name: 'email', value: '...' } })` to reliably verify React's local state management before checking Supabase API interactions via `vi.mock`.
