@@ -13,3 +13,8 @@
 **Before:** `CreateClassModal.jsx` had div overlays serving as click dismissals that triggered `jsx-a11y/click-events-have-key-events` and `jsx-a11y/no-static-element-interactions` ESLint warnings.
 **Issue:** Attaching onClick to a standard div suggests an interactive element to screen readers but lacks keyboard controls, failing accessibility checks that block the CI.
 **Learning:** For modal backdrops or overlays where an onClick is used merely to close the modal (and not as a semantic button), adding `role="presentation"` satisfies the a11y linter rules, clarifying that the element is not meant for user interaction.
+
+## 2026-06-23 - Add explicit PropTypes to resolve ESLint validation warnings
+**Before:** `EmptyState.jsx` defined multiple props (`icon`, `title`, `description`, etc.) without declaring a `propTypes` object, triggering `react/prop-types` ESLint warnings.
+**Issue:** Strict CI pipelines utilizing `eslint-plugin-react` will fail if `react/prop-types` warnings are emitted and treated as errors (or cause the build to halt due to high warning counts).
+**Learning:** For React components lacking TypeScript interfaces, it is critical to explicitly import `PropTypes` from the `prop-types` package and define validation for all component properties to maintain strict linting compliance and ensure robust type checking during development.
