@@ -92,6 +92,8 @@ const EXPERIMENT_OPTIONS = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+import PropTypes from "prop-types";
+
 export default function TeacherDashboard({ analytics = false }) {
   const navigate = useNavigate();
   const profile = useAuthStore(state => state.profile);
@@ -762,3 +764,7 @@ styleSheet.innerText = `
   }
 `;
 document.head.appendChild(styleSheet);
+
+TeacherDashboard.propTypes = {
+  analytics: PropTypes.bool
+};

@@ -17,9 +17,8 @@ const { requireAuth, requireRole } = require('../middleware/authMiddleware');
 
 router.post('/zoom', requireAuth, requireRole('teacher'), meetingController.createZoomMeeting);
 
-// Google OAuth redirect — no auth middleware since it's a browser redirect
-// The teacher ID is passed as a query param
-router.get('/google/auth', meetingController.googleAuthRedirect);
+// Get Google OAuth URL — authenticated to prevent CSRF/Authorization Bypass
+router.get('/google/auth-url', requireAuth, requireRole('teacher'), meetingController.getGoogleAuthUrl);
 
 router.post('/google', requireAuth, requireRole('teacher'), meetingController.createGoogleMeeting);
 
