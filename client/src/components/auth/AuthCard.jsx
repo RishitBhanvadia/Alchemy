@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FlaskConical } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 const AuthCard = ({ children }) => {
   return (
@@ -39,6 +40,10 @@ const AuthCard = ({ children }) => {
       </div>
     </div>
   );
+};
+
+AuthCard.propTypes = {
+  children: PropTypes.node,
 };
 
 export default AuthCard;
