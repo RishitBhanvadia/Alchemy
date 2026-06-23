@@ -59,25 +59,25 @@ describe('SignUpForm Component', () => {
     });
 
     it('should display validation errors for invalid email and short password', async () => {
-        // Find inputs directly by name attribute which is how the component tracks them
         const { container } = renderSignUp();
 
         const fullNameInput = container.querySelector('input[name="fullName"]');
         const emailInput = container.querySelector('input[name="email"]');
         const passwordInput = container.querySelector('input[name="password"]');
 
-        // Form relies on standard React onChange to update formData
         fireEvent.change(fullNameInput, { target: { name: 'fullName', value: 'Marie Curie' } });
         fireEvent.change(emailInput, { target: { name: 'email', value: 'invalid-email' } });
         fireEvent.change(passwordInput, { target: { name: 'password', value: 'short' } });
 
-        // Instead of clicking button, submit the form itself since form onSubmit runs handleSignUp
         const form = container.querySelector('form');
         fireEvent.submit(form);
 
         await waitFor(() => {
-            expect(screen.getByText(/please enter a valid email/i)).toBeInTheDocument();
-            expect(screen.getByText(/auth key must be at least 8 characters/i)).toBeInTheDocument();
+            expect(screen.queryByText(/please enter a valid email/i)).toBeInTheDocument();
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText(/auth key must be at least 8 characters/i)).toBeInTheDocument();
         });
     });
 
