@@ -1,0 +1,3 @@
+## 2026-06-23 - Batched Queries in Analytics
+**Learning:** Resolving N+1 query bottlenecks in Supabase interactions. When iterating over multiple parent entities (like classrooms) to fetch relational data (like experiment results for their students), using Promise.all with individual queries per classroom creates significant performance degradation as the number of classrooms grows.
+**Action:** Extract all unique child IDs (student IDs) across all parents, execute a single batched query using .in('column', allIds), and map the results back to the parents in memory. This reduces N database trips to just 1.
