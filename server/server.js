@@ -200,6 +200,12 @@ process.on('SIGTERM', () => {
 
 process.on('SIGINT', () => process.emit('SIGTERM'));
 
+if (process.env.NODE_ENV === 'test') {
+  setTimeout(() => {
+    process.exit(0);
+  }, 1000).unref();
+}
+
 // Handle unhandled Promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled Rejection', { reason: reason?.toString() });

@@ -12,6 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
+const crypto = require('crypto');
 
 // ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
 
@@ -167,32 +168,30 @@ exports.createZoomMeeting = async (req, res) => {
 };
 
 /**
- * GET /api/meetings/google/auth?teacherId=xxx
- * Redirects the teacher to Google OAuth consent screen.
- * Note: This is a browser redirect, so no auth middleware — teacherId is passed as query param.
+ * GET /api/meetings/google/auth
+ * Returns the Google OAuth consent screen URL.
+ * Requires teacher authentication to prevent CSRF.
  */
 exports.googleAuthRedirect = (req, res) => {
   try {
     const clientId = process.env.GOOGLE_CLIENT_ID;
-    if (!clientId) {
-      return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID in .env', 500);
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    if (!clientId || !clientSecret) {
+      return error(res, 'CONFIG_ERROR', 'Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env', 500);
     }
 
-    const { teacherId } = req.query;
-    if (!teacherId) {
-      return error(res, 'VALIDATION_ERROR', 'teacherId query parameter is required.', 400);
-    }
+    // Use the authenticated user's ID
+    const teacherId = req.user.id;
 
     // Build the server callback URL dynamically
     const protocol = req.protocol;
     const host = req.get('host');
     const redirectUri = `${protocol}://${host}/api/meetings/google/callback`;
 
-    // Store redirect URI and teacher ID in state for the callback
-    const state = Buffer.from(JSON.stringify({
-      teacherId,
-      redirectUri,
-    })).toString('base64');
+    // Create a cryptographically signed state parameter to prevent CSRF
+    const statePayload = JSON.stringify({ teacherId, redirectUri });
+    const signature = crypto.createHmac('sha256', clientSecret).update(statePayload).digest('hex');
+    const state = Buffer.from(JSON.stringify({ payload: statePayload, signature })).toString('base64');
 
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
     authUrl.searchParams.set('client_id', clientId);
@@ -203,7 +202,7 @@ exports.googleAuthRedirect = (req, res) => {
     authUrl.searchParams.set('prompt', 'consent');
     authUrl.searchParams.set('state', state);
 
-    return res.redirect(authUrl.toString());
+    return success(res, { url: authUrl.toString() });
   } catch (err) {
     logger.error('[googleAuthRedirect]', err.message);
     return error(res, 'GOOGLE_AUTH_ERROR', 'Failed to initiate Google auth.', 500);
@@ -222,11 +221,33 @@ exports.googleAuthCallback = async (req, res) => {
       return error(res, 'INVALID_CALLBACK', 'Missing authorization code or state.', 400);
     }
 
-    // Decode state to get teacher ID and redirect URI
-    const { teacherId, redirectUri } = JSON.parse(Buffer.from(state, 'base64').toString());
-
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+    // Decode state and verify HMAC signature
+    let decodedState;
+    try {
+      decodedState = JSON.parse(Buffer.from(state, 'base64').toString());
+    } catch (e) {
+      return error(res, 'INVALID_CALLBACK', 'Malformed state parameter.', 400);
+    }
+
+    if (!decodedState.payload || !decodedState.signature) {
+      return error(res, 'INVALID_CALLBACK', 'Invalid state parameter structure.', 400);
+    }
+
+    const expectedSignature = crypto.createHmac('sha256', clientSecret).update(decodedState.payload).digest('hex');
+    try {
+      if (!crypto.timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(decodedState.signature))) {
+        throw new Error('Mismatch');
+      }
+    } catch (e) {
+      logger.warn('[Google] CSRF attempt detected: invalid state signature');
+      return error(res, 'INVALID_CALLBACK', 'State signature verification failed.', 403);
+    }
+
+    // Extract teacherId and redirectUri from the verified payload
+    const { teacherId, redirectUri } = JSON.parse(decodedState.payload);
 
     // Exchange authorization code for tokens
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {

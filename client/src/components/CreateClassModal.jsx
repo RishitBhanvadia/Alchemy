@@ -13,12 +13,10 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import MeetingCodeCard from './MeetingCodeCard';
 import { createZoomMeeting, createGoogleMeeting, getGoogleAuthUrl } from '../utils/api';
-import useAuthStore from '../store/authStore';
 
 const CreateClassModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [meetingData, setMeetingData] = useState(null); // { code, meetingUrl, platform }
-  const profile = useAuthStore(state => state.profile);
 
   // Reset state when modal closes
   const handleClose = () => {
@@ -63,9 +61,10 @@ const CreateClassModal = ({ isOpen, onClose }) => {
         url.searchParams.delete('google_auth');
         window.history.replaceState({}, '', url);
       } else {
-        // Need to authenticate first — redirect to Google OAuth
-        const authUrl = getGoogleAuthUrl(profile?.id);
-        window.location.href = authUrl;
+        // Need to authenticate first — request OAuth URL from server
+        const res = await getGoogleAuthUrl();
+        // Since api interceptor unwraps {success, data, error}, the url is directly in res.url
+        window.location.href = res.url;
         return; // Page will navigate away
       }
     } catch (err) {
@@ -79,8 +78,8 @@ const CreateClassModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay} onClick={handleClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+    <div style={styles.overlay} onClick={handleClose} role="presentation">
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()} role="presentation">
         {meetingData ? (
           /* ── Success: show code card ── */
           <MeetingCodeCard
