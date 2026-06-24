@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd client
+          rm -f package-lock.json
           pnpm install
 
       - name: Verify build

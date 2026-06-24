@@ -28,11 +28,11 @@ jobs:
       run: npm i -g pnpm
     - name: Install client dependencies
       working-directory: ./client
-      run: pnpm install
+      run: rm -f package-lock.json && pnpm install
     
     - name: Install server dependencies
       working-directory: ./server
-      run: pnpm install
+      run: rm -f package-lock.json && pnpm install
     
     - name: Lint client code
       working-directory: ./client
