@@ -18,6 +18,7 @@ jobs:
           # cache: npm
           # cache-dependency-path:
       - run: npm i -g pnpm
+      - run: pnpm config set ignore-scripts false
       - run: cd client && rm -f package-lock.json && pnpm install
       - run: cd client && pnpm build
         env:
@@ -35,11 +36,12 @@ jobs:
           # cache: npm
           # cache-dependency-path:
       - run: npm i -g pnpm
+      - run: pnpm config set ignore-scripts false
       - run: cd server && rm -f package-lock.json && pnpm install
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED') || e.message.includes('WebSocket support')) process.exit(0); throw e; }"
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder

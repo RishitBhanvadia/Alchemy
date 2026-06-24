@@ -22,7 +22,9 @@ jobs:
           # cache-dependency-path:
 
       - name: Install pnpm
-        run: npm i -g pnpm
+        run: |
+          npm i -g pnpm
+          pnpm config set ignore-scripts false
       - name: Install dependencies
         run: |
           cd client
