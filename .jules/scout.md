@@ -1,4 +1,0 @@
-## 2025-02-18 - Market Research: Virtual Chemistry Labs
-**Market Insight:** Virtual chemistry lab tools like Labster, PraxiLabs, and Beyond Labz heavily feature guided "lab books" (interactive worksheets), structured learning pathways, assessment tracking, and realistic experimental consequences (e.g. equipment breaking from bad reactions).
-**Codebase Match:** Alchemistry currently has open-ended 3D sandbox experiments, teacher classroom assignment tracking, and a basic history log, but lacks structured guided workflows, detailed procedural checklists (lab books), or exportable lab reports.
-**Opportunity:** Adding an "Export Lab Report" (PDF/CSV) feature for the experiment history, a built-in step-by-step guided mode ("Lab Book" overlay) for assignments, and realistic hazard indicators (temperature warnings/broken beakers) would bridge the gap with top competitors using existing data and components.
