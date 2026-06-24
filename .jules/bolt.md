@@ -1,3 +1,3 @@
 ## 2024-10-24 - Fix N+1 query in teacher analytics
 **Learning:** In the Alchemistry server, pulling relational data from Supabase for multiple parent entities (like classrooms) using `.map` and `Promise.all` causes N+1 query bottlenecks.
-**Action:** Extract all unique IDs and perform a single batched query using `.in('column', allIds)` to improve performance.
+**Action:** Extract all unique IDs and perform a single batched query using `.in('column', allIds)` instead of using `.map` and `Promise.all`. Ensure you include the reference ID (e.g., `user_id`) in the `.select()` statement to properly map the batched results back to their parent entities in memory. Also use `.limit()` with an appropriate multiplier to prevent default Supabase truncation.

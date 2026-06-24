@@ -30,7 +30,8 @@ exports.getAnalytics = async (req, res) => {
         .from('experiment_results')
         .select('id, user_id, outcome_label, score, experiment_type, created_at')
         .in('user_id', allStudentIds)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(5000);
       allLogs = experimentLogs || [];
     }
 
