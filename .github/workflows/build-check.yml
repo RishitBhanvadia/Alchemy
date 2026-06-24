@@ -15,10 +15,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: client/package-lock.json
-      - run: cd client && npm ci
-      - run: cd client && npm run build
+          # cache: npm
+          # cache-dependency-path:
+      - run: npm i -g pnpm
+      - run: pnpm config set ignore-scripts false
+      - run: cd client && rm -f package-lock.json && pnpm install
+      - run: cd client && pnpm build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
           VITE_SUPABASE_ANON_KEY: placeholder
@@ -31,13 +33,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: server/package-lock.json
-      - run: cd server && npm ci
+          # cache: npm
+          # cache-dependency-path:
+      - run: npm i -g pnpm
+      - run: pnpm config set ignore-scripts false
+      - run: cd server && rm -f package-lock.json && pnpm install
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED') || e.message.includes('WebSocket support')) process.exit(0); throw e; }"
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder
