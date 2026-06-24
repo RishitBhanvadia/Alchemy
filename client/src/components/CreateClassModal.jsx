@@ -18,7 +18,6 @@ import useAuthStore from '../store/authStore';
 const CreateClassModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [meetingData, setMeetingData] = useState(null); // { code, meetingUrl, platform }
-  const profile = useAuthStore(state => state.profile);
 
   // Reset state when modal closes
   const handleClose = () => {
