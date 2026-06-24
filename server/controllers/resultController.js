@@ -14,11 +14,37 @@ function computeReactionId(a, b, i, c) {
 function normalise(a, b, i, c) {
   const total = Number(a) + Number(b) + Number(i) + Number(c);
   if (total < 1) return null; // Too dilute to calculate
-  const na = Math.round((a / total) * 100);
-  const nb = Math.round((b / total) * 100);
-  const ni = Math.round((i / total) * 100);
-  const nc = 100 - na - nb - ni;
-  return [na, nb, ni, Math.max(0, nc)];
+
+  // Use the Largest Remainder Method (Hare-Niemeyer) to ensure percentages
+  // sum to exactly 100 without inventing nonexistent chemicals.
+  const arr = [
+    { key: 'a', val: (Number(a) / total) * 100 },
+    { key: 'b', val: (Number(b) / total) * 100 },
+    { key: 'i', val: (Number(i) / total) * 100 },
+    { key: 'c', val: (Number(c) / total) * 100 }
+  ];
+
+  const floorArr = arr.map(x => ({
+    key: x.key,
+    floor: Math.floor(x.val),
+    remainder: x.val - Math.floor(x.val)
+  }));
+
+  let currentSum = floorArr.reduce((acc, x) => acc + x.floor, 0);
+  const diff = 100 - currentSum;
+
+  // Sort by remainder descending
+  floorArr.sort((x, y) => y.remainder - x.remainder);
+
+  // Distribute the remaining percentage points
+  for (let j = 0; j < diff; j++) {
+    floorArr[j].floor += 1;
+  }
+
+  const res = {};
+  floorArr.forEach(x => { res[x.key] = x.floor; });
+
+  return [res.a, res.b, res.i, res.c];
 }
 
 function classifyRegime(a, b) {

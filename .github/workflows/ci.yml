@@ -29,19 +29,19 @@ jobs:
     
     - name: Install client dependencies
       working-directory: ./client
-      run: npm ci
+      run: npm i -g pnpm && pnpm install
     
     - name: Install server dependencies
       working-directory: ./server
-      run: npm ci
+      run: npm i -g pnpm && pnpm install
     
     - name: Lint client code
       working-directory: ./client
-      run: npm run lint
+      run: pnpm lint
     
     - name: Run client tests
       working-directory: ./client
-      run: npm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
+      run: pnpm test -- --run > vitest-log.txt 2>&1 || (cat vitest-log.txt && exit 1)
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
@@ -55,14 +55,14 @@ jobs:
 
     - name: Generate coverage
       working-directory: ./client
-      run: npm run test:coverage -- --run
+      run: pnpm run test:coverage -- --run
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
     
     - name: Build client
       working-directory: ./client
-      run: npm run build
+      run: pnpm run build
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder

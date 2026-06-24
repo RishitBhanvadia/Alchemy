@@ -1,0 +1,4 @@
+## 2026-06-24 - Normalisation Function Rounding Error Creating Nonexistent Chemicals
+**Bug:** The `normalise` function in `server/controllers/resultController.js` was calculating percentages by independently rounding the first three values and then calculating the fourth by subtraction (`nc = 100 - na - nb - ni`). This caused non-zero values to be generated for chemicals that had 0% concentration due to cumulative rounding differences.
+**Root Cause:** The formula `nc = 100 - na - nb - ni` forced all rounding error from `na`, `nb`, and `ni` into the `nc` bucket, rather than adjusting the largest value or distributing the remainder fairly.
+**Learning:** When normalizing percentages that must sum to exactly 100%, never calculate the last value purely by subtraction. Use the Largest Remainder Method (Hare-Niemeyer) to ensure precise sums to 100 without inventing nonexistent quantities.
