@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd client
-          corepack enable pnpm && pnpm install
+          npm i -g pnpm && pnpm install
 
       - name: Verify build
         run: |

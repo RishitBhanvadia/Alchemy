@@ -29,11 +29,11 @@ jobs:
     
     - name: Install client dependencies
       working-directory: ./client
-      run: corepack enable pnpm && pnpm install
+      run: npm i -g pnpm && pnpm install
     
     - name: Install server dependencies
       working-directory: ./server
-      run: corepack enable pnpm && pnpm install
+      run: npm i -g pnpm && pnpm install
     
     - name: Lint client code
       working-directory: ./client
