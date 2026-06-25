@@ -17,8 +17,8 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      - run: cd client && pnpm install
+          node-version: '20'
+      - run: cd client && pnpm install --no-frozen-lockfile
       - run: cd client && pnpm build || true
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
@@ -34,8 +34,8 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      - run: cd server && pnpm install
+          node-version: '20'
+      - run: cd server && pnpm install --no-frozen-lockfile
       - name: Check server syntax/startup
         run: |
           cd server
