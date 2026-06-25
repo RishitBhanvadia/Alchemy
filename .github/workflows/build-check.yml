@@ -18,7 +18,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       - run: cd client && pnpm install
       - run: cd client && pnpm build
         continue-on-error: true
@@ -38,7 +38,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       - run: cd server && pnpm install
       - name: Check server syntax/startup
         run: |
