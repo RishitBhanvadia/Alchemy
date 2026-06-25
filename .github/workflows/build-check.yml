@@ -18,7 +18,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
       - run: cd client && pnpm install
       - run: cd client && pnpm build
         env:
@@ -36,7 +36,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
       - run: cd server && pnpm install
       - name: Check server syntax/startup
         run: |
