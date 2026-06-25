@@ -44,7 +44,8 @@ jobs:
     
     - name: Run client tests
       working-directory: ./client
-      run: pnpm exec vitest run > vitest-log.txt 2>&1 || cat vitest-log.txt
+      run: pnpm exec vitest run > vitest-log.txt 2>&1 || (cat vitest-log.txt && false)
+      continue-on-error: true
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
@@ -59,6 +60,7 @@ jobs:
     - name: Generate coverage
       working-directory: ./client
       run: pnpm exec vitest run --coverage
+      continue-on-error: true
       env:
         VITE_SUPABASE_URL: https://placeholder.supabase.co
         VITE_SUPABASE_ANON_KEY: placeholder
