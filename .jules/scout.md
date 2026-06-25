@@ -1,0 +1,4 @@
+## 2026-06-25 - PraxiLabs & PhET Market Research
+**Market Insight:** Virtual science labs in the market (like PraxiLabs and PhET) emphasize realistic simulations, guided experiments (lab workflows), assessment modes, and educator-focused tracking features. A key recurring feature in educational tech is the ability to easily export student performance data to CSV/PDF.
+**Codebase Match:** Alchemistry is a virtual chemistry lab simulator built with React Three Fiber, featuring interactive experiments, grading/results tracking, and teacher dashboards. The codebase lacks easy data export functionalities for teachers to use, but already has robust API endpoints fetching analytics and history.
+**Opportunity:** Introduce a CSV Export capability in the `history` and `TeacherDashboard` pages to give educators easy access to student data. Adding CSV exports aligns perfectly with features requested in similar products.
