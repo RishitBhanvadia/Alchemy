@@ -19,8 +19,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
-          cache-dependency-path: client/pnpm-lock.yaml
       - run: cd client && pnpm install
       - run: cd client && pnpm build
         env:
@@ -32,14 +30,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: 8
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
-          cache-dependency-path: server/pnpm-lock.yaml
       - run: cd server && pnpm install
       - name: Check server syntax/startup
         run: |
