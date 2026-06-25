@@ -14,22 +14,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: client/package-lock.json
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: |
           cd client
-          npm ci
+          pnpm install
 
       - name: Verify build
         run: |
           cd client
-          npm run build
+          pnpm build
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
