@@ -68,7 +68,8 @@ const Lab3D = () => {
                     setLockedChems([...new Set(allLocked)]); // Unique set
                 }
             } catch (error) {
-                console.error("Error fetching classroom restrictions:", error);
+                // eslint-disable-next-line no-console
+      console.error("Error fetching classroom restrictions:", error);
             }
         };
 
@@ -122,7 +123,8 @@ const Lab3D = () => {
                     setCurrentHint(data.hint);
                 }
             } catch (error) {
-                console.error("Failed to fetch AI hint:", error);
+                // eslint-disable-next-line no-console
+      console.error("Failed to fetch AI hint:", error);
             }
         }, 800);
 
@@ -156,7 +158,8 @@ const Lab3D = () => {
                 setIsLoading(false);
             }
         } catch (error) {
-            console.error("Reaction failed:", error);
+            // eslint-disable-next-line no-console
+      console.error("Reaction failed:", error);
             setIsLoading(false);
             toast.dismiss();
             
@@ -277,10 +280,12 @@ const Lab3D = () => {
                                 const canvas = gl.domElement;
                                 canvas.addEventListener('webglcontextlost', (e) => {
                                     e.preventDefault();
-                                    console.warn('[Lab3D] WebGL context lost — attempting recovery');
+                                    // eslint-disable-next-line no-console
+      console.warn('[Lab3D] WebGL context lost — attempting recovery');
                                 }, false);
                                 canvas.addEventListener('webglcontextrestored', () => {
-                                    console.warn('[Lab3D] WebGL context restored');
+                                    // eslint-disable-next-line no-console
+      console.warn('[Lab3D] WebGL context restored');
                                 }, false);
                             }}
                         >

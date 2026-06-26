@@ -17,7 +17,7 @@ jobs:
         version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '18.x'
           cache: 'pnpm'
           cache-dependency-path: client/pnpm-lock.yaml
       - run: cd client && pnpm install
@@ -36,7 +36,7 @@ jobs:
         version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '18.x'
           cache: 'pnpm'
           cache-dependency-path: server/pnpm-lock.yaml
       - run: cd server && pnpm install
