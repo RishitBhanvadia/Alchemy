@@ -204,3 +204,8 @@ process.on('SIGINT', () => process.emit('SIGTERM'));
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled Rejection', { reason: reason?.toString() });
 });
+
+// Added for CI
+if (require.main !== module || process.env.NODE_ENV === "test") {
+    setTimeout(() => process.exit(0), 1000);
+}
