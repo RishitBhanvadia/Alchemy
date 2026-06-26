@@ -3,13 +3,13 @@ const { error } = require('../utils/response');
 const validators = {
   reaction: (data) => {
     const errors = [];
-    const { chem_a, chem_b, chem_c, chem_d } = data;
+    const { chem_a, chem_b, chem_i, chem_c } = data;
     
     const values = [
       { name: 'chem_a', val: chem_a },
       { name: 'chem_b', val: chem_b },
+      { name: 'chem_i', val: chem_i },
       { name: 'chem_c', val: chem_c },
-      { name: 'chem_d', val: chem_d },
     ];
     
     for (const { name, val } of values) {
