@@ -1,3 +1,0 @@
-## 2024-05-24 - Resolve N+1 Query in Teacher Analytics
-**Learning:** In the Alchemistry server, using `Promise.all` with a `.map` loop to query Supabase for relational data (like logs per classroom) causes an N+1 query bottleneck. PostgREST/Supabase defaults to a 1000 row limit which can also silently truncate data.
-**Action:** Extract all required unique IDs first, then execute a single batched query using `.in('column', allIds)`. Include the parent reference ID (e.g., `user_id`) in the `.select()` statement to map results back in memory. Always use an explicit, high `.limit()` (e.g. 10000) for batched queries to prevent silent truncation, and use an array slice (e.g., `.slice(0, 500)`) in memory to ensure you don't overfeed data starvation issues when grouping.
