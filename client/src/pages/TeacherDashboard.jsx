@@ -231,7 +231,8 @@ export default function TeacherDashboard({ analytics = false }) {
         const unique = [...new Map(mapped.map((s) => [s.id, s])).values()];
         setStudents(unique);
       } catch (err) {
-        console.error('Failed to fetch students:', err);
+        // eslint-disable-next-line no-console
+      console.error('Failed to fetch students:', err);
         setError(err.message || 'Failed to load student data');
       } finally {
         setLoading(false);
@@ -309,7 +310,8 @@ export default function TeacherDashboard({ analytics = false }) {
         // Use the actual scores from DB
         setExperimentScores((data || []).map((log) => log.score || 0));
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        // eslint-disable-next-line no-console
+      console.error('Failed to fetch scores:', err);
       } finally {
         setLoading(false);
       }
@@ -319,6 +321,8 @@ export default function TeacherDashboard({ analytics = false }) {
   }, [selectedExperiment, startDate, endDate]);
 
   // ─── Table Instance ───────────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/incompatible-library
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: students,
     columns,

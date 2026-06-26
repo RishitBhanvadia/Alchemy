@@ -8,9 +8,7 @@ const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
 
-    if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
+
 
     useEffect(() => {
         const addEventListeners = () => {
@@ -61,12 +59,14 @@ const CursorFollower = () => {
         };
 
         addEventListeners();
-        return () => removeEventListeners();
+        if (isTouchDevice) return null;
+    return () => removeEventListeners();
     }, []);
 
     const cursorClasses = `cursor-follower ${hidden ? 'hidden' : ''} ${clicking ? 'clicking' : ''} ${hovering ? 'hovering' : ''}`;
     const dotClasses = `cursor-dot ${hidden ? 'hidden' : ''} ${hovering ? 'hovering' : ''}`;
 
+    if (isTouchDevice) return null;
     return (
         <>
             <div

@@ -22,7 +22,8 @@ export function RoleRoute({ children, requiredRole }) {
   
   // If we have a user but no profile after loading, it's a fatal error for this route
   if (user && !profile) {
-    console.error('User authenticated but profile missing');
+    // eslint-disable-next-line no-console
+      console.error('User authenticated but profile missing');
     return <Navigate to="/login" replace />;
   }
   
