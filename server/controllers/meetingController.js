@@ -12,36 +12,7 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
 const logger = require('../utils/logger');
-
-// ─── Helper: Generate unique 6-character alphanumeric code ────────────────────
-
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-function generateCode() {
-  let code = '';
-  for (let i = 0; i < 6; i++) {
-    code += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
-  }
-  return code;
-}
-
-/**
- * Generates a unique 6-char code by checking Supabase for collisions.
- * Retries up to 10 times before failing.
- */
-async function generateUniqueCode() {
-  for (let attempt = 0; attempt < 10; attempt++) {
-    const code = generateCode();
-    const { data } = await supabase
-      .from('meeting_sessions')
-      .select('id')
-      .eq('code', code)
-      .limit(1);
-
-    if (!data || data.length === 0) return code;
-  }
-  throw new Error('Failed to generate unique meeting code after 10 attempts');
-}
+const { generateUniqueCode } = require('../utils/codeGenerator');
 
 // ─── Helper: Save meeting session to Supabase ────────────────────────────────
 
@@ -149,7 +120,7 @@ exports.createZoomMeeting = async (req, res) => {
     const meetingUrl = meeting.join_url;
 
     // 3. Generate unique code and save session
-    const code = await generateUniqueCode();
+    const code = await generateUniqueCode('meeting_sessions', 'code', 6);
     const session = await saveMeetingSession(code, meetingUrl, 'zoom', req.user.id);
 
     logger.info(`[Zoom] Meeting created by teacher ${req.user.id}, code: ${code}`);
@@ -353,7 +324,7 @@ exports.createGoogleMeeting = async (req, res) => {
     }
 
     // Generate unique code and save session
-    const code = await generateUniqueCode();
+    const code = await generateUniqueCode('meeting_sessions', 'code', 6);
     const session = await saveMeetingSession(code, meetingUrl, 'google', teacherId);
 
     logger.info(`[Google] Meeting created by teacher ${teacherId}, code: ${code}`);
