@@ -194,6 +194,7 @@ export default function ParticleEmitter({
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
 
+      /* eslint-disable react-hooks/immutability */
       // Update lifetime
       lifetimes[i] += delta;
 
@@ -257,6 +258,7 @@ export default function ParticleEmitter({
     if (sizeAttr) sizeAttr.needsUpdate = true;
   });
 
+  /* eslint-enable react-hooks/immutability */
   // Don't render if not active
   if (!active) return null;
 
