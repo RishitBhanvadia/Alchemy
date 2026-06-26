@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 import './EmptyState.css';
@@ -30,3 +31,12 @@ const EmptyState = ({
 };
 
 export default EmptyState;
+
+EmptyState.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  actionLabel: PropTypes.string,
+  onAction: PropTypes.func,
+  className: PropTypes.string
+};

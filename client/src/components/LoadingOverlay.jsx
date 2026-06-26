@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { motion } from 'framer-motion';
 import './LoadingOverlay.css';
@@ -46,3 +47,7 @@ const LoadingOverlay = ({ message = "Connecting to Lab..." }) => {
 };
 
 export default LoadingOverlay;
+
+LoadingOverlay.propTypes = {
+  message: PropTypes.string.isRequired
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 /**
  * MeetingCodeCard.jsx — Displays a meeting code with copy + start actions
  *
@@ -164,3 +165,10 @@ const styles = {
 };
 
 export default MeetingCodeCard;
+
+MeetingCodeCard.propTypes = {
+  code: PropTypes.string.isRequired,
+  meetingUrl: PropTypes.string.isRequired,
+  platform: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired
+};
