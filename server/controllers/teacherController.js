@@ -22,7 +22,7 @@ exports.getAnalytics = async (req, res) => {
     const analytics = await Promise.all(
       (classrooms || []).map(async (cls) => {
         const studentIds = (cls.memberships || []).map(m => m.student_id);
-        
+
         let logs = [];
         if (studentIds.length > 0) {
           const { data: experimentLogs } = await supabase
