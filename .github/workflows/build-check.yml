@@ -39,7 +39,7 @@ jobs:
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          node -e "try { require('./server.js'); setTimeout(() => process.exit(0), 1000); } catch (e) { if (e.message && e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder

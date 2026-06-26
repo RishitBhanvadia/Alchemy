@@ -227,3 +227,9 @@ const styles = {
     fontSize: '0.95rem',
   },
 };
+
+StudentAnalyticsChart.propTypes = {
+  scores: PropTypes.array,
+  experimentName: PropTypes.string,
+  noDataMessage: PropTypes.string,
+};

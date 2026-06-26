@@ -107,7 +107,7 @@ const DraggableFlask = ({ position = [0, 0, 0], label, color, onPour, maxAmount 
         if (e.target && e.target.releasePointerCapture) {
             try { e.target.releasePointerCapture(e.pointerId); } catch (_) { /* ignored */ }
         }
-    }, [gl, position]);
+    }, [position]);
 
     const lastUpdate = useRef(0);
     useFrame((state, delta) => {
