@@ -1,16 +1,17 @@
-import { Canvas } from '@react-three/fiber';
-import { motion, AnimatePresence } from "framer-motion";
+/* eslint-disable react-hooks/immutability */
+import {Canvas } from '@react-three/fiber';
+import {motion, AnimatePresence } from "framer-motion";
 import "./Lab3D.css";
 import useLabStore from "../store/labStore";
 import useHistoryStore from "../store/historyStore";
-import { toast } from "react-hot-toast";
+import {toast } from "react-hot-toast";
 import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import {Suspense, lazy, useEffect, useState} from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
-import { supabase } from '../supabaseClient';
+import {supabase } from '../supabaseClient';
 
 const PhysicsLab = lazy(() => import('../components/3d-animations/PhysicsLab'));
 
@@ -45,18 +46,18 @@ const Lab3D = () => {
     useEffect(() => {
         const fetchRestrictions = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
+                const {data: {user } } = await supabase.auth.getUser();
                 if (!user) return;
 
                 // Get classrooms student is in
-                const { data: classes } = await supabase
+                const {data: classes } = await supabase
                     .from('class_memberships')
                     .select('classroom_id');
                 
                 if (!classes || classes.length === 0) return;
 
                 // Get locked chemicals from those classrooms
-                const { data: classroomData } = await supabase
+                const {data: classroomData } = await supabase
                     .from('classrooms')
                     .select('locked_chemicals')
                     .in('id', classes.map(c => c.classroom_id));
@@ -78,7 +79,7 @@ const Lab3D = () => {
     // Presence Tracking
     useEffect(() => {
         const updatePresence = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
+            const {data: {user } } = await supabase.auth.getUser();
             if (!user) return;
 
             await supabase
@@ -97,7 +98,7 @@ const Lab3D = () => {
         const timer = setTimeout(() => {
             setIsInitialLoading(false);
             fetchHistory(); // Load recent experiments
-            toast.success("Welcome to the Laboratory!", { icon: '🧪' });
+            toast.success("Welcome to the Laboratory!", {icon: '🧪' });
         }, 2000);
         return () => clearTimeout(timer);
     }, [fetchHistory]);
@@ -115,7 +116,7 @@ const Lab3D = () => {
             try {
                 const res = await fetch('/api/ai/hint', {
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: {'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
                 if (data.hint) {
@@ -231,7 +232,7 @@ const Lab3D = () => {
                         <div className="history-list">
                             {historyLogs.slice(0, 5).map(log => (
                                 <div key={log.id} className="history-item glass-card">
-                                    <span className="log-time">{new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className="log-time">{new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit' })}</span>
                                     <span className="log-outcome">{log.outcome_label || 'Mixing...'}</span>
                                     <div className="log-chems">
                                         {log.chem_a > 0 && <span className="mini-badge acid">A</span>}
