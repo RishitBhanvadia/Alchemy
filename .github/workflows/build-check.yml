@@ -15,10 +15,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: client/package-lock.json
-      - run: cd client && npm ci
-      - run: cd client && npm run build
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+      - run: cd client && pnpm install
+      - run: cd client && pnpm build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
           VITE_SUPABASE_ANON_KEY: placeholder
@@ -31,13 +32,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: server/package-lock.json
-      - run: cd server && npm ci
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+      - run: cd server && pnpm install
       - name: Check server syntax/startup
         run: |
           cd server
-          node -e "try { require('./server.js') } catch (e) { if (e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
+          node -e "try { require('./server.js'); setTimeout(() => process.exit(0), 1000); } catch (e) { if (e.message && e.message.includes('STARTUP FAILED')) process.exit(0); throw e; }"
         env:
           SUPABASE_URL: https://placeholder.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: placeholder
