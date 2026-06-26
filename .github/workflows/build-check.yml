@@ -17,8 +17,9 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
-      - run: cd client && npm ci
-      - run: cd client && npm run build
+      - run: cd client && npm install -g pnpm
+      - run: cd client && pnpm install
+      - run: cd client && pnpm build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
           VITE_SUPABASE_ANON_KEY: placeholder
@@ -33,7 +34,9 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
-      - run: cd server && npm ci
+      - run: npm install -g pnpm
+      - run: cd server && pnpm install
+      - run: cd client && pnpm install
       - name: Check server syntax/startup
         run: |
           cd server
