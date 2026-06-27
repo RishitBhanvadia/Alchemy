@@ -1,7 +1,0 @@
-🚨 Severity: High
-💡 Vulnerability: The CORS configuration currently allows requests without an origin (`!origin`) to bypass the allowed origins check. This could allow unauthenticated API usage or potential exploitation via mobile applications or automated scripts (curl requests) pretending to be legitimate.
-🎯 Impact: An attacker could bypass origin restrictions, potentially leading to unauthorized data access or CSRF-like attacks if no other proper authentication/validation mechanism is strictly enforced.
-🔧 Fix: Removed the `!origin` bypass and updated the condition to require `origin` to be present and to strictly match the `allowedOrigins` or end with `.vercel.app`.
-✅ Verification: Both Client and Server tests run successfully, ensuring no regressions.
-
-Note: The linting/build failures reported in GitHub Actions are pre-existing issues unrelated to the CORS fix in `server/server.js`.
