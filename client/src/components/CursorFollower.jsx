@@ -4,7 +4,8 @@ import './CursorFollower.css';
 const CursorFollower = () => {
     const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
-    if (typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches) return null;
+    const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
 
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hidden, setHidden] = useState(false);
@@ -18,6 +19,8 @@ const CursorFollower = () => {
 
 
     useEffect(() => {
+        if (isTouchDevice) return;
+
         const addEventListeners = () => {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseenter", onMouseEnter);
@@ -69,6 +72,8 @@ const CursorFollower = () => {
         const [clicking, setClicking] = useState(false);
     const [hovering, setHovering] = useState(false);
     if (isTouchDevice) return null;
+    if (isTouchDevice) return null;
+
     return () => removeEventListeners();
     }, []);
 
