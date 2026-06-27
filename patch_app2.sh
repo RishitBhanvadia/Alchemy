@@ -1,0 +1,1 @@
+sed -i 's/console.log("Teacher classrooms update received: ", payload);/\/\/ eslint-disable-next-line no-console\n      console.log("Teacher classrooms update received: ", payload);/g' client/src/components/TeacherDashboard.jsx
