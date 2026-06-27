@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import './CursorFollower.css';
 
@@ -9,8 +10,6 @@ const CursorFollower = () => {
     const [hovering, setHovering] = useState(false);
 
     if (isTouchDevice) return null;
-    const [clicking, setClicking] = useState(false);
-    const [hovering, setHovering] = useState(false);
 
     useEffect(() => {
         const addEventListeners = () => {

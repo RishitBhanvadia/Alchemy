@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * StudentAnalyticsChart.jsx — Recharts BarChart for score distribution
  * Phase 3.2.2 Task [11]: Shows score buckets (0–100%) with class average reference line

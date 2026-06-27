@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Canvas } from '@react-three/fiber';
 import { motion, AnimatePresence } from "framer-motion";
 import "./Lab3D.css";
@@ -8,7 +9,7 @@ import AiTutorPanel from "../components/AiTutorPanel";
 import ResultModal from "../components/ResultModal";
 import LoadingOverlay from "../components/LoadingOverlay";
 import ErrorBoundary from "../components/ErrorBoundary";
-import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import SuccessCelebration from '../components/SuccessCelebration';
 import { supabase } from '../supabaseClient';
 

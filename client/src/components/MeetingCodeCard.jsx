@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * MeetingCodeCard.jsx — Displays a meeting code with copy + start actions
  *

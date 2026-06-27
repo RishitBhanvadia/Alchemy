@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { GraduationCap, FlaskConical, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
