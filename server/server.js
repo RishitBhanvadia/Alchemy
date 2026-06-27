@@ -78,7 +78,7 @@ app.use(helmet({
 }));
 
 // CORS Configuration
-const allowedOrigins = [
+const allowedOrigins = process.env.NODE_ENV === 'production' ? [] : [
     'http://localhost:5173',
     'http://localhost:4173',
     'http://localhost:3000',
