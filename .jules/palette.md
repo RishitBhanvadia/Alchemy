@@ -1,0 +1,3 @@
+## 2025-02-28 - Component Prop Conflict with ARIA Roles
+**Learning:** Using `role` as a custom prop name on React components (like `<RoleCard role="student" />`) can trigger `jsx-a11y/aria-role` ESLint errors because the linter may confuse it with the HTML ARIA role attribute, preventing build/CI from passing.
+**Action:** When creating components that select or display user roles, always rename the custom prop to a non-conflicting name like `userRole` to ensure clear separation from standard ARIA attributes. Additionally, converting clickable semantic `div` components to `<button type="button">` with `aria-pressed` significantly improves keyboard accessibility and screen reader support.
