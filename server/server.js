@@ -115,8 +115,8 @@ app.use(cors(corsOptions));
 
 // Handle preflight OPTIONS requests explicitly with the same config
 app.options('*', cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "2mb" }));
+app.use(bodyParser.json({ limit: "2mb" }));
 
 // Request Logger with Response Status
 app.use((req, res, next) => {
