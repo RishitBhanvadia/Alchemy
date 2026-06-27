@@ -29,11 +29,11 @@ jobs:
     
     - name: Install client dependencies
       working-directory: ./client
-      run: rm -rf package-lock.json node_modules && npm i
+      run: npm install
     
     - name: Install server dependencies
       working-directory: ./server
-      run: rm -rf package-lock.json node_modules && npm i
+      run: npm install
     
     - name: Lint client code
       working-directory: ./client
