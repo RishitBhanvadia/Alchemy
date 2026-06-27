@@ -1,11 +1,12 @@
 const { success, error } = require('../utils/response');
 const supabase = require('../supabaseClient');
+const crypto = require('crypto');
 
 function generateClassCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = '';
   for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(crypto.randomInt(chars.length));
   }
   return code;
 }
@@ -16,8 +17,12 @@ exports.createClassroom = async (req, res) => {
 
     let classCode;
     let existing;
+    let attempts = 0;
     
     do {
+      if (attempts >= 10) {
+        throw new Error('Failed to generate a unique class code');
+      }
       classCode = generateClassCode();
       const { data } = await supabase
         .from('classrooms')
@@ -25,6 +30,7 @@ exports.createClassroom = async (req, res) => {
         .eq('class_code', classCode)
         .limit(1);
       existing = data && data.length > 0;
+      attempts++;
     } while (existing);
 
     const { data, error: dbError } = await supabase
