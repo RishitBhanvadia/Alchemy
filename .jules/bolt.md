@@ -1,0 +1,3 @@
+## 2024-10-27 - N+1 Query in Teacher Analytics
+**Learning:** Querying `experiment_results` iteratively inside a `map` or `Promise.all` for each classroom results in N+1 queries, dramatically degrading performance as the number of classrooms or parallel requests grows due to DB connection pool overhead and network roundtrips.
+**Action:** Extract all required `student_ids` beforehand and batch query them with a single `.in('user_id', allStudentIds)` and high `.limit()`, then slice them appropriately in memory per classroom to prevent DB performance starvation issues while maintaining logical constraints.
