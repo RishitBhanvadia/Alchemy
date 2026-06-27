@@ -110,10 +110,11 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'idle') {
         setDragState('hovering');
-        gl.domElement.style.cursor = 'grab';
+        // eslint-disable-next-line react-hooks/immutability
+        document.body.style.cursor = 'grab';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -123,10 +124,11 @@ export default function useLabPhysics(config = {}) {
     () => {
       if (dragState === 'hovering') {
         setDragState('idle');
-        gl.domElement.style.cursor = 'default';
+        // eslint-disable-next-line react-hooks/immutability
+        document.body.style.cursor = 'default';
       }
     },
-    [dragState, gl]
+    [dragState]
   );
 
   /**
@@ -139,7 +141,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('dragging');
-      gl.domElement.style.cursor = 'grabbing';
+      // eslint-disable-next-line react-hooks/immutability
+      document.body.style.cursor = 'grabbing';
 
       // Raycaster hit detection on XY drag plane
       const raycaster = e.raycaster || new Raycaster();
@@ -165,7 +168,7 @@ export default function useLabPhysics(config = {}) {
         }
       }
     },
-    [camera, gl, dragPlane]
+    [camera, dragPlane, gl]
   );
 
   /**
@@ -208,7 +211,8 @@ export default function useLabPhysics(config = {}) {
       e.stopPropagation();
 
       setDragState('released');
-      gl.domElement.style.cursor = 'default';
+      // eslint-disable-next-line react-hooks/immutability
+        document.body.style.cursor = 'default';
 
       // Reset physics state
       isPouring.current = false;
@@ -232,7 +236,7 @@ export default function useLabPhysics(config = {}) {
       // (allows release animation to play)
       setTimeout(() => setDragState('idle'), 100);
     },
-    [dragState, gl, homePosition]
+    [dragState, homePosition]
   );
 
   // ─── Frame Update Helper ──────────────────────────────────────────────

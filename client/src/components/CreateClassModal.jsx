@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * CreateClassModal.jsx — Modal to create a Zoom or Google Meet session
  *

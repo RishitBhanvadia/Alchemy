@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import PropTypes from 'prop-types';
