@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import toast from 'react-hot-toast';
 import { Mail, Lock } from 'lucide-react';
@@ -78,9 +79,9 @@ const LoginForm = () => {
           disabled={loading}
         />
         <div className="flex justify-end mt-2">
-          <a href="#" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
+          <Link to="/forgot-password" className="text-[12px] font-medium text-[#6366f1] hover:text-[#818cf8] uppercase tracking-[0.05em] transition-colors duration-150 unhover:no-underline hover:underline">
             Forgot password?
-          </a>
+          </Link>
         </div>
       </div>
 
